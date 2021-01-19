@@ -478,7 +478,7 @@ export default class SideMenu extends Component {
                 <Text style={styles.drawerLabelStyle}>{item.syncNow}</Text>
               </View>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => Actions.drawerToggle()}>
+            <TouchableOpacity>
               <View style={styles.drawerNmaeImgContainer2}>
                 <Image
                   style={styles.drawerLabelImgStyle2}
@@ -531,7 +531,7 @@ export default class SideMenu extends Component {
               <View style={styles.drawerNmaeImgContainer2}>
                 <Image
                   style={styles.drawerLabelImgStyle2}
-                  source={require('../assets/Icons/Reports.png')}
+                  source={require('../assets/Icons/meeting.png')}
                 />
                 <Text style={styles.drawerLabelStyle2}>Meetings</Text>
               </View>
@@ -608,10 +608,12 @@ export default class SideMenu extends Component {
 
             <TouchableOpacity onPress={this.Logout}>
               <View style={styles.drawerNmaeImgContainer2}>
-                {/* <Image style={styles.drawerLabelImgStyle2}
-                                        source={require('../assets/Icons/Settings.png')} />
-                                         */}
-                <Icon name="log-out" color="black" />
+                <Image
+                  style={styles.drawerLabelImgStyle2}
+                  source={require('../assets/Icons/logout.png')}
+                />
+
+                {/* <Icon name="log-out" color="black" /> */}
 
                 <Text style={styles.drawerLabelStyle2}>LogOut</Text>
               </View>
