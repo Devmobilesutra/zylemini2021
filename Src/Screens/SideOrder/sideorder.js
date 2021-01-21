@@ -72,9 +72,7 @@ constructor(props) {
         reopen:true,
         InProcessOrder:[],
         DeliveredOrder:[],
-        Shop_det:[
-           
-        ],
+        Shop_det:[],
         total_data:[],
         isRefreshing: false,
        // TotalOrder:[],
@@ -145,6 +143,8 @@ componentWillUnmount() {
     //     this._componentFocused();
     //    }, 1000)
      this._componentFocused();
+
+   
     
     this._sub = this.props.navigation.addListener(
         'didFocus',
@@ -174,33 +174,42 @@ _componentFocused = () => {
         this.setState({ name: JSON.parse(keyValue) })})
     db.getAllOrders().then((data)=>{
         console.log("getTotalOrderFromDB",JSON.stringify(data))
-        this.setState({TotalOrder:data})
-        console.log("TotalOrder",this.state.TotalOrder);
+        this.setState({Shop_det:data})
+        console.log("TotalOrder",this.state.Shop_det);
         this.state.TotalOrderLen=data.length
         this.setState({TotalOrderLen:data.length})
         this.props.orderTotal(this.state.TotalOrderLen)
-        for(var i=0;i<data.length;i++){
-           console.log("you have entered in for loop");
-           console.log("entity_type in for loop",data[i].entity_type);
-         
-            if(data[i].entity_type==1)
-           // &&( this.state.Shop_det.entity_id==!data[i].entity_id ||this.state.Shop_det==[])
-            {
-                console.log("successfull if");
-                db.getCustomerShopName(data[i].entity_id,data[i].id).then((data)=>{
-                console.log("side order shop-details",data);
-                this.state.Shop_det.push(data);  
-                console.log("shop data final",this.state.Shop_det);
-                User.orderidvar=data[0].id;
+        // data.map((item, i) => {
+        //     db.getCustomerShopName(item.entity_id,item.id).then((data1)=>{
+        //         console.log("side order shop-details",data1);
+        //         this.state.Shop_det.push(data1);  
+        //         console.log("shop data final",this.state.Shop_det);
+        //       //  User.orderidvar=data[0].id;
                 
-                })
-            }
-            else if(data[i].entity_type==2)
-            {
+        //         })
+        // })
+        // for(var i=0;i<data.length;i++){
+        //    console.log("you have entered in for loop");
+        //    console.log("entity_type in for loop",data[i].entity_type);
+         
+        //     if(data[i].entity_type==1)
+        //    // &&( this.state.Shop_det.entity_id==!data[i].entity_id ||this.state.Shop_det==[])
+        //     {
+        //         console.log("successfull if");
+        //         db.getCustomerShopName(data[i].entity_id,data[i].id).then((data)=>{
+        //         console.log("side order shop-details",data);
+        //         this.state.Shop_det.push(data);  
+        //         console.log("shop data final",this.state.Shop_det);
+        //         User.orderidvar=data[0].id;
+                
+        //         })
+        //     }
+        //     else if(data[i].entity_type==2)
+        //     {
     
-            }
+        //     }
                        
-        }  
+        // }  
      
     })
 }
@@ -322,6 +331,83 @@ _renderView(item){
         
     
 }
+
+_renderViewForFlatlist(){
+
+    if(this.state.Shop_det.length > 0){
+        return this.state.Shop_det.map((item, i) => {
+        return(
+           
+             <View style={styles.orderDetailsMainContainer}>
+             {/* Header Background */}
+             
+             <View style={styles.orderHeaderBGContainer}>
+                 <View style={styles.ordHeaderRowContainer}>
+                     <View style={styles.orderLabelContainer}>
+                         <Text style={styles.orderLabelTextStyle}>
+                         {item.Party}
+                         </Text>
+                     </View>
+                     <View style={styles.amtContainer}>
+                         <Text style={styles.amtTextStyle}>
+                             {item.AREA} 
+                         </Text>
+                     </View> 
+                 </View>
+             </View>
+             {/* Below Header White Background */}
+             <View style={styles.oredrDetaileWhiteBG}>
+                 <View style={styles.orderDateRowContainer}>
+                     <View style={styles.orderDateColContainer}>
+                         <Text style={styles.ordDateLabelStyle}>
+                             ORDER DATE
+                         </Text>
+                         <Text style={styles.orderDateDateStyle}>
+                        {moment(item.Current_date_time).format('DD-MMM-YYYY')}
+                         </Text>
+                     </View>
+                     <View style={styles.salesColContainer}>
+                         <Text style={styles.salesLabelStyle}>
+                             ORDER ID
+                         </Text>
+                         {/* {this.renderName(item.user_id)} */}
+                         <Text style={styles.salesNameStyle}>
+                         {item.id}
+                                                         </Text>
+                     </View>
+                     <View style={styles.salesColContainer1}>
+                         <Text style={styles.salesLabelStyle}>
+                             AMOUNT
+                         </Text>
+                         {/* {this.renderName(item.user_id)} */}
+                         <Text style={styles.salesNameStyle}>
+                         {item.total_amount}
+                                                         </Text>
+                     </View>
+                 </View>
+                 {/* Dash line */}
+                 <View style={styles.ordDetDashContainer}>
+                     <Dash style={styles.ordDetDashStyle}
+                         dashLength = {2}
+                         dashColor = '#E6DFDF'
+                     />
+                 </View>
+                 {this._renderView(item)}
+              
+           
+             </View>    
+             </View>
+            
+        )
+            })
+    }else{
+        return(
+            <View>
+              
+            </View>
+        )
+    }
+}
 renderFABIcon = () => {
     if (this.state.active) {
       return (<Icon name="ios-close" style={{ fontSize: 45, color: "#FFFFFF", position: 'absolute' }} color="#07B26A"></Icon>);
@@ -375,79 +461,8 @@ renderFABIcon = () => {
                 </View>
 {/* /////////////////////////////////////////////////////////////////////////////////////////////////////// */}
                 {/* Order Detailes */}
-                <FlatList
-               data={this.state.Shop_det}
+             {this._renderViewForFlatlist()} 
               
-                renderItem={({ item,i=0 }) => (
-                <View style={styles.orderDetailsMainContainer}>
-                {/* Header Background */}
-                
-                <View style={styles.orderHeaderBGContainer}>
-                    <View style={styles.ordHeaderRowContainer}>
-                        <View style={styles.orderLabelContainer}>
-                            <Text style={styles.orderLabelTextStyle}>
-                            {item[i].Party}
-                            </Text>
-                        </View>
-                        <View style={styles.amtContainer}>
-                            <Text style={styles.amtTextStyle}>
-                                {item[i].AREA} 
-                            </Text>
-                        </View> 
-                    </View>
-                </View>
-                {/* Below Header White Background */}
-                <View style={styles.oredrDetaileWhiteBG}>
-                    <View style={styles.orderDateRowContainer}>
-                        <View style={styles.orderDateColContainer}>
-                            <Text style={styles.ordDateLabelStyle}>
-                                ORDER DATE
-                            </Text>
-                            <Text style={styles.orderDateDateStyle}>
-                           {moment(item[i].Current_date_time).format('DD-MMM-YYYY')}
-                            </Text>
-                        </View>
-                        <View style={styles.salesColContainer}>
-                            <Text style={styles.salesLabelStyle}>
-                                ORDER ID
-                            </Text>
-                            {/* {this.renderName(item.user_id)} */}
-                            <Text style={styles.salesNameStyle}>
-                            {item[i].id}
-                                                            </Text>
-                        </View>
-                        <View style={styles.salesColContainer1}>
-                            <Text style={styles.salesLabelStyle}>
-                                AMOUNT
-                            </Text>
-                            {/* {this.renderName(item.user_id)} */}
-                            <Text style={styles.salesNameStyle}>
-                            {item[i].total_amount}
-                                                            </Text>
-                        </View>
-                    </View>
-                    {/* Dash line */}
-                    <View style={styles.ordDetDashContainer}>
-                        <Dash style={styles.ordDetDashStyle}
-                            dashLength = {2}
-                            dashColor = '#E6DFDF'
-                        />
-                    </View>
-                    
-
-                    {this._renderView(item[i])}
-                    {/* Delivery */}
-                    {/* 
-              
-              
-              
-              
-               */}
-              
-                </View>    
-                </View>
-                )}
-                />
                
               
 

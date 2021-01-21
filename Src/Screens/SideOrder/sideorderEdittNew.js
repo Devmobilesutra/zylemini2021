@@ -57,7 +57,7 @@ export class sideorderEdittNew extends Component {
       //  this.handleBackButtonClick = this.handleBackButtonClick.bind(this);
     }
     static navigationOptions = {
-        title: 'Create New Order',
+        title: 'Edit Orders',
         color: 'white',
         headerStyle: {
             backgroundColor: '#221818'
@@ -361,7 +361,7 @@ export class sideorderEdittNew extends Component {
                 alert('Please Add the Order');
 
             } else {
-                Actions.editpreview({order_id:User.orderidvar})
+                Actions.editpreview({order_id:User.orderidvar,expectedDeliverdate : this.props.expectedDeliveryDate})
             }
          })
     }

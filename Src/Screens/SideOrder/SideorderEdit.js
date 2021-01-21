@@ -771,6 +771,12 @@ AsyncStorage.getItem('userIds').then((keyValue) => {
                         var sec = new Date().getSeconds(); //Current Seconds
                          app_order_id = this.props.AppOrderId;
                          console.log('this.props.AppOrderId : '+app_order_id);
+
+                         if(month <= 9){
+                            month = '0'+ month;
+                        }
+
+
                      //   app_order_id = date + '/' + month + '/' + year + ' ' + hours + ':' + min + ':' + sec
                       //  app_order_id = app_order_id.replace(/[|&:$%@"/" "()+,]/g, "");                  
                         currentDateTime = year + '-' + month + '-' + date + ' ' + hours + ':' + min + ':' + sec

@@ -33,9 +33,9 @@ export default class sideordernav extends Component {
                                 source = {require('../../assets/Icons/Back_White.png')}
                             />
                         </TouchableOpacity>
-                        {/* <View style={{flex:0.5,marginLeft:hp(-4),marginTop:hp(-0.5)}}>
-                        <Text style={styles.assetLabelStyle}> Surveys </Text>
-                        </View> */}
+                        <View style={{flex:0.5,marginLeft:hp(-3),marginTop:hp(-0.5)}}>
+                        <Text style={styles.assetLabelStyle}> Edit Orders </Text>
+                        </View>
                         
                     </View>
 
@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
 
   assetLabelStyle:{ 
     color: '#FFFFFF', 
-    fontSize:24, 
+    fontSize:21, 
     fontWeight: 'bold',
     fontFamily: 'Proxima Nova',
     alignSelf:'center', 

@@ -345,22 +345,25 @@ export class sideordrDetails extends Component {
           console.log("side order details....",data);
           this.setState({Shop_det:data})
           console.log("shop data final",this.state.Shop_det);
-          console.log("id we want for details",this.state.Shop_det[0].id);
-          db.getDetailsItem(this.state.Shop_det[0].id).then((data)=>{
-              console.log("item id details....",data);
-              this.setState({BrandList:data})
-              // console.log("shop data final",this.state.Shop_det);
-              
-              var amountss = 0
-              for (var i = 0; i < this.state.BrandList.length; i++) {
-                  amountss += parseInt(this.state.BrandList[i].Amount)
-                  this.state.total = amountss
-                  this.setState({ total: amountss })
-  
-              }
-  
-              })
+      //    selectedStartDate = this.state.Shop_det[0].ExpectedDeliveryDate;
+        //  console.log("id we want for details",this.state.Shop_det[0].id);
+         
           })
+
+          db.getDetailsItem(this.state.app_order_id).then((data)=>{
+            console.log("item id details....",data);
+            this.setState({BrandList:data})
+            // console.log("shop data final",this.state.Shop_det);
+            
+            var amountss = 0
+            for (var i = 0; i < this.state.BrandList.length; i++) {
+                amountss += parseInt(this.state.BrandList[i].Amount)
+                this.state.total = amountss
+                this.setState({ total: amountss })
+
+            }
+
+            })
       })
       
       
@@ -688,7 +691,7 @@ export class sideordrDetails extends Component {
                                        
                                        
                                         <View style={styles.historyTextContainer}>
-                                            <TouchableOpacity onPress={() => Actions.sideorderEdittNew({ entity_id: this.state.Shop_det[0].entity_id,collection_type:this.state.Shop_det[0].collection_type,order_Id : this.state.Shop_det[0].id,OrderDate : this.state.Shop_det[0].Current_date_time,Total_amount : this.state.Shop_det[0].total_amount,ShopName : this.state.Shop_det[0].Party})}  >
+                                            <TouchableOpacity onPress={() => Actions.sideorderEdittNew({ entity_id: this.state.Shop_det[0].entity_id,collection_type:this.state.Shop_det[0].collection_type,order_Id : this.state.Shop_det[0].id,OrderDate : this.state.Shop_det[0].Current_date_time,Total_amount : this.state.Shop_det[0].total_amount,ShopName : this.state.Shop_det[0].Party,expectedDeliveryDate : this.state.Shop_det[0].ExpectedDeliveryDate})}  >
                                         <Text style={styles.historyText}>
                                             Edit
                                         </Text>
@@ -842,7 +845,7 @@ export class sideordrDetails extends Component {
                             <View style={styles.expectedDeliveryDateCardStyle}>
                                 <View style={styles.expectedDeliDateSelfContainer}>
                                     <Text style={styles.expectedDeliDateTextStyle}>
-                                        <Text>{startDate}</Text>
+                                        <Text>{this.state.Shop_det[0].ExpectedDeliveryDate}</Text>
                                     </Text>
                                 </View>
                                

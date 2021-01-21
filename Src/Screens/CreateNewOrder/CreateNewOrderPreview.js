@@ -425,303 +425,7 @@ export class CreateNewOrderPreview extends Component {
     }
 
 
-    // saveClickHandler= async() => {
-    //     //////////insert into main Detail Table
-    //   await  AsyncStorage.getItem('app_order_id').then((keyValue) => {
-    //         var a = JSON.parse(keyValue)
-    //         db.getOrderDataFromTempOrderDetails(a).then((data) => {
-    //             //console.log("data=",data)
-    //             this.setState({ orderData: data })
-    //             totalAmounts = 0
-    //             let flag ='false';
-    //             //
-    //             // })  //not here
-
-    //             if(this.state.orderData){
-    //                 this.state.orderData.map((item, i) => {
-    //                     db.checkOrderInOrderDetailsMain1(item.item_id, a).then((item_data) => {
-    //                         //console.log("item_data=",item_data)
-    //                         if (item_data.length == 0) {
-    //                             console.log("item_data="+item_data)
-    //                             db.insertOrderDetails(item.order_id, item.item_id, item.item_Name,
-    //                                 item.quantity_one,
-    //                                 item.quantity_two,
-    //                                 item.small_Unit, item.large_Unit, item.rate,
-    //                                 item.Amount, "1", "N").then((data1) =>{
-    //                                     db.getOrderDataFromTempOrderMaster(a, "0").then((dataMaster) => {
-
-
-    //                                         this.setState({ MasterorderData: data })
-    //                                         console.log("item_data MasterorderData=",JSON.stringify(dataMaster))
-                            
-    //                                         if(dataMaster){
-    //                                             db.checkOrderInTempOrderMasterMain(dataMaster[0].id, "0").then((item_data1) => {
-                            
-    //                                                 console.log('item data1 master : '+JSON.stringify(item_data1) + " len : "+item_data1.length)
-    //                                                 if (item_data1.length == 0) {
-                            
-    //                                                     var date = new Date().getDate();
-    //                                                     var month = new Date().getMonth() + 1;
-    //                                                     var year = new Date().getFullYear();
-    //                                                     datess = year + '-' + month + '-' + date
-    //                                                     //var  newDate = moment(datess, 'yyyy-MM-dd').format('yyyy-MMM-dd')
-    //                                                     newDate = moment().format('YYYY-MMM-DD')
-                            
-                            
-    //                                                     db.insertOrderMastersss(dataMaster[0].id, dataMaster[0].Current_date_time, dataMaster[0].entity_type, dataMaster[0].entity_id,
-    //                                                         dataMaster[0].latitude, dataMaster[0].longitude, data1[0].TotalAmount, this.state.from_date, this.state.from_date,
-    //                                                         "0", dataMaster[0].user_id, this.state.remark, "1", "N", datess, "", newDate)
-                            
-    //                                                 } else {
-                            
-    //                                                     // Current_date_time,entity_type,entity_id,latitude,longitude,total_amount,from_date,to_date,order_id,collection_type
-    //                                                     db.updateMasterMain(dataMaster[0].Current_date_time,
-    //                                                         dataMaster[0].entity_type, dataMaster[0].entity_id,
-    //                                                         dataMaster[0].latitude,
-    //                                                         dataMaster[0].longitude,
-    //                                                         data1[0].TotalAmount, this.state.from_date, this.state.from_date, dataMaster[0].id, "0")
-                            
-                            
-    //                                                 }
-    //                                             })
-                            
-    //                                             db.deleteTempOrderDetailsvibha(item.item_id, "0",dataMaster[0].id).then((data) => {
-    //                                                 AsyncStorage.setItem('outletName', "");
-    //                                                 AsyncStorage.setItem('outletId', "");
-    //                                                 AsyncStorage.setItem('beatName', "");
-    //                                                 AsyncStorage.setItem('beatId', "");
-    //                                                 AsyncStorage.setItem('distributorName', "");
-    //                                                 AsyncStorage.setItem('SearchString', "");
-                            
-    //                                                 db.getInsertedsTempOrder(a).then((getdata) => {
-                            
-    //                                                     this.setState({ BrandList: getdata })
-                            
-    //                                                 })
-    //                                                 AsyncStorage.setItem('outletName', "");
-    //                                                 AsyncStorage.setItem('outletId', "");
-    //                                                 AsyncStorage.setItem('beatName', "");
-    //                                                 AsyncStorage.setItem('beatId', "");
-    //                                                 AsyncStorage.setItem('distributorName', "");
-    //                                                 AsyncStorage.setItem('SearchString', "");
-                            
-                            
-                            
-    //                                             })
-    //                                             db.deleteTempOrderMater(dataMaster[0].entity_id, "0").then((getdata) => {
-                            
-    //                                             })
-    //                                             AsyncStorage.setItem('outletName', "");
-    //                                             AsyncStorage.setItem('outletId', "");
-    //                                             AsyncStorage.setItem('beatName', "");
-    //                                             AsyncStorage.setItem('beatId', "");
-    //                                             AsyncStorage.setItem('distributorName', "");
-    //                                             AsyncStorage.setItem('SearchString', ""); 
-    //                                         }
-    //                                         // for (let i = 0; i < this.state.MasterorderData.length; i++) {
-                            
-    //                                         //     db.checkOrderInTempOrderMasterMain(this.state.MasterorderData[i].id, "0").then((item_data1) => {
-                            
-    //                                         //         console.log('item data1 master : '+JSON.stringify(item_data1) + " len : "+item_data1.length)
-    //                                         //         if (item_data1.length == 0) {
-                            
-    //                                         //             var date = new Date().getDate();
-    //                                         //             var month = new Date().getMonth() + 1;
-    //                                         //             var year = new Date().getFullYear();
-    //                                         //             datess = year + '-' + month + '-' + date
-    //                                         //             //var  newDate = moment(datess, 'yyyy-MM-dd').format('yyyy-MMM-dd')
-    //                                         //             newDate = moment().format('YYYY-MMM-DD')
-                            
-                            
-    //                                         //             db.insertOrderMastersss(this.state.MasterorderData[0].id, this.state.MasterorderData[0].Current_date_time, this.state.MasterorderData[0].entity_type, this.state.MasterorderData[0].entity_id,
-    //                                         //                 this.state.MasterorderData[0].latitude, this.state.MasterorderData[0].longitude, data1[0].TotalAmount, this.state.from_date, this.state.from_date,
-    //                                         //                 "0", this.state.MasterorderData[0].user_id, this.state.remark, "1", "N", datess, "", newDate)
-                            
-    //                                         //         } else {
-                            
-    //                                         //             // Current_date_time,entity_type,entity_id,latitude,longitude,total_amount,from_date,to_date,order_id,collection_type
-    //                                         //             db.updateMasterMain(this.state.MasterorderData[0].Current_date_time,
-    //                                         //                 this.state.MasterorderData[0].entity_type, this.state.MasterorderData[0].entity_id,
-    //                                         //                 this.state.MasterorderData[0].latitude,
-    //                                         //                 this.state.MasterorderData[0].longitude,
-    //                                         //                 data1[0].TotalAmount, this.state.from_date, this.state.from_date, this.state.MasterorderData[0].id, "0")
-                            
-                            
-    //                                         //         }
-    //                                         //     })
-                            
-    //                                         //     db.deleteTempOrderDetailsvibha(item.item_id, "0",this.state.MasterorderData[0].id).then((data) => {
-    //                                         //         AsyncStorage.setItem('outletName', "");
-    //                                         //         AsyncStorage.setItem('outletId', "");
-    //                                         //         AsyncStorage.setItem('beatName', "");
-    //                                         //         AsyncStorage.setItem('beatId', "");
-    //                                         //         AsyncStorage.setItem('distributorName', "");
-    //                                         //         AsyncStorage.setItem('SearchString', "");
-                            
-    //                                         //         db.getInsertedsTempOrder(a).then((getdata) => {
-                            
-    //                                         //             this.setState({ BrandList: getdata })
-                            
-    //                                         //         })
-    //                                         //         AsyncStorage.setItem('outletName', "");
-    //                                         //         AsyncStorage.setItem('outletId', "");
-    //                                         //         AsyncStorage.setItem('beatName', "");
-    //                                         //         AsyncStorage.setItem('beatId', "");
-    //                                         //         AsyncStorage.setItem('distributorName', "");
-    //                                         //         AsyncStorage.setItem('SearchString', "");
-                            
-                            
-                            
-    //                                         //     })
-    //                                         //     db.deleteTempOrderMater(this.state.MasterorderData[0].entity_id, "0").then((getdata) => {
-                            
-    //                                         //     })
-    //                                         //     AsyncStorage.setItem('outletName', "");
-    //                                         //     AsyncStorage.setItem('outletId', "");
-    //                                         //     AsyncStorage.setItem('beatName', "");
-    //                                         //     AsyncStorage.setItem('beatId', "");
-    //                                         //     AsyncStorage.setItem('distributorName', "");
-    //                                         //     AsyncStorage.setItem('SearchString', "");
-                            
-                            
-                                              
-    //                                         // }
-                            
-    //                                     })
-    //                                 })
-    //                         } else {
-    
-    //                             db.updateDetailMain(item.quantity_one,
-    //                                 item.quantity_two, item.small_Unit, item.large_Unit, item.rate,
-    //                                 item.Amount, item.order_id, item.item_id).then((data2) => {
-    //                                     db.getOrderDataFromTempOrderMaster(a, "0").then((dataMaster) => {
-
-
-    //                                         this.setState({ MasterorderData: data })
-    //                                         console.log("item_data MasterorderData=",JSON.stringify(dataMaster))
-                            
-    //                                         if(dataMaster){
-    //                                             db.checkOrderInTempOrderMasterMain(dataMaster[0].id, "0").then((item_data1) => {
-                            
-    //                                                 console.log('item data1 master : '+JSON.stringify(item_data1) + " len : "+item_data1.length)
-    //                                                 if (item_data1.length == 0) {
-                            
-    //                                                     var date = new Date().getDate();
-    //                                                     var month = new Date().getMonth() + 1;
-    //                                                     var year = new Date().getFullYear();
-    //                                                     datess = year + '-' + month + '-' + date
-    //                                                     //var  newDate = moment(datess, 'yyyy-MM-dd').format('yyyy-MMM-dd')
-    //                                                     newDate = moment().format('YYYY-MMM-DD')
-                            
-                            
-    //                                                     db.insertOrderMastersss(dataMaster[0].id, dataMaster[0].Current_date_time, dataMaster[0].entity_type, dataMaster[0].entity_id,
-    //                                                         dataMaster[0].latitude, dataMaster[0].longitude, data2[0].TotalAmount, this.state.from_date, this.state.from_date,
-    //                                                         "0", dataMaster[0].user_id, this.state.remark, "1", "N", datess, "", newDate)
-                            
-    //                                                 } else {
-                            
-    //                                                     // Current_date_time,entity_type,entity_id,latitude,longitude,total_amount,from_date,to_date,order_id,collection_type
-    //                                                     db.updateMasterMain(dataMaster[0].Current_date_time,
-    //                                                         dataMaster[0].entity_type, dataMaster[0].entity_id,
-    //                                                         dataMaster[0].latitude,
-    //                                                         dataMaster[0].longitude,
-    //                                                         data2[0].TotalAmount, this.state.from_date, this.state.from_date, dataMaster[0].id, "0")
-                            
-                            
-    //                                                 }
-    //                                             })
-                            
-    //                                             db.deleteTempOrderDetailsvibha(item.item_id, "0",dataMaster[0].id).then((data) => {
-    //                                                 AsyncStorage.setItem('outletName', "");
-    //                                                 AsyncStorage.setItem('outletId', "");
-    //                                                 AsyncStorage.setItem('beatName', "");
-    //                                                 AsyncStorage.setItem('beatId', "");
-    //                                                 AsyncStorage.setItem('distributorName', "");
-    //                                                 AsyncStorage.setItem('SearchString', "");
-                            
-    //                                                 db.getInsertedsTempOrder(a).then((getdata) => {
-                            
-    //                                                     this.setState({ BrandList: getdata })
-                            
-    //                                                 })
-    //                                                 AsyncStorage.setItem('outletName', "");
-    //                                                 AsyncStorage.setItem('outletId', "");
-    //                                                 AsyncStorage.setItem('beatName', "");
-    //                                                 AsyncStorage.setItem('beatId', "");
-    //                                                 AsyncStorage.setItem('distributorName', "");
-    //                                                 AsyncStorage.setItem('SearchString', "");
-                            
-                            
-                            
-    //                                             })
-    //                                             db.deleteTempOrderMater(dataMaster[0].entity_id, "0").then((getdata) => {
-                            
-    //                                             })
-    //                                             AsyncStorage.setItem('outletName', "");
-    //                                             AsyncStorage.setItem('outletId', "");
-    //                                             AsyncStorage.setItem('beatName', "");
-    //                                             AsyncStorage.setItem('beatId', "");
-    //                                             AsyncStorage.setItem('distributorName', "");
-    //                                             AsyncStorage.setItem('SearchString', ""); 
-    //                                         }
-                                  
-                            
-    //                                     })
-    //                                 })
-    
-    
-    //                         }
-    //                     })
-                       
-    //                     totalAmounts = totalAmounts + parseInt(item.Amount)
-    //                 })
-    //                 Actions.CreateNewOrderFirst();
-                   
-                    
-    //             }
-               
-
-    //             // for (let k = 0; k < this.state.orderData.length; k++) {
-    //             //     //console.log("sachins1.//////////////////////////////////////////=",k)            
-    //             //     db.checkOrderInOrderDetailsMain1(this.state.orderData[k].item_id, a).then((item_data) => {
-    //             //         //console.log("item_data=",item_data)
-    //             //         if (item_data.length == 0) {
-
-    //             //             // [{"Amount":"700","rate":"2","to_date":"","from_date":"2020-4-15 14:23:54","large_Unit":"0","small_Unit":"0","quantity_two":"0","quantity_one":"35","item_Name":"{0062}DYC SELECT 180 ML X 48 42.8 %","item_id":"81","order_id":"1542020142354","id":1},
-    //             //             // {"Amount":"60","rate":"3","to_date":"","from_date":"","large_Unit":"0","small_Unit":"0","quantity_two":"0","quantity_one":"2","item_Name":"{0063}DYC SELECT  375 ML X 24 42.8 %","item_id":"82","order_id":"1542020142354","id":11}]
-
-    //             //             db.insertOrderDetails(this.state.orderData[k].order_id, this.state.orderData[k].item_id, this.state.orderData[k].item_Name,
-    //             //                 this.state.orderData[k].quantity_one,
-    //             //                 this.state.orderData[k].quantity_two,
-    //             //                 this.state.orderData[k].small_Unit, this.state.orderData[k].large_Unit, this.state.orderData[k].rate,
-    //             //                 this.state.orderData[k].Amount, "1", "N")
-    //             //         } else {
-
-    //             //             db.updateDetailMain(this.state.orderData[k].quantity_one,
-    //             //                 this.state.orderData[k].quantity_two, this.state.orderData[k].small_Unit, this.state.orderData[k].large_Unit, this.state.orderData[k].rate,
-    //             //                 this.state.orderData[k].Amount, this.state.orderData[k].order_id, this.state.orderData[k].item_id)
-
-
-    //             //         }
-    //             //     })
-    //             //     totalAmounts = totalAmounts + parseInt(this.state.orderData[k].Amount)
-
-    //             // }////end of for loop
-
-              
-    //         })
-    //     })
-
-
-    //     //  insert into master main
-       
-
-
-
-    //     //  delete from TABLE_TEMP_ORDER_DETAILS where order_id IN (select id from TABLE_TEMP_OrderMaster where entity_id = '%@' and collection_type = '%@')",entity_id,collection_type
-
-
-    // }
+   
     insertIntoOrderMaster()
     {
         AsyncStorage.getItem('app_order_id').then((keyValue) => {
@@ -734,20 +438,17 @@ export class CreateNewOrderPreview extends Component {
                     for (let i = 0; i < this.state.MasterorderData.length; i++) {
     
                         db.checkOrderInTempOrderMasterMain(this.state.MasterorderData[i].id, "0").then((item_data) => {
-    
+                            var date = new Date().getDate();
+                            var month = new Date().getMonth() + 1;
+                            var year = new Date().getFullYear();
+                            datess = year + '-' + month + '-' + date
+                            //var  newDate = moment(datess, 'yyyy-MM-dd').format('yyyy-MMM-dd')
+                            newDate = moment().format('YYYY-MMM-DD')
                             if (item_data.length === 0) {
-    
-                                var date = new Date().getDate();
-                                var month = new Date().getMonth() + 1;
-                                var year = new Date().getFullYear();
-                                datess = year + '-' + month + '-' + date
-                                //var  newDate = moment(datess, 'yyyy-MM-dd').format('yyyy-MMM-dd')
-                                newDate = moment().format('YYYY-MMM-DD')
-    
     
                                 db.insertOrderMastersss(this.state.MasterorderData[0].id, this.state.MasterorderData[0].Current_date_time, this.state.MasterorderData[0].entity_type, this.state.MasterorderData[0].entity_id,
                                     this.state.MasterorderData[0].latitude, this.state.MasterorderData[0].longitude, data1[0].TotalAmount, this.state.from_date, this.state.from_date,
-                                    "0", this.state.MasterorderData[0].user_id, this.state.remark, "1", "N", datess, "", newDate)
+                                    "0", this.state.MasterorderData[0].user_id, this.state.remark, "1", "N", datess, "", selectedStartDate)
     
                             } else {
     
@@ -756,7 +457,7 @@ export class CreateNewOrderPreview extends Component {
                                     this.state.MasterorderData[0].entity_type, this.state.MasterorderData[0].entity_id,
                                     this.state.MasterorderData[0].latitude,
                                     this.state.MasterorderData[0].longitude,
-                                    data1[0].TotalAmount, this.state.from_date, this.state.from_date, this.state.MasterorderData[0].id, "0")
+                                    data1[0].TotalAmount, this.state.from_date, this.state.from_date, this.state.MasterorderData[0].id, "0",selectedStartDate,datess)
     
     
                             }
@@ -841,6 +542,8 @@ export class CreateNewOrderPreview extends Component {
         datess = year + '-' + month + '-' + date
 
         newDate = moment().format('DD-MMM-YYYY')
+        selectedStartDate = newDate;
+        selectedStartDate1 = newDate;
 
         AsyncStorage.getItem('outletId').then((keyValue) => {
             this.setState({ outletId: JSON.parse(keyValue) })

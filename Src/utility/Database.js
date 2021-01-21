@@ -1197,11 +1197,11 @@ export default class Database {
 
   }
 
-  updateMasterMain(Current_date_time, entity_type, entity_id, latitude, longitude, total_amount, from_date, to_date, order_id, collection_type) {
+  updateMasterMain(Current_date_time, entity_type, entity_id, latitude, longitude, total_amount, from_date, to_date, order_id, collection_type,ExpectedDeliveryDate,check_date) {
     return new Promise((resolve) => {
       // this.initDB().then((db) => {
       db1.transaction((tx) => {
-        tx.executeSql('UPDATE OrderMaster SET  Current_date_time = ?,entity_type = ? ,entity_id = ?,latitude = ?,longitude = ?,total_amount = ?, from_date=?,to_date = ? where id = ? and collection_type = ? ', [Current_date_time, entity_type, entity_id, latitude, longitude, total_amount, from_date, to_date, order_id, collection_type]).then(([tx, results]) => {
+        tx.executeSql('UPDATE OrderMaster SET  Current_date_time = ?,entity_type = ? ,entity_id = ?,latitude = ?,longitude = ?,total_amount = ?, from_date=?,to_date = ?,ExpectedDeliveryDate=?,check_date=? where id = ? and collection_type = ? ', [Current_date_time, entity_type, entity_id, latitude, longitude, total_amount, from_date, to_date,ExpectedDeliveryDate,check_date, order_id, collection_type]).then(([tx, results]) => {
           resolve(results.length);
          // alert("Order Updated")
         });
@@ -4762,33 +4762,34 @@ console.log('query : '+query);
 //change by vibha
   //sideorderfunction 
   getAllOrders() {
-    var query = 'SELECT * FROM OrderMaster where collection_type =0';
-    //console.log("checkIsOrderIdInDb=", query)
-    return new Promise((resolve) => {
-      //  this.initDB().then((db) => {    
-      db1.transaction((tx) => {
-        tx.executeSql(query, [], (tx, results) => {
-          var len = results.rows.length;
-          var checkorder = []
-          for (let i = 0; i < results.rows.length; i++) {
-            checkorder.push(results.rows.item(i));
-          }
-          //alert(JSON.stringify(checkorder))
-          // //console.log("sarassssssssssssssssssssssssssssssssss=",checkorder)
-          resolve(checkorder);
-        });
-      })
-        .then((result) => {
-
+    //  var query = 'SELECT * FROM OrderMaster where collection_type =0';
+    var query = 'select OrderMaster.*,Pcustomer.AREA,Pcustomer.Party from OrderMaster INNER JOIN Pcustomer on OrderMaster.entity_id = Pcustomer.CustomerId where OrderMaster.entity_type =1'
+      //console.log("checkIsOrderIdInDb=", query)
+      return new Promise((resolve) => {
+        //  this.initDB().then((db) => {    
+        db1.transaction((tx) => {
+          tx.executeSql(query, [], (tx, results) => {
+            var len = results.rows.length;
+            var checkorder = []
+            for (let i = 0; i < results.rows.length; i++) {
+              checkorder.push(results.rows.item(i));
+            }
+            //alert(JSON.stringify(checkorder))
+             console.log("sarassssssssssssssssssssssssssssssssss=",checkorder)
+            resolve(checkorder);
+          });
         })
-        .catch((err) => {
-          //console.log(err);
-        });
-      // }).catch((err) => {
-      //   //console.log(err);
-      // });
-    });
-  }
+          .then((result) => {
+  
+          })
+          .catch((err) => {
+            //console.log(err);
+          });
+        // }).catch((err) => {
+        //   //console.log(err);
+        // });
+      });
+    }
 
   //change by vibha
   getCustomerShopName(entity_id,orderid) {
