@@ -47,11 +47,12 @@ class TodaysRoute extends Component {
           </Text>
           <Dropdown
             // label='Select Route'
-            placeholder="Select Route"
+            placeholder="     Select Route"
             dropdownOffset={{top: 15}}
             dropdownPosition={-4.3}
             dropdownOffset={{top: 10, left: 15}}
             containerStyle={{
+              alignContent: 'center',
               borderWidth: 1,
               borderColor: 'grey',
               borderRadius: wp('1%'),

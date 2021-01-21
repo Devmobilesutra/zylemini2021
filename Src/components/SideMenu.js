@@ -452,9 +452,9 @@ export default class SideMenu extends Component {
             </View>
             <View style={styles.headerTextContainer}>
               <Text style={styles.headerNameStyle}>{this.state.username}</Text>
-              <Text style={styles.headerSubNameStyle}>
+              {/* <Text style={styles.headerSubNameStyle}>
                 Sr. Sales Executive@
-              </Text>
+              </Text> */}
             </View>
           </View>
         </View>
@@ -478,7 +478,7 @@ export default class SideMenu extends Component {
                 <Text style={styles.drawerLabelStyle}>{item.syncNow}</Text>
               </View>
             </TouchableOpacity>
-            <TouchableOpacity>
+            {/* <TouchableOpacity>
               <View style={styles.drawerNmaeImgContainer2}>
                 <Image
                   style={styles.drawerLabelImgStyle2}
@@ -486,7 +486,7 @@ export default class SideMenu extends Component {
                 />
                 <Text style={styles.drawerLabelStyle2}>{item.home}</Text>
               </View>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
             <TouchableOpacity onPress={this.NavigateShop}>
               <View style={styles.drawerNmaeImgContainer2}>
                 <Image
@@ -497,7 +497,7 @@ export default class SideMenu extends Component {
               </View>
             </TouchableOpacity>
 
-            <TouchableOpacity>
+            {/* <TouchableOpacity>
               <View style={styles.drawerNmaeImgContainer2}>
                 <Image
                   style={styles.drawerLabelImgStyle2}
@@ -505,7 +505,7 @@ export default class SideMenu extends Component {
                 />
                 <Text style={styles.drawerLabelStyle2}>Distributors</Text>
               </View>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
 
             <TouchableOpacity onPress={this.NavigateDC}>
               <View style={styles.drawerNmaeImgContainer2}>
@@ -537,7 +537,7 @@ export default class SideMenu extends Component {
               </View>
             </TouchableOpacity>
 
-            <TouchableOpacity>
+            {/* <TouchableOpacity>
               <View style={styles.drawerNmaeImgContainer2}>
                 <Image
                   style={styles.drawerLabelImgStyle2}
@@ -545,7 +545,7 @@ export default class SideMenu extends Component {
                 />
                 <Text style={styles.drawerLabelStyle2}>Payments</Text>
               </View>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
 
             <TouchableOpacity onPress={() => Actions.TabBarSurveys()}>
               <View style={styles.drawerNmaeImgContainer2}>
@@ -566,7 +566,7 @@ export default class SideMenu extends Component {
                 <Text style={styles.drawerLabelStyle2}>Schemes</Text>
               </View>
             </TouchableOpacity>
-
+            {/* 
             <TouchableOpacity>
               <View style={styles.drawerNmaeImgContainer2}>
                 <Image
@@ -575,7 +575,7 @@ export default class SideMenu extends Component {
                 />
                 <Text style={styles.drawerLabelStyle2}>Resources</Text>
               </View>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
 
             <TouchableOpacity onPress={() => Actions.TabBarReports()}>
               <View style={styles.drawerNmaeImgContainer2}>
@@ -586,7 +586,7 @@ export default class SideMenu extends Component {
                 <Text style={styles.drawerLabelStyle2}>Reports</Text>
               </View>
             </TouchableOpacity>
-
+            {/* 
             <TouchableOpacity>
               <View style={styles.drawerNmaeImgContainer2}>
                 <Image
@@ -595,8 +595,8 @@ export default class SideMenu extends Component {
                 />
                 <Text style={styles.drawerLabelStyle2}>Help</Text>
               </View>
-            </TouchableOpacity>
-            <TouchableOpacity>
+            </TouchableOpacity> */}
+            {/* <TouchableOpacity>
               <View style={styles.drawerNmaeImgContainer2}>
                 <Image
                   style={styles.drawerLabelImgStyle2}
@@ -604,7 +604,7 @@ export default class SideMenu extends Component {
                 />
                 <Text style={styles.drawerLabelStyle2}>Settings</Text>
               </View>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
 
             <TouchableOpacity onPress={this.Logout}>
               <View style={styles.drawerNmaeImgContainer2}>
@@ -645,7 +645,7 @@ export default class SideMenu extends Component {
                 height: hp('7'),
                 marginRight: hp('2'),
               }}
-              source={require('../assets/Icons/Logo.png')}
+              source={require('../assets/Icons/Logo1.png')}
             />
             <Text style={styles.zylememiniTextStyle}> ZYLEMINI+</Text>
           </View>

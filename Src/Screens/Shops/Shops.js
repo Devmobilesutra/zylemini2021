@@ -477,10 +477,17 @@ export class Shops extends Component {
                   </View>
                   <View style={styles.callContainer}>
                     <TouchableOpacity
+                      style={{
+                        justifyContent: 'center',
+                        backgroundColor: '#e6ebe7',
+                        borderRadius: 20,
+                        width: 28,
+                        height: 26,
+                      }}
                       onPress={() =>
                         Communications.phonecall('0123456789', true)
                       }>
-                      <Text style={styles.callTextStyle}>Call</Text>
+                      <Text style={styles.callTextStyle}> Call</Text>
                     </TouchableOpacity>
                   </View>
                 </View>
@@ -522,6 +529,7 @@ export class Shops extends Component {
                     </View>
                     <View style={styles.callContainerCard}>
                       <TouchableOpacity
+                        // style={{backgroundColor: 'red'}}
                         onPress={() =>
                           Communications.phonecall('0123456789', true)
                         }>
