@@ -96,7 +96,7 @@ export class Shops extends Component {
 
     if (params.cardView == true) {
       return {
-        title: 'Shops',
+        title: '   Shops',
         color: 'white',
         headerStyle: {
           backgroundColor: '#221818',
@@ -174,7 +174,7 @@ export class Shops extends Component {
       };
     } else if (params.listView == true) {
       return {
-        title: 'Shops',
+        title: '   Shops',
         color: 'white',
         headerStyle: {
           backgroundColor: '#221818',
@@ -372,7 +372,7 @@ export class Shops extends Component {
         placeholder="Select Route"
         value={this.state.selectedRouteName}
         itemCount={4}
-        dropdownPosition={-5.4}
+        dropdownPosition={-6}
         containerStyle={styles.dropDownContainer}
         rippleCentered={true}
         pickerStyle={{width: wp('90.1')}}

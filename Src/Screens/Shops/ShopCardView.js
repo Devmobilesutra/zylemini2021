@@ -130,7 +130,7 @@ export default class ShopCardView extends Component {
         }}>
         <TouchableOpacity onPress={() => Actions.drawerMenu()}>
           <Image
-            style={{marginLeft: wp('4')}}
+            style={{marginLeft: wp('4'), marginRight: 10}}
             source={require('../../assets/Icons/Back_White.png')}
           />
         </TouchableOpacity>
@@ -157,7 +157,7 @@ export default class ShopCardView extends Component {
                 // fontSize = '10'
                 inputContainerStyle={{borderBottomColor: 'transparent'}}
                 data={data}
-                dropdownPosition={-5.4}
+                dropdownPosition={-5.6}
                 dropdownOffset={{top: 20, left: 18}}
                 fontSize={RFValue(15)}
                 fontFamily="Proxima Nova"

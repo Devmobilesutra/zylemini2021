@@ -158,7 +158,12 @@ export default class RouterComponent extends Component {
             title="MJP_two"
             hideNavBar={true}
           />
-            <Scene key="MJP_Cancel" component={MJP_Cancel} title="MJP_Cancel" hideNavBar={true} />
+          <Scene
+            key="MJP_Cancel"
+            component={MJP_Cancel}
+            title="MJP_Cancel"
+            hideNavBar={true}
+          />
           <Scene
             key="ViewDrafts"
             component={ViewDrafts}
@@ -174,7 +179,7 @@ export default class RouterComponent extends Component {
               drawerPosition="left">
               <Scene key="Dashboard" component={Dashboard} />
 
-              <Scene key="Shops" component={Shops} title="Shops" />
+              <Scene key="Shops" component={Shops} title="  Shops" />
 
               <Scene key="AvailableSurveys" component={AvailableSurveys} />
             </Drawer>
@@ -222,7 +227,7 @@ export default class RouterComponent extends Component {
               hideNavBar={true}
             />
             {/* ////////////// */}
-            <Scene key="Shops" component={Shops} title="Shops" />
+            <Scene key="Shops" component={Shops} title="  Shops" />
             <Scene
               key="AddNewShop"
               component={AddNewShop}
@@ -233,7 +238,11 @@ export default class RouterComponent extends Component {
               component={AddNewShopSecond}
               title="Add New Party"
             />
-            <Scene key="ShopCardView" component={ShopCardView} title="Shops" />
+            <Scene
+              key="ShopCardView"
+              component={ShopCardView}
+              title="  Shops"
+            />
             <Scene
               key="AssetDetailView"
               component={AssetDetailView}
@@ -639,7 +648,11 @@ export default class RouterComponent extends Component {
               component={sideordermedit}
               title="sideordermedit"
             />
-              <Scene key="sideorderEdittNew" component={sideorderEdittNew} title="sideorderEdittNew" />
+            <Scene
+              key="sideorderEdittNew"
+              component={sideorderEdittNew}
+              title="sideorderEdittNew"
+            />
             <Scene
               key="editpreview"
               component={editpreview}
@@ -687,28 +700,46 @@ export default class RouterComponent extends Component {
              
             </Scene> */}
 
-<Scene key='siderorderTab' tabs={true} tabBarStyle={styles.TabBarSurveys} default='Main'
-                            hideNavBar={false}
-                            swipeEnabled
-                            scrollEnabled
-                            showLabel={true}
-                            tabBarPosition='top'
-                            tabStyle={{ width: wp('50') }}
-                            labelStyle={{ fontFamily: 'Proxima Nova', width: wp(35), height: hp('3'), }}
-                            indicatorStyle={{
-                                backgroundColor: '#CC1167', height: hp('0.5'),
-                                alignSelf: 'center'
-                            }}
-                            activeBackgroundColor="white"
-                            // lazy
-                            navBar={sideordernav}
-                            headerMode="screen"
-                            wrap={false}
-                        >
-                            <Scene key='sideorder'  component={sideorder} title='Orders' hideNavBar={true}/>
-                            <Scene key='preorders' component={History} title='IN-PROCESS' hideNavBar={true} />
-                            {/* <Scene key='History' component={History} title='HISTORY' hideNavBar={true} /> */}
-                        </Scene>
+            <Scene
+              key="siderorderTab"
+              tabs={true}
+              tabBarStyle={styles.TabBarSurveys}
+              default="Main"
+              hideNavBar={false}
+              swipeEnabled
+              scrollEnabled
+              showLabel={true}
+              tabBarPosition="top"
+              tabStyle={{width: wp('50')}}
+              labelStyle={{
+                fontFamily: 'Proxima Nova',
+                width: wp(35),
+                height: hp('3'),
+              }}
+              indicatorStyle={{
+                backgroundColor: '#CC1167',
+                height: hp('0.5'),
+                alignSelf: 'center',
+              }}
+              activeBackgroundColor="white"
+              // lazy
+              navBar={sideordernav}
+              headerMode="screen"
+              wrap={false}>
+              <Scene
+                key="sideorder"
+                component={sideorder}
+                title="Orders"
+                hideNavBar={true}
+              />
+              <Scene
+                key="preorders"
+                component={History}
+                title="IN-PROCESS"
+                hideNavBar={true}
+              />
+              {/* <Scene key='History' component={History} title='HISTORY' hideNavBar={true} /> */}
+            </Scene>
 
             <Scene
               key="TabBarTargetAchi"
