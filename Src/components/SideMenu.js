@@ -352,9 +352,29 @@ export default class SideMenu extends Component {
   //     }
   // }
   Logout = async () => {
+    Alert.alert(
+      'Logout',
+      'Are you sure want to Logout?',
+      [
+        {
+          text: 'Cancel',
+          onPress: () => null,
+          style: 'cancel',
+        },
+        {
+          text: 'Yes',
+          onPress: () => this.LogoutFunction(),
+        },
+      ],
+      {cancelable: false},
+    );
+   
+  };
+
+  LogoutFunction = async () =>{
     await AsyncStorage.clear();
     Actions.login();
-  };
+  }
   SyncNow = () => {
     Alert.alert(
       'Sync Now',

@@ -658,13 +658,13 @@ export class EditInlineOnOrderPreview extends Component {
 
             ///////////////////////////////////on apply edited order should be updated in order detail table///////////////////
           if(this.state.selectedRatePer){
-              if(this.state.selectedDiscount){
+            //  if(this.state.selectedDiscount){
                 db.updateTABLE_TEMP_ORDER_DETAILS(this.state.box, this.state.unit, this.state.freeBox, this.state.freeUnit, this.state.from_date, "", this.state.amount, this.state.enteredRate, 'true', orderId, this.state.item_id)
                 this.props.ParentCalled(this.state.amount)
                 this.props.setamount(this.state.amount)
-              }else{
-                alert("Please Select Discount.")
-              }
+            //   }else{
+            //     alert("Please Select Discount.")
+            //   }
             
           }else{
             alert("Please Select Rate per.")

@@ -142,7 +142,7 @@ export default class Database {
                 });
 
                 db.transaction((tx) => {
-                  tx.executeSql('CREATE TABLE Pcustomer(id INTEGER PRIMARY KEY AUTOINCREMENT,CustomerId Text,Party TEXT,LicenceNo TEXT,IsActive TEXT,ERPCode TEXT,RouteID TEXT,RouteName TEXT,AREAID TEXT,AREA TEXT,BRANCHID TEXT,BRANCH TEXT,CUSTOMERCLASSID TEXT,CUSTOMERCLASS TEXT,CUSTOMERCLASS2ID TEXT,CUSTOMERCLASS2 TEXT,CUSTOMERGROUPID TEXT,CUSTOMERGROUP TEXT,CUSTOMERSEGMENTID TEXT,CUSTOMERSEGMENT TEXT,CUSTOMERSUBSEGMENTID TEXT, CUSTOMERSUBSEGMENT TEXT,LICENCETYPEID TEXT,LICENCETYPE TEXT,OCTROIZONEID TEXT,OCTROIZONE TEXT,Outlet_Info TEXT,DefaultDistributorId TEXt);');
+                  tx.executeSql('CREATE TABLE Pcustomer(id INTEGER PRIMARY KEY AUTOINCREMENT,CustomerId Text,Party TEXT,LicenceNo TEXT,IsActive TEXT,ERPCode TEXT,RouteID TEXT,RouteName TEXT,AREAID TEXT,AREA TEXT,BRANCHID TEXT,BRANCH TEXT,CUSTOMERCLASSID TEXT,CUSTOMERCLASS TEXT,CUSTOMERCLASS2ID TEXT,CUSTOMERCLASS2 TEXT,CUSTOMERGROUPID TEXT,CUSTOMERGROUP TEXT,CUSTOMERSEGMENTID TEXT,CUSTOMERSEGMENT TEXT,CUSTOMERSUBSEGMENTID TEXT, CUSTOMERSUBSEGMENT TEXT,LICENCETYPEID TEXT,LICENCETYPE TEXT,OCTROIZONEID TEXT,OCTROIZONE TEXT,Outlet_Info TEXT,DefaultDistributorId TEXT,SchemeID TEXT);');
                 }).then(() => {
 
                 }).catch(error => {
@@ -224,7 +224,7 @@ export default class Database {
 
 
                 db.transaction((tx) => {
-                  tx.executeSql('CREATE TABLE PItem(id INTEGER PRIMARY KEY AUTOINCREMENT,ItemId TEXT, Item TEXT, ItemAlias TEXT, BPC TEXT, BPC1 TEXT, BPC2 TEXT,ErpCode TEXT, Volume TEXT, ReportingQuantity TEXT, MRP TEXT, PTR TEXT, BRANDID TEXT, BRAND TEXT, BRANDALIAS TEXT, DIVISIONID TEXT, DIVISION TEXT, DIVISIONALIAS TEXT, FLAVOURID TEXT, FLAVOUR TEXT, FLAVOURALIAS TEXT,ITEMCLASSID TEXT, ITEMCLASS TEXT, ITEMCLASSALIAS TEXT, ITEMGROUPID TEXT, ITEMGROUP TEXT, ITEMGROUPALIAS TEXT, ITEMSIZEID  TEXT, ITEMSIZE TEXT, ITEMSIZEALIAS TEXT, ITEMSUBGROUPID TEXT, ITEMSUBGROUP TEXT, ITEMSUBGROUPALIAS TEXT,ITEMTYPEID TEXT, ITEMTYPE TEXT, ITEMTYPEALIAS TEXT, SIZESEQUENCE TEXT, ITEMSIZESEQUENCE TEXT, ITEMSIZEALIASSEQUENCE TEXT,ITEMSEQUENCE TEXT, ITEMALIASSEQUENCE TEXT, BRANDSEQUENCE TEXT, BRANDALIASSEQUENCE TEXT,Focus TEXT,IsSelectedBrand TEXT,IsSelectedBrandProduct TEXT,bottleQut TEXT);');
+                  tx.executeSql('CREATE TABLE PItem(id INTEGER PRIMARY KEY AUTOINCREMENT,ItemId TEXT, Item TEXT, ItemAlias TEXT, BPC TEXT, BPC1 TEXT, BPC2 TEXT,ErpCode TEXT, Volume TEXT, ReportingQuantity TEXT, MRP TEXT, PTR TEXT, BRANDID TEXT, BRAND TEXT, BRANDALIAS TEXT, DIVISIONID TEXT, DIVISION TEXT, DIVISIONALIAS TEXT, FLAVOURID TEXT, FLAVOUR TEXT, FLAVOURALIAS TEXT,ITEMCLASSID TEXT, ITEMCLASS TEXT, ITEMCLASSALIAS TEXT, ITEMGROUPID TEXT, ITEMGROUP TEXT, ITEMGROUPALIAS TEXT, ITEMSIZEID  TEXT, ITEMSIZE TEXT, ITEMSIZEALIAS TEXT, ITEMSUBGROUPID TEXT, ITEMSUBGROUP TEXT, ITEMSUBGROUPALIAS TEXT,ITEMTYPEID TEXT, ITEMTYPE TEXT, ITEMTYPEALIAS TEXT, SIZESEQUENCE TEXT, ITEMSIZESEQUENCE TEXT, ITEMSIZEALIASSEQUENCE TEXT,ITEMSEQUENCE TEXT, ITEMALIASSEQUENCE TEXT, BRANDSEQUENCE TEXT, BRANDALIASSEQUENCE TEXT,Focus TEXT,IsSelectedBrand TEXT,IsSelectedBrandProduct TEXT,bottleQut TEXT,SchemeID TEXT);');
                 }).then(() => {
 
                 }).catch(error => {
@@ -373,6 +373,13 @@ export default class Database {
                 });
                 db.transaction((tx) => {
                   tx.executeSql('CREATE TABLE Resources(ID TEXT,ResourceName TEXT, ParentResourceID TEXT,URL TEXT, Descreption TEXT,FileName TEXT, SequenceNo TEXT,IsDownloadable TEXT, ResourceType TEXT,CreatedDate TEXT,LastUpdatedDate TEXT);');
+                }).then(() => {
+                }).catch(error => {
+                });
+
+                //added by vibha 22Jan  also add column in Pcustomer n Pitem
+                db.transaction((tx) => {
+                  tx.executeSql('CREATE TABLE SchemeDetails(ID TEXT,SchemeID TEXT, SchemeName TEXT,FromDate TEXT, ToDate TEXT,SlabNo TEXT, SchemeBenefits TEXT,Remarks TEXT);');
                 }).then(() => {
                 }).catch(error => {
                 });
@@ -548,6 +555,12 @@ export default class Database {
         if (abc.SubGroupMaster) {
           let SubGroupMaster_data = (abc.SubGroupMaster)
           this.insertSubGroupMaster(SubGroupMaster_data)
+        }
+
+        ////added by vibha 22Jan
+        if (abc.SchemeDetails) {
+          let SchemeDetails_data = (abc.SchemeDetails)
+          this.insertSchemeDetails_data(SchemeDetails_data)
         }
 
 
@@ -750,8 +763,8 @@ export default class Database {
           `insert into Pcustomer(CustomerId ,Party ,LicenceNo ,IsActive ,ERPCode ,RouteID ,RouteName ,AREAID ,AREA 
               ,BRANCHID ,BRANCH ,CUSTOMERCLASSID ,CUSTOMERCLASS ,CUSTOMERCLASS2ID ,CUSTOMERCLASS2 ,CUSTOMERGROUPID ,
               CUSTOMERGROUP ,CUSTOMERSEGMENTID ,CUSTOMERSEGMENT ,CUSTOMERSUBSEGMENTID , CUSTOMERSUBSEGMENT ,
-              LICENCETYPEID ,LICENCETYPE ,OCTROIZONEID ,OCTROIZONE,Outlet_Info,DefaultDistributorId)
-                                                                  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+              LICENCETYPEID ,LICENCETYPE ,OCTROIZONEID ,OCTROIZONE,Outlet_Info,DefaultDistributorId,SchemeID)
+                                                                  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
           [
             item.CustomerId,
             item.Party,
@@ -768,7 +781,7 @@ export default class Database {
             item.CUSTOMERCLASS,
             item.CUSTOMERCLASS2ID, item.CUSTOMERCLASS2, item.CUSTOMERGROUPID,
             item.CUSTOMERGROUP, item.CUSTOMERSEGMENTID, item.CUSTOMERSEGMENT, item.CUSTOMERSUBSEGMENTID, item.CUSTOMERSUBSEGMENT,
-            item.LICENCETYPEID, item.LICENCETYPE, item.OCTROIZONEID, item.OCTROIZONE, item.OUTLETINFO, item.DefaultDistributorId
+            item.LICENCETYPEID, item.LICENCETYPE, item.OCTROIZONEID, item.OCTROIZONE, item.OUTLETINFO, item.DefaultDistributorId,item.SchemeID
           ],
           (tx, results) => {
 
@@ -1000,8 +1013,8 @@ export default class Database {
                ITEMSIZEID  , ITEMSIZE , ITEMSIZEALIAS , ITEMSUBGROUPID , ITEMSUBGROUP , ITEMSUBGROUPALIAS ,
                ITEMTYPEID, ITEMTYPE , ITEMTYPEALIAS , SIZESEQUENCE , ITEMSIZESEQUENCE  ,
                 ITEMSIZEALIASSEQUENCE,ITEMSEQUENCE , ITEMALIASSEQUENCE 
-              , BRANDSEQUENCE , BRANDALIASSEQUENCE ,Focus ,IsSelectedBrand ,IsSelectedBrandProduct,bottleQut )
-                                                                  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+              , BRANDSEQUENCE , BRANDALIASSEQUENCE ,Focus ,IsSelectedBrand ,IsSelectedBrandProduct,bottleQut,SchemeID )
+                                                                  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
             [
               item.ItemId, item.Item, item.ItemAlias, item.BPC, item.BPC1, item.BPC2, item.ErpCode, item.Volume,
               item.ReportingQuantity,
@@ -1012,7 +1025,7 @@ export default class Database {
               item.ITEMSIZEID, item.ITEMSIZE, item.ITEMSIZEALIAS, item.ITEMSUBGROUPID, item.ITEMSUBGROUP, item.ITEMSUBGROUPALIAS,
               item.ITEMTYPEID, item.ITEMTYPE, item.ITEMTYPEALIAS, item.SIZESEQUENCE, item.ITEMSIZESEQUENCE,
               item.ITEMSIZEALIASSEQUENCE, item.ITEMSEQUENCE, item.ITEMALIASSEQUENCE
-              , item.BRANDSEQUENCE, item.BRANDALIASSEQUENCE, item.ISFOCUS,'','','0'
+              , item.BRANDSEQUENCE, item.BRANDALIASSEQUENCE, item.ISFOCUS,'','','0',item.SchemeID
             ],
             (tx, results) => {
 
@@ -1922,7 +1935,41 @@ insertSubGroupMaster(SubGroupMaster_data){
   }
 }
 
+//added by vibha 22Jan
+insertSchemeDetails_data(SubSchemeDetails_data){
+  if (SubSchemeDetails_data.length) {
+    //this.initDB().then((db) => {
+    db1.transaction((tx) => {
+      var len = SubSchemeDetails_data.length;
+      var count = 0;
 
+      for (var item of SubSchemeDetails_data) {
+      
+        tx.executeSql(
+          `insert into  SchemeDetails( ID, SchemeID, SchemeName,FromDate,ToDate,SlabNo,SchemeBenefits,Remarks)
+                                                              VALUES (?,?,?,?,?,?,?,?)`,
+          [
+            // "UserID": 52362,
+            // "ItemID": 464
+            item.ID, item.SchemeID,item.SchemeName,item.FromDate,item.ToDate,item.SlabNo,item.SchemeBenefits,item.Remarks
+          ],
+          (tx, results) => {
+            // //console.log("rjlen",results.length)
+
+          },
+          (err) => { console.error("error=", err); }
+        );
+      }
+    }).then((result) => {
+      // 
+    }).catch((err) => {
+      //console.log(err);
+    });
+    // }).catch((err) => {
+    //   //console.log(err);
+    // });
+  }
+}
 
 
   getAllData() {

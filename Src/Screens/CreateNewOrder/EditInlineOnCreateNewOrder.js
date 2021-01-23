@@ -699,7 +699,7 @@ console.log('selected rate : ' +this.state.selectedRatePer);
             }
             ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             if(this.state.selectedRatePer){
-                if(this.state.selectedDiscount){
+               // if(this.state.selectedDiscount){
                     db.checkIsOrderIdInDb(entity_id, "0",this.props.dashboard.userId).then((data) => {
                         this.state.isOrderIdExists = [];
                         this.setState({ isOrderIdExists: data });                   
@@ -783,9 +783,9 @@ console.log('selected rate : ' +this.state.selectedRatePer);
                             })
                         }
                     })
-                }else{
-                    alert("Please Select Discount")
-                }
+                // }else{
+                //     alert("Please Select Discount")
+                // }
                
             }else{
                 alert("Please Select Rate per.")
