@@ -361,7 +361,7 @@ export class sideorderEdittNew extends Component {
                 alert('Please Add the Order');
 
             } else {
-                Actions.editpreview({order_id:User.orderidvar,expectedDeliverdate : this.props.expectedDeliveryDate})
+                Actions.editpreview({order_Id:User.orderidvar,expectedDeliverdate : this.props.expectedDeliveryDate})
             }
          })
     }

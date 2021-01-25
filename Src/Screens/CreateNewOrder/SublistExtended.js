@@ -196,6 +196,7 @@ console.log("all data for testing",outletId,id,search,JoinString);
                     ptr={item.PTR}
                     bpc={item.BPC}
                     outletId={outletId}
+                    BrandId ={this.props.id}
                     SublistExtendedParent={this.ComputeBottls.bind(this)}
                     refresh={this.refreshDelete.bind(this)}
 

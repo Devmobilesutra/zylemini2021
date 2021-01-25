@@ -142,7 +142,7 @@ componentWillUnmount() {
     //     // })
     //     this._componentFocused();
     //    }, 1000)
-     this._componentFocused();
+    // this._componentFocused();
 
    
     

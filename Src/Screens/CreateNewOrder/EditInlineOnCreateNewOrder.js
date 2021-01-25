@@ -699,26 +699,43 @@ console.log('selected rate : ' +this.state.selectedRatePer);
             }
             ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             if(this.state.selectedRatePer){
-               // if(this.state.selectedDiscount){
+                // if(this.state.selectedDiscount){
                     db.checkIsOrderIdInDb(entity_id, "0",this.props.dashboard.userId).then((data) => {
                         this.state.isOrderIdExists = [];
                         this.setState({ isOrderIdExists: data });                   
-                    
+                        var that = this;
+                        var date = new Date().getDate(); //Current Date
+                        var month = new Date().getMonth() + 1; //Current Month
+                        var year = new Date().getFullYear(); //Current Year
+                        var hours = new Date().getHours(); //Current Hours
+                        var min = new Date().getMinutes(); //Current Minutes
+                        var sec = new Date().getSeconds(); //Current Seconds
+                        if(month <= 9){
+                            month = '0'+ month;
+                        }
+
+                        if(date <= 9){
+                            date = '0' + date
+                        }
+
+                        if(hours <= 9){
+                            hours = '0' +hours
+                        }
+
+                        if(min <= 9)
+                        {
+                            min = '0' + min
+                        }
+
+                        if(sec <= 9){
+                            sec = '0' +sec
+                        }
+                        currentDateTime = year + '-' + month + '-' + date + ' ' + hours + ':' + min + ':' + sec
                         if (this.state.isOrderIdExists.length == '0') {
-                            var that = this;
-                            var date = new Date().getDate(); //Current Date
-                            var month = new Date().getMonth() + 1; //Current Month
-                            var year = new Date().getFullYear(); //Current Year
-                            var hours = new Date().getHours(); //Current Hours
-                            var min = new Date().getMinutes(); //Current Minutes
-                            var sec = new Date().getSeconds(); //Current Seconds
-    
-                            if(month <= 9){
-                                month = '0'+ month;
-                            }
+                    
                             app_order_id = date + '/' + month + '/' + year + ' ' + hours + ':' + min + ':' + sec
                             app_order_id = app_order_id.replace(/[|&:$%@"/" "()+,]/g, "");                  
-                            currentDateTime = year + '-' + month + '-' + date + ' ' + hours + ':' + min + ':' + sec
+                            
                         
                             AsyncStorage.setItem('app_order_id', JSON.stringify(app_order_id));
                             db.insertTABLE_TEMP_OrderMaster(app_order_id, currentDateTime, this.state.entity_type, entity_id, this.state.userLatitude, this.state.userLongitude, this.state.amount, this.state.Collection_type, this.props.dashboard.userId, 1)
@@ -782,6 +799,33 @@ console.log('selected rate : ' +this.state.selectedRatePer);
                                 })
                             })
                         }
+                        if(this.state.selectedDiscount){
+                            db.checkDiscountAlreadyInDb(this.props.ItemId, app_order_id).then((data)=>{
+
+                                if (data.length == '0') {
+                           
+                            if(this.state.selectedDiscount=="Rate"){
+                                db.insertTABLE_DISCOUNT(app_order_id,"cash",this.state.amount,"","",this.state.selectedDiscount,
+                                "","",this.state.enteredDiscount,"",this.props.ItemId,"","",'N')
+                            }else{
+                                db.insertTABLE_DISCOUNT(app_order_id,"cash",this.state.amount,"","",this.state.selectedDiscount,
+                                this.state.enteredDiscount,"","","",this.props.ItemId,"","",'N')
+                        
+                            }  
+                                }
+                                else{
+                        
+                         if(this.state.selectedDiscount=="Rate"){
+                                db.updateTABLE_DISCOUNT(app_order_id,"cash",this.state.amount,"","",this.state.selectedDiscount,
+                                "","",this.state.enteredDiscount,"",this.props.ItemId,"","")
+                            }else{
+                                db.updateTABLE_DISCOUNT(app_order_id,"cash",this.state.amount,"","",this.state.selectedDiscount,
+                                this.state.enteredDiscount,"","","",this.props.ItemId,"","")
+                        
+                            } 
+                                }
+                               })
+                        }
                     })
                 // }else{
                 //     alert("Please Select Discount")
@@ -794,31 +838,7 @@ console.log('selected rate : ' +this.state.selectedRatePer);
         } else {
             alert("Please Enter the any of Box and Unit")
         }
-       db.checkDiscountAlreadyInDb(this.props.ItemId, app_order_id).then((data)=>{
-
-        if (data.length == '0') {
-   
-    if(this.state.selectedDiscount=="Rate"){
-        db.insertTABLE_DISCOUNT(app_order_id,"cash",this.state.amount,"","",this.state.selectedDiscount,
-        "","",this.state.enteredDiscount,"",this.props.ItemId,"","",'N')
-    }else{
-        db.insertTABLE_DISCOUNT(app_order_id,"cash",this.state.amount,"","",this.state.selectedDiscount,
-        this.state.enteredDiscount,"","","",this.props.ItemId,"","",'N')
-
-    }  
-        }
-        else{
-
- if(this.state.selectedDiscount=="Rate"){
-        db.updateTABLE_DISCOUNT(app_order_id,"cash",this.state.amount,"","",this.state.selectedDiscount,
-        "","",this.state.enteredDiscount,"",this.props.ItemId,"","")
-    }else{
-        db.updateTABLE_DISCOUNT(app_order_id,"cash",this.state.amount,"","",this.state.selectedDiscount,
-        this.state.enteredDiscount,"","","",this.props.ItemId,"","")
-
-    } 
-        }
-       })
+      
     }
 
     deleteClickHandler(e) {     
