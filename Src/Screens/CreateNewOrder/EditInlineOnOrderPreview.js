@@ -658,13 +658,24 @@ export class EditInlineOnOrderPreview extends Component {
 
             ///////////////////////////////////on apply edited order should be updated in order detail table///////////////////
           if(this.state.selectedRatePer){
-              if(this.state.selectedDiscount){
+            //  if(this.state.selectedDiscount){
                 db.updateTABLE_TEMP_ORDER_DETAILS(this.state.box, this.state.unit, this.state.freeBox, this.state.freeUnit, this.state.from_date, "", this.state.amount, this.state.enteredRate, 'true', orderId, this.state.item_id)
                 this.props.ParentCalled(this.state.amount)
                 this.props.setamount(this.state.amount)
-              }else{
-                alert("Please Select Discount.")
-              }
+
+                if(this.state.selectedDiscount){
+                    if (this.state.selectedDiscount == "Rate") {
+                        db.updateTABLE_DISCOUNT(this.props.orderId, "cash", this.state.amount, "", "", this.state.selectedDiscount,
+                            "", "", this.state.enteredDiscount, "", this.props.ItemId, "", "")
+                    } else {
+                        db.updateTABLE_DISCOUNT(this.props.orderId, "cash", this.state.amount, "", "", this.state.selectedDiscount,
+                            this.state.enteredDiscount, "", "", "", this.props.ItemId, "", "")
+            
+                    }
+                }
+            //   }else{
+            //     alert("Please Select Discount.")
+            //   }
             
           }else{
             alert("Please Select Rate per.")
@@ -673,14 +684,7 @@ export class EditInlineOnOrderPreview extends Component {
             alert("Please Enter the any of Box and Unit")
         }
 
-        if (this.state.selectedDiscount == "Rate") {
-            db.updateTABLE_DISCOUNT(this.props.orderId, "cash", this.state.amount, "", "", this.state.selectedDiscount,
-                "", "", this.state.enteredDiscount, "", this.props.ItemId, "", "")
-        } else {
-            db.updateTABLE_DISCOUNT(this.props.orderId, "cash", this.state.amount, "", "", this.state.selectedDiscount,
-                this.state.enteredDiscount, "", "", "", this.props.ItemId, "", "")
-
-        }
+       
     }
     deleteClickHandler(e) {
         let { totalOrderValue } = this.props.createOrder;

@@ -99,75 +99,57 @@ console.log("all data for testing",outletId,id,search,JoinString,this.state.appo
       JoinString = list1.join('|')
 
     })
-    db.getSubBrandSearchDataForEdit(id, search, list1, JoinString, this.state.apporderid,outletId,this.state.Collection_type).then((data) => {
-      this.state.list = []
-      this.setState({ list: data });
-      console.log('list : '+JSON.stringify(this.state.list))
-      // for (var i = 0; i < this.state.list.length; i++) {
-      //   console.log('in for '+i)
-      //   db.getOrderDataForAddEdit1new (this.state.apporderid, this.state.list[i].ItemId,outletId,this.state.Collection_type).then((data) => {
-  
-      //     console.log('in if :'+JSON.stringify(data));
-      //     if(data.length != 0){
-            
-      //       data.map((item, i) => {
-      //         console.log(item.quantity_one,item.quantity_two)
-      //         this.state.list[i].quantity_one = item.quantity_one
-      //       this.state.list[i].quantity_two = item.quantity_two
-      //       this.state.list[i].largeunit = item.large_Unit
-      //       this.state.list[i].smallunit = item.small_Unit
-      //       this.state.list[i].rate = item.rate
-      //       this.state.list[i].amount = item.Amount
-      //       this.state.list[i].bottleQty = 'true'
-      //       this.state.list[i].orderstatus = 'true'
-      //       this.state.list[i].orderId =this.state.apporderid
-      //       console.log('list in if : '+JSON.stringify(this.state.list))
-      //     })
-            
-      //     }else{
-      //         console.log('in else')
-      //         this.state.list[i].quantity_one = ''
-      //         this.state.list[i].quantity_two = ''
-      //         this.state.list[i].largeunit = ''
-      //         this.state.list[i].smallunit = ''
-      //         this.state.list[i].rate = ''
-      //         this.state.list[i].amount = ''
-      //         this.state.list[i].bottleQty = 'false'
-      //         this.state.list[i].orderstatus = 'false' 
-      //         this.state.list[i].orderId =this.state.apporderid
-      //         console.log('list in else : '+JSON.stringify(this.state.list))
-      //       }
-      //     // else if(data.length == 0){
-      //     //   console.log('in else if will mount')
-      //     //   db.getOrderDataForAddEdit1OnLoad(this.state.apporderid,this.state.list[i].ItemId).then((data1) => {
-      //     //     this.state.list[i].quantity_one = data1[0].quantity_one
-      //     //     this.state.list[i].quantity_two = data1[0].quantity_two
-      //     //     this.state.list[i].largeunit = data1[0].large_Unit
-      //     //     this.state.list[i].smallunit = data1[0].small_Unit
-      //     //     this.state.list[i].rate = data1[0].rate
-      //     //     this.state.list[i].amount = data1[0].Amount
-      //     //     this.state.list[i].bottleQty = 'true'
-      //     //     this.state.list[i].orderstatus = 'true'
-      //     //     this.state.list[i].orderId =this.state.apporderid
-      //     //   })
-      //     // }else{
-      //     //   console.log('in else')
-      //     //   this.state.list[i].quantity_one = ''
-      //     //   this.state.list[i].quantity_two = ''
-      //     //   this.state.list[i].largeunit = ''
-      //     //   this.state.list[i].smallunit = ''
-      //     //   this.state.list[i].rate = ''
-      //     //   this.state.list[i].amount = ''
-      //     //   this.state.list[i].bottleQty = 'false'
-      //     //   this.state.list[i].orderstatus = 'false' 
-      //     //   this.state.list[i].orderId =this.state.apporderid
-      //     // }
-      //   })
-      // }
+  //   db.getSubBrandSearchDataForEdit(id, search, list1, JoinString, this.state.apporderid,outletId,this.state.Collection_type).then((data) => {
+  //    this.state.list = []
+  //    this.setState({ list: data });
+  //    console.log('list : '+JSON.stringify(this.state.list))
+  //  })
 
-      })
-    await this.setState({ list: this.state.list })
-   await console.log('list afetr : '+JSON.stringify(this.state.list))
+  db.getSubBrandSearchData(id, search, list1, JoinString, outletId).then((data) => {
+    this.state.list = []
+    this.setState({ list: data });
+  })
+
+   db.getSubBrandSearchDataForEditNew(this.state.apporderid, "0").then((data) => {
+    this.state.list2 = []
+    this.setState({ list2: data });
+    for (var i = 0; i < this.state.list.length; i++) {
+      for (var j = 0; j < this.state.list2.length; j++) {
+        if (this.state.list[i].ItemId == this.state.list2[j].item_id) {
+          this.state.list[i].quantity_one = this.state.list2[j].quantity_one
+          this.state.list[i].quantity_two = this.state.list2[j].quantity_two
+        //  this.state.list[i].bottleQty = this.state.list2[j].bottleQty
+          this.state.list[i].largeunit = this.state.list2[j].large_Unit
+          this.state.list[i].smallunit = this.state.list2[j].small_Unit
+          this.state.list[i].rate = this.state.list2[j].rate
+          this.state.list[i].amount = this.state.list2[j].Amount
+          this.state.list[i].bottleQty = 'true'
+          this.state.list[i].orderstatus = 'true'
+          this.state.list[i].orderId =this.state.apporderid
+          
+        }
+        // else{
+            
+        //     console.log('in else : ')
+        //     this.state.list[i].quantity_one = ''
+        //     this.state.list[i].quantity_two = ''
+        //     this.state.list[i].largeunit = ''
+        //     this.state.list[i].smallunit = ''
+        //     this.state.list[i].rate = ''
+        //     this.state.list[i].amount = ''
+        //    // this.state.list[i].bottleQty = 'false'
+        //   //  this.state.list[i].orderstatus = 'false'
+        //     this.state.list[i].orderId =this.state.apporderid
+          
+        // }
+      }
+    }
+
+    this.setState({ list: this.state.list });
+  })
+
+  //  await this.setState({ list: this.state.list })
+  // await console.log('list afetr : '+JSON.stringify(this.state.list))
    
     
   }
@@ -179,13 +161,54 @@ console.log("all data for testing",outletId,id,search,JoinString,this.state.appo
     list1 = this.props.list1
     JoinString = this.props.JoinString
 
-    db.getSubBrandSearchDataForEdit(id, search, list1, JoinString, this.state.apporderid,outletId,this.state.Collection_type).then((data) => {
+    // db.getSubBrandSearchDataForEdit(id, search, list1, JoinString, this.state.apporderid,outletId,this.state.Collection_type).then((data) => {
+    //   this.state.list = []
+    //   this.setState({ list: data });
+    //   console.log('list : '+JSON.stringify(this.state.list))
+    //   })
+    // await this.setState({ list: this.state.list })
+    // console.log('list afetr : '+JSON.stringify(this.state.list))
+
+    db.getSubBrandSearchData(id, search, list1, JoinString, outletId).then((data) => {
       this.state.list = []
       this.setState({ list: data });
-      console.log('list : '+JSON.stringify(this.state.list))
-      })
-    await this.setState({ list: this.state.list })
-    console.log('list afetr : '+JSON.stringify(this.state.list))
+    })
+  
+     db.getSubBrandSearchDataForEditNew(this.state.apporderid, "0").then((data) => {
+      this.state.list2 = []
+      this.setState({ list2: data });
+      for (var i = 0; i < this.state.list.length; i++) {
+        for (var j = 0; j < this.state.list2.length; j++) {
+          if (this.state.list[i].ItemId == this.state.list2[j].item_id) {
+            this.state.list[i].quantity_one = this.state.list2[j].quantity_one
+            this.state.list[i].quantity_two = this.state.list2[j].quantity_two
+          //  this.state.list[i].bottleQty = this.state.list2[j].bottleQty
+            this.state.list[i].largeunit = this.state.list2[j].large_Unit
+            this.state.list[i].smallunit = this.state.list2[j].small_Unit
+            this.state.list[i].rate = this.state.list2[j].rate
+            this.state.list[i].amount = this.state.list2[j].Amount
+            this.state.list[i].bottleQty = 'true'
+            this.state.list[i].orderstatus = 'true'
+            this.state.list[i].orderId =this.state.apporderid
+            
+          }
+          // else{
+          //   console.log('in else : ')
+          //   this.state.list[i].quantity_one = ''
+          //   this.state.list[i].quantity_two = ''
+          //   this.state.list[i].largeunit = ''
+          //   this.state.list[i].smallunit = ''
+          //   this.state.list[i].rate = ''
+          //   this.state.list[i].amount = ''
+          //   this.state.list[i].bottleQty = 'false'
+          //   this.state.list[i].orderstatus = 'false'
+          //   this.state.list[i].orderId =this.state.apporderid
+          // }
+        }
+      }
+  
+      this.setState({ list: this.state.list });
+    })
 
   }
 
@@ -236,7 +259,7 @@ console.log("all data for testing",outletId,id,search,JoinString,this.state.appo
                     quantity_two ={item.quantity_two}
                     rate ={item.rate}
                     amount={item.amount}
-                    AppOrderId = {item.orderId}
+                    AppOrderId = {this.state.apporderid}
                     SublistExtendedParent={this.ComputeBottls.bind(this)}
                     refresh={this.refreshDelete.bind(this)}
 

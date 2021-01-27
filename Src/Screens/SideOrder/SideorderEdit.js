@@ -75,7 +75,42 @@ AsyncStorage.getItem('userIds').then((keyValue) => {
     entity_id = this.props.outletId
     itemName = this.props.ItemName
     itemId = this.props.ItemId
-  
+
+    this.state.ptr = this.props.ptr
+   this.state.bpc = this.props.bpc
+   this.state.app_order_id = this.props.AppOrderId
+   this.setState({
+    box: this.props.quantity_one,
+    unit:this.props.quantity_two,
+    enteredRate: this.props.rate,
+    amount: this.props.amount,
+    freeBox: this.props.large_Unit,
+    freeUnit: this.props.small_Unit,
+})
+if(this.props.large_Unit == undefined){
+    this.state.freeBox = 0
+    this.setState({freeBox : '0'})
+}
+
+if(this.props.small_Unit == undefined){
+    this.state.freeUnit = 0
+    this.setState({freeUnit : '0'})
+}
+
+if(this.props.quantity_one == undefined){
+    this.state.box = 0
+    this.setState({box : '0'})
+}
+
+if(this.props.quantity_two == undefined){
+    this.state.unit = 0
+    this.setState({unit : '0'})
+}
+
+
+console.log('large : '+this.props.large_Unit +" ; "+this.state.freeBox)
+
+
     
     console.log('ptr : '+this.state.ptr +" bpc : "+this.state.bpc +" item name :"+itemName +" itemid : "+itemId)
 
@@ -153,92 +188,92 @@ AsyncStorage.getItem('userIds').then((keyValue) => {
         }
     })
 
-    db.getOrdersFromDbIfPresentedit(entity_id, this.state.Collection_type, this.props.ItemId,this.props.AppOrderId).then((data) => {
+    // db.getOrdersFromDbIfPresentedit(entity_id, this.state.Collection_type, this.props.ItemId,this.props.AppOrderId).then((data) => {
      
-        var item_ids = '';
-        var rates = '';
-        var amounts = '', boxs = '', units = '', freeBoxs = '', freeUnits = '', fromDates = '', toDates = '', selectedFlags = 1
-        if (data.length != 0) {
-            console.log('in if of ptr '+data.length)
-            data.map((item, i) => {
-                item_ids = item.item_id,
-                    rates = item.rate,
-                    amounts = item.Amount,
-                    boxs = item.quantity_one,
-                    units = item.quantity_two,
-                    freeBoxs = item.small_Unit,
-                    freeUnits = item.large_Unit,
-                    fromDates = item.from_date,
-                    toDates = item.to_date,
-                    selectedFlags = item.selected_flag,
-                    orderIds =item.order_id
-            })
-            //
-            itemId = item_ids
-            currentDateTime = fromDates
-            this.setState({
-                box: boxs,
-                unit: units,
-                enteredRate: rates,
-                amount: amounts,
-                freeBox: freeBoxs,
-                freeUnit: freeUnits,
-            })
-        }else if(data.length == 0){
-            console.log('in else of ptr')
-            db.getOrderDataForAddEditToShow(this.props.AppOrderId,this.props.ItemId).then((data) => {
+    //     var item_ids = '';
+    //     var rates = '';
+    //     var amounts = '', boxs = '', units = '', freeBoxs = '', freeUnits = '', fromDates = '', toDates = '', selectedFlags = 1
+    //     if (data.length != 0) {
+    //         console.log('in if of ptr '+data.length)
+    //         data.map((item, i) => {
+    //             item_ids = item.item_id,
+    //                 rates = item.rate,
+    //                 amounts = item.Amount,
+    //                 boxs = item.quantity_one,
+    //                 units = item.quantity_two,
+    //                 freeBoxs = item.small_Unit,
+    //                 freeUnits = item.large_Unit,
+    //                 fromDates = item.from_date,
+    //                 toDates = item.to_date,
+    //                 selectedFlags = item.selected_flag,
+    //                 orderIds =item.order_id
+    //         })
+    //         //
+    //         itemId = item_ids
+    //         currentDateTime = fromDates
+    //         this.setState({
+    //             box: boxs,
+    //             unit: units,
+    //             enteredRate: rates,
+    //             amount: amounts,
+    //             freeBox: freeBoxs,
+    //             freeUnit: freeUnits,
+    //         })
+    //     }else if(data.length == 0){
+    //         console.log('in else of ptr')
+    //         db.getOrderDataForAddEditToShow(this.props.AppOrderId,this.props.ItemId).then((data) => {
      
-                var item_ids = '';
-                var rates = '';
-                var amounts = '', boxs = '', units = '', freeBoxs = '', freeUnits = '', fromDates = '', toDates = '', selectedFlags = 1
-                if (data.length != 0) {
-                    data.map((item, i) => {
-                        item_ids = item.item_id,
-                            rates = item.rate,
-                            amounts = item.Amount,
-                            boxs = item.quantity_one,
-                            units = item.quantity_two,
-                            freeBoxs = item.large_Unit,
-                            freeUnits = item.small_Unit,
-                            fromDates = item.from_date,
-                            toDates = item.to_date,
-                            selectedFlags = item.selected_flag,
-                            orderIds =item.order_id
-                    })
-                    //
-                    itemId = item_ids
-                    currentDateTime = fromDates
-                    this.setState({
-                        box: boxs,
-                        unit: units,
-                        enteredRate: rates,
-                        amount: amounts,
-                        freeBox: freeBoxs,
-                        freeUnit: freeUnits,
-                        app_order_id : orderIds
-                    })
-                    this.state.ptr = this.props.ptr
-                    this.state.bpc = this.props.bpc
-                }else{
-                    console.log('in else of ptr')
-                   //  this.state.enteredRate=this.props.ptr
-                   // this.setState({enteredRate:this.props.ptr})
-                   this.state.ptr = this.props.ptr
-                   this.state.bpc = this.props.bpc
-                   this.state.box = ''
-                   this.state.unit = ''
-                   this.state.freeBox = ''
-                   this.state.freeUnit= ''
-                   this.state.amount = ''
-                   this.state.enteredRate=''
-                   this.state.app_order_id = this.props.AppOrderId
+    //             var item_ids = '';
+    //             var rates = '';
+    //             var amounts = '', boxs = '', units = '', freeBoxs = '', freeUnits = '', fromDates = '', toDates = '', selectedFlags = 1
+    //             if (data.length != 0) {
+    //                 data.map((item, i) => {
+    //                     item_ids = item.item_id,
+    //                         rates = item.rate,
+    //                         amounts = item.Amount,
+    //                         boxs = item.quantity_one,
+    //                         units = item.quantity_two,
+    //                         freeBoxs = item.large_Unit,
+    //                         freeUnits = item.small_Unit,
+    //                         fromDates = item.from_date,
+    //                         toDates = item.to_date,
+    //                         selectedFlags = item.selected_flag,
+    //                         orderIds =item.order_id
+    //                 })
+    //                 //
+    //                 itemId = item_ids
+    //                 currentDateTime = fromDates
+    //                 this.setState({
+    //                     box: boxs,
+    //                     unit: units,
+    //                     enteredRate: rates,
+    //                     amount: amounts,
+    //                     freeBox: freeBoxs,
+    //                     freeUnit: freeUnits,
+    //                     app_order_id : orderIds
+    //                 })
+    //                 this.state.ptr = this.props.ptr
+    //                 this.state.bpc = this.props.bpc
+    //             }else{
+    //                 console.log('in else of ptr')
+    //                //  this.state.enteredRate=this.props.ptr
+    //                // this.setState({enteredRate:this.props.ptr})
+    //                this.state.ptr = this.props.ptr
+    //                this.state.bpc = this.props.bpc
+    //                this.state.box = ''
+    //                this.state.unit = ''
+    //                this.state.freeBox = ''
+    //                this.state.freeUnit= ''
+    //                this.state.amount = ''
+    //                this.state.enteredRate=''
+    //                this.state.app_order_id = this.props.AppOrderId
         
-                   console.log('ptr : '+this.state.ptr +" bpc : "+this.state.bpc +" this.state.box name :"+this.state.box +" itemid : "+ this.state.unit)
+    //                console.log('ptr : '+this.state.ptr +" bpc : "+this.state.bpc +" this.state.box name :"+this.state.box +" itemid : "+ this.state.unit)
                    
-                }
-            })
-        }
-    })
+    //             }
+    //         })
+    //     }
+    // })
 
     // db.getOrderDataForAddEditToShow(this.props.AppOrderId,this.props.ItemId).then((data) => {
      
@@ -717,27 +752,27 @@ AsyncStorage.getItem('userIds').then((keyValue) => {
         app_order_id = this.props.AppOrderId;
       
         if (this.state.box > 0 || this.state.unit>0) {   //set if not to 0
-            let boxLength = this.state.box.length
-            let unitLength = this.state.unit.length
-            let freeBoxLength = this.state.freeBox.length
-            let freeUnitLength = this.state.freeUnit.length
+          //  let boxLength = this.state.box.length
+          //  let unitLength = this.state.unit.length
+         //   let freeBoxLength = this.state.freeBox.length
+          //  let freeUnitLength = this.state.freeUnit.length
             let bpcLength = this.state.bpc.length
             let ptrLength = this.state.ptr.length
             let userLatLength = this.state.userLatitude.length
             let userLongLength = this.state.userLongitude.length
-            let enteredRateLenght=this.state.enteredRate.length
+           // let enteredRateLenght=this.state.enteredRate.length
          
-            if (boxLength == '0') {
+            if (this.state.box <= 0) {
                 this.state.box = 0
             }
-            if (unitLength == '0') {
+            if (this.state.unit <= 0) {
                 //console.log("lennnnnnnnnnnnnn= inn", unitLength)
                 this.state.unit = 0
             }
-            if (freeBoxLength == 0) {
+            if (this.state.freeBox <= 0) {
                 this.state.freeBox = 0
             }
-            if (freeUnitLength == 0) {
+            if (this.state.freeUnit <= 0) {
                 this.state.freeUnit = 0
             }
             if (bpcLength == 0) {
@@ -752,16 +787,16 @@ AsyncStorage.getItem('userIds').then((keyValue) => {
             if (userLongLength == 0) {
                 this.state.userLongitude = 0
             }
-            if (enteredRateLenght == 0) {
-                this.state.enteredRate = 0
-            }  
+            // if (enteredRateLenght == 0) {
+            //     this.state.enteredRate = 0
+            // }  
            
              if(this.state.selectedRatePer){
-                db.checkIsOrderIdInDbTempOrderMasterEdit(entity_id, "0",this.props.dashboard.userId,this.props.AppOrderId).then((data) => {
-                    this.state.isOrderIdExists = [];
-                    this.setState({ isOrderIdExists: data });                   
-                
-                    if (this.state.isOrderIdExists.length == '0') {
+               if(this.state.enteredRate > 0){
+                  
+                    db.checkIsOrderIdInDbTempOrderMasterEdit(entity_id, "0",this.props.dashboard.userId,this.props.AppOrderId).then((data) => {
+                        this.state.isOrderIdExists = [];
+                        this.setState({ isOrderIdExists: data });                   
                         var that = this;
                         var date = new Date().getDate(); //Current Date
                         var month = new Date().getMonth() + 1; //Current Month
@@ -771,79 +806,161 @@ AsyncStorage.getItem('userIds').then((keyValue) => {
                         var sec = new Date().getSeconds(); //Current Seconds
                          app_order_id = this.props.AppOrderId;
                          console.log('this.props.AppOrderId : '+app_order_id);
-
+    
                          if(month <= 9){
                             month = '0'+ month;
                         }
-
-
+    
+                        if(date <= 9){
+                            date = '0' + date
+                        }
+    
+                        if(hours <= 9){
+                            hours = '0' +hours
+                        }
+    
+                        if(min <= 9)
+                        {
+                            min = '0' + min
+                        }
+    
+                        if(sec <= 9){
+                            sec = '0' +sec
+                        }
+    
+    
                      //   app_order_id = date + '/' + month + '/' + year + ' ' + hours + ':' + min + ':' + sec
                       //  app_order_id = app_order_id.replace(/[|&:$%@"/" "()+,]/g, "");                  
                         currentDateTime = year + '-' + month + '-' + date + ' ' + hours + ':' + min + ':' + sec
                     
-                        AsyncStorage.setItem('app_order_id', JSON.stringify(app_order_id));
-                        db.insertTABLE_TEMP_OrderMaster(app_order_id, currentDateTime, this.state.entity_type, entity_id, this.state.userLatitude, this.state.userLongitude, this.state.amount, this.state.Collection_type, this.props.dashboard.userId, 1)
-                        AsyncStorage.setItem('app_order_id', JSON.stringify(app_order_id));
-
-                    db.selectTempMasterDetailId(this.props.ItemId, app_order_id).then((dataId) => {
-                                                
-                        if (dataId.length == 0 ) {                      
-                            AsyncStorage.setItem('app_order_id', JSON.stringify(app_order_id));  
-                            db.insertTABLE_TEMP_ORDER_DETAILS(app_order_id, this.props.ItemId, itemName, this.state.box, this.state.unit, this.state.freeBox, this.state.freeUnit, currentDateTime, "", this.state.enteredRate, this.state.bpc, this.state.amount, '1', 'true').then((data)=>
-                            {
-                            totalOrderValue++
-                            this.props.orderValue(totalOrderValue) 
-                                this.props.SublistExtendedParent(this.props.ItemId);                            
-                            })
+                        if (this.state.isOrderIdExists.length == '0') {
+                          
+                            AsyncStorage.setItem('app_order_id', JSON.stringify(app_order_id));
+                            db.insertTABLE_TEMP_OrderMaster(app_order_id, currentDateTime, this.state.entity_type, entity_id, this.state.userLatitude, this.state.userLongitude, this.state.amount, this.state.Collection_type, this.props.dashboard.userId, 1)
+                            AsyncStorage.setItem('app_order_id', JSON.stringify(app_order_id));
+    
+                        db.selectTempMasterDetailId(this.props.ItemId, app_order_id).then((dataId) => {
+                                                    
+                            if (dataId.length == 0 ) {                      
+                                AsyncStorage.setItem('app_order_id', JSON.stringify(app_order_id));  
+                                db.insertTABLE_TEMP_ORDER_DETAILS(app_order_id, this.props.ItemId, itemName, this.state.box, this.state.unit, this.state.freeBox, this.state.freeUnit, currentDateTime, "", this.state.enteredRate, this.state.bpc, this.state.amount, '1', 'true').then((data)=>
+                                {
+                                totalOrderValue++
+                                this.props.orderValue(totalOrderValue) 
+                                    this.props.SublistExtendedParent(this.props.ItemId);                            
+                                })
+                                
+                            } else {                      
+                                AsyncStorage.setItem('app_order_id', JSON.stringify(app_order_id));                                      
+                                db.updateTABLE_TEMP_ORDER_DETAILS(this.state.box, this.state.unit, this.state.freeBox, this.state.freeUnit, currentDateTime, "", this.state.amount, this.state.enteredRate, 'true', app_order_id, this.props.ItemId)
+                                this.props.SublistExtendedParent(this.props.ItemId);
                             
-                        } else {                      
-                            AsyncStorage.setItem('app_order_id', JSON.stringify(app_order_id));                                      
-                            db.updateTABLE_TEMP_ORDER_DETAILS(this.state.box, this.state.unit, this.state.freeBox, this.state.freeUnit, currentDateTime, "", this.state.amount, this.state.enteredRate, 'true', app_order_id, this.props.ItemId)
-                            this.props.SublistExtendedParent(this.props.ItemId);
+                            
+                            }
+                        })
+                        if(this.state.selectedDiscount){
+                            db.checkDiscountAlreadyInDb(this.props.ItemId, app_order_id).then((data)=>{
+    
+                                if (data.length == '0') {
+                           
+                            if(this.state.selectedDiscount=="Rate"){
+                                db.insertTABLE_DISCOUNT(app_order_id,"cash",this.state.amount,"","",this.state.selectedDiscount,
+                                "","",this.state.enteredDiscount,"",this.props.ItemId,"","",'N')
+                            }else{
+                                db.insertTABLE_DISCOUNT(app_order_id,"cash",this.state.amount,"","",this.state.selectedDiscount,
+                                this.state.enteredDiscount,"","","",this.props.ItemId,"","",'N')
                         
+                            }  
+                                }
+                                else{
                         
+                         if(this.state.selectedDiscount=="Rate"){
+                                db.updateTABLE_DISCOUNT(app_order_id,"cash",this.state.amount,"","",this.state.selectedDiscount,
+                                "","",this.state.enteredDiscount,"",this.props.ItemId,"","")
+                            }else{
+                                db.updateTABLE_DISCOUNT(app_order_id,"cash",this.state.amount,"","",this.state.selectedDiscount,
+                                this.state.enteredDiscount,"","","",this.props.ItemId,"","")
+                        
+                            } 
+                                }
+                               })
+                        }
+                       
+                        } else {
+                        
+                            db.getInsertedTableTempOrderMasterId(entity_id, 0, this.props.dashboard.userId).then((data) => {
+                                app_order_id = data[0].id
+                                    db.checkIsRowExistInTempMasterTable(app_order_id, "0").then((datalen) => {                          
+                                    this.state.isOrderIdExistsnew = datalen
+                                    this.state.isOrderIdExistsnew = [];
+                                    this.setState({ isOrderIdExistsnew: datalen });
+                                    for (var i = 0; i < this.state.isOrderIdExistsnew.length; i++) {
+                                        app_order_id = ''
+                                        app_order_id = this.state.isOrderIdExistsnew[0].id
+                                    }
+                                    AsyncStorage.setItem('app_order_id', JSON.stringify(app_order_id));
+                                    if (this.state.isOrderIdExistsnew.length)//row len
+                                    {                              
+                                        db.selectTempMasterDetailId(this.props.ItemId, app_order_id).then((dataId) => {
+                                                                            
+                                            if (dataId.length == 0 ) {
+                                            
+                                                AsyncStorage.setItem('app_order_id', JSON.stringify(app_order_id)); 
+                                                                            
+                                                db.insertTABLE_TEMP_ORDER_DETAILS(app_order_id, this.props.ItemId, itemName, this.state.box, this.state.unit, this.state.freeBox, this.state.freeUnit, currentDateTime, "", this.state.enteredRate, this.state.bpc, this.state.amount, '1', 'true')
+                                                totalOrderValue++
+                                                this.props.orderValue(totalOrderValue) 
+                                                this.props.SublistExtendedParent(this.props.ItemId);
+                                        
+                                            } else {
+                                            
+                                                AsyncStorage.setItem('app_order_id', JSON.stringify(app_order_id));                                      
+                                                db.updateTABLE_TEMP_ORDER_DETAILS(this.state.box, this.state.unit, this.state.freeBox, this.state.freeUnit, currentDateTime, "", this.state.amount, this.state.enteredRate, 'true', app_order_id, this.props.ItemId)
+                                            this.props.SublistExtendedParent(this.props.ItemId);
+                                            
+                                            }
+                                        })
+                                    }
+    
+                                })
+                            })
+    
+                            if(this.state.selectedDiscount){
+                                db.checkDiscountAlreadyInDb(this.props.ItemId, app_order_id).then((data)=>{
+    
+                                    if (data.length == '0') {
+                               
+                                if(this.state.selectedDiscount=="Rate"){
+                                    db.insertTABLE_DISCOUNT(app_order_id,"cash",this.state.amount,"","",this.state.selectedDiscount,
+                                    "","",this.state.enteredDiscount,"",this.props.ItemId,"","",'N')
+                                }else{
+                                    db.insertTABLE_DISCOUNT(app_order_id,"cash",this.state.amount,"","",this.state.selectedDiscount,
+                                    this.state.enteredDiscount,"","","",this.props.ItemId,"","",'N')
+                            
+                                }  
+                                    }
+                                    else{
+                            
+                             if(this.state.selectedDiscount=="Rate"){
+                                    db.updateTABLE_DISCOUNT(app_order_id,"cash",this.state.amount,"","",this.state.selectedDiscount,
+                                    "","",this.state.enteredDiscount,"",this.props.ItemId,"","")
+                                }else{
+                                    db.updateTABLE_DISCOUNT(app_order_id,"cash",this.state.amount,"","",this.state.selectedDiscount,
+                                    this.state.enteredDiscount,"","","",this.props.ItemId,"","")
+                            
+                                } 
+                                    }
+                                   })
+                            }
+                            
                         }
                     })
-                    } else {
-                    
-                        db.getInsertedTableTempOrderMasterId(entity_id, 0, this.props.dashboard.userId).then((data) => {
-                            app_order_id = data[0].id
-                                db.checkIsRowExistInTempMasterTable(app_order_id, "0").then((datalen) => {                          
-                                this.state.isOrderIdExistsnew = datalen
-                                this.state.isOrderIdExistsnew = [];
-                                this.setState({ isOrderIdExistsnew: datalen });
-                                for (var i = 0; i < this.state.isOrderIdExistsnew.length; i++) {
-                                    app_order_id = ''
-                                    app_order_id = this.state.isOrderIdExistsnew[0].id
-                                }
-                                AsyncStorage.setItem('app_order_id', JSON.stringify(app_order_id));
-                                if (this.state.isOrderIdExistsnew.length)//row len
-                                {                              
-                                    db.selectTempMasterDetailId(this.props.ItemId, app_order_id).then((dataId) => {
-                                                                        
-                                        if (dataId.length == 0 ) {
-                                        
-                                            AsyncStorage.setItem('app_order_id', JSON.stringify(app_order_id)); 
-                                                                        
-                                            db.insertTABLE_TEMP_ORDER_DETAILS(app_order_id, this.props.ItemId, itemName, this.state.box, this.state.unit, this.state.freeBox, this.state.freeUnit, currentDateTime, "", this.state.enteredRate, this.state.bpc, this.state.amount, '1', 'true')
-                                            totalOrderValue++
-                                            this.props.orderValue(totalOrderValue) 
-                                            this.props.SublistExtendedParent(this.props.ItemId);
-                                    
-                                        } else {
-                                        
-                                            AsyncStorage.setItem('app_order_id', JSON.stringify(app_order_id));                                      
-                                            db.updateTABLE_TEMP_ORDER_DETAILS(this.state.box, this.state.unit, this.state.freeBox, this.state.freeUnit, currentDateTime, "", this.state.amount, this.state.enteredRate, 'true', app_order_id, this.props.ItemId)
-                                        this.props.SublistExtendedParent(this.props.ItemId);
-                                        
-                                        }
-                                    })
-                                }
-
-                            })
-                        })
-                    }
-                })
+             }
+                else{
+                    alert("Please Enter Rate")
+                }
+           
+           
             }else{
                 alert("Please Select Rate per.")
             }
@@ -851,31 +968,31 @@ AsyncStorage.getItem('userIds').then((keyValue) => {
         } else {
             alert("Please Enter the any of Box and Unit")
         }
-       db.checkDiscountAlreadyInDb(this.props.ItemId, app_order_id).then((data)=>{
+//        db.checkDiscountAlreadyInDb(this.props.ItemId, app_order_id).then((data)=>{
 
-        if (data.length == '0') {
+//         if (data.length == '0') {
    
-    if(this.state.selectedDiscount=="Rate"){
-        db.insertTABLE_DISCOUNT(app_order_id,"cash",this.state.amount,"","",this.state.selectedDiscount,
-        "","",this.state.enteredDiscount,"",this.props.ItemId,"","",'N')
-    }else{
-        db.insertTABLE_DISCOUNT(app_order_id,"cash",this.state.amount,"","",this.state.selectedDiscount,
-        this.state.enteredDiscount,"","","",this.props.ItemId,"","",'N')
+//     if(this.state.selectedDiscount=="Rate"){
+//         db.insertTABLE_DISCOUNT(app_order_id,"cash",this.state.amount,"","",this.state.selectedDiscount,
+//         "","",this.state.enteredDiscount,"",this.props.ItemId,"","",'N')
+//     }else{
+//         db.insertTABLE_DISCOUNT(app_order_id,"cash",this.state.amount,"","",this.state.selectedDiscount,
+//         this.state.enteredDiscount,"","","",this.props.ItemId,"","",'N')
 
-    }  
-        }
-        else{
+//     }  
+//         }
+//         else{
 
- if(this.state.selectedDiscount=="Rate"){
-        db.updateTABLE_DISCOUNT(app_order_id,"cash",this.state.amount,"","",this.state.selectedDiscount,
-        "","",this.state.enteredDiscount,"",this.props.ItemId,"","")
-    }else{
-        db.updateTABLE_DISCOUNT(app_order_id,"cash",this.state.amount,"","",this.state.selectedDiscount,
-        this.state.enteredDiscount,"","","",this.props.ItemId,"","")
+//  if(this.state.selectedDiscount=="Rate"){
+//         db.updateTABLE_DISCOUNT(app_order_id,"cash",this.state.amount,"","",this.state.selectedDiscount,
+//         "","",this.state.enteredDiscount,"",this.props.ItemId,"","")
+//     }else{
+//         db.updateTABLE_DISCOUNT(app_order_id,"cash",this.state.amount,"","",this.state.selectedDiscount,
+//         this.state.enteredDiscount,"","","",this.props.ItemId,"","")
 
-    } 
-        }
-       })
+//     } 
+//         }
+//        })
     }
 
     deleteClickHandler(e) {     

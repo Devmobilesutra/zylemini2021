@@ -72,7 +72,8 @@ export class editpreview extends Component {
         // We are generating an alert to show the back button pressed
         // alert('You clicked back. Now Screen will move to ThirdPage');
         // We can move to any screen. If we want
-        Actions.sideorderEdittNew();
+      //  Actions.sideorderEdittNew({order_Id : this.props.order_Id});
+      Actions.sideorder();
         //  this.props.navigation.navigate('CreateNewOrderFirst');
         // Returning true means we have handled the backpress
         // Returning false means we haven't handled the backpress
@@ -128,7 +129,8 @@ export class editpreview extends Component {
         },
         headerLeft: (
             <View style={{ flexDirection: "row", alignItems: 'center', justifyContent: 'center', alignSelf: 'center', }}>
-                <TouchableOpacity onPress={() => Actions.sideorderEdittNew()}>
+                 {/* <TouchableOpacity onPress={() => Actions.sideorderEdittNew({order_Id : this.props.order_Id})}> */}
+                <TouchableOpacity onPress={() =>   Actions.sideorder()}>
                     <Image style={{ marginLeft: wp('4'), }}
                         source={require('../../assets/Icons/Back_White.png')}
                     />
@@ -493,26 +495,7 @@ export class editpreview extends Component {
 
   
 
-    newsave()
-    {
-var total_final=0;
-db.totalcreate(this.props.order_id).then((data) => {
-    console.log("exact data for prev",data);
-    
-    var in_total=0;
-    for(var i=0;i<data.length;i++)
-    {
-        var in_total=in_total+parseInt(data[i].Amount)
-        
-    }
-   console.log("in_total",in_total);
-   db.updateAfterMaster(in_total,this.props.order_id).then((data) => {
-      
-})
-})
-alert("Order Edit Successfull")
-Actions.drawerMenu()
-    }
+   
     changeAmount(value) {
         //  alert("in change amount")
         this.setState({ amount: value });

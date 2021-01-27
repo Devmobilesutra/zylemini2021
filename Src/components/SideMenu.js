@@ -59,6 +59,7 @@ export default class SideMenu extends Component {
 
   //////////////////////////////////////////
   syncNowFunction() {
+
     var OrderMaster = [];
     var OrderDetails = [];
     var Discount = [];
@@ -130,7 +131,7 @@ export default class SideMenu extends Component {
                   ImageDetails: ImageDetails,
                   AssetDetails: AssetDetails,
                 };
-                //console.log("boduy of postApi=", this.state.JSONObj)
+                console.log("boduy of postApi=", JSON.stringify(this.state.JSONObj))
                 //  //console.log("boduy of postApi2=", datas)
                 //   const url = 'http://zylemdemo.com/ZyleminiPlusCoreAPI/api/Data/PostData'
 
@@ -180,10 +181,24 @@ export default class SideMenu extends Component {
                             );
                           }
                           alert('Data Sync Successfull');
+                          Alert.alert(
+                            "ZyleminiPlus",
+                            response.data.Data.Order.Status,
+                            [
+                              // {
+                              //   text: "Cancel",
+                              //   onPress: () => console.log("Cancel Pressed"),
+                              //   style: "cancel"onPress={() => this.props.navigation.navigate('MJP_one')}
+                              // },
+                              { text: "OK", onPress: () => this.GetNewData() }
+                            ],
+                            { cancelable: false }
+                          );
+
                         }
                       } catch (error) {}
 
-                      alert(response.data.Data.Order.Status);
+                    //  alert(response.data.Data.Order.Status);
                     } else {
                       //console.log("count is..........", count)
                       //  alert("in else")
@@ -213,6 +228,52 @@ export default class SideMenu extends Component {
       });
     });
   }
+
+  GetNewData(){
+    this.setState({isLoading: true});
+    const url1 = "http://sapltest.com/ZyleminiPlusAPI/api/Data/GetData"
+    //console.log("url is===", url1)
+    //console.log("aaaaaaa========",response.data.Token)
+    const headers1 = {
+        'authheader': this.state.tokens
+    }
+    axios.get(url1, {
+        headers: headers1
+    }).then(res => {
+        //  //console.log("rajani data1=",JSON.stringify(res))
+        if (res.data) {
+            const data = JSON.stringify(res.data)
+            console.log("rajani data=",JSON.stringify(data))
+            // db.insertAllData(data)
+            //   dispatch(dispatchAll(data))
+            //  dispatch(insertAllData(data))
+            db.insertAllData(data).then((results) => {
+                // alert(results)
+                if (results) {
+                   // dispatch(loginIsLoading(false));
+                   // Actions.App()
+                   this.setState({isLoading: false});
+                }
+
+
+            })
+        }
+        else {
+            alert("Invalid Credentials")
+            this.setState({isLoading: false});
+        }
+
+    }).catch((error) => {
+        //console.log("errr")
+      
+        //console.log('error ' + error);
+        alert(error)
+        this.setState({isLoading: false});
+
+    });
+
+  }
+
 
   ///////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////////
@@ -352,9 +413,29 @@ export default class SideMenu extends Component {
   //     }
   // }
   Logout = async () => {
+    Alert.alert(
+      'Logout',
+      'Are you sure want to Logout?',
+      [
+        {
+          text: 'Cancel',
+          onPress: () => null,
+          style: 'cancel',
+        },
+        {
+          text: 'Yes',
+          onPress: () => this.LogoutFunction(),
+        },
+      ],
+      {cancelable: false},
+    );
+   
+  };
+
+  LogoutFunction = async () =>{
     await AsyncStorage.clear();
     Actions.login();
-  };
+  }
   SyncNow = () => {
     Alert.alert(
       'Sync Now',
