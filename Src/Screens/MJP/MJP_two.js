@@ -28,6 +28,7 @@ import { Alert } from 'react-native';
 import Loader from './../../components/LoaderSync'
 const db = new Database();
 var ID;
+
 class MJP_two extends React.Component {
     state = {
         language: 'java',
@@ -220,7 +221,7 @@ async requestFineLocation() {
                    console.log('meetreport : '+JSON.stringify(data));
                 
                 db.insertOrderMastersssForMeetingCancel(data[0].Meeting_Id, data[0].CurrentDatetime, data[0].Type_sync, data[0].Shop_Id,
-                  data[0].latitude,data[0].longitude, '', '', '',
+                  data[0].latitude,data[0].longitude, '0', '', '',
                   this.state.collection_type, data[0].UserID,this.state.Remarks, "1", "N", '', "", '',data[0].ActivityStatus).then((data) =>{
                     console.log("meeting cancel "+ JSON.stringify(data));
                     db.getOrderMasterSyncDataFor_Meeting(this.props.Meeting_Id,"N").then((dataMain) => {
@@ -242,7 +243,7 @@ async requestFineLocation() {
           console.log('meetreport : '+JSON.stringify(data));
           
           db.insertOrderMastersssForMeetingCancel(data[0].Meeting_Id, data[0].CurrentDatetime, data[0].Type_sync, data[0].Shop_Id,
-            data[0].latitude,data[0].longitude, '', '', '',
+            data[0].latitude,data[0].longitude, '0', '', '',
             this.state.collection_type, data[0].UserID, this.state.Remarks, "1", "N", '', "", '',data[0].ActivityStatus).then((data) =>{
               console.log("meeting cancel "+ JSON.stringify(data));
               db.getOrderMasterSyncDataFor_Meeting(this.props.Meeting_Id,"N").then((dataMain) => {
@@ -271,7 +272,7 @@ async requestFineLocation() {
                       console.log('meetreport : '+JSON.stringify(data));
                 
                 db.UpdateOrderMastersssForMeetingCancel(data[0].Meeting_Id, data[0].CurrentDatetime, data[0].Type_sync, data[0].Shop_Id,
-                  data[0].latitude,data[0].longitude, '', '', '',
+                  data[0].latitude,data[0].longitude, '0', '', '',
                   "0", data[0].UserID,this.state.Remarks, "1", "N", '', "", '',data[0].ActivityStatus).then((data) =>{
                     console.log("meeting cancel "+ JSON.stringify(data));
                     db.getOrderMasterSyncDataFor_Meeting(this.props.Meeting_Id,"N").then((dataMain) => {
@@ -288,7 +289,7 @@ async requestFineLocation() {
                 console.log('meetreport : '+JSON.stringify(data));
                 
                 db.insertOrderMastersssForMeetingCancel(data[0].Meeting_Id, data[0].CurrentDatetime, data[0].Type_sync, data[0].Shop_Id,
-                  data[0].latitude,data[0].longitude, '', '', '',
+                  data[0].latitude,data[0].longitude, '0', '', '',
                   "0", data[0].UserID, this.state.Remarks, "1", "N", '', "", '',data[0].ActivityStatus).then((data) =>{
                     console.log("meeting cancel "+ JSON.stringify(data));
                     db.getOrderMasterSyncDataFor_Meeting(this.props.Meeting_Id,"N").then((dataMain) => {
@@ -315,6 +316,15 @@ async requestFineLocation() {
      // this.state.isLoading = true
       this.setState({ isLoading: true })
       this.setState({ JSONObj: {} })
+      var date = new Date().getDate(); //Current Date
+  var month = new Date().getMonth() + 1; //Current Month
+  var year = new Date().getFullYear(); //Current Year
+  var hours = new Date().getHours(); //Current Hours
+  var min = new Date().getMinutes(); //Current Minutes
+  var sec = new Date().getSeconds(); //Current Seconds
+
+  
+ var ToDate = year + '-' + month + '-' + date + ' ' + hours + ':' + min + ':' + sec
         db.checkMeetingInOrderMaster(this.props.Meeting_Id).then((dataMaster) => {
           console.log("orderm len : "+dataMaster)
           if(dataMaster > 0){
@@ -322,9 +332,9 @@ async requestFineLocation() {
               if (data.length > 0) {
                 console.log('meetreport update : '+JSON.stringify(data));
           
-              db.UpdateOrderMastersssForMeetingCancel(data[0].Meeting_Id, data[0].CurrentDatetime, data[0].Type_sync, data[0].Shop_Id,
-                data[0].latitude,data[0].longitude, '', '', '',
-                this.state.collection_type, data[0].UserID, this.state.Remarks, "1", "N", '', "", '',data[0].ActivityStatus).then((data) =>{
+              db.UpdateOrderMastersssForMeetingCancel(data[0].ID, data[0].CurrentDatetime, data[0].Type_sync, data[0].Shop_Id,
+                data[0].latitude,data[0].longitude, '0', data[0].FromDate, ToDate,
+                this.state.collection_type, data[0].UserID, this.state.Remarks, "1", "N", '', data[0].Meeting_Id, '','0').then((data) =>{
                   console.log("meeting cancel update"+ JSON.stringify(data));
                   db.getOrderMasterSyncDataFor_Meeting(this.props.Meeting_Id,"N").then((dataMain) => {
                     if (dataMain.length > 0) {
@@ -339,9 +349,9 @@ async requestFineLocation() {
               if (data.length > 0) {
           console.log('meetreport : '+JSON.stringify(data));
           
-          db.insertOrderMastersssForMeetingCancel(data[0].Meeting_Id, data[0].CurrentDatetime, data[0].Type_sync, data[0].Shop_Id,
-            data[0].latitude,data[0].longitude, '', '', '',
-            this.state.collection_type, data[0].UserID, this.state.Remarks, "1", "N", '', "", '',data[0].ActivityStatus).then((data) =>{
+          db.insertOrderMastersssForMeetingCancel(data[0].ID, data[0].CurrentDatetime, data[0].Type_sync, data[0].Shop_Id,
+            data[0].latitude,data[0].longitude, '0', data[0].FromDate, ToDate,
+            this.state.collection_type, data[0].UserID, this.state.Remarks, "1", "N", '', data[0].Meeting_Id, '','0').then((data) =>{
               console.log("meeting cancel "+ JSON.stringify(data));
               db.getOrderMasterSyncDataFor_Meeting(this.props.Meeting_Id,"N").then((dataMain) => {
                 if (dataMain.length > 0) {
@@ -386,14 +396,26 @@ console.log("date passing post",datas);
                     db.updateDiscountSyncFlag(response.data.Data.Order.Orders[i].MobileGenPrimaryKey)
                       
                   }
-                  alert("Data Sync Successfull")
+                //  alert("Data Sync Successfull")
               }
 
           } catch (error) {
 
           }
 
-          alert(response.data.Data.Order.Status)
+          Alert.alert(
+            "ZyleminiPlus",
+            response.data.Data.Order.Status,
+            [
+              // {
+              //   text: "Cancel",
+              //   onPress: () => console.log("Cancel Pressed"),
+              //   style: "cancel"onPress={() => this.props.navigation.navigate('MJP_one')}
+              // },
+              { text: "OK", onPress: () => this.props.navigation.navigate('MJP_one') }
+            ],
+            { cancelable: false }
+          );
           this.setState({ isLoading: false })
       } else {
       
@@ -428,7 +450,7 @@ SaveMeetingForEndAndSubmit(){
   // alert("Draft Edited Successfully"); 
      
     }else{
-      db.InsertMeet(ID,this.props.Meeting_Id,this.props.EntityTypeID,this.props.ActivityTitle,this.props.PlannedDate,'',this.state.Shop_addFinal,this.state.Remarks,this.props.IsActivityDone,this.props.EntityType,this.state.collection_type,this.state.userLatitude,this.state.userLongitude,'',this.state.userId,currentDateTime,'','').then((data) => {
+      db.InsertMeet(ID,this.props.Meeting_Id,this.props.EntityTypeID,this.props.ActivityTitle,this.props.PlannedDate,'',this.state.Shop_addFinal,this.state.Remarks,this.props.IsActivityDone,this.props.EntityType,this.state.collection_type,this.state.userLatitude,this.state.userLongitude,'',this.state.userId,currentDateTime,'','',this.props.currentDateTimestart,'').then((data) => {
         this.SubmitReport();
       })
        // alert("meeting details saved in the draft");
@@ -495,7 +517,7 @@ SaveAsDraftMeeting(e){
         { cancelable: false }
       );
     }else{
-      db.InsertMeet(ID,this.props.Meeting_Id,this.props.EntityTypeID,this.props.ActivityTitle,this.props.PlannedDate,'',this.state.Shop_addFinal,this.state.Remarks,this.props.IsActivityDone,this.props.EntityType,this.state.collection_type,this.state.userLatitude,this.state.userLongitude,'',this.state.userId,currentDateTime,'','').then((data) => {
+      db.InsertMeet(ID,this.props.Meeting_Id,this.props.EntityTypeID,this.props.ActivityTitle,this.props.PlannedDate,'',this.state.Shop_addFinal,this.state.Remarks,this.props.IsActivityDone,this.props.EntityType,this.state.collection_type,this.state.userLatitude,this.state.userLongitude,'',this.state.userId,currentDateTime,'','',this.props.currentDateTimestart,'').then((data) => {
         Alert.alert(
           "ZyleminiPlus",
           "Meeting Details Saved in the Draft.",

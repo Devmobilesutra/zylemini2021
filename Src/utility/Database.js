@@ -117,7 +117,7 @@ export default class Database {
 // ,"ExpectedDeliveryDate": null
 
         db.transaction((tx) => {
-          tx.executeSql('CREATE TABLE IF NOT EXISTS MeetReport(ID,Meeting_Id TEXT,Shop_Id TEXT,Shop_name TEXT,PlannedDate TEXT, Time TEXT,location TEXT,Remarks TEXT,IsActivityDone TEXT,Type_sync TEXT,collection_type TEXT,latitude TEXT,longitude TEXT,TotalAmount TEXT,UserID TEXT,CurrentDatetime TEXT,DefaultDistributorId TEXT,ExpectedDeliveryDate TEXT)');
+          tx.executeSql('CREATE TABLE IF NOT EXISTS MeetReport(ID,Meeting_Id TEXT,Shop_Id TEXT,Shop_name TEXT,PlannedDate TEXT, Time TEXT,location TEXT,Remarks TEXT,IsActivityDone TEXT,Type_sync TEXT,collection_type TEXT,latitude TEXT,longitude TEXT,TotalAmount TEXT,UserID TEXT,CurrentDatetime TEXT,DefaultDistributorId TEXT,ExpectedDeliveryDate TEXT,FromDate TEXT, ToDate Text)');
         }).then(() => {
 
         }).catch(error => {
@@ -625,74 +625,81 @@ export default class Database {
 
   insertSettingData(settingData) {
     if (settingData.length) {
-      db1.transaction((tx) => {
-        var len = settingData.length;
-        var count = 0;
-        for (var item of settingData) {
-          tx.executeSql(
-            `insert into Settings( Key , Value )
-                          VALUES (?,?)`,
-            [
-              item.Key,
-              item.Value,
-            ],
-            (tx, results) => {
-              // AsyncStorage.setItem('userIds', JSON.stringify('52362'));
-
-              // AsyncStorage.setItem('username', JSON.stringify(userDAta[0].Name));
-
-
-            },
-            (err) => { console.error("error=", err); }
-          );
-        }
-      }).then((result) => {
-
-        // }).catch((err) => {
-
-        // });
-      }).catch((err) => {
-
-      });
+      db1.transaction((tx) => { tx.executeSql('DELETE FROM Settings', []).then(([tx, results]) => { 
+        db1.transaction((tx) => {
+          var len = settingData.length;
+          var count = 0;
+          for (var item of settingData) {
+            tx.executeSql(
+              `insert into Settings( Key , Value )
+                            VALUES (?,?)`,
+              [
+                item.Key,
+                item.Value,
+              ],
+              (tx, results) => {
+                // AsyncStorage.setItem('userIds', JSON.stringify('52362'));
+  
+                // AsyncStorage.setItem('username', JSON.stringify(userDAta[0].Name));
+  
+  
+              },
+              (err) => { console.error("error=", err); }
+            );
+          }
+        }).then((result) => {
+  
+          // }).catch((err) => {
+  
+          // });
+        }).catch((err) => {
+  
+        });
+      }); })
+     
     }
   }
 
   insertPDistributor(PDistributorData) {
     // this.initDB().then((db) => {
-    db1.transaction((tx) => {
-      var len = PDistributorData.length;
-      var count = 0;
-
-      for (var item of PDistributorData) {
-        tx.executeSql(
-          `insert into PDistributor(DistributorID ,Distributor ,DistributorAlias ,
-              ERPCode ,AREAID ,AREA ,BRANCHID ,BRANCH ,DISTRIBUTORGROUPID ,
-              DISTRIBUTORGROUP ,IsSelectedDistributor )
-                                    VALUES (?,?,?,?,?,?,?,?,?,?,?)`,
-          [
-            item.DistributorId,
-            item.Distributor,
-            item.DistributorAlias,
-            item.ERPCode,
-            item.AREAID,
-            item.AREA,
-            item.BRANCHID,
-            item.BRANCH,
-            item.DISTRIBUTORGROUPID,
-            item.DISTRIBUTORGROUP,
-            ""
-          ],
-          (tx, results) => {
-
-          },
-          (err) => { console.error("error=", err); }
-        );
-      }
-    }).then((result) => {
-
-    }).catch((err) => {
-
-    });
+      db1.transaction((tx) => { tx.executeSql('DELETE FROM PDistributor', [])
+      .then(([tx, results]) => { 
+        db1.transaction((tx) => {
+          var len = PDistributorData.length;
+          var count = 0;
+    
+          for (var item of PDistributorData) {
+            tx.executeSql(
+              `insert into PDistributor(DistributorID ,Distributor ,DistributorAlias ,
+                  ERPCode ,AREAID ,AREA ,BRANCHID ,BRANCH ,DISTRIBUTORGROUPID ,
+                  DISTRIBUTORGROUP ,IsSelectedDistributor )
+                                        VALUES (?,?,?,?,?,?,?,?,?,?,?)`,
+              [
+                item.DistributorId,
+                item.Distributor,
+                item.DistributorAlias,
+                item.ERPCode,
+                item.AREAID,
+                item.AREA,
+                item.BRANCHID,
+                item.BRANCH,
+                item.DISTRIBUTORGROUPID,
+                item.DISTRIBUTORGROUP,
+                ""
+              ],
+              (tx, results) => {
+    
+              },
+              (err) => { console.error("error=", err); }
+            );
+          }
+        }).then((result) => {
+    
+        }).catch((err) => {
+    
+        });
+       }); })
+   
     // }).catch((err) => {
 
     // });
@@ -700,29 +707,35 @@ export default class Database {
 
   insertSalesData(SalesData) {
     if (SalesData.length) {
-      db1.transaction((tx) => {
-        var len = SalesData.length;
-        var count = 0;
-        for (var item of SalesData) {
-          tx.executeSql(
-            `insert into Sales(UserID ,DistributorID ,CustomerID ,Month ,ItemID ,Quantity ,Value  )
-                                              VALUES (?,?,?,?,?,?,?)`,
-            [
-              
-
-              item.UserID, item.DistributorID, item.CustomerID, item.Month, item.ItemID, item.Quantity, item.Value
-            ],
-            (tx, results) => {
-
-            },
-            (err) => { console.error("error=", err); }
-          );
-        }
-      }).then((result) => {
-
-      }).catch((err) => {
-
-      });
+      db1.transaction((tx) => { tx.executeSql('DELETE FROM Sales', [])
+      .then(([tx, results]) => { 
+        db1.transaction((tx) => {
+          var len = SalesData.length;
+          var count = 0;
+          for (var item of SalesData) {
+            tx.executeSql(
+              `insert into Sales(UserID ,DistributorID ,CustomerID ,Month ,ItemID ,Quantity ,Value  )
+                                                VALUES (?,?,?,?,?,?,?)`,
+              [
+                
+  
+                item.UserID, item.DistributorID, item.CustomerID, item.Month, item.ItemID, item.Quantity, item.Value
+              ],
+              (tx, results) => {
+  
+              },
+              (err) => { console.error("error=", err); }
+            );
+          }
+        }).then((result) => {
+  
+        }).catch((err) => {
+  
+        });
+       });
+      
+       })
+     
       // }).catch((err) => {
 
       // });
@@ -730,73 +743,80 @@ export default class Database {
   }
 
   insertTargetData(TargetData) {
-
-    db1.transaction((tx) => {
-      var len = TargetData.length;
-      var count = 0;
-      for (var item of TargetData) {
-        tx.executeSql(
-          `insert into Target(UserID ,TDate ,ClassificationID ,ClassificationName ,Target  )
-                                                        VALUES (?,?,?,?,?)`,
-          [
-            item.UserID, item.TDate, item.ClassificationID, item.ClassificationName, item.Target],
-          (tx, results) => {
-
-          },
-          (err) => { console.error("error=", err); }
-        );
-      }
-    }).then((result) => {
-
-    }).catch((err) => {
-
-    });
+    db1.transaction((tx) => { tx.executeSql('DELETE FROM Target', [])
+    .then(([tx, results]) => { 
+      db1.transaction((tx) => {
+        var len = TargetData.length;
+        var count = 0;
+        for (var item of TargetData) {
+          tx.executeSql(
+            `insert into Target(UserID ,TDate ,ClassificationID ,ClassificationName ,Target  )
+                                                          VALUES (?,?,?,?,?)`,
+            [
+              item.UserID, item.TDate, item.ClassificationID, item.ClassificationName, item.Target],
+            (tx, results) => {
+  
+            },
+            (err) => { console.error("error=", err); }
+          );
+        }
+      }).then((result) => {
+  
+      }).catch((err) => {
+  
+      });
+     }); })
+   
 
   }
 
   insertPcustomer(PcustomerData) {
 
     //  this.initDB().then((db) => {
-    db1.transaction((tx) => {
-      var len = PcustomerData.length;
-      var count = 0;
-
-      for (var item of PcustomerData) {
-        tx.executeSql(
-          `insert into Pcustomer(CustomerId ,Party ,LicenceNo ,IsActive ,ERPCode ,RouteID ,RouteName ,AREAID ,AREA 
-              ,BRANCHID ,BRANCH ,CUSTOMERCLASSID ,CUSTOMERCLASS ,CUSTOMERCLASS2ID ,CUSTOMERCLASS2 ,CUSTOMERGROUPID ,
-              CUSTOMERGROUP ,CUSTOMERSEGMENTID ,CUSTOMERSEGMENT ,CUSTOMERSUBSEGMENTID , CUSTOMERSUBSEGMENT ,
-              LICENCETYPEID ,LICENCETYPE ,OCTROIZONEID ,OCTROIZONE,Outlet_Info,DefaultDistributorId,SchemeID)
-                                                                  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
-          [
-            item.CustomerId,
-            item.Party,
-            item.LicenceNo,
-            item.IsActive,
-            item.ERPCode,
-            item.RouteID,
-            item.RouteName,
-            item.AREAID,
-            item.AREA,
-            item.BRANCHID,
-            item.BRANCH,
-            item.CUSTOMERCLASSID,
-            item.CUSTOMERCLASS,
-            item.CUSTOMERCLASS2ID, item.CUSTOMERCLASS2, item.CUSTOMERGROUPID,
-            item.CUSTOMERGROUP, item.CUSTOMERSEGMENTID, item.CUSTOMERSEGMENT, item.CUSTOMERSUBSEGMENTID, item.CUSTOMERSUBSEGMENT,
-            item.LICENCETYPEID, item.LICENCETYPE, item.OCTROIZONEID, item.OCTROIZONE, item.OUTLETINFO, item.DefaultDistributorId,item.SchemeID
-          ],
-          (tx, results) => {
-
-          },
-          (err) => { console.error("error=", err); }
-        );
-      }
-    }).then((result) => {
-      //  
-    }).catch((err) => {
-      //console.log(err);
-    });
+      db1.transaction((tx) => { tx.executeSql('DELETE FROM Pcustomer', [])
+      .then(([tx, results]) => { 
+        db1.transaction((tx) => {
+          var len = PcustomerData.length;
+          var count = 0;
+    
+          for (var item of PcustomerData) {
+            tx.executeSql(
+              `insert into Pcustomer(CustomerId ,Party ,LicenceNo ,IsActive ,ERPCode ,RouteID ,RouteName ,AREAID ,AREA 
+                  ,BRANCHID ,BRANCH ,CUSTOMERCLASSID ,CUSTOMERCLASS ,CUSTOMERCLASS2ID ,CUSTOMERCLASS2 ,CUSTOMERGROUPID ,
+                  CUSTOMERGROUP ,CUSTOMERSEGMENTID ,CUSTOMERSEGMENT ,CUSTOMERSUBSEGMENTID , CUSTOMERSUBSEGMENT ,
+                  LICENCETYPEID ,LICENCETYPE ,OCTROIZONEID ,OCTROIZONE,Outlet_Info,DefaultDistributorId,SchemeID)
+                                                                      VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+              [
+                item.CustomerId,
+                item.Party,
+                item.LicenceNo,
+                item.IsActive,
+                item.ERPCode,
+                item.RouteID,
+                item.RouteName,
+                item.AREAID,
+                item.AREA,
+                item.BRANCHID,
+                item.BRANCH,
+                item.CUSTOMERCLASSID,
+                item.CUSTOMERCLASS,
+                item.CUSTOMERCLASS2ID, item.CUSTOMERCLASS2, item.CUSTOMERGROUPID,
+                item.CUSTOMERGROUP, item.CUSTOMERSEGMENTID, item.CUSTOMERSEGMENT, item.CUSTOMERSUBSEGMENTID, item.CUSTOMERSUBSEGMENT,
+                item.LICENCETYPEID, item.LICENCETYPE, item.OCTROIZONEID, item.OCTROIZONE, item.OUTLETINFO, item.DefaultDistributorId,item.SchemeID
+              ],
+              (tx, results) => {
+    
+              },
+              (err) => { console.error("error=", err); }
+            );
+          }
+        }).then((result) => {
+          //  
+        }).catch((err) => {
+          //console.log(err);
+        });
+       }); })
+   
     // }).catch((err) => {
     //   //console.log(err);
     // });
@@ -832,28 +852,32 @@ export default class Database {
   insertDistributorDataStatus(DistributorDataStatusData) {
 
     //  this.initDB().then((db) => {
-    db1.transaction((tx) => {
-      var len = DistributorDataStatusData.length;
-      var count = 0;
-
-      for (var item of DistributorDataStatusData) {
-        tx.executeSql(
-          `insert into DistributorDataStatus(Branch , DistributorID , Area , Day7 , Day6 ,Day5 , Day4 , Day3 , Day2 , Day1 , LastUploadDate , LastInvoiceDate )
-                                                                  VALUES (?,?,?,?,?,?,?,?,?,?,?,?)`,
-          [
-            item.Branch, item.DistributorID, item.Area, item.Day7, item.Day6, item.Day5, item.Day4, item.Day3, item.Day2, item.Day1, item.LastUploadDate, item.LastInvoiceDate
-          ],
-          (tx, results) => {
-
-          },
-          (err) => { console.error("error=", err); }
-        );
-      }
-    }).then((result) => {
-      //
-    }).catch((err) => {
-      //console.log(err);
-    });
+      db1.transaction((tx) => { tx.executeSql('DELETE FROM DistributorDataStatus', [])
+      .then(([tx, results]) => { 
+        db1.transaction((tx) => {
+          var len = DistributorDataStatusData.length;
+          var count = 0;
+    
+          for (var item of DistributorDataStatusData) {
+            tx.executeSql(
+              `insert into DistributorDataStatus(Branch , DistributorID , Area , Day7 , Day6 ,Day5 , Day4 , Day3 , Day2 , Day1 , LastUploadDate , LastInvoiceDate )
+                                                                      VALUES (?,?,?,?,?,?,?,?,?,?,?,?)`,
+              [
+                item.Branch, item.DistributorID, item.Area, item.Day7, item.Day6, item.Day5, item.Day4, item.Day3, item.Day2, item.Day1, item.LastUploadDate, item.LastInvoiceDate
+              ],
+              (tx, results) => {
+    
+              },
+              (err) => { console.error("error=", err); }
+            );
+          }
+        }).then((result) => {
+          //
+        }).catch((err) => {
+          //console.log(err);
+        });
+       }); })
+   
     // }).catch((err) => {
     //   //console.log(err);
     // });
@@ -861,34 +885,38 @@ export default class Database {
   insertSalesYTD(SalesYTDData) {
     ////console.log("settingDAta", SalesYTDData)
     if (SalesYTDData) {
-      db1.transaction((tx) => {
-        var len = SalesYTDData.length;
-        var count = 0;
-        for (var item of SalesYTDData) {
-          tx.executeSql(
-            `insert into SalesYTD(UserID , DistributorID , CustomerID , ItemID , Quantity , Value  )
-                                                                  VALUES (?,?,?,?,?,?)`,
-            [
-              // "UserID": 52362,
-              // "DistributorID": 144,
-              // "CustomerID": 14990,
-              // "ItemID": 151,
-              // "Quantity": 12.00,
-              // "Value": 1.00
-
-              item.UserID, item.DistributorID, item.CustomerID, item.ItemID, item.Quantity, item.Value
-            ],
-            (tx, results) => {
-
-            },
-            (err) => { console.error("error=", err); }
-          );
-        }
-      }).then((result) => {
-        //  
-      }).catch((err) => {
-        //console.log(err);
-      });
+      db1.transaction((tx) => { tx.executeSql('DELETE FROM SalesYTD', [])
+      .then(([tx, results]) => {  
+        db1.transaction((tx) => {
+          var len = SalesYTDData.length;
+          var count = 0;
+          for (var item of SalesYTDData) {
+            tx.executeSql(
+              `insert into SalesYTD(UserID , DistributorID , CustomerID , ItemID , Quantity , Value  )
+                                                                    VALUES (?,?,?,?,?,?)`,
+              [
+                // "UserID": 52362,
+                // "DistributorID": 144,
+                // "CustomerID": 14990,
+                // "ItemID": 151,
+                // "Quantity": 12.00,
+                // "Value": 1.00
+  
+                item.UserID, item.DistributorID, item.CustomerID, item.ItemID, item.Quantity, item.Value
+              ],
+              (tx, results) => {
+  
+              },
+              (err) => { console.error("error=", err); }
+            );
+          }
+        }).then((result) => {
+          //  
+        }).catch((err) => {
+          //console.log(err);
+        });
+      }); })
+     
     }
   }
 
@@ -922,55 +950,63 @@ export default class Database {
 
   insertReportControlMaster(ReportControlMasterData) {
     if (ReportControlMasterData.length) {
-      db1.transaction((tx) => {
-        var len = ReportControlMasterData.length;
-        var count = 0;
-
-        for (var item of ReportControlMasterData) {
-          tx.executeSql(
-            `insert into ReportControlMaster(ControlName , ControlId , ReferenceColumn )
-                                                                  VALUES (?,?,?)`,
-            [
-              item.ControlName, item.ControlId, item.ReferenceColumn
-            ],
-            (tx, results) => {
-
-            },
-            (err) => { console.error("error=", err); }
-          );
-        }
-      }).then((result) => {
-        //  
-      }).catch((err) => {
-        //console.log(err);
-      });
+      db1.transaction((tx) => { tx.executeSql('DELETE FROM ReportControlMaster', [])
+      .then(([tx, results]) => { 
+        db1.transaction((tx) => {
+          var len = ReportControlMasterData.length;
+          var count = 0;
+  
+          for (var item of ReportControlMasterData) {
+            tx.executeSql(
+              `insert into ReportControlMaster(ControlName , ControlId , ReferenceColumn )
+                                                                    VALUES (?,?,?)`,
+              [
+                item.ControlName, item.ControlId, item.ReferenceColumn
+              ],
+              (tx, results) => {
+  
+              },
+              (err) => { console.error("error=", err); }
+            );
+          }
+        }).then((result) => {
+          //  
+        }).catch((err) => {
+          //console.log(err);
+        });
+       }); })
+     
     }
   }
 
   insertReport(ReportData) {
     if (ReportData.length) {
-      db1.transaction((tx) => {
-        var len = ReportData.length;
-        var count = 0;
-
-        for (var item of ReportData) {
-          tx.executeSql(
-            `insert into Report(MenuKey , Classification , ComboClassification ,LabelName ,IsActive)
-                                                                  VALUES (?,?,?,?,?)`,
-            [
-              item.MenuKey, item.Classification, item.ComboClassification, item.LabelName, item.IsActive
-            ],
-            (tx, results) => {
-
-            },
-            (err) => { console.error("error=", err); }
-          );
-        }
-      }).then((result) => {
-        //
-      }).catch((err) => {
-        //console.log(err);
-      });
+      db1.transaction((tx) => { tx.executeSql('DELETE FROM Report', [])
+      .then(([tx, results]) => { 
+        db1.transaction((tx) => {
+          var len = ReportData.length;
+          var count = 0;
+  
+          for (var item of ReportData) {
+            tx.executeSql(
+              `insert into Report(MenuKey , Classification , ComboClassification ,LabelName ,IsActive)
+                                                                    VALUES (?,?,?,?,?)`,
+              [
+                item.MenuKey, item.Classification, item.ComboClassification, item.LabelName, item.IsActive
+              ],
+              (tx, results) => {
+  
+              },
+              (err) => { console.error("error=", err); }
+            );
+          }
+        }).then((result) => {
+          //
+        }).catch((err) => {
+          //console.log(err);
+        });
+       }); })
+      
     }
   }
 
@@ -1004,43 +1040,47 @@ export default class Database {
 
   insertPItem(PItemData) {
     if (PItemData.length) {
-      db1.transaction((tx) => {
-        var len = PItemData.length;
-        var count = 0;
-
-        for (var item of PItemData) {
-          tx.executeSql(
-            `insert into PItem(ItemId , Item , ItemAlias , BPC , BPC1 , BPC2 ,ErpCode , Volume , ReportingQuantity , 
-              MRP , PTR , BRANDID , BRAND , BRANDALIAS , DIVISIONID , DIVISION , DIVISIONALIAS , FLAVOURID , FLAVOUR , 
-              FLAVOURALIAS ,ITEMCLASSID , ITEMCLASS , ITEMCLASSALIAS , ITEMGROUPID , ITEMGROUP , ITEMGROUPALIAS ,
-               ITEMSIZEID  , ITEMSIZE , ITEMSIZEALIAS , ITEMSUBGROUPID , ITEMSUBGROUP , ITEMSUBGROUPALIAS ,
-               ITEMTYPEID, ITEMTYPE , ITEMTYPEALIAS , SIZESEQUENCE , ITEMSIZESEQUENCE  ,
-                ITEMSIZEALIASSEQUENCE,ITEMSEQUENCE , ITEMALIASSEQUENCE 
-              , BRANDSEQUENCE , BRANDALIASSEQUENCE ,Focus ,IsSelectedBrand ,IsSelectedBrandProduct,bottleQut,SchemeID )
-                                                                  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
-            [
-              item.ItemId, item.Item, item.ItemAlias, item.BPC, item.BPC1, item.BPC2, item.ErpCode, item.Volume,
-              item.ReportingQuantity,
-              item.MRP, item.PTR, item.BRANDID, item.BRAND, item.BRANDALIAS, item.DIVISIONID, item.DIVISION, item.DIVISIONALIAS,
-              item.FLAVOURID, item.FLAVOUR,
-              item.FLAVOURALIAS, item.ITEMCLASSID, item.ITEMCLASS, item.ITEMCLASSALIAS, item.ITEMGROUPID, item.ITEMGROUP,
-              item.ITEMGROUPALIAS,
-              item.ITEMSIZEID, item.ITEMSIZE, item.ITEMSIZEALIAS, item.ITEMSUBGROUPID, item.ITEMSUBGROUP, item.ITEMSUBGROUPALIAS,
-              item.ITEMTYPEID, item.ITEMTYPE, item.ITEMTYPEALIAS, item.SIZESEQUENCE, item.ITEMSIZESEQUENCE,
-              item.ITEMSIZEALIASSEQUENCE, item.ITEMSEQUENCE, item.ITEMALIASSEQUENCE
-              , item.BRANDSEQUENCE, item.BRANDALIASSEQUENCE, item.ISFOCUS,'','','0',item.SchemeID
-            ],
-            (tx, results) => {
-
-            },
-            (err) => { console.error("error=", err); }
-          );
-        }
-      }).then((result) => {
-        //
-      }).catch((err) => {
-        //console.log(err);
-      });
+      db1.transaction((tx) => { tx.executeSql('DELETE FROM PItem', [])
+      .then(([tx, results]) => {
+        db1.transaction((tx) => {
+          var len = PItemData.length;
+          var count = 0;
+  
+          for (var item of PItemData) {
+            tx.executeSql(
+              `insert into PItem(ItemId , Item , ItemAlias , BPC , BPC1 , BPC2 ,ErpCode , Volume , ReportingQuantity , 
+                MRP , PTR , BRANDID , BRAND , BRANDALIAS , DIVISIONID , DIVISION , DIVISIONALIAS , FLAVOURID , FLAVOUR , 
+                FLAVOURALIAS ,ITEMCLASSID , ITEMCLASS , ITEMCLASSALIAS , ITEMGROUPID , ITEMGROUP , ITEMGROUPALIAS ,
+                 ITEMSIZEID  , ITEMSIZE , ITEMSIZEALIAS , ITEMSUBGROUPID , ITEMSUBGROUP , ITEMSUBGROUPALIAS ,
+                 ITEMTYPEID, ITEMTYPE , ITEMTYPEALIAS , SIZESEQUENCE , ITEMSIZESEQUENCE  ,
+                  ITEMSIZEALIASSEQUENCE,ITEMSEQUENCE , ITEMALIASSEQUENCE 
+                , BRANDSEQUENCE , BRANDALIASSEQUENCE ,Focus ,IsSelectedBrand ,IsSelectedBrandProduct,bottleQut,SchemeID )
+                                                                    VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+              [
+                item.ItemId, item.Item, item.ItemAlias, item.BPC, item.BPC1, item.BPC2, item.ErpCode, item.Volume,
+                item.ReportingQuantity,
+                item.MRP, item.PTR, item.BRANDID, item.BRAND, item.BRANDALIAS, item.DIVISIONID, item.DIVISION, item.DIVISIONALIAS,
+                item.FLAVOURID, item.FLAVOUR,
+                item.FLAVOURALIAS, item.ITEMCLASSID, item.ITEMCLASS, item.ITEMCLASSALIAS, item.ITEMGROUPID, item.ITEMGROUP,
+                item.ITEMGROUPALIAS,
+                item.ITEMSIZEID, item.ITEMSIZE, item.ITEMSIZEALIAS, item.ITEMSUBGROUPID, item.ITEMSUBGROUP, item.ITEMSUBGROUPALIAS,
+                item.ITEMTYPEID, item.ITEMTYPE, item.ITEMTYPEALIAS, item.SIZESEQUENCE, item.ITEMSIZESEQUENCE,
+                item.ITEMSIZEALIASSEQUENCE, item.ITEMSEQUENCE, item.ITEMALIASSEQUENCE
+                , item.BRANDSEQUENCE, item.BRANDALIASSEQUENCE, item.ISFOCUS,'','','0',item.SchemeID
+              ],
+              (tx, results) => {
+  
+              },
+              (err) => { console.error("error=", err); }
+            );
+          }
+        }).then((result) => {
+          //
+        }).catch((err) => {
+          //console.log(err);
+        });
+       }); })
+    
     }
   }
 
@@ -1079,28 +1119,32 @@ export default class Database {
   }
   insertAdvanceReports(AdvanceReportsData) {
     if (AdvanceReportsData.length) {
-      db1.transaction((tx) => {
-        var len = AdvanceReportsData.length;
-        var count = 0;
-
-        for (var item of AdvanceReportsData) {
-          tx.executeSql(
-            `insert into AdvanceReports(AID ,ReportTitle,ReportType ,ReferenceType ,IsActive )
-                                                                  VALUES (?,?,?,?,?)`,
-            [
-              item.ID, item.ReportTitle, item.ReportType, item.ReferenceType, item.IsActive
-            ],
-            (tx, results) => {
-
-            },
-            (err) => { console.error("error=", err); }
-          );
-        }
-      }).then((result) => {
-        // 
-      }).catch((err) => {
-        //console.log(err);
-      });
+      db1.transaction((tx) => { tx.executeSql('DELETE FROM AdvanceReports', [])
+      .then(([tx, results]) => { 
+        db1.transaction((tx) => {
+          var len = AdvanceReportsData.length;
+          var count = 0;
+  
+          for (var item of AdvanceReportsData) {
+            tx.executeSql(
+              `insert into AdvanceReports(AID ,ReportTitle,ReportType ,ReferenceType ,IsActive )
+                                                                    VALUES (?,?,?,?,?)`,
+              [
+                item.ID, item.ReportTitle, item.ReportType, item.ReferenceType, item.IsActive
+              ],
+              (tx, results) => {
+  
+              },
+              (err) => { console.error("error=", err); }
+            );
+          }
+        }).then((result) => {
+          // 
+        }).catch((err) => {
+          //console.log(err);
+        });
+       }); })
+     
     }
   }
 
@@ -1533,122 +1577,138 @@ export default class Database {
   }
   insertuommaster(uommasterData) {
     if (uommasterData.length) {
-      db1.transaction((tx) => {
-        var len = uommasterData.length;
-        var count = 0;
-
-        for (var item of uommasterData) {
-          tx.executeSql(
-            `insert into  uommaster(UOMDescription, ConvToBase , Formula , UOMKey , IsQuantity,
-              ConversionFormula ,ConversionUomFormula  )
-              VALUES (?,?,?,?,?,?,?)`,
-            [
-              item.UOMDescription, item.ConvToBase, item.Formula, item.UOMKey, item.IsQuantity,
-              item.ConversionFormula, item.ConversionUomFormula
-            ],
-            (tx, results) => {
-
-            },
-            (err) => { console.error("error=", err); }
-          );
-        }
-      }).then((result) => {
-        //
-      }).catch((err) => {
-        //console.log(err);
-      });
+      db1.transaction((tx) => { tx.executeSql('DELETE FROM uommaster  ', [])
+      .then(([tx, results]) => { 
+        db1.transaction((tx) => {
+          var len = uommasterData.length;
+          var count = 0;
+  
+          for (var item of uommasterData) {
+            tx.executeSql(
+              `insert into  uommaster(UOMDescription, ConvToBase , Formula , UOMKey , IsQuantity,
+                ConversionFormula ,ConversionUomFormula  )
+                VALUES (?,?,?,?,?,?,?)`,
+              [
+                item.UOMDescription, item.ConvToBase, item.Formula, item.UOMKey, item.IsQuantity,
+                item.ConversionFormula, item.ConversionUomFormula
+              ],
+              (tx, results) => {
+  
+              },
+              (err) => { console.error("error=", err); }
+            );
+          }
+        }).then((result) => {
+          //
+        }).catch((err) => {
+          //console.log(err);
+        });
+       }); })
+     
     }
   }
 
 
   insertoutletAssetInformation(outletAssetInformationData) {
     if (outletAssetInformationData.length) {
-      db1.transaction((tx) => {
-        var len = outletAssetInformationData.length;
-        var count = 0;
-
-        for (var item of outletAssetInformationData) {
-          tx.executeSql(
-            `insert into outletAssetInformation( CustomerID , AssetID , AssetQRcode ,AssetInformation,ScanFlag)
-                                                                    VALUES (?,?,?,?,?)`,
-            [
-              item.CustomerID, item.AssetID, item.AssetQRcode, item.AssetInformation, ""
-            ],
-            (tx, results) => {
-            },
-            (err) => { console.error("error=", err); }
-          );
-        }
-      }).then((result) => {
-        // 
-      }).catch((err) => {
-        //console.log(err);
-      });
+      db1.transaction((tx) => { tx.executeSql('DELETE FROM outletAssetInformation  ', [])
+      .then(([tx, results]) => { 
+        db1.transaction((tx) => {
+          var len = outletAssetInformationData.length;
+          var count = 0;
+  
+          for (var item of outletAssetInformationData) {
+            tx.executeSql(
+              `insert into outletAssetInformation( CustomerID , AssetID , AssetQRcode ,AssetInformation,ScanFlag)
+                                                                      VALUES (?,?,?,?,?)`,
+              [
+                item.CustomerID, item.AssetID, item.AssetQRcode, item.AssetInformation, ""
+              ],
+              (tx, results) => {
+              },
+              (err) => { console.error("error=", err); }
+            );
+          }
+        }).then((result) => {
+          // 
+        }).catch((err) => {
+          //console.log(err);
+        });
+       }); })
+     
     }
   }
 
 
   insertSurveyMaster(SurveyMaster) {
     if (SurveyMaster.length) {
-      db1.transaction((tx) => {
-        var len = SurveyMaster.length;
-        var count = 0;
-
-        for (var item of SurveyMaster) {
-          // "ID": 2,
-          // "SurveyName": "Outlet Survey - IMFL",
-          // "CompanyName": "SAPL",
-          // "CustomerID": null,
-          // "PublishedDate": "2020-05-01T00:00:00",
-          // "TimeRequired": 10,
-          // "SurveyURL": "https://zylem.in/cpa/OutletSurveyDetails.aspx/EvaluationMasterID=1?userid=&password=&lat=&lon=",
-          // "SurveyDoneDate": null
-          tx.executeSql(
-            `insert into SurveyMaster( ID,SurveyName,CompanyName,CustomerID,PublishedDate,TimeRequired,SurveyURL,SurveyDoneDate)
-                                                                     VALUES (?,?,?,?,?,?,?,?)`,
-            [
-              item.ID, item.SurveyName, item.CompanyName, item.CustomerID, item.PublishedDate, item.TimeRequired, item.SurveyURL, item.SurveyDoneDate
-            ],
-            (tx, results) => {
-
-            },
-            (err) => { console.error("error=", err); }
-          );
-        }
-      }).then((result) => {
-        // 
-      }).catch((err) => {
-        //console.log(err);
-      });
+      db1.transaction((tx) => { tx.executeSql('DELETE FROM SurveyMaster ', [])
+      .then(([tx, results]) => { 
+        db1.transaction((tx) => {
+          var len = SurveyMaster.length;
+          var count = 0;
+  
+          for (var item of SurveyMaster) {
+            // "ID": 2,
+            // "SurveyName": "Outlet Survey - IMFL",
+            // "CompanyName": "SAPL",
+            // "CustomerID": null,
+            // "PublishedDate": "2020-05-01T00:00:00",
+            // "TimeRequired": 10,
+            // "SurveyURL": "https://zylem.in/cpa/OutletSurveyDetails.aspx/EvaluationMasterID=1?userid=&password=&lat=&lon=",
+            // "SurveyDoneDate": null
+            tx.executeSql(
+              `insert into SurveyMaster( ID,SurveyName,CompanyName,CustomerID,PublishedDate,TimeRequired,SurveyURL,SurveyDoneDate)
+                                                                       VALUES (?,?,?,?,?,?,?,?)`,
+              [
+                item.ID, item.SurveyName, item.CompanyName, item.CustomerID, item.PublishedDate, item.TimeRequired, item.SurveyURL, item.SurveyDoneDate
+              ],
+              (tx, results) => {
+  
+              },
+              (err) => { console.error("error=", err); }
+            );
+          }
+        }).then((result) => {
+          // 
+        }).catch((err) => {
+          //console.log(err);
+        });
+       }); })
+     
     }
   }
 
 
   insertoutletAssetTypeClassificationList(outletAssetTypeClassificationList) {
     if (outletAssetTypeClassificationList.data) {
-      db1.transaction((tx) => {
-        var len = outletAssetTypeClassificationList.length;
-        var count = 0;
-
-        for (var item of outletAssetTypeClassificationList) {
-
-          tx.executeSql(
-            `insert into  assetTypeClassificationList( AssetTypeID , AssetName , ClassificationList)
-                                                                  VALUES (?,?,?)`,
-            [
-              item.AssetTypeID, item.AssetName, item.ClassificationList
-            ],
-            (tx, results) => {
-              ////console.log("rjlen1",results.rows.length)
-            },
-            (err) => { console.error("error=", err); }
-          );
-        }
-      }).then((result) => {
-        //  
-      }).catch((err) => {
-        //console.log(err);
-      });
+      db1.transaction((tx) => { tx.executeSql('DELETE FROM assetTypeClassificationList  ', [])
+      .then(([tx, results]) => { 
+        db1.transaction((tx) => {
+          var len = outletAssetTypeClassificationList.length;
+          var count = 0;
+  
+          for (var item of outletAssetTypeClassificationList) {
+  
+            tx.executeSql(
+              `insert into  assetTypeClassificationList( AssetTypeID , AssetName , ClassificationList)
+                                                                    VALUES (?,?,?)`,
+              [
+                item.AssetTypeID, item.AssetName, item.ClassificationList
+              ],
+              (tx, results) => {
+                ////console.log("rjlen1",results.rows.length)
+              },
+              (err) => { console.error("error=", err); }
+            );
+          }
+        }).then((result) => {
+          //  
+        }).catch((err) => {
+          //console.log(err);
+        });
+       }); })
+     
     }
   }
   //insertresources
@@ -1687,31 +1747,35 @@ export default class Database {
   insertUsersCustomers(UsersCustomers) {
     if (UsersCustomers.length > 0) {
       // this.initDB().then((db) => {
-      db1.transaction((tx) => {
-        var len = UsersCustomers.length;
-        var count = 0;
-
-        for (var item of UsersCustomers) {
-
-          tx.executeSql(
-            `insert into UsersCustomers( UserID ,CustomerID )
-                                                                VALUES (?,?)`,
-            [
-              // "UserID": 52362,
-              // "CustomerID": 26754
-              item.UserID, item.CustomerID
-            ],
-            (tx, results) => {
-
-            },
-            (err) => { console.error("error=", err); }
-          );
-        }
-      }).then((result) => {
-        // 
-      }).catch((err) => {
-        //console.log(err);
-      });
+        db1.transaction((tx) => { tx.executeSql('DELETE FROM UsersCustomers', [])
+        .then(([tx, results]) => {  
+          db1.transaction((tx) => {
+            var len = UsersCustomers.length;
+            var count = 0;
+    
+            for (var item of UsersCustomers) {
+    
+              tx.executeSql(
+                `insert into UsersCustomers( UserID ,CustomerID )
+                                                                    VALUES (?,?)`,
+                [
+                  // "UserID": 52362,
+                  // "CustomerID": 26754
+                  item.UserID, item.CustomerID
+                ],
+                (tx, results) => {
+    
+                },
+                (err) => { console.error("error=", err); }
+              );
+            }
+          }).then((result) => {
+            // 
+          }).catch((err) => {
+            //console.log(err);
+          });
+        }); })
+     
       // }).catch((err) => {
       //   //console.log(err);
       // });
@@ -1797,33 +1861,37 @@ export default class Database {
 
   insertUsersItems(UsersItems) {
     if (UsersItems.length) {
+      db1.transaction((tx) => { tx.executeSql('DELETE FROM UsersItems', [])
+      .then(([tx, results]) => { 
+        db1.transaction((tx) => {
+          var len = UsersItems.length;
+          var count = 0;
+  
+          for (var item of UsersItems) {
+  
+            tx.executeSql(
+              `insert into  UsersItems( UserID,ItemID)
+                                                                  VALUES (?,?)`,
+              [
+                // "UserID": 52362,
+                // "ItemID": 464
+                item.UserID, item.ItemID
+              ],
+              (tx, results) => {
+                // //console.log("rjlen",results.length)
+  
+              },
+              (err) => { console.error("error=", err); }
+            );
+          }
+        }).then((result) => {
+          // 
+        }).catch((err) => {
+          //console.log(err);
+        });
+       }); })
       //this.initDB().then((db) => {
-      db1.transaction((tx) => {
-        var len = UsersItems.length;
-        var count = 0;
-
-        for (var item of UsersItems) {
-
-          tx.executeSql(
-            `insert into  UsersItems( UserID,ItemID)
-                                                                VALUES (?,?)`,
-            [
-              // "UserID": 52362,
-              // "ItemID": 464
-              item.UserID, item.ItemID
-            ],
-            (tx, results) => {
-              // //console.log("rjlen",results.length)
-
-            },
-            (err) => { console.error("error=", err); }
-          );
-        }
-      }).then((result) => {
-        // 
-      }).catch((err) => {
-        //console.log(err);
-      });
+     
       // }).catch((err) => {
       //   //console.log(err);
       // });
@@ -2316,7 +2384,7 @@ console.log("getShopCardInfo",query);
       const products = [];
       //   var query = "select distinct CustomerId as id ,Party as Party,Outlet_Info as Outlet_Info from Pcustomer where CustomerId='" + id + "' union select  distinct OrderID as id ,OutletName as Party ,OutletAddress as Outlet_Info from newpartyoutlet where OrderID ='" + id + "' order by Party asc"
     //  var query = "select * from MJPMasterDetails where PlannedDate='" + currentDate + "'"
-      var query = "select MJPMasterDetails.*,OrderMaster.id,OrderMaster.sync_flag,OrderMaster.ActivityStatus from MJPMasterDetails left JOIN OrderMaster on MJPMasterDetails.ID = OrderMaster.id where PlannedDate='" + currentDate + "'"
+      var query = "select MJPMasterDetails.*,OrderMaster.id,OrderMaster.sync_flag,OrderMaster.ActivityStatus from MJPMasterDetails left JOIN OrderMaster on MJPMasterDetails.ID = OrderMaster.DefaultDistributorId where PlannedDate='" + currentDate + "'"
 console.log("getShopCardInfo",query);
       //  this.initDB().then((db) => {
       db1.transaction((tx) => {
@@ -2404,7 +2472,7 @@ getRemarksForCancelMeeting(id){
     const products = [];
     //SELECT * FROM TABLE_TEMP_ORDER_DETAILS ,TABLE_TEMP_OrderMaster where TABLE_TEMP_ORDER_DETAILS.order_id = TABLE_TEMP_OrderMaster.id and TABLE_TEMP_OrderMaster.entity_id="'+outlet_id+'" and TABLE_TEMP_OrderMaster.collection_type="'+collection_type+'"'
 
-    var query = 'SELECT * FROM OrderMaster  where id="' + MeetingId + '"'
+    var query = 'SELECT * FROM OrderMaster  where DefaultDistributorId="' + MeetingId + '"'
 
 
     db1.transaction((tx) => {
@@ -2429,8 +2497,8 @@ UpdateOrderMastersssForMeetingCancel(id, Current_date_time, entity_type, entity_
     return new Promise((resolve) => {
       db1.transaction((tx) => {
         tx.executeSql(
-          'UPDATE OrderMaster SET Current_date_time =?, latitude = ?, longitude = ?, remark = ?, sync_flag = ?, ActivityStatus = ?,collection_type = ? WHERE id = ?', 
-          [Current_date_time,latitude, longitude, remark, sync_flag, ActivityStatus,collection_type, id],
+          'UPDATE OrderMaster SET Current_date_time =?, latitude = ?, longitude = ?, remark = ?, sync_flag = ?, ActivityStatus = ?,collection_type = ? WHERE DefaultDistributorId = ?', 
+          [Current_date_time,latitude, longitude, remark, sync_flag, ActivityStatus,collection_type, DefaultDistributorId],
           (tx, results) => {
             resolve(results);
           },
@@ -2478,7 +2546,7 @@ insertOrderMastersssForMeetingCancel(id, Current_date_time, entity_type, entity_
   var query = "select id as ID,entity_type as EntityType,entity_id as EntityID ,latitude as Latitude ,longitude as Longitude ,total_amount as TotalAmount ,from_date as FromDate ,to_date as ToDate ,collection_type as CollectionType ,user_id as UserID ,remark as Remark,Current_date_time as CurrentDatetime,DefaultDistributorId as DefaultDistributorId,ExpectedDeliveryDate as ExpectedDeliveryDate from OrderMaster where sync_flag ='N'"
   return new Promise((resolve) => {
     db1.transaction((tx) => {
-      tx.executeSql('select id as ID,entity_type as EntityType,entity_id as EntityID ,latitude as Latitude ,longitude as Longitude ,total_amount as TotalAmount ,from_date as FromDate ,to_date as ToDate ,collection_type as CollectionType ,user_id as UserID ,remark as Remark,Current_date_time as CurrentDatetime,DefaultDistributorId as DefaultDistributorId,ExpectedDeliveryDate as ExpectedDeliveryDate,ActivityStatus as ActivityStatus from OrderMaster where sync_flag = ? and id = ?', [sync_flag,meetingid], (tx, results) => {
+      tx.executeSql('select id as ID,entity_type as EntityType,entity_id as EntityID ,latitude as Latitude ,longitude as Longitude ,total_amount as TotalAmount ,from_date as FromDate ,to_date as ToDate ,collection_type as CollectionType ,user_id as UserID ,remark as Remark,Current_date_time as CurrentDatetime,DefaultDistributorId as DefaultDistributorId,ExpectedDeliveryDate as ExpectedDeliveryDate,ActivityStatus as ActivityStatus from OrderMaster where sync_flag = ? and DefaultDistributorId = ?', [sync_flag,meetingid], (tx, results) => {
         var OrderMaster = []
         for (let i = 0; i < results.rows.length; i++) {
           OrderMaster.push(results.rows.item(i));
@@ -2615,15 +2683,15 @@ console.log("getShopCardInfo",query);
     });
   }
 
-  InsertMeet(ID,Meeting_Id,Shop_Id,Shop_name,PlannedDate,Time,location,Remarks,IsActivityDone,Type_sync,collection_type,latitude,longitude,TotalAmount,UserID,CurrentDatetime,DefaultDistributorId,ExpectedDeliveryDate)
+  InsertMeet(ID,Meeting_Id,Shop_Id,Shop_name,PlannedDate,Time,location,Remarks,IsActivityDone,Type_sync,collection_type,latitude,longitude,TotalAmount,UserID,CurrentDatetime,DefaultDistributorId,ExpectedDeliveryDate,fromdate,todate)
 {
   return new Promise((resolve) => {
   db1.transaction((tx) => {
      tx.executeSql(
-        `insert into  MeetReport(ID,Meeting_Id,Shop_Id,Shop_name,PlannedDate,Time,location,Remarks,IsActivityDone,Type_sync,collection_type,latitude,longitude,TotalAmount,UserID,CurrentDatetime,DefaultDistributorId,ExpectedDeliveryDate)
-          VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+        `insert into  MeetReport(ID,Meeting_Id,Shop_Id,Shop_name,PlannedDate,Time,location,Remarks,IsActivityDone,Type_sync,collection_type,latitude,longitude,TotalAmount,UserID,CurrentDatetime,DefaultDistributorId,ExpectedDeliveryDate,FromDate,ToDate)
+          VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
         [
-          ID,Meeting_Id,Shop_Id,Shop_name,PlannedDate,Time,location,Remarks,IsActivityDone,Type_sync,collection_type,latitude,longitude,TotalAmount,UserID,CurrentDatetime,DefaultDistributorId,ExpectedDeliveryDate
+          ID,Meeting_Id,Shop_Id,Shop_name,PlannedDate,Time,location,Remarks,IsActivityDone,Type_sync,collection_type,latitude,longitude,TotalAmount,UserID,CurrentDatetime,DefaultDistributorId,ExpectedDeliveryDate,fromdate,todate
         ],
         (tx, results) => {
           resolve(results)
