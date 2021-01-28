@@ -11,6 +11,7 @@ import { Card, CardTitle, CardContent, CardAction, CardButton, CardImage } from 
 import { Item } from 'native-base';
 
 const db = new Database();
+let currentDateTime;
 class MJP_one extends React.Component {
   state={
    
@@ -61,6 +62,42 @@ constructor(props) {
 componentWillMount() {
     setTimeout(function(){this.setState({showWarning: true}); }.bind(this), 1000);  
     BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
+   
+
+    var date = new Date().getDate(); //Current Date
+    var month = new Date().getMonth() + 1; //Current Month
+    var year = new Date().getFullYear(); //Current Year
+    var hours = new Date().getHours(); //Current Hours
+    var min = new Date().getMinutes(); //Current Minutes
+    var sec = new Date().getSeconds(); //Current Seconds
+    
+
+     if(month <= 9){
+        month = '0'+ month;
+    }
+
+    if(date <= 9){
+        date = '0' + date
+    }
+
+    if(hours <= 9){
+        hours = '0' +hours
+    }
+
+    if(min <= 9)
+    {
+        min = '0' + min
+    }
+
+    if(sec <= 9){
+        sec = '0' +sec
+    }
+
+
+ //   app_order_id = date + '/' + month + '/' + year + ' ' + hours + ':' + min + ':' + sec
+  //  app_order_id = app_order_id.replace(/[|&:$%@"/" "()+,]/g, "");                  
+    currentDateTime = year + '-' + month + '-' + date + ' ' + hours + ':' + min + ':' + sec
+
     this.setState({currentDate:moment().format('DD MMM')})
     db.getPlannedDates().then((data)=>{
         this.setState({ Planned_dates: data})
@@ -76,6 +113,10 @@ componentWillMount() {
         })
     })
 }
+
+shouldComponentUpdate() {
+    return true;
+  }
 
 componentWillUnmount() {
     BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
@@ -268,7 +309,7 @@ showsVerticalScrollIndicator={false}>
 
              </TouchableOpacity>
                  
-                 <TouchableOpacity onPress={() => Actions.MJP_two({PlannedDate:item.PlannedDate,EntityTypeID:item.EntityTypeID,EntityType:item.EntityType,Meeting_Id:item.ID,IsActivityDone:item.IsActivityDone,ActivityTitle : item.ActivityTitle})}
+                 <TouchableOpacity onPress={() => Actions.MJP_two({PlannedDate:item.PlannedDate,EntityTypeID:item.EntityTypeID,EntityType:item.EntityType,Meeting_Id:item.ID,IsActivityDone:item.IsActivityDone,ActivityTitle : item.ActivityTitle,currentDateTimestart : currentDateTime})}
                     style={{
                     width: wp('25%'),
                     height: 35,
