@@ -68,7 +68,7 @@ class MJP_Cancel extends React.Component {
 
         const tok = JSON.parse((keyValue))
         this.setState({ tokens: tok })
-        ID = moment().format('YYYYMMDDHHmm');
+       
     })
 
           AsyncStorage.getItem('userIds').then((keyValue) => {
@@ -204,15 +204,15 @@ class MJP_Cancel extends React.Component {
           var min = new Date().getMinutes(); //Current Minutes
           var sec = new Date().getSeconds(); //Current Seconds
           console.log('this.state.remark' +this.state.remarks);
-
+          ID = moment().format('YYYYMMDDHHmm');
   
          var currentDateTime = year + '-' + month + '-' + date + ' ' + hours + ':' + min + ':' + sec
          db.checkMeetingInOrderMaster(this.props.Meeting_Id).then((dataMaster) => {
 
           if(dataMaster > 0){
-            db.UpdateOrderMastersssForMeetingCancel(this.props.Meeting_Id, currentDateTime, this.props.EntityType, this.props.EntityTypeID,
+            db.UpdateOrderMastersssForMeetingCancel(ID, currentDateTime, this.props.EntityType, this.props.EntityTypeID,
               this.state.userLatitude,this.state.userLongitude, '', '', '',
-              this.state.collection_type, this.state.userId, this.state.remarks, "1", "N", '', "", '',this.state.reasonId).then((data) =>{
+              this.state.collection_type, this.state.userId, this.state.remarks, "1", "N", '', this.props.Meeting_Id, '',this.state.reasonId).then((data) =>{
                console.log("meeting cancel "+ JSON.stringify(data));
   
                 db.getOrderMasterSyncDataFor_Meeting(this.props.Meeting_Id,"N").then((dataMain) => {
@@ -223,9 +223,9 @@ class MJP_Cancel extends React.Component {
   
               })
           }else{
-            db.insertOrderMastersssForMeetingCancel(this.props.Meeting_Id, currentDateTime, this.props.EntityType, this.props.EntityTypeID,
+            db.insertOrderMastersssForMeetingCancel(ID, currentDateTime, this.props.EntityType, this.props.EntityTypeID,
               this.state.userLatitude,this.state.userLongitude, '', '', '',
-              this.state.collection_type, this.state.userId, this.state.remarks, "1", "N", '', "", '',this.state.reasonId).then((data) =>{
+              this.state.collection_type, this.state.userId, this.state.remarks, "1", "N", '',this.props.Meeting_Id, '',this.state.reasonId).then((data) =>{
                 console.log("meeting cancel "+ JSON.stringify(data));
   
                 db.getOrderMasterSyncDataFor_Meeting(this.props.Meeting_Id,"N").then((dataMain) => {
