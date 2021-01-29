@@ -63,7 +63,7 @@ export class AddNewShopSecond extends Component {
        
  }
   NextButton = () => {
-   
+    var currentDateTimeFilename = '';
    // if (this.state.ShopType) {
      if (this.state.ShopId) {
 //if(this.state.ShopArea){
@@ -77,7 +77,7 @@ export class AddNewShopSecond extends Component {
     app_order_id = date + '/' + month + '/' + year + ' ' + hours + ':' + min + ':' + sec
     app_order_id = app_order_id.replace(/[|&:$%@"/" "()+,]/g, "");
     curentDatetime=year + '-' + month + '-' + date + ' ' + hours + ':' + min + ':' + sec
-    
+    currentDateTimeFilename = curentDatetime + '.jpg';
     //console.log(app_order_id)
   //  alert(app_order_id)
   db.insertNewShopnewpartyoutlet(app_order_id,this.props.BeatID,this.props.outletNAme,this.state.contactPersonMob,this.props.OwnerName,this.props.address,"",
@@ -87,9 +87,10 @@ export class AddNewShopSecond extends Component {
 //  alert(this.state.fileList.length)
  for(let i=0;i<this.props.fileList.length;i++){
     counts++    
-     db.insertNewPartyImages(app_order_id,"N",this.props.fileList[i].url.uri)
-     Actions.Shops()
+    db.insertNewPartyImages(app_order_id,"N",currentDateTimeFilename,this.props.fileList[i].url.uri)
+   //  Actions.Shops()
  } 
+ Actions.Shops()
  
      }else{
  alert("Enter ShopReg No.")
@@ -102,7 +103,7 @@ export class AddNewShopSecond extends Component {
  }else{
      alert("Enter ShopId")
  }
- Actions.Shops()
+// Actions.Shops()
 //}
 //  else{
 //     alert("Enter ShopType")

@@ -341,7 +341,8 @@ export class Dashboard extends Component {
                 active: !this.state.active,
               });
             } else if (name == 'add_shop') {
-              Actions.AddNewShop();
+            //  Actions.AddNewShop();
+            Actions.Shops();
             }
           }}
           onPressMain={() => {

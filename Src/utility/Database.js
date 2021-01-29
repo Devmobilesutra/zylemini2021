@@ -306,7 +306,7 @@ export default class Database {
                 });
 
                 db.transaction((tx) => {
-                  tx.executeSql('CREATE TABLE newpartyImageoutlet(id INTEGER PRIMARY KEY AUTOINCREMENT,OrderID TEXT,Is_Sync TEXT,ImageName TEXT);');
+                  tx.executeSql('CREATE TABLE newpartyImageoutlet(id INTEGER PRIMARY KEY AUTOINCREMENT,OrderID TEXT,Is_Sync TEXT,ImageName TEXT,ImagePath TEXT);');
                 }).then(() => {
 
                 }).catch(error => {
@@ -5360,13 +5360,13 @@ console.log('query : '+query);
 
 
 
-  insertNewPartyImages(app_order_id, Is_Sync, image) {
+  insertNewPartyImages(app_order_id, Is_Sync, imageName,ImagePath) {
     return new Promise((resolve) => {
       db1.transaction((tx) => {
         tx.executeSql(
-          `insert into newpartyImageoutlet(OrderID,Is_Sync,ImageName) VALUES (?,?,?)`,
+          `insert into newpartyImageoutlet(OrderID,Is_Sync,ImageName,ImagePath) VALUES (?,?,?,?)`,
           [
-            app_order_id, Is_Sync, image
+            app_order_id, Is_Sync, imageName,ImagePath
           ],
           (tx, results) => {
             resolve(results)
@@ -5720,8 +5720,56 @@ console.log('query : '+query);
         });
 
     });
+ }
 
-  }
+ getNewPartyOutletSyncData(){
+  var query = "SELECT OrderID as Id,BitID as BeatId,OutletName as outletName,ContactNo as ContactNumber,OwnersName as OwnersName,OutletAddress as OutletAddress,latitude as Latitude,longitude as Longitude,AddedDate as AddedOnDate, ('ShopType:' || ShopType || '||' || 'RegistrationNo:'|| RegistrationNo || '||' || 'ShopId:' || ShopId || '||' || 'ContactPerson:' ||ContactPerson || '||' || 'ShopArea:' || ShopArea) AS Remark from newpartyoutlet where Is_Sync='N';"
+  return new Promise((resolve) => {
+    db1.transaction((tx) => {
+      tx.executeSql(query, [], (tx, results) => {
+        var NewParty = []
+        for (let i = 0; i < results.rows.length; i++) {
+          NewParty.push(results.rows.item(i));
+        }
+
+        resolve(NewParty);
+      });
+    })
+      .then((result) => {
+
+      })
+      .catch((err) => {
+        //console.log(err);
+      });
+
+  });
+
+}
+
+getnewPartyTargetId(){
+  var query = "SELECT OrderID as id from newpartyoutlet where Is_Sync='N';"
+  return new Promise((resolve) => {
+    db1.transaction((tx) => {
+      tx.executeSql(query, [], (tx, results) => {
+        var NewParty = []
+        for (let i = 0; i < results.rows.length; i++) {
+          NewParty.push(results.rows.item(i));
+        }
+
+        resolve(NewParty);
+      });
+    })
+      .then((result) => {
+
+      })
+      .catch((err) => {
+        //console.log(err);
+      });
+
+  });
+}
+
+
   getDiscountSyncData() {
     var query = "select OrderID as OrderID, DiscountType as DiscountType, DiscountAmount as DiscountAmount, discountadd as DiscountAdd, discountless as DiscountLess ,RNP as RNP ,OnAmount as OnAmount ,OnAmountSmallUnit as OnAmountSmallUnit ,Rate as Rate ,BookCode as BookCode ,OrderedItemID as OrderedItemID ,BrandCode as BrandCode ,ItemCode as ItemCode from TABLE_DISCOUNT where syncFlag= 'N'"
     return new Promise((resolve) => {
@@ -5747,6 +5795,31 @@ console.log('query : '+query);
 
   getImageDetailsyncData() {
     var query = 'select id as ID, order_id as OrderID,image_date_time as ImageDateTime ,image_name as ImageName,Path as ImageBytes,is_sync as sync_data  from ImagesDetails where is_sync= "N"'
+    //console.log("q---", query)
+    return new Promise((resolve) => {
+      db1.transaction((tx) => {
+        tx.executeSql(query, [], (tx, results) => {
+          var ImageDetails = []
+          for (let i = 0; i < results.rows.length; i++) {
+            ImageDetails.push(results.rows.item(i));
+          }
+
+          resolve(ImageDetails);
+        });
+      })
+        .then((result) => {
+
+        })
+        .catch((err) => {
+          //console.log(err);
+        });
+
+    });
+
+  }
+
+  getNewPartyImageDetailsyncData() {
+    var query = 'select id as ID, OrderID as id,ImageName as ImageName,ImagePath as ImagePath,Is_Sync as sync_data  from newpartyImageoutlet where Is_Sync= "N"'
     //console.log("q---", query)
     return new Promise((resolve) => {
       db1.transaction((tx) => {

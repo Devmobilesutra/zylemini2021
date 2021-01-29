@@ -50,6 +50,8 @@ export default class SideMenu extends Component {
       Discount: [],
       ImageDetails1: [],
       ImageDetails: [],
+      newPartyImagedetails :[],
+      newPartyImagedetails1 :[],
       aa: '',
       isLoading: false,
       AssetDetails: [],
@@ -64,7 +66,10 @@ export default class SideMenu extends Component {
     var OrderDetails = [];
     var Discount = [];
     var ImageDetails = [];
+    var NewPartyImageDetails = [];
     var AssetDetails = [];
+    var NewPartyOutlet =[];
+    var NewPartyTargetId =[];
     this.state.isLoading = true;
     this.setState({isLoading: true});
     this.setState({JSONObj: {}});
@@ -80,6 +85,46 @@ export default class SideMenu extends Component {
           OrderDetails = data;
           this.state.JSONObj['OrderDetails'] = data;
         }
+
+        db.getNewPartyOutletSyncData().then(data =>{
+          if(data.length > 0){
+            console.log('New Party for sync', JSON.stringify(data));
+            NewPartyOutlet = data;
+            this.state.JSONObj['NewParty'] = data;
+          }
+        })
+        this.state.newPartyImagedetails1 = [];
+        db.getNewPartyImageDetailsyncData().then(data => {
+          if (data.length > 0) {
+            this.setState({newPartyImagedetails1: data});
+            this.state.newPartyImagedetails1.map((item, key) => {
+              var bytess;
+              this.state.newPartyImagedetails = [];
+              RNFS.readFile(item.ImagePath, 'base64').then(res => {
+                bytess = res;
+                this.state.newPartyImagedetails.push({
+                 // ID: item.ID,
+                 Id: item.id,
+               //   ImageDatetime: item.ImageDateTime,
+               ImageName: item.ImageName,
+                  data: bytess,
+                });
+              });
+            });
+            NewPartyImageDetails = this.state.newPartyImagedetails;
+            this.state.JSONObj['NewPartyImage'] = this.state.newPartyImagedetails;
+          }
+        })
+
+        db.getnewPartyTargetId().then(data =>{
+          if(data.length > 0){
+            console.log('New getnewPartyTargetId for sync', JSON.stringify(data)); 
+            NewPartyTargetId = data;
+            this.state.JSONObj['newPartyTargetId'] = data;
+          }
+        })
+
+
         db.getDiscountSyncData().then(data => {
           if (data.length > 0) {
             console.log('discount for sync', JSON.stringify(data));
@@ -180,7 +225,7 @@ export default class SideMenu extends Component {
                                 .MobileGenPrimaryKey,
                             );
                           }
-                          alert('Data Sync Successfull');
+                        //  alert('Data Sync Successfull');
                           Alert.alert(
                             "ZyleminiPlus",
                             response.data.Data.Order.Status,
