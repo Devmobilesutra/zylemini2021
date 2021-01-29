@@ -358,7 +358,7 @@ export default class MyReport extends React.Component {
                   <View style={styles.DuimageContainer1}>
                     <ImageBackground
                       style={styles.DuimageStyles1}
-                      source={require('../../assets/Icons/Reports.png')}
+                      source={require('../../assets/Icons/Data_Upload.png')}
                     />
                   </View>
                   <View style={{flex: 5.5}}>
