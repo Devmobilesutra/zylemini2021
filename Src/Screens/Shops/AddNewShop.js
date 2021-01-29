@@ -408,8 +408,8 @@ export class AddNewShop extends Component {
                   <TextInput
                     placeholder="Type Here"
                     style={styles.addLocTextBoxStyle}
-                    onChangeText={text => this.state.coords.latitude}
-                    value={this.state.location}
+                    onChangeText={text => this.onChangeLocation()}
+                    // value={this.state.userLatitude}
                   />
                 </View>
                 <View style={styles.addLocBGStyle}>
