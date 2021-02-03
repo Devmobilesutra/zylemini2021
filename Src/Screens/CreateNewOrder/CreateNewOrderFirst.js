@@ -493,6 +493,16 @@ export class CreateNewOrderFirst extends Component {
   NextButton = () => {
     if (this.state.query) {
       //  if (this.state.selectedDist) {
+        var date = new Date().getDate(); //Current Date
+        var month = new Date().getMonth() + 1; //Current Month
+        var year = new Date().getFullYear(); //Current Year
+        var hours = new Date().getHours(); //Current Hours
+        var min = new Date().getMinutes(); //Current Minutes
+        var sec = new Date().getSeconds(); //Current Seconds
+       var ActivityStart =year + '-' + month + '-' + date + ' ' + hours + ':' + min + ':' + sec
+      
+        AsyncStorage.setItem('ActivityStart', JSON.stringify(ActivityStart));
+       
       Actions.CreateNewOrderSecond();
       // } else {
       //   alert('Please Select Distributor');

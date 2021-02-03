@@ -258,7 +258,7 @@ export default class Database {
                 });
 
                 db.transaction((tx) => {
-                  tx.executeSql('CREATE TABLE OrderMaster(id TEXT ,Current_date_time TEXT,entity_type TEXT,entity_id TEXT,latitude TEXT,longitude TEXT,total_amount TEXT,from_date TEXT,to_date TEXT,collection_type TEXT,user_id TEXT,remark TEXT,selected_flag TEXT,sync_flag TEXT,check_date TEXT,DefaultDistributorId TEXT,ExpectedDeliveryDate TEXT,ActivityStatus TEXT);');
+                  tx.executeSql('CREATE TABLE OrderMaster(id TEXT ,Current_date_time TEXT,entity_type TEXT,entity_id TEXT,latitude TEXT,longitude TEXT,total_amount TEXT,from_date TEXT,to_date TEXT,collection_type TEXT,user_id TEXT,remark TEXT,selected_flag TEXT,sync_flag TEXT,check_date TEXT,DefaultDistributorId TEXT,ExpectedDeliveryDate TEXT,ActivityStatus TEXT,ActivityStart TEXT,ActivityEnd TEXT);');
                 }).then(() => {
 
                 }).catch(error => {
@@ -1257,7 +1257,26 @@ export default class Database {
 
   }
 
-  updateMasterMain(Current_date_time, entity_type, entity_id, latitude, longitude, total_amount, from_date, to_date, order_id, collection_type,ExpectedDeliveryDate,check_date) {
+  updateMasterMain(Current_date_time, entity_type, entity_id, latitude, longitude, total_amount, from_date, to_date, order_id, collection_type,ExpectedDeliveryDate,check_date,ActivityEnd) {
+    return new Promise((resolve) => {
+      // this.initDB().then((db) => {
+      db1.transaction((tx) => {
+        tx.executeSql('UPDATE OrderMaster SET  Current_date_time = ?,entity_type = ? ,entity_id = ?,latitude = ?,longitude = ?,total_amount = ?, from_date=?,to_date = ?,ExpectedDeliveryDate=?,check_date=?,ActivityEnd=? where id = ? and collection_type = ? ', [Current_date_time, entity_type, entity_id, latitude, longitude, total_amount, from_date, to_date,ExpectedDeliveryDate,check_date,ActivityEnd, order_id, collection_type]).then(([tx, results]) => {
+          resolve(results.length);
+         // alert("Order Updated")
+        });
+      }).then((result) => {
+        // 
+      }).catch((err) => {
+        //console.log(err);
+      });
+      // }).catch((err) => {
+      //   //console.log(err);
+      // });
+    });
+  }
+
+  updateMasterMainForEdit(Current_date_time, entity_type, entity_id, latitude, longitude, total_amount, from_date, to_date, order_id, collection_type,ExpectedDeliveryDate,check_date) {
     return new Promise((resolve) => {
       // this.initDB().then((db) => {
       db1.transaction((tx) => {
@@ -2492,13 +2511,13 @@ console.log('len :'+results.rows.length)
 }
 
 //change by vibha
-UpdateOrderMastersssForMeetingCancel(id, Current_date_time, entity_type, entity_id, latitude, longitude, total_amount, from_date, to_date, collection_type, user_id, remark, selected_flag, sync_flag, check_date, DefaultDistributorId, ExpectedDeliveryDate,ActivityStatus){
+UpdateOrderMastersssForMeetingCancel(id, Current_date_time, entity_type, entity_id, latitude, longitude, total_amount, from_date, to_date, collection_type, user_id, remark, selected_flag, sync_flag, check_date, DefaultDistributorId, ExpectedDeliveryDate,ActivityStatus,ActivityStart,ActivityEnd){
 //  'UPDATE TABLE_TEMP_ORDER_DETAILS SET quantity_one = ?, quantity_two = ?, small_Unit = ?, large_Unit = ?, from_date = ?, to_date = ?, Amount = ?, rate = ? ,bottleQty = ? WHERE order_id = ? and item_id = ? ', [qty_1, qty_2, small_Unit, large_Unit, from_date, to_date, amt, rate, bottleQty, order_id, item_id]).then(([tx, results]) => {
     return new Promise((resolve) => {
       db1.transaction((tx) => {
         tx.executeSql(
-          'UPDATE OrderMaster SET Current_date_time =?, latitude = ?, longitude = ?, remark = ?, sync_flag = ?, ActivityStatus = ?,collection_type = ? WHERE DefaultDistributorId = ?', 
-          [Current_date_time,latitude, longitude, remark, sync_flag, ActivityStatus,collection_type, DefaultDistributorId],
+          'UPDATE OrderMaster SET Current_date_time =?, latitude = ?, longitude = ?, remark = ?, sync_flag = ?, ActivityStatus = ?,collection_type = ?,ActivityStart=?,ActivityEnd=? WHERE DefaultDistributorId = ?', 
+          [Current_date_time,latitude, longitude, remark, sync_flag, ActivityStatus,collection_type,ActivityStart,ActivityEnd, DefaultDistributorId],
           (tx, results) => {
             resolve(results);
           },
@@ -2514,15 +2533,15 @@ UpdateOrderMastersssForMeetingCancel(id, Current_date_time, entity_type, entity_
 }
 
 //change by vibha
-insertOrderMastersssForMeetingCancel(id, Current_date_time, entity_type, entity_id, latitude, longitude, total_amount, from_date, to_date, collection_type, user_id, remark, selected_flag, sync_flag, check_date, DefaultDistributorId, ExpectedDeliveryDate,ActivityStatus) {
+insertOrderMastersssForMeetingCancel(id, Current_date_time, entity_type, entity_id, latitude, longitude, total_amount, from_date, to_date, collection_type, user_id, remark, selected_flag, sync_flag, check_date, DefaultDistributorId, ExpectedDeliveryDate,ActivityStatus,ActivityStart,ActivityEnd) {
   //   this.initDB().then((db) => {
     return new Promise((resolve) => {
   db1.transaction((tx) => {
     tx.executeSql(
-      `insert into OrderMaster(id,Current_date_time ,entity_type,entity_id ,latitude ,longitude ,total_amount ,from_date ,to_date ,collection_type ,user_id ,remark,selected_flag ,sync_flag ,check_date,DefaultDistributorId,ExpectedDeliveryDate,ActivityStatus)
-                                                                  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+      `insert into OrderMaster(id,Current_date_time ,entity_type,entity_id ,latitude ,longitude ,total_amount ,from_date ,to_date ,collection_type ,user_id ,remark,selected_flag ,sync_flag ,check_date,DefaultDistributorId,ExpectedDeliveryDate,ActivityStatus,ActivityStart,ActivityEnd)
+                                                                  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
       [
-        id, Current_date_time, entity_type, entity_id, latitude, longitude, total_amount, from_date, to_date, collection_type, user_id, remark, selected_flag, sync_flag, check_date, DefaultDistributorId, ExpectedDeliveryDate,ActivityStatus
+        id, Current_date_time, entity_type, entity_id, latitude, longitude, total_amount, from_date, to_date, collection_type, user_id, remark, selected_flag, sync_flag, check_date, DefaultDistributorId, ExpectedDeliveryDate,ActivityStatus,ActivityStart,ActivityEnd
 
       ],
       (tx, results) => {
@@ -4533,14 +4552,14 @@ console.log('query : '+query);
 
  
 
-  insertOrderMastersss(id, Current_date_time, entity_type, entity_id, latitude, longitude, total_amount, from_date, to_date, collection_type, user_id, remark, selected_flag, sync_flag, check_date, DefaultDistributorId, ExpectedDeliveryDate) {
+  insertOrderMastersss(id, Current_date_time, entity_type, entity_id, latitude, longitude, total_amount, from_date, to_date, collection_type, user_id, remark, selected_flag, sync_flag, check_date, DefaultDistributorId, ExpectedDeliveryDate,ActivityStatus,ActivityStart,ActivityEnd) {
     //   this.initDB().then((db) => {
     db1.transaction((tx) => {
       tx.executeSql(
-        `insert into OrderMaster(id,Current_date_time ,entity_type,entity_id ,latitude ,longitude ,total_amount ,from_date ,to_date ,collection_type ,user_id ,remark,selected_flag ,sync_flag ,check_date,DefaultDistributorId,ExpectedDeliveryDate )
-                                                                    VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+        `insert into OrderMaster(id,Current_date_time ,entity_type,entity_id ,latitude ,longitude ,total_amount ,from_date ,to_date ,collection_type ,user_id ,remark,selected_flag ,sync_flag ,check_date,DefaultDistributorId,ExpectedDeliveryDate,ActivityStatus,ActivityStart,ActivityEnd )
+                                                                    VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
         [
-          id, Current_date_time, entity_type, entity_id, latitude, longitude, total_amount, from_date, to_date, collection_type, user_id, remark, selected_flag, sync_flag, check_date, DefaultDistributorId, ExpectedDeliveryDate
+          id, Current_date_time, entity_type, entity_id, latitude, longitude, total_amount, from_date, to_date, collection_type, user_id, remark, selected_flag, sync_flag, check_date, DefaultDistributorId, ExpectedDeliveryDate,ActivityStatus,ActivityStart,ActivityEnd
 
         ],
         (tx, results) => {
@@ -4695,7 +4714,7 @@ console.log('query : '+query);
 
   CheckTodaysRecordForShopCheckIn(check_date, entity_id, collection_type) {
     const products = [];
-    var query = 'SELECT * FROM OrderMaster where entity_id = "' + entity_id + '" and collection_type  = "' + collection_type + '" and check_date = "' + check_date + '"'
+    var query = 'SELECT * FROM OrderMaster where entity_id = "' + entity_id + '" and collection_type  = "' + collection_type + '" and check_date = "' + check_date +'"'
     //console.log("checkIsOrderIdInDb=", query)
     return new Promise((resolve) => {
       // this.initDB().then((db) => {    
@@ -4707,7 +4726,7 @@ console.log('query : '+query);
             checkorder.push(results.rows.item(i));
           }
           // checkorder=results.rows.length
-          //console.log("qcheckorder=", checkorder)
+          console.log("qcheckorder  =", checkorder)
           resolve(checkorder);
         });
       })
@@ -4760,18 +4779,18 @@ console.log('query : '+query);
 
   insertRecordInOrderMasterForShopCheckIn(id, Current_date_time, entity_type, entity_id, latitude, longitude,
     total_amount, from_date, to_date, collection_type, user_id, selected_flag, sync_flag,
-    remark, check_date, DefaultDistributorId, ExpectedDeliveryDate) {
+    remark, check_date, DefaultDistributorId, ExpectedDeliveryDate,Activitystatus,activityStart,activityend) {
     return new Promise((resolve) => {
       db1.transaction((tx) => {
         alert("CheckedIn Successfully!")
         tx.executeSql(
           `insert into OrderMaster(id,Current_date_time,entity_type,entity_id,latitude,
-            longitude ,total_amount ,from_date,to_date,collection_type ,user_id,selected_flag,sync_flag,remark,check_date,DefaultDistributorId,ExpectedDeliveryDate   )
-                                                                VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+            longitude ,total_amount ,from_date,to_date,collection_type ,user_id,selected_flag,sync_flag,remark,check_date,DefaultDistributorId,ExpectedDeliveryDate,ActivityStatus,ActivityStart,ActivityEnd   )
+                                                                VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
           [
             id, Current_date_time, entity_type, entity_id, latitude, longitude,
             total_amount, from_date, to_date, collection_type, user_id, selected_flag, sync_flag,
-            remark, check_date, DefaultDistributorId, ExpectedDeliveryDate
+            remark, check_date, DefaultDistributorId, ExpectedDeliveryDate,Activitystatus,activityStart,activityend
           ],
           (tx, results) => {
             resolve(results)
@@ -4790,6 +4809,22 @@ console.log('query : '+query);
       //console.log(err);
     });
 
+  }
+
+   //change by vibha
+   updateCheckoutOrderMaster(collectiontype,shopId,checkDate,checkoutDatetime,latitude,longitude) {
+    return new Promise((resolve) => {
+    db1.transaction((tx) => {
+      tx.executeSql(
+        'UPDATE OrderMaster SET ActivityEnd=?,latitude=?,longitude=? where entity_id = "' + shopId + '" and collection_type  = "' + collectiontype + '" and check_date = "' + checkDate + '"',
+        [checkoutDatetime,latitude,longitude],
+        (tx, results) => {
+          console.log('Results', results.rowsAffected);
+          resolve(results)
+
+        });
+    });
+  })
   }
 
   getCustomerId(route_id) {
@@ -4934,7 +4969,7 @@ console.log('query : '+query);
   //sideorderfunction 
   getAllOrders() {
   //  var query = 'SELECT * FROM OrderMaster where collection_type =0';
-  var query = 'select OrderMaster.*,Pcustomer.AREA,Pcustomer.Party from OrderMaster INNER JOIN Pcustomer on OrderMaster.entity_id = Pcustomer.CustomerId where OrderMaster.entity_type =1'
+  var query = 'select OrderMaster.*,Pcustomer.AREA,Pcustomer.Party from OrderMaster INNER JOIN Pcustomer on OrderMaster.entity_id = Pcustomer.CustomerId where collection_type = 0'
     //console.log("checkIsOrderIdInDb=", query)
     return new Promise((resolve) => {
       //  this.initDB().then((db) => {    
@@ -4966,9 +5001,9 @@ console.log('query : '+query);
   getCustomerShopName(entity_id,orderid) {
     var query
     if(orderid){
-      query = 'select * from Pcustomer,OrderMaster where CustomerId = "' + entity_id + '" and entity_id = "' + entity_id + '" and OrderMaster.id = "' + orderid + '"';
+      query = 'select * from Pcustomer,OrderMaster where CustomerId = "' + entity_id + '" and entity_id = "' + entity_id + '" and collection_type = 0 and OrderMaster.id = "' + orderid + '"';
     }else{
-     query = 'select * from Pcustomer,OrderMaster where CustomerId = "' + entity_id + '" and entity_id = "' + entity_id + '"'
+     query = 'select * from Pcustomer,OrderMaster where CustomerId = "' + entity_id + '" and entity_id = "' + entity_id + '" and collection_type = 0 '
      } //console.log("checkIsOrderIdInDb=", query)
     return new Promise((resolve) => {
       //  this.initDB().then((db) => {    
@@ -5679,7 +5714,7 @@ console.log('query : '+query);
     var query = "select id as ID,entity_type as EntityType,entity_id as EntityID ,latitude as Latitude ,longitude as Longitude ,total_amount as TotalAmount ,from_date as FromDate ,to_date as ToDate ,collection_type as CollectionType ,user_id as UserID ,remark as Remark,Current_date_time as CurrentDatetime,DefaultDistributorId as DefaultDistributorId,ExpectedDeliveryDate as ExpectedDeliveryDate from OrderMaster where sync_flag ='N'"
     return new Promise((resolve) => {
       db1.transaction((tx) => {
-        tx.executeSql('select id as ID,entity_type as EntityType,entity_id as EntityID ,latitude as Latitude ,longitude as Longitude ,total_amount as TotalAmount ,from_date as FromDate ,to_date as ToDate ,collection_type as CollectionType ,user_id as UserID ,remark as Remark,Current_date_time as CurrentDatetime,DefaultDistributorId as DefaultDistributorId,ExpectedDeliveryDate as ExpectedDeliveryDate,ActivityStatus as ActivityStatus from OrderMaster where sync_flag = ?', [sync_flag], (tx, results) => {
+        tx.executeSql('select id as ID,entity_type as EntityType,entity_id as EntityID ,latitude as Latitude ,longitude as Longitude ,total_amount as TotalAmount ,from_date as FromDate ,to_date as ToDate ,collection_type as CollectionType ,user_id as UserID ,remark as Remark,Current_date_time as CurrentDatetime,DefaultDistributorId as DefaultDistributorId,ExpectedDeliveryDate as ExpectedDeliveryDate,ActivityStatus as ActivityStatus,ActivityStart,ActivityEnd  from OrderMaster where sync_flag = ?', [sync_flag], (tx, results) => {
           var OrderMaster = []
           for (let i = 0; i < results.rows.length; i++) {
             OrderMaster.push(results.rows.item(i));

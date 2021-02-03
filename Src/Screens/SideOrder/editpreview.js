@@ -168,7 +168,7 @@ export class editpreview extends Component {
     saveClickHandler(e) {
         //////////insert into main Detail Table
         AsyncStorage.getItem('app_order_id').then((keyValue) => {
-            var a = JSON.parse(keyValue)
+            var a = JSON.parse(JSON.stringify(keyValue))
             db.getOrderDataFromTempOrderDetails(a).then((data) => {
                 //console.log("data=",data)
                 this.setState({ orderData: data })
@@ -224,7 +224,7 @@ export class editpreview extends Component {
  insertIntoOrderMaster()
     {
         AsyncStorage.getItem('app_order_id').then((keyValue) => {
-            var a = JSON.parse(keyValue)
+            var a = JSON.parse(JSON.stringify(keyValue))
             db.getTotalamountOfOrder(a).then((data1) => {
                 db.getOrderDataFromTempOrderMaster(a, "0").then((data) => {
 
@@ -249,7 +249,7 @@ export class editpreview extends Component {
                             } else {
     
                                 // Current_date_time,entity_type,entity_id,latitude,longitude,total_amount,from_date,to_date,order_id,collection_type
-                                db.updateMasterMain(this.state.MasterorderData[0].Current_date_time,
+                                db.updateMasterMainForEdit(this.state.MasterorderData[0].Current_date_time,
                                     this.state.MasterorderData[0].entity_type, this.state.MasterorderData[0].entity_id,
                                     this.state.MasterorderData[0].latitude,
                                     this.state.MasterorderData[0].longitude,
@@ -506,7 +506,7 @@ export class editpreview extends Component {
        // this._componentFocused();
        let orderid;
        AsyncStorage.getItem('app_order_id').then((keyValue) => {
-        orderid = JSON.parse(keyValue) ;
+        orderid = JSON.parse(JSON.stringify(keyValue)) ;
         console.log("exact data for prev orderid ",orderid);
         // db.newsidePreview(orderid).then((data) => {
         //     console.log("exact data for prev",data);
@@ -524,7 +524,7 @@ export class editpreview extends Component {
         //             console.log("exact  this.state.total  ", this.state.total );
         // })
 
-        db.getInsertedsTempOrder(orderid).then((data) => {
+        db.getInsertedsTempOrder(this.props.order_Id).then((data) => {
             console.log("exact data for prev",data);
             this.setState({BrandListU:data})
           //  console.log("exact oid",this.props.order_id);
@@ -575,10 +575,10 @@ export class editpreview extends Component {
         selectedStartDate1 = newDate;
 
         AsyncStorage.getItem('outletId').then((keyValue) => {
-            this.setState({ outletId: JSON.parse(keyValue) })
+            this.setState({ outletId: JSON.parse(JSON.stringify(keyValue)) })
         })
         AsyncStorage.getItem('outletName').then((keyValue) => {
-            this.setState({ outletName: JSON.parse(keyValue) })
+            this.setState({ outletName: JSON.parse(JSON.stringify(keyValue)) })
 
         })
         ///sonali

@@ -444,7 +444,7 @@ export class Shops extends Component {
 
   navigate = shopid => {
     AsyncStorage.setItem('shopId', JSON.stringify(shopid));
-    Actions.Info();
+    Actions.Info({shopId: shopid});
   };
   cardListViewsView = () => {
     const {navigation} = this.props;
@@ -457,8 +457,8 @@ export class Shops extends Component {
           data={this.state.ShopsArray}
           renderItem={({item}) => (
             <View style={styles.shopListMainContainer}>
-              {/* <TouchableOpacity  onPress={()=>this.navigate( item.id)}> */}
-              <TouchableOpacity onPress={() => Actions.Info({shopId: item.id})}>
+              <TouchableOpacity  onPress={()=>this.navigate( item.id)}>
+              {/* <TouchableOpacity onPress={() => Actions.Info({shopId: item.id})}> */}
                 <View style={styles.shopDetailBackStyle}>
                   <View style={styles.imageContainer}>
                     <Image

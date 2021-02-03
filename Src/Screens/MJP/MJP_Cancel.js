@@ -212,7 +212,7 @@ class MJP_Cancel extends React.Component {
           if(dataMaster > 0){
             db.UpdateOrderMastersssForMeetingCancel(ID, currentDateTime, this.props.EntityType, this.props.EntityTypeID,
               this.state.userLatitude,this.state.userLongitude, '', '', '',
-              this.state.collection_type, this.state.userId, this.state.remarks, "1", "N", '', this.props.Meeting_Id, '',this.state.reasonId).then((data) =>{
+              this.state.collection_type, this.state.userId, this.state.remarks, "1", "N", '', this.props.Meeting_Id, '',this.state.reasonId,currentDateTime,currentDateTime).then((data) =>{
                console.log("meeting cancel "+ JSON.stringify(data));
   
                 db.getOrderMasterSyncDataFor_Meeting(this.props.Meeting_Id,"N").then((dataMain) => {
@@ -225,7 +225,7 @@ class MJP_Cancel extends React.Component {
           }else{
             db.insertOrderMastersssForMeetingCancel(ID, currentDateTime, this.props.EntityType, this.props.EntityTypeID,
               this.state.userLatitude,this.state.userLongitude, '', '', '',
-              this.state.collection_type, this.state.userId, this.state.remarks, "1", "N", '',this.props.Meeting_Id, '',this.state.reasonId).then((data) =>{
+              this.state.collection_type, this.state.userId, this.state.remarks, "1", "N", '',this.props.Meeting_Id, '',this.state.reasonId,currentDateTime,currentDateTime).then((data) =>{
                 console.log("meeting cancel "+ JSON.stringify(data));
   
                 db.getOrderMasterSyncDataFor_Meeting(this.props.Meeting_Id,"N").then((dataMain) => {
