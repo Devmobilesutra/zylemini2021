@@ -3,27 +3,87 @@ import {
   StyleSheet,
   View,
   Text,
-  Image,
   ImageBackground,
   TouchableOpacity,
-  AsyncStorage,
   ScrollView,
+  Image,
+  FlatList,
+  AsyncStorage,
+  BackHandler,
+  Alert,
 } from 'react-native';
-import {RFPercentage, RFValue} from 'react-native-responsive-fontsize';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
+import {RFPercentage, RFValue} from 'react-native-responsive-fontsize';
+import {Actions} from 'react-native-router-flux';
 import Dash from 'react-native-dash';
-import {Button} from 'react-native';
+import {FloatingAction} from 'react-native-floating-action';
+import {Fab, Button, Icon} from 'native-base';
+import {
+  ORDER_DELEVERED,
+  ORDER_IN_PROCESS,
+  ORDER_TOTAL,
+} from '../../Redux/actions/ShopAction';
 import {connect} from 'react-redux';
-
 import Database from './../../utility/Database';
+// import sideordernav from './sideordernav';
 
 const db = new Database();
 import moment from 'moment';
+import User from '../../utility/User';
+var open;
+const actions = [
+  {
+    text: 'Create New Order',
+    color: 'transperent',
+    name: 'bt_create',
+    position: 4,
+    textColor: 'black',
+    textStyle: {fontSize: 14, fontWeight: 'bold', marginHorizontal: 10},
+    buttonSize: 0,
+  },
+  //   {
+  //     text: "Sync Now",
+  //     color: 'transperent',
+  //     name: "bt_sync",
+  //     position: 4,
+  //     textColor: 'black',
+  //     textStyle: { fontSize: 14,fontWeight:'bold', marginHorizontal: 10 },
+  //     buttonSize: 0,
+  //   },
+  //   {
+  //     text: "Accept Payment",
+  //     color: 'transperent',
+  //     name: "bt_payment",
+  //     position: 3,
+  //     textColor: 'black',
+  //     textStyle: { fontSize: 14,fontWeight:'bold', marginHorizontal: 15, },
+  //     buttonSize: 0,
+  //   },
+  //   {
+  //     text: "Take A Survey",
+  //     color: 'transperent',
+  //     name: "bt_survey",
+  //     position: 2,
+  //     textColor: 'black',
+  //     textStyle: { fontSize: 14,fontWeight:'bold', marginHorizontal: 22, },
+  //     buttonSize: 0,
+  //   },
+  //   {
+  //     text: "Audit Assets",
+  //     color: 'transperent',
+  //     name: "bt_assets",
+  //     position: 1,
+  //     textColor: 'black',
+  //     textStyle: { fontSize: 14,fontWeight:'bold', marginHorizontal: 25, },
+  //     buttonSize: 0,
+  //   },
+];
 
-export class ApplicableSchemess extends Component {
+var name;
+export class sideorder extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -61,13 +121,33 @@ export class ApplicableSchemess extends Component {
     };
 
     ////
+    console.log('constructor called');
+    this.setState({reopen: false});
   }
 
-  static navigationOptions = {
-    title: 'Applicable Schemes',
-    headerStyle: {backgroundColor: '#796A6A'},
-    headerTintColor: '#ffffff',
-  };
+  onRefresh() {
+    this.setState({isRefreshing: true});
+
+    // Simulate fetching data from the server
+    setTimeout(() => {
+      this.setState({isRefreshing: false});
+    }, 5000);
+  }
+  componentWillUnmount() {
+    console.log('page leave called');
+    BackHandler.removeEventListener(
+      'hardwareBackPress',
+      this.handleBackButtonClick(),
+    );
+  }
+  handleBackButtonClick() {
+    Actions.drawerMenu();
+
+    // Actions.Shops();
+    return true;
+  }
+  // BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
+
   componentWillMount() {
     // this.setState({reopen:false});
     // BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
@@ -85,12 +165,20 @@ export class ApplicableSchemess extends Component {
       this._componentFocused,
     );
   }
-  _refresh() {
-    return new Promise(resolve => {
-      setTimeout(() => {
-        resolve();
-      }, 2000);
-    });
+
+  componentDidMount() {
+    BackHandler.addEventListener(
+      'hardwareBackPress',
+      this.handleBackButtonClick,
+    );
+    //console.log("componentDidMount callee")
+    // this._componentFocused();
+
+    // this._sub = this.props.navigation.addListener(
+    //     'didFocus',
+    //     this._componentFocused
+
+    // );
   }
 
   _componentFocused = () => {
@@ -140,8 +228,117 @@ export class ApplicableSchemess extends Component {
     });
   };
 
+  shouldComponentUpdate() {
+    return true;
+  }
+
+  onPressViewDeytail(entityid, orderid) {
+    console.log('order id : ' + orderid);
+    AsyncStorage.setItem('apporderid', orderid);
+    AsyncStorage.setItem('entityid', entityid);
+    Actions.sideordrDetails();
+  }
+
+  renderName(userid) {
+    db.getUserName(userid).then(data => {
+      name = data[0].UserName;
+      // this.setState({name:data[0].UserName})
+    });
+    return <Text style={styles.salesNameStyle}>{name}</Text>;
+  }
+
+  static navigationOptions = {
+    title: 'Orders',
+    color: 'white',
+    headerStyle: {
+      backgroundColor: '#221818',
+    },
+    headerTintColor: '#fff',
+    headerTitleStyle: {
+      color: '#fff',
+      marginLeft: wp('-2'),
+      fontSize: 20,
+    },
+    headerLeft: (
+      <View
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'center',
+          alignSelf: 'center',
+        }}>
+        <TouchableOpacity onPress={() => Actions.drawerMenu()}>
+          <Image
+            style={{marginLeft: wp('4')}}
+            source={require('../../assets/Icons/Back_White.png')}
+          />
+        </TouchableOpacity>
+      </View>
+    ),
+  };
+
+  // NavigateEdit = () => {
+  //    // AsyncStorage.setItem('routeName', "");
+  //    // AsyncStorage.setItem('routeId', "");
+  //     Actions.sideordermedit()
+
+  // }
+
+  _refresh() {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        resolve();
+      }, 2000);
+    });
+  }
+
+  _renderView(item) {
+    return (
+      <View style={styles.deliveryStatusContainer}>
+        <View style={styles.deliverySeparateContainer}>
+          <View style={styles.deliveryColContainer}>
+            <Text style={styles.deliveryLabelStyle}>DELIVERY</Text>
+          </View>
+        </View>
+
+        <View style={styles.deliveryStusMainContainer}>
+          <View style={styles.deliveryStatusColContainer}>
+            <View style={styles.statusPinkBG}>
+              <Text style={styles.statusTextStyle}>In Progress</Text>
+            </View>
+          </View>
+          <View style={styles.viewDetailsMainContainer}>
+            <TouchableOpacity
+              onPress={() => this.onPressViewDeytail(item.entity_id, item.id)}>
+              <View style={styles.viewDetailesLabelContainer}>
+                <Text style={styles.viewDetaileTextStyle}>View Details</Text>
+              </View>
+              <View style={styles.viewDetailesArrowContainer}>
+                <Image
+                  style={styles.viewDetailsArrowStyle}
+                  source={require('../../assets/Icons/right_arrow_front.png')}
+                />
+              </View>
+            </TouchableOpacity>
+            {/* <TouchableOpacity onPress={() => Actions.sideordermedit({ entity_id: item.entity_id,collection_type:item.collection_type})}  >
+             <View style={styles.viewDetailesLabelContainer}>
+                <Text style={styles.viewDetaileTextStyle}>
+                    Edit 
+                </Text>
+            </View>
+            <View style={styles.viewDetailesArrowContainer}>
+                <Image  style={styles.viewDetailsArrowStyle}
+                    source = {require('../../assets/Icons/right_arrow_front.png')}
+                />
+            </View>
+            </TouchableOpacity> */}
+          </View>
+        </View>
+      </View>
+    );
+  }
+
   _renderViewForFlatlist() {
-    console.log('here in flatlist');
     if (this.state.Shop_det.length > 0) {
       return this.state.Shop_det.map((item, i) => {
         return (
@@ -186,7 +383,7 @@ export class ApplicableSchemess extends Component {
                   dashColor="#E6DFDF"
                 />
               </View>
-              {/* {this._renderView(item)} */}
+              {this._renderView(item)}
             </View>
           </View>
         );
@@ -195,163 +392,100 @@ export class ApplicableSchemess extends Component {
       return <View />;
     }
   }
+  renderFABIcon = () => {
+    if (this.state.active) {
+      return (
+        <Icon
+          name="ios-close"
+          style={{fontSize: 45, color: '#FFFFFF', position: 'absolute'}}
+          color="#07B26A"
+        />
+      );
+    } else {
+      return (
+        <Icon
+          name="ios-add"
+          style={{fontSize: 45, color: '#FFFFFF', position: 'absolute'}}
+          color="#07B26A"
+        />
+      );
+    }
+  };
   render() {
+    // this._componentFocused();
+
+    let {orderInProcess, orderDelevered, orderTotal} = this.props.shops;
+    // console.log("component in render",this.state.Shop_det);
+    setTimeout(
+      function() {
+        this.setState({showWarning: true});
+      }.bind(this),
+      3000,
+    );
     return (
-      <View style={{flex: 10}}>
-        <ScrollView showsVerticalScrollIndicator={false}>
-          {/* Store Name and Right Arrow */}
-          <View style={{flex: 0.1, marginTop: hp('1')}}>
-            <View style={styles.brandNameContainer}>
-              <View style={styles.brandTextContainer}>
-                <Text style={styles.brandNameText}>BRAND NAME</Text>
+      <View>
+        <ImageBackground
+          source={require('../../assets/Icons/android_BG.png')}
+          style={{resizeMode: 'cover', justifyContent: 'center'}}>
+          <ScrollView showsVerticalScrollIndicator={false}>
+            {/*Total Shops  */}
+            <View style={styles.totalShopsMainContainer}>
+              <View style={styles.processColContainer}>
+                <Text style={styles.inProcessHeadingTextStyle}>
+                  {/* Total orderInProcess */}
+                  Total Orders : {this.state.TotalOrderLen}
+                </Text>
               </View>
 
-              <View style={styles.rightArrowContainer}>
-                <TouchableOpacity>
-                  <Image
-                    style={{marginRight: wp('4')}}
-                    source={require('../../assets/Icons/right_arrow_front.png')}
-                  />
-                </TouchableOpacity>
-              </View>
-            </View>
-          </View>
-
-          {/* Dash Line Below Brand Name*/}
-          <View style={styles.dashLineContainerBelowBrandName}>
-            <Dash
-              style={styles.dashLineStyle}
-              dashLength={2}
-              dashColor="#ADA2A2"
-            />
-          </View>
-
-          {/* Applicable Schemes */}
-          <View style={{flex: 1, marginVertical: wp('4')}}>
-            <View
-              style={{
-                flex: 1,
-                alignItems: 'flex-start',
-                flexDirection: 'row',
-                justifyContent: 'flex-start',
-                alignItems: 'center',
-              }}>
-              <View style={styles.roundedtext} />
-
-              <Text
-                style={{
-                  marginLeft: wp('2'),
-                  fontFamily: 'Proxima Nova',
-                  fontSize: wp('3'),
-                  color: '#3955CB',
-                }}>
-                Applicable Schemes( 15 )
-              </Text>
-            </View>
-            <View
-              style={{
-                flex: 1,
-                alignItems: 'flex-end',
-                flexDirection: 'row',
-                justifyContent: 'flex-end',
-                alignItems: 'center',
-                marginVertical: hp('-3'),
-              }}>
-              <TouchableOpacity>
-                {/* onPress={() =>
-                  this.props.navigation.navigate('ApplicableSchemess')
-                } */}
+              {/* Filter Icon */}
+              <View style={styles.filterIconContainer}>
                 <Image
-                  style={{marginRight: wp('5'), tintColor: '#3955CB'}}
-                  source={require('../../assets/Icons/right_arrow.png')}
+                  source={require('../../assets/Icons/filter_list_shop.png')}
+                  style={styles.filterIconStyle}
                 />
-              </TouchableOpacity>
+              </View>
             </View>
-          </View>
-          {/* //////////////////////listview */}
-          {this._renderViewForFlatlist()}
 
-          {/* Scheme Description */}
-          <View
-            style={{
-              flex: 1,
-              alignItems: 'flex-start',
-              justifyContent: 'center',
-              marginVertical: hp('10'),
-              marginLeft: wp('5'),
-              marginRight: wp('3'),
-            }}>
-            <Text
-              style={{
-                color: '#796A6A',
-                fontSize: wp('3%'),
-                fontFamily: 'Proxima Nova',
-              }}>
-              Dummy Scheme Description.Dummy Scheme Description. Dummy Scheme
-              Description.Dummy Scheme Description. Dummy Scheme
-              Description......
-            </Text>
-          </View>
-
-          <View
-            style={{
-              flex: 1,
-              flexDirection: 'column',
-              alignItems: 'flex-start',
-              justifyContent: 'center',
-              marginVertical: hp('4'),
-              marginHorizontal: wp('5'),
-            }}>
-            <Text
-              style={{
-                color: '#362828',
-                fontSize: wp('3.5%'),
-                fontFamily: 'Proxima Nova',
-                fontWeight: 'bold',
-              }}>
-              Validity
-            </Text>
-            <Text
-              style={{
-                color: '#796A6A',
-                fontSize: wp('3%'),
-                fontFamily: 'Proxima Nova',
-                marginTop: hp('1'),
-              }}>
-              12 Feb 2020
-            </Text>
-          </View>
-        </ScrollView>
-
-        <View style={{flex: 1, flexDirection: 'row'}}>
-          <TouchableOpacity>
-            <View style={styles.buttonOk}>
-              <Text style={styles.buttonTextOk}> OK </Text>
+            {/* Dash Line */}
+            <View style={styles.dashLineContainer}>
+              <Dash
+                style={styles.dashLineStyle}
+                dashLength={2}
+                dashColor="#ADA2A2"
+              />
             </View>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() =>
-              this.props.navigation.navigate('CreateNewOrderPreview')
-            }>
-            <View style={styles.buttonCancel}>
-              <Text style={styles.buttonTextCancel}> CANCEL </Text>
-            </View>
-          </TouchableOpacity>
-        </View>
+            {/* /////////////////////////////////////////////////////////////////////////////////////////////////////// */}
+            {/* Order Detailes */}
+            {this._renderViewForFlatlist()}
+
+            <View style={{height: hp('5')}} />
+          </ScrollView>
+        </ImageBackground>
       </View>
     );
   }
 }
 
 const mapStateToProps = state => {
-  return {};
+  return {
+    shops: state.shops,
+  };
 };
-
-const mapDispatchToProps = dispatch => ({});
+const mapDispatchToProps = dispatch => ({
+  orderTotal: val => {
+    dispatch(ORDER_TOTAL(val));
+  },
+  inProcessOrder: val => {
+    dispatch(ORDER_IN_PROCESS(val));
+  },
+  deleveredOrder: val => {
+    dispatch(ORDER_DELEVERED(val));
+  },
+});
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(ApplicableSchemess);
+)(sideorder);
 
 const styles = StyleSheet.create({
   totalShopsMainContainer: {
@@ -687,105 +821,5 @@ const styles = StyleSheet.create({
     tintColor: '#3955CB',
     height: hp('3.5'),
     width: wp('3.5'),
-  },
-  brandNameContainer: {
-    flex: 1,
-    flexDirection: 'row',
-  },
-
-  brandTextContainer: {
-    flex: 0.5,
-    flexDirection: 'column',
-  },
-
-  rightArrowContainer: {
-    flex: 0.5,
-    flexDirection: 'column',
-    alignItems: 'flex-end',
-  },
-
-  brandNameText: {
-    color: '#796A6A',
-    fontSize: wp('3.5%'),
-    fontWeight: 'bold',
-    marginTop: hp('3%'),
-    marginLeft: wp('6%'),
-    fontFamily: 'Proxima Nova',
-  },
-
-  rightArrowContainer: {
-    flex: 0.5,
-    flexDirection: 'column',
-    alignItems: 'flex-end',
-    marginTop: hp('3%'),
-    marginRight: wp('3'),
-  },
-
-  dashLineContainerBelowBrandName: {
-    flex: 1,
-    marginTop: hp('3'),
-    alignContent: 'center',
-    alignItems: 'center',
-  },
-
-  dashLineStyle: {
-    width: wp('89'),
-    height: hp('1'),
-    color: '#ADA2A2',
-  },
-
-  roundedtext: {
-    width: 25,
-    height: 25,
-    flexWrap: 'wrap',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 25 / 2,
-    backgroundColor: '#EAA304',
-    borderColor: '#EAA304',
-    borderWidth: 3,
-    marginLeft: wp('5'),
-  },
-
-  buttonOk: {
-    width: wp('44'),
-    height: hp('8'),
-    backgroundColor: '#46BE50',
-    marginVertical: hp('3'),
-    paddingVertical: hp('2'),
-    borderRadius: 8,
-    marginHorizontal: wp('3'),
-  },
-
-  buttonTextOk: {
-    fontSize: 14,
-    color: '#ffffff',
-    textAlign: 'center',
-    alignItems: 'center',
-    justifyContent: 'center',
-    fontWeight: 'bold',
-    fontFamily: 'Proxima Nova',
-  },
-
-  buttonCancel: {
-    width: wp('43'),
-    height: hp('8'),
-    backgroundColor: '#FFFFFF',
-    marginVertical: hp('3'),
-    paddingVertical: hp('2'),
-    borderRadius: 8,
-    borderColor: '#796A6A',
-    borderWidth: wp('0.3'),
-    marginHorizontal: wp('3'),
-  },
-
-  buttonTextCancel: {
-    fontSize: 14,
-    color: '#796A6A',
-    textAlign: 'center',
-    alignItems: 'center',
-    justifyContent: 'center',
-    fontWeight: 'bold',
-    fontFamily: 'Proxima Nova',
   },
 });
