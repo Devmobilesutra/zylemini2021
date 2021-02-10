@@ -1984,7 +1984,7 @@ export default class Database {
             ],
           ).then(([tx, results]) => {
             resolve(results);
-            alert('Order Inserted');
+            alert('Order Saved');
           });
         })
         .then(result => {
@@ -3276,7 +3276,7 @@ export default class Database {
       db1
         .transaction(tx => {
           tx.executeSql(
-            'select id as ID,entity_type as EntityType,entity_id as EntityID ,latitude as Latitude ,longitude as Longitude ,total_amount as TotalAmount ,from_date as FromDate ,to_date as ToDate ,collection_type as CollectionType ,user_id as UserID ,remark as Remark,Current_date_time as CurrentDatetime,DefaultDistributorId as DefaultDistributorId,ExpectedDeliveryDate as ExpectedDeliveryDate,ActivityStatus as ActivityStatus from OrderMaster where sync_flag = ? and DefaultDistributorId = ?',
+            'select id as ID,entity_type as EntityType,entity_id as EntityID ,latitude as Latitude ,longitude as Longitude ,total_amount as TotalAmount ,from_date as FromDate ,to_date as ToDate ,collection_type as CollectionType ,user_id as UserID ,remark as Remark,Current_date_time as CurrentDatetime,DefaultDistributorId as DefaultDistributorId,ExpectedDeliveryDate as ExpectedDeliveryDate,ActivityStatus as ActivityStatus,ActivityStart,ActivityEnd from OrderMaster where sync_flag = ? and DefaultDistributorId = ?',
             [sync_flag, meetingid],
             (tx, results) => {
               var OrderMaster = [];
@@ -7117,6 +7117,29 @@ export default class Database {
     // });
   }
 
+  updateNewPartyOutletSyncFlag(order_id) {
+    db1.transaction((tx) => {
+      tx.executeSql(
+        'UPDATE newpartyoutlet  SET Is_Sync = ? WHERE OrderID = ?',
+        ['Y', order_id],
+        (tx, results) => {
+          //console.log('Results', results.rowsAffected);
+
+        });
+    });
+    // return new Promise((resolve) => {
+    //   db1.transaction((tx) => {
+    //     tx.executeSql('UPDATE OrderMaster  SET sync_flag = ? WHERE id = ? ', ['Y', order_id]).then(([tx, results]) => {
+    //       resolve(results);
+    //     });
+    //   }).then((result) => {
+    //     //console.log("updateOrderMasterSyncFlagresulr////////",result)   
+    //   }).catch((err) => {
+    //     //console.log(err);
+    //   });
+    // });
+  }
+
   updateOrderDetailSyncFlag(order_id) {
     // return new Promise((resolve) => {
     db1.transaction(tx => {
@@ -7127,6 +7150,18 @@ export default class Database {
           //console.log('Results', results.rowsAffected);
         },
       );
+    });
+  }
+
+  updateNewPartyImageDetailSyncFlag(order_id){
+    db1.transaction((tx) => {
+      tx.executeSql(
+        'UPDATE newpartyImageoutlet  SET Is_Sync = ? WHERE OrderID = ?',
+        ['Y', order_id],
+        (tx, results) => {
+          //console.log('Results', results.rowsAffected);
+
+        });
     });
   }
 

@@ -5,6 +5,7 @@ export default class LoaderSync extends Component {
     render(){
         const {
             loading,
+            message,
             ...attributes
         } = this.props;
         return (
@@ -16,7 +17,7 @@ export default class LoaderSync extends Component {
                     <View style={styles.activityIndicatorWrapper}>
                         <ActivityIndicator
                             animating={loading} />
-                             <Text>Sending Data to Server...</Text>
+                             <Text>{message}</Text>
                     </View>
                    
                 </View>

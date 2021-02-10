@@ -26,6 +26,13 @@ import axios from 'axios'
 import Geolocation from 'react-native-geolocation-service';
 import { Alert } from 'react-native';
 import Loader from './../../components/LoaderSync'
+import Dialog, {
+  DialogContent,
+  DialogFooter,
+  DialogButton,
+  DialogTitle,
+  SlideAnimation,
+} from 'react-native-popup-dialog';
 const db = new Database();
 var ID;
 
@@ -53,7 +60,9 @@ class MJP_two extends React.Component {
       isLoading: false,
       AssetDetails: [],
       JSONObj: {},
-      content:'application/json'
+      content:'application/json',
+      visiblepopup :'',
+      responseMsg : ''
       };
 
       constructor(props) {
@@ -160,7 +169,10 @@ async requestFineLocation() {
       console.warn(err);
   }
 }
- 
+Meeting_endsavePopUp = () => {
+  const {navigation} = this.props;
+  this.setState({visiblepopup: true});
+}; 
 
 SubmitReport()
     {
@@ -255,20 +267,23 @@ console.log("date passing post",datas);
           } catch (error) {
 
           }
+          this.setState({responseMsg : response.data.Data.Order.Status});
+  
+          this.Meeting_endsavePopUp();
 
-          Alert.alert(
-            "ZyleminiPlus",
-            response.data.Data.Order.Status,
-            [
-              // {
-              //   text: "Cancel",
-              //   onPress: () => console.log("Cancel Pressed"),
-              //   style: "cancel"onPress={() => this.props.navigation.navigate('MJP_one')}
-              // },
-              { text: "OK", onPress: () => this.props.navigation.navigate('MJP_one') }
-            ],
-            { cancelable: false }
-          );
+          // Alert.alert(
+          //   "ZyleminiPlus",
+          //   response.data.Data.Order.Status,
+          //   [
+          //     // {
+          //     //   text: "Cancel",
+          //     //   onPress: () => console.log("Cancel Pressed"),
+          //     //   style: "cancel"onPress={() => this.props.navigation.navigate('MJP_one')}
+          //     // },
+          //     { text: "OK", onPress: () => this.props.navigation.navigate('MJP_one') }
+          //   ],
+          //   { cancelable: false }
+          // );
           this.setState({ isLoading: false })
       } else {
       
@@ -356,34 +371,40 @@ SaveAsDraftMeeting(e){
     if(data.length != 0){
       db.UpdateDraft(this.state.Remarks,this.props.Meeting_Id);
   // alert("Draft Edited Successfully"); 
-      Alert.alert(
-        "ZyleminiPlus",
-        "Draft Edited Successfully",
-        [
-          // {
-          //   text: "Cancel",
-          //   onPress: () => console.log("Cancel Pressed"),
-          //   style: "cancel"onPress={() => this.props.navigation.navigate('MJP_one')}
-          // },
-          { text: "OK", onPress: () => console.log("Cancel Pressed") }
-        ],
-        { cancelable: false }
-      );
+  this.setState({responseMsg : "Draft Edited Successfully"});
+  
+  this.Meeting_endsavePopUp();
+      // Alert.alert(
+      //   "ZyleminiPlus",
+      //   "Draft Edited Successfully",
+      //   [
+      //     // {
+      //     //   text: "Cancel",
+      //     //   onPress: () => console.log("Cancel Pressed"),
+      //     //   style: "cancel"onPress={() => this.props.navigation.navigate('MJP_one')}
+      //     // },
+      //     { text: "OK", onPress: () => console.log("Cancel Pressed") }
+      //   ],
+      //   { cancelable: false }
+      // );
     }else{
       db.InsertMeet(ID,this.props.Meeting_Id,this.props.EntityTypeID,this.props.ActivityTitle,this.props.PlannedDate,'',this.state.Shop_addFinal,this.state.Remarks,this.props.IsActivityDone,this.props.EntityType,this.state.collection_type,this.state.userLatitude,this.state.userLongitude,'',this.state.userId,currentDateTime,'','',this.props.currentDateTimestart,'').then((data) => {
-        Alert.alert(
-          "ZyleminiPlus",
-          "Meeting Details Saved in the Draft.",
-          [
-            // {
-            //   text: "Cancel",
-            //   onPress: () => console.log("Cancel Pressed"),
-            //   style: "cancel"onPress={() => this.props.navigation.navigate('MJP_one')}
-            // },
-            { text: "OK", onPress: () => console.log("Cancel Pressed") }
-          ],
-          { cancelable: false }
-        );
+        this.setState({responseMsg : "Meeting Details Saved in the Draft."});
+  
+        this.Meeting_endsavePopUp();
+        // Alert.alert(
+        //   "ZyleminiPlus",
+        //   "Meeting Details Saved in the Draft.",
+        //   [
+        //     // {
+        //     //   text: "Cancel",
+        //     //   onPress: () => console.log("Cancel Pressed"),
+        //     //   style: "cancel"onPress={() => this.props.navigation.navigate('MJP_one')}
+        //     // },
+        //     { text: "OK", onPress: () => console.log("Cancel Pressed") }
+        //   ],
+        //   { cancelable: false }
+        // );
       })
        // alert("meeting details saved in the draft");
       }
@@ -401,7 +422,7 @@ SaveAsDraftMeeting(e){
       return (
         <SafeAreaView >
           <View>
-          <Loader loading={this.state.isLoading} />
+          <Loader loading={this.state.isLoading} message={'Sending Data to server..'} />
           <View style={{flexDirection:'row'}}>
  <TouchableOpacity  onPress={() => this.props.navigation.navigate('Meeting')} style={{marginLeft:wp('7%'), marginTop:hp('3%')}}>
 <Image
@@ -526,6 +547,78 @@ style={{ width:30,height:30}}/>
         </View>
 
 
+        <View style={styles.appliSchemesArrowContainer}>
+                  <TouchableOpacity onPress={this.Meeting_endsavePopUp.bind(this)}>
+                    <View>
+                      {/* <Button
+                                                title="Show Dialog"
+                                                onPress={() => {
+                                                this.setState({ visible: true });
+                                                }}
+                                            /> */}
+                      <Dialog
+                        visible={this.state.visiblepopup}
+                        dialogAnimation={new SlideAnimation({
+                          slideFrom: 'bottom',
+                        })}
+                        onTouchOutside={() => {
+                          this.setState({visiblepopup: true});
+                        }}
+                        width={wp('90')}
+                        dialogTitle={
+                          <DialogTitle
+                            title="Meeting Module"
+                          
+                            style={{
+                              backgroundColor: '#F7F7F8',
+                              height : wp('15'),
+                              alignItems :'center'
+                             
+                            }}
+                            hasTitleBar={false}
+                            align="left"
+                          />
+                        }
+                        footer={
+                          <DialogFooter>
+                            <DialogButton
+                              text="OK"
+                              textStyle={{color: 'white'}}
+                              style={{backgroundColor: '#46BE50'}}
+                              onPress={() => {
+                                this.setState({visiblepopup: false});
+                                this.props.navigation.navigate('MJP_one')
+                               // this.insertIntoOrderMaster();
+                              }}
+                            />
+                          </DialogFooter>
+                        }>
+                        <DialogContent>
+                          <View style={styles.appliSchemesMainContainer}>
+                            <View style={styles.appliSchemesRowContainer}>
+                              {/* <View style={styles.roundedtext}>
+                                <Image
+                                  style={{tintColor: '#EAA304'}}
+                                  source={require('../../assets/Icons/Schemes_drawer.png')}
+                                />
+                              </View> */}
+
+                              <Text style={styles.appliSchemeTextStyle}>
+                               {this.state.responseMsg}
+                              </Text>
+                            </View>
+                          </View>
+                         
+                        </DialogContent>
+                      </Dialog>
+                    </View>
+
+                    {/* <Image
+                      style={styles.appliSchemesArrowStyle}
+                      source={require('../../assets/Icons/right_arrow_blue.png')}
+                    /> */}
+                  </TouchableOpacity>
+                </View>
 
         </View>
 
@@ -537,4 +630,33 @@ style={{ width:30,height:30}}/>
         
       }
       export default MJP_two;
+
+      const styles = StyleSheet.create({
+        appliSchemesArrowContainer: {
+          flex: 1,
+          alignItems: 'flex-end',
+          flexDirection: 'row',
+          justifyContent: 'flex-end',
+          alignItems: 'center',
+        },
+        appliSchemesMainContainer: {
+          flex: 1,
+          marginVertical: wp('10'),
+        },
+      
+        appliSchemesRowContainer: {
+          flex: 1,
+          alignItems: 'flex-start',
+          flexDirection: 'row',
+          justifyContent: 'flex-start',
+          alignItems: 'center',
+        },
+      
+        appliSchemeTextStyle: {
+          marginLeft: wp('1'),
+          fontFamily: 'Proxima Nova',
+          fontSize: wp('4'),
+          color: '#3955CB',
+        },
+      })
       

@@ -56,6 +56,7 @@ export default class SideMenu extends Component {
       isLoading: false,
       AssetDetails: [],
       JSONObj: {},
+      messagetext :''
     };
   }
 
@@ -71,6 +72,7 @@ export default class SideMenu extends Component {
     var NewPartyTargetId = [];
     this.state.isLoading = true;
     this.setState({isLoading: true});
+    this.setState({messagetext : 'Sending Data to server..'})
     this.setState({JSONObj: {}});
     db.getOrderMasterSyncData('N').then(data => {
       if (data.length > 0) {
@@ -230,6 +232,11 @@ export default class SideMenu extends Component {
                               response.data.Data.Order.Orders[i]
                                 .MobileGenPrimaryKey,
                             );
+                            db.updateNewPartyOutletSyncFlag( response.data.Data.Order.Orders[i]
+                              .MobileGenPrimaryKey,);
+                              
+                              db.updateNewPartyImageDetailSyncFlag( response.data.Data.Order.Orders[i]
+                                .MobileGenPrimaryKey,);
                           }
                           //  alert('Data Sync Successfull');
                           Alert.alert(
@@ -268,7 +275,20 @@ export default class SideMenu extends Component {
                   });
               } else {
                 this.setState({isLoading: false});
-                alert('You have no data for Sync');
+               // alert('You have no data for Sync');
+               Alert.alert(
+                "ZyleminiPlus",
+                'You have no data for Sync.',
+                [
+                  // {
+                  //   text: "Cancel",
+                  //   onPress: () => console.log("Cancel Pressed"),
+                  //   style: "cancel"onPress={() => this.props.navigation.navigate('MJP_one')}
+                  // },
+                  { text: "OK", onPress: () => this.GetNewData() }
+                ],
+                { cancelable: false }
+              );
               }
 
               ///////////////////////////////////////////////////
@@ -281,6 +301,7 @@ export default class SideMenu extends Component {
 
   GetNewData() {
     this.setState({isLoading: true});
+    this.setState({messagetext : 'Getting Data from server..'})
     const url1 = 'http://sapltest.com/ZyleminiPlusAPI/api/Data/GetData';
     //console.log("url is===", url1)
     //console.log("aaaaaaa========",response.data.Token)
@@ -539,7 +560,7 @@ export default class SideMenu extends Component {
   render() {
     return DrawerList.map((item, index) => (
       <View style={styles.container}>
-        <Loader loading={this.state.isLoading} />
+        <Loader loading={this.state.isLoading} message={this.state.messagetext}/>
 
         {/* Header */}
         <View style={styles.headerBackgrounContainer}>

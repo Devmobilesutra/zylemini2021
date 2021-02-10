@@ -24,6 +24,13 @@ import {Picker} from '@react-native-picker/picker';
 import Database from './../../utility/Database'
 import Loader from './../../components/LoaderSync'
 import { Alert } from 'react-native';
+import Dialog, {
+  DialogContent,
+  DialogFooter,
+  DialogButton,
+  DialogTitle,
+  SlideAnimation,
+} from 'react-native-popup-dialog';
 const db = new Database();
 var ID;
 class MJP_Cancel extends React.Component {
@@ -47,6 +54,8 @@ class MJP_Cancel extends React.Component {
         currentDate:'',
         userId :'',
         isLoading : false,
+        visiblepopup :'',
+        responseMsg : '',
 
         arrItems:[
           {
@@ -189,7 +198,10 @@ class MJP_Cancel extends React.Component {
        this.setState({remarks:text})
       
      }
-
+     Meeting_endsavePopUp = () => {
+      const {navigation} = this.props;
+      this.setState({visiblepopup: true});
+    };
      MeetingCancel()
      {
         //  var OrderMaster = []
@@ -370,19 +382,22 @@ class MJP_Cancel extends React.Component {
 
               }
                //  alert(response.data.Data.Order.Status)
-                 Alert.alert(
-                  "ZyleminiPlus",
-                  response.data.Data.Order.Status,
-                  [
-                    // {
-                    //   text: "Cancel",
-                    //   onPress: () => console.log("Cancel Pressed"),
-                    //   style: "cancel"onPress={() => this.props.navigation.navigate('MJP_one')}
-                    // },
-                    { text: "OK", onPress: () => this.props.navigation.navigate('MJP_one') }
-                  ],
-                  { cancelable: false }
-                );
+               this.setState({responseMsg : response.data.Data.Order.Status});
+  
+               this.Meeting_endsavePopUp();
+                //  Alert.alert(
+                //   "ZyleminiPlus",
+                //   response.data.Data.Order.Status,
+                //   [
+                //     // {
+                //     //   text: "Cancel",
+                //     //   onPress: () => console.log("Cancel Pressed"),
+                //     //   style: "cancel"onPress={() => this.props.navigation.navigate('MJP_one')}
+                //     // },
+                //     { text: "OK", onPress: () => this.props.navigation.navigate('MJP_one') }
+                //   ],
+                //   { cancelable: false }
+                // );
                  this.setState({ isLoading: false })
           } else {
               }
@@ -542,6 +557,78 @@ style={{ width:30,height:30}}/>
 
         </View>
 
+        <View style={styles.appliSchemesArrowContainer}>
+                  <TouchableOpacity onPress={this.Meeting_endsavePopUp.bind(this)}>
+                    <View>
+                      {/* <Button
+                                                title="Show Dialog"
+                                                onPress={() => {
+                                                this.setState({ visible: true });
+                                                }}
+                                            /> */}
+                      <Dialog
+                        visible={this.state.visiblepopup}
+                        dialogAnimation={new SlideAnimation({
+                          slideFrom: 'bottom',
+                        })}
+                        onTouchOutside={() => {
+                          this.setState({visiblepopup: true});
+                        }}
+                        width={wp('90')}
+                        dialogTitle={
+                          <DialogTitle
+                            title="Meeting Module"
+                          
+                            style={{
+                              backgroundColor: '#F7F7F8',
+                              height : wp('15'),
+                              alignItems :'center'
+                             
+                            }}
+                            hasTitleBar={false}
+                            align="left"
+                          />
+                        }
+                        footer={
+                          <DialogFooter>
+                            <DialogButton
+                              text="OK"
+                              textStyle={{color: 'white'}}
+                              style={{backgroundColor: '#46BE50'}}
+                              onPress={() => {
+                                this.setState({visiblepopup: false});
+                                this.props.navigation.navigate('MJP_one')
+                               // this.insertIntoOrderMaster();
+                              }}
+                            />
+                          </DialogFooter>
+                        }>
+                        <DialogContent>
+                          <View style={styles.appliSchemesMainContainer}>
+                            <View style={styles.appliSchemesRowContainer}>
+                              {/* <View style={styles.roundedtext}>
+                                <Image
+                                  style={{tintColor: '#EAA304'}}
+                                  source={require('../../assets/Icons/Schemes_drawer.png')}
+                                />
+                              </View> */}
+
+                              <Text style={styles.appliSchemeTextStyle}>
+                               {this.state.responseMsg}
+                              </Text>
+                            </View>
+                          </View>
+                         
+                        </DialogContent>
+                      </Dialog>
+                    </View>
+
+                    {/* <Image
+                      style={styles.appliSchemesArrowStyle}
+                      source={require('../../assets/Icons/right_arrow_blue.png')}
+                    /> */}
+                  </TouchableOpacity>
+                </View>
 
 
         </View>
@@ -552,4 +639,31 @@ style={{ width:30,height:30}}/>
         }
       }
       export default MJP_Cancel;
+      const styles = StyleSheet.create({
+        appliSchemesArrowContainer: {
+          flex: 1,
+          alignItems: 'flex-end',
+          flexDirection: 'row',
+          justifyContent: 'flex-end',
+          alignItems: 'center',
+        },
+        appliSchemesMainContainer: {
+          flex: 1,
+          marginVertical: wp('10'),
+        },
       
+        appliSchemesRowContainer: {
+          flex: 1,
+          alignItems: 'flex-start',
+          flexDirection: 'row',
+          justifyContent: 'flex-start',
+          alignItems: 'center',
+        },
+      
+        appliSchemeTextStyle: {
+          marginLeft: wp('1'),
+          fontFamily: 'Proxima Nova',
+          fontSize: wp('4'),
+          color: '#3955CB',
+        },
+      }) 
