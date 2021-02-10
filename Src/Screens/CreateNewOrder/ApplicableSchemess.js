@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   AsyncStorage,
   ScrollView,
+  navigate,
 } from 'react-native';
 import {RFPercentage, RFValue} from 'react-native-responsive-fontsize';
 import {
@@ -17,17 +18,24 @@ import {
 import Dash from 'react-native-dash';
 import {Button} from 'react-native';
 import {connect} from 'react-redux';
-
+import EditInlineOnCreateNewOrder from './EditInlineOnCreateNewOrder';
 import Database from './../../utility/Database';
 
 const db = new Database();
 import moment from 'moment';
+import {forEach} from 'lodash';
+import {SafeAreaView} from 'react-native';
 
+var itemid1;
+var itemn;
 export class ApplicableSchemess extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      Brand_Name: '',
       reopen: true,
+      schemedata: [],
+      slabdata: [],
       InProcessOrder: [],
       DeliveredOrder: [],
       Shop_det: [],
@@ -70,7 +78,10 @@ export class ApplicableSchemess extends Component {
   };
   componentWillMount() {
     // this.setState({reopen:false});
-    // BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
+    // BackHandler.addEventListener(
+    //   'hardwareBackPress',
+    //   this.handleBackButtonClick,
+    // );
     // console.log("component will mount called");
     // setTimeout(() => {
     //     // this.setState({
@@ -79,6 +90,10 @@ export class ApplicableSchemess extends Component {
     //     this._componentFocused();
     //    }, 1000)
     // this._componentFocused();
+    const {navigation} = this.props;
+    itemid1 = navigation.getParam('itemid1', '');
+    itemn = navigation.getParam('itemn', '');
+    console.log('iteeeeemmmmmid,' + itemid1, 'iteeeenameeeee', +itemn);
 
     this._sub = this.props.navigation.addListener(
       'didFocus',
@@ -95,55 +110,63 @@ export class ApplicableSchemess extends Component {
 
   _componentFocused = () => {
     console.log('u are entering focused');
+
     this.setState({Shop_det: []});
     AsyncStorage.getItem('username').then(keyValue => {
       this.setState({name: JSON.parse(keyValue)});
     });
-    db.getAllOrders().then(data => {
-      console.log('getTotalOrderFromDB', JSON.stringify(data));
-      this.setState({Shop_det: data});
-      console.log('TotalOrder', this.state.Shop_det);
-      this.state.TotalOrderLen = data.length;
-      this.setState({TotalOrderLen: data.length});
-      this.props.orderTotal(this.state.TotalOrderLen);
-      // data.map((item, i) => {
-      //     db.getCustomerShopName(item.entity_id,item.id).then((data1)=>{
-      //         console.log("side order shop-details",data1);
-      //         this.state.Shop_det.push(data1);
-      //         console.log("shop data final",this.state.Shop_det);
-      //       //  User.orderidvar=data[0].id;
-
-      //         })
-      // })
-      // for(var i=0;i<data.length;i++){
-      //    console.log("you have entered in for loop");
-      //    console.log("entity_type in for loop",data[i].entity_type);
-
-      //     if(data[i].entity_type==1)
-      //    // &&( this.state.Shop_det.entity_id==!data[i].entity_id ||this.state.Shop_det==[])
-      //     {
-      //         console.log("successfull if");
-      //         db.getCustomerShopName(data[i].entity_id,data[i].id).then((data)=>{
-      //         console.log("side order shop-details",data);
-      //         this.state.Shop_det.push(data);
-      //         console.log("shop data final",this.state.Shop_det);
-      //         User.orderidvar=data[0].id;
-
-      //         })
-      //     }
-      //     else if(data[i].entity_type==2)
-      //     {
-
-      //     }
-
-      // }
+    db.getSchemeData(itemid1).then(data => {
+      console.log('getSchemesfromdb', JSON.stringify(data));
+      this.setState({schemedata: data, Brand_Name: data[0].BRAND});
+      console.log('Totalschemesss', this.state.schemedata[0].BRAND);
     });
+    db.getSlabData(itemid1).then(data => {
+      console.log('getTotalOrderFromDB', JSON.stringify(data));
+      this.setState({slabdata: data});
+      console.log('Totalslabbb', this.state.slabdata);
+    });
+
+    //   this.state.TotalOrderLen = data.length;
+    //   this.setState({TotalOrderLen: data.length});
+    //   this.props.orderTotal(this.state.TotalOrderLen);
+    // data.map((item, i) => {
+    //     db.getCustomerShopName(item.entity_id,item.id).then((data1)=>{
+    //         console.log("side order shop-details",data1);
+    //         this.state.Shop_det.push(data1);
+    //         console.log("shop data final",this.state.Shop_det);
+    //       //  User.orderidvar=data[0].id;
+
+    //         })
+    // })
+    // for(var i=0;i<data.length;i++){
+    //    console.log("you have entered in for loop");
+    //    console.log("entity_type in for loop",data[i].entity_type);
+
+    //     if(data[i].entity_type==1)
+    //    // &&( this.state.Shop_det.entity_id==!data[i].entity_id ||this.state.Shop_det==[])
+    //     {
+    //         console.log("successfull if");
+    //         db.getCustomerShopName(data[i].entity_id,data[i].id).then((data)=>{
+    //         console.log("side order shop-details",data);
+    //         this.state.Shop_det.push(data);
+    //         console.log("shop data final",this.state.Shop_det);
+    //         User.orderidvar=data[0].id;
+
+    //         })
+    //     }
+    //     else if(data[i].entity_type==2)
+    //     {
+
+    //     }
+
+    //     // }
+    // });
   };
 
   _renderViewForFlatlist() {
     console.log('here in flatlist');
-    if (this.state.Shop_det.length > 0) {
-      return this.state.Shop_det.map((item, i) => {
+    if (this.state.schemedata.length > 0) {
+      return this.state.schemedata.map((item, i) => {
         return (
           <View style={styles.orderDetailsMainContainer}>
             {/* Header Background */}
@@ -151,10 +174,12 @@ export class ApplicableSchemess extends Component {
             <View style={styles.orderHeaderBGContainer}>
               <View style={styles.ordHeaderRowContainer}>
                 <View style={styles.orderLabelContainer}>
-                  <Text style={styles.orderLabelTextStyle}>{item.Party}</Text>
+                  <Text style={styles.orderLabelTextStyle}>
+                    Scheme - {item.SchemeID}
+                  </Text>
                 </View>
                 <View style={styles.amtContainer}>
-                  <Text style={styles.amtTextStyle}>{item.AREA}</Text>
+                  <Text style={styles.amtTextStyle}>{item.SchemeName}</Text>
                 </View>
               </View>
             </View>
@@ -162,30 +187,112 @@ export class ApplicableSchemess extends Component {
             <View style={styles.oredrDetaileWhiteBG}>
               <View style={styles.orderDateRowContainer}>
                 <View style={styles.orderDateColContainer}>
-                  <Text style={styles.ordDateLabelStyle}>ORDER DATE</Text>
-                  <Text style={styles.orderDateDateStyle}>
-                    {moment(item.Current_date_time).format('DD-MMM-YYYY')}
-                  </Text>
+                  {/* <Text style={styles.ordDateLabelStyle}>Slab no</Text> */}
+                  {/* <Text style={styles.orderDateDateStyle}> */}
+                  {/* {moment(item.Current_date_time).format('DD-MMM-YYYY')} */}
+                  {/*                     
+                    {item.SlabNo} - {item.SchemeBenefits} .... */}
+                  {/* </Text> */}
+                  <View>
+                    {/* {this._renderForFlatlist(item.SchemeID)} */}
+
+                    {this.state.slabdata.map(data => {
+                      if (data.SchemeID == item.SchemeID) {
+                        console.log(
+                          data.SchemeID + ' asdfgjh',
+                          item.SchemeID,
+                          'scheme benefits',
+                          data.SchemeBenefits,
+                        );
+                        return (
+                          <View>
+                            {/* Header Background */}
+
+                            <View
+                              style={
+                                {
+                                  // // backgroundColor: '#796A6A',
+                                  // height: hp('8'),
+                                  // width: wp('90'),
+                                  // borderTopLeftRadius: wp('2'),
+                                  // borderTopRightRadius: wp('2'),
+                                  // marginTop: hp('-1'),
+                                  // alignSelf: 'center',
+                                  // justifyContent: 'center',
+                                }
+                              }>
+                              <View style={{flexDirection: 'row'}}>
+                                <View
+                                  style={{
+                                    // flex: 2.5,
+                                    alignItems: 'flex-start',
+                                    flexDirection: 'column',
+                                    justifyContent: 'flex-start',
+                                  }}>
+                                  <Text
+                                    style={{
+                                      // color: '#FFFFFF',
+                                      // fontWeight: 'bold',
+                                      fontFamily: 'Proxima Nova',
+                                      fontSize: 14,
+                                      // marginLeft: wp('4'),
+                                    }}>
+                                    Slab {data.SlabNo}.
+                                  </Text>
+                                </View>
+                                <View
+                                  style={{
+                                    // flexDirection: 'column',
+                                    justifyContent: 'flex-start',
+                                  }}>
+                                  <Text
+                                    style={{
+                                      // color: '#FFFFFF',
+                                      // fontWeight: 'bold',
+                                      fontFamily: 'Proxima Nova',
+                                      fontSize: 14,
+                                      marginLeft: wp('4'),
+                                    }}>
+                                    {data.SchemeBenefits}
+                                  </Text>
+                                </View>
+                              </View>
+                            </View>
+
+                            <Dash
+                              style={styles.ordDetDashStyle}
+                              dashLength={2}
+                              dashColor="#E6DFDF"
+                            />
+
+                            {/* Below Header White Background */}
+                            {/* {this._renderView(item)} */}
+                          </View>
+                        );
+                      }
+                    })}
+                  </View>
                 </View>
                 <View style={styles.salesColContainer}>
-                  <Text style={styles.salesLabelStyle}>ORDER ID</Text>
+                  <Text style={styles.salesLabelStyle}>REMARKS</Text>
                   {/* {this.renderName(item.user_id)} */}
-                  <Text style={styles.salesNameStyle}>{item.id}</Text>
+                  <Text style={styles.salesNameStyle}>{item.Remarks}</Text>
                 </View>
                 <View style={styles.salesColContainer1}>
-                  <Text style={styles.salesLabelStyle}>AMOUNT</Text>
                   {/* {this.renderName(item.user_id)} */}
-                  <Text style={styles.salesNameStyle}>{item.total_amount}</Text>
+                  <Text
+                    style={{
+                      color: 'red',
+                      fontFamily: 'Proxima Nova',
+                      fontSize: 11,
+                      marginTop: hp('1'),
+                    }}>
+                    Period: {item.FromDate} To {item.ToDate}
+                  </Text>
                 </View>
               </View>
               {/* Dash line */}
-              <View style={styles.ordDetDashContainer}>
-                <Dash
-                  style={styles.ordDetDashStyle}
-                  dashLength={2}
-                  dashColor="#E6DFDF"
-                />
-              </View>
+
               {/* {this._renderView(item)} */}
             </View>
           </View>
@@ -197,23 +304,25 @@ export class ApplicableSchemess extends Component {
   }
   render() {
     return (
-      <View style={{flex: 10}}>
+      <View style={{flex: 1}}>
         <ScrollView showsVerticalScrollIndicator={false}>
           {/* Store Name and Right Arrow */}
-          <View style={{flex: 0.1, marginTop: hp('1')}}>
+          <View style={{marginTop: hp('1')}}>
             <View style={styles.brandNameContainer}>
               <View style={styles.brandTextContainer}>
-                <Text style={styles.brandNameText}>BRAND NAME</Text>
+                <Text style={styles.brandNameText}>
+                  {this.state.Brand_Name}
+                </Text>
               </View>
 
-              <View style={styles.rightArrowContainer}>
+              {/* <View style={styles.rightArrowContainer}>
                 <TouchableOpacity>
                   <Image
                     style={{marginRight: wp('4')}}
                     source={require('../../assets/Icons/right_arrow_front.png')}
                   />
                 </TouchableOpacity>
-              </View>
+              </View> */}
             </View>
           </View>
 
@@ -245,7 +354,7 @@ export class ApplicableSchemess extends Component {
                   fontSize: wp('3'),
                   color: '#3955CB',
                 }}>
-                Applicable Schemes( 15 )
+                Applicable Schemes( 6 )
               </Text>
             </View>
             <View
@@ -256,85 +365,34 @@ export class ApplicableSchemess extends Component {
                 justifyContent: 'flex-end',
                 alignItems: 'center',
                 marginVertical: hp('-3'),
+                marginBottom: hp('3'),
               }}>
               <TouchableOpacity>
                 {/* onPress={() =>
                   this.props.navigation.navigate('ApplicableSchemess')
                 } */}
-                <Image
+                {/* <Image
                   style={{marginRight: wp('5'), tintColor: '#3955CB'}}
                   source={require('../../assets/Icons/right_arrow.png')}
-                />
+                /> */}
               </TouchableOpacity>
             </View>
           </View>
           {/* //////////////////////listview */}
           {this._renderViewForFlatlist()}
 
-          {/* Scheme Description */}
-          <View
-            style={{
-              flex: 1,
-              alignItems: 'flex-start',
-              justifyContent: 'center',
-              marginVertical: hp('10'),
-              marginLeft: wp('5'),
-              marginRight: wp('3'),
-            }}>
-            <Text
-              style={{
-                color: '#796A6A',
-                fontSize: wp('3%'),
-                fontFamily: 'Proxima Nova',
-              }}>
-              Dummy Scheme Description.Dummy Scheme Description. Dummy Scheme
-              Description.Dummy Scheme Description. Dummy Scheme
-              Description......
-            </Text>
-          </View>
-
-          <View
-            style={{
-              flex: 1,
-              flexDirection: 'column',
-              alignItems: 'flex-start',
-              justifyContent: 'center',
-              marginVertical: hp('4'),
-              marginHorizontal: wp('5'),
-            }}>
-            <Text
-              style={{
-                color: '#362828',
-                fontSize: wp('3.5%'),
-                fontFamily: 'Proxima Nova',
-                fontWeight: 'bold',
-              }}>
-              Validity
-            </Text>
-            <Text
-              style={{
-                color: '#796A6A',
-                fontSize: wp('3%'),
-                fontFamily: 'Proxima Nova',
-                marginTop: hp('1'),
-              }}>
-              12 Feb 2020
-            </Text>
-          </View>
+          <View style={{marginBottom: hp('3')}} />
         </ScrollView>
 
-        <View style={{flex: 1, flexDirection: 'row'}}>
-          <TouchableOpacity>
-            <View style={styles.buttonOk}>
-              <Text style={styles.buttonTextOk}> OK </Text>
-            </View>
-          </TouchableOpacity>
+        <View>
           <TouchableOpacity
             onPress={() =>
-              this.props.navigation.navigate('CreateNewOrderPreview')
+              this.props.navigation.navigate('CreateNewOrderSecond')
             }>
-            <View style={styles.buttonCancel}>
-              <Text style={styles.buttonTextCancel}> CANCEL </Text>
+            {/* // this.props.navigation.navigate('EditInlineOnCreateNewOrder') */}
+
+            <View style={styles.buttonOk}>
+              <Text style={styles.buttonTextOk}> OK </Text>
             </View>
           </TouchableOpacity>
         </View>
@@ -464,7 +522,7 @@ const styles = StyleSheet.create({
   },
 
   orderHeaderBGContainer: {
-    backgroundColor: '#796A6A',
+    backgroundColor: '#d3d3d3',
     height: hp('8'),
     width: wp('90'),
     borderTopLeftRadius: wp('2'),
@@ -486,7 +544,7 @@ const styles = StyleSheet.create({
   },
 
   orderLabelTextStyle: {
-    color: '#FFFFFF',
+    // color: '#FFFFFF',
     fontWeight: 'bold',
     fontFamily: 'Proxima Nova',
     fontSize: 14,
@@ -494,14 +552,14 @@ const styles = StyleSheet.create({
   },
 
   amtContainer: {
-    flex: 1,
-    alignItems: 'flex-end',
+    // flex: 1,
+    // alignItems: 'flex-end',
     flexDirection: 'column',
     justifyContent: 'center',
   },
 
   amtTextStyle: {
-    color: '#FFFFFF',
+    // color: '#FFFFFF',
     fontWeight: 'bold',
     fontFamily: 'Proxima Nova',
     fontSize: 14,
@@ -516,7 +574,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     borderBottomLeftRadius: wp('2'),
     borderBottomRightRadius: wp('2'),
-    height: hp('24'),
+    height: 'auto',
     width: wp('90'),
     borderWidth: hp('0.2'),
     borderTopWidth: hp('0'),
@@ -524,8 +582,9 @@ const styles = StyleSheet.create({
 
   orderDateRowContainer: {
     flex: 1,
-    flexDirection: 'row',
+    // flexDirection: 'row',
     marginTop: hp('2'),
+    marginBottom: hp('3'),
   },
 
   orderDateColContainer: {
@@ -550,7 +609,8 @@ const styles = StyleSheet.create({
   },
 
   salesColContainer: {
-    flex: 2,
+    marginTop: hp('2'),
+    // flex: 2,
     flexDirection: 'column',
     alignItems: 'flex-start',
     marginLeft: wp('2'),
@@ -563,10 +623,10 @@ const styles = StyleSheet.create({
   },
 
   salesLabelStyle: {
-    color: '#362828',
+    color: 'grey',
     fontWeight: 'bold',
     fontFamily: 'Proxima Nova',
-    fontSize: 10,
+    fontSize: 13,
   },
 
   salesNameStyle: {
@@ -694,8 +754,8 @@ const styles = StyleSheet.create({
   },
 
   brandTextContainer: {
-    flex: 0.5,
-    flexDirection: 'column',
+    // flex: 0.5,
+    // flexDirection: 'column',
   },
 
   rightArrowContainer: {
@@ -751,10 +811,13 @@ const styles = StyleSheet.create({
     width: wp('44'),
     height: hp('8'),
     backgroundColor: '#46BE50',
-    marginVertical: hp('3'),
-    paddingVertical: hp('2'),
+    // marginVertical: hp('3'),
+    // paddingVertical: hp('2'),
+    alignSelf: 'center',
+    justifyContent: 'center',
     borderRadius: 8,
-    marginHorizontal: wp('3'),
+    marginBottom: hp('2'),
+    // marginHorizontal: wp('3'),
   },
 
   buttonTextOk: {

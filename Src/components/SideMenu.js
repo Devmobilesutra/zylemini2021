@@ -50,8 +50,8 @@ export default class SideMenu extends Component {
       Discount: [],
       ImageDetails1: [],
       ImageDetails: [],
-      newPartyImagedetails :[],
-      newPartyImagedetails1 :[],
+      newPartyImagedetails: [],
+      newPartyImagedetails1: [],
       aa: '',
       isLoading: false,
       AssetDetails: [],
@@ -61,15 +61,14 @@ export default class SideMenu extends Component {
 
   //////////////////////////////////////////
   syncNowFunction() {
-
     var OrderMaster = [];
     var OrderDetails = [];
     var Discount = [];
     var ImageDetails = [];
     var NewPartyImageDetails = [];
     var AssetDetails = [];
-    var NewPartyOutlet =[];
-    var NewPartyTargetId =[];
+    var NewPartyOutlet = [];
+    var NewPartyTargetId = [];
     this.state.isLoading = true;
     this.setState({isLoading: true});
     this.setState({JSONObj: {}});
@@ -86,13 +85,13 @@ export default class SideMenu extends Component {
           this.state.JSONObj['OrderDetails'] = data;
         }
 
-        db.getNewPartyOutletSyncData().then(data =>{
-          if(data.length > 0){
+        db.getNewPartyOutletSyncData().then(data => {
+          if (data.length > 0) {
             console.log('New Party for sync', JSON.stringify(data));
             NewPartyOutlet = data;
             this.state.JSONObj['NewParty'] = data;
           }
-        })
+        });
         this.state.newPartyImagedetails1 = [];
         db.getNewPartyImageDetailsyncData().then(data => {
           if (data.length > 0) {
@@ -103,27 +102,31 @@ export default class SideMenu extends Component {
               RNFS.readFile(item.ImagePath, 'base64').then(res => {
                 bytess = res;
                 this.state.newPartyImagedetails.push({
-                 // ID: item.ID,
-                 Id: item.id,
-               //   ImageDatetime: item.ImageDateTime,
-               ImageName: item.ImageName,
+                  // ID: item.ID,
+                  Id: item.id,
+                  //   ImageDatetime: item.ImageDateTime,
+                  ImageName: item.ImageName,
                   data: bytess,
                 });
               });
             });
             NewPartyImageDetails = this.state.newPartyImagedetails;
-            this.state.JSONObj['NewPartyImage'] = this.state.newPartyImagedetails;
+            this.state.JSONObj[
+              'NewPartyImage'
+            ] = this.state.newPartyImagedetails;
           }
-        })
+        });
 
-        db.getnewPartyTargetId().then(data =>{
-          if(data.length > 0){
-            console.log('New getnewPartyTargetId for sync', JSON.stringify(data)); 
+        db.getnewPartyTargetId().then(data => {
+          if (data.length > 0) {
+            console.log(
+              'New getnewPartyTargetId for sync',
+              JSON.stringify(data),
+            );
             NewPartyTargetId = data;
             this.state.JSONObj['newPartyTargetId'] = data;
           }
-        })
-
+        });
 
         db.getDiscountSyncData().then(data => {
           if (data.length > 0) {
@@ -176,7 +179,10 @@ export default class SideMenu extends Component {
                   ImageDetails: ImageDetails,
                   AssetDetails: AssetDetails,
                 };
-                console.log("boduy of postApi=", JSON.stringify(this.state.JSONObj))
+                console.log(
+                  'boduy of postApi=',
+                  JSON.stringify(this.state.JSONObj),
+                );
                 //  //console.log("boduy of postApi2=", datas)
                 //   const url = 'http://zylemdemo.com/ZyleminiPlusCoreAPI/api/Data/PostData'
 
@@ -225,9 +231,9 @@ export default class SideMenu extends Component {
                                 .MobileGenPrimaryKey,
                             );
                           }
-                        //  alert('Data Sync Successfull');
+                          //  alert('Data Sync Successfull');
                           Alert.alert(
-                            "ZyleminiPlus",
+                            'ZyleminiPlus',
                             response.data.Data.Order.Status,
                             [
                               // {
@@ -235,15 +241,14 @@ export default class SideMenu extends Component {
                               //   onPress: () => console.log("Cancel Pressed"),
                               //   style: "cancel"onPress={() => this.props.navigation.navigate('MJP_one')}
                               // },
-                              { text: "OK", onPress: () => this.GetNewData() }
+                              {text: 'OK', onPress: () => this.GetNewData()},
                             ],
-                            { cancelable: false }
+                            {cancelable: false},
                           );
-
                         }
                       } catch (error) {}
 
-                    //  alert(response.data.Data.Order.Status);
+                      //  alert(response.data.Data.Order.Status);
                     } else {
                       //console.log("count is..........", count)
                       //  alert("in else")
@@ -274,51 +279,47 @@ export default class SideMenu extends Component {
     });
   }
 
-  GetNewData(){
+  GetNewData() {
     this.setState({isLoading: true});
-    const url1 = "http://sapltest.com/ZyleminiPlusAPI/api/Data/GetData"
+    const url1 = 'http://sapltest.com/ZyleminiPlusAPI/api/Data/GetData';
     //console.log("url is===", url1)
     //console.log("aaaaaaa========",response.data.Token)
     const headers1 = {
-        'authheader': this.state.tokens
-    }
-    axios.get(url1, {
-        headers: headers1
-    }).then(res => {
+      authheader: this.state.tokens,
+    };
+    axios
+      .get(url1, {
+        headers: headers1,
+      })
+      .then(res => {
         //  //console.log("rajani data1=",JSON.stringify(res))
         if (res.data) {
-            const data = JSON.stringify(res.data)
-            console.log("rajani data=",JSON.stringify(data))
-            // db.insertAllData(data)
-            //   dispatch(dispatchAll(data))
-            //  dispatch(insertAllData(data))
-            db.insertAllData(data).then((results) => {
-                // alert(results)
-                if (results) {
-                   // dispatch(loginIsLoading(false));
-                   // Actions.App()
-                   this.setState({isLoading: false});
-                }
-
-
-            })
+          const data = JSON.stringify(res.data);
+          console.log('rajani data=', JSON.stringify(data));
+          // db.insertAllData(data)
+          //   dispatch(dispatchAll(data))
+          //  dispatch(insertAllData(data))
+          db.insertAllData(data).then(results => {
+            // alert(results)
+            if (results) {
+              // dispatch(loginIsLoading(false));
+              // Actions.App()
+              this.setState({isLoading: false});
+            }
+          });
+        } else {
+          alert('Invalid Credentials');
+          this.setState({isLoading: false});
         }
-        else {
-            alert("Invalid Credentials")
-            this.setState({isLoading: false});
-        }
-
-    }).catch((error) => {
+      })
+      .catch(error => {
         //console.log("errr")
-      
+
         //console.log('error ' + error);
-        alert(error)
+        alert(error);
         this.setState({isLoading: false});
-
-    });
-
+      });
   }
-
 
   ///////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////////////
@@ -474,13 +475,12 @@ export default class SideMenu extends Component {
       ],
       {cancelable: false},
     );
-   
   };
 
-  LogoutFunction = async () =>{
+  LogoutFunction = async () => {
     await AsyncStorage.clear();
     Actions.login();
-  }
+  };
   SyncNow = () => {
     Alert.alert(
       'Sync Now',
@@ -551,7 +551,7 @@ export default class SideMenu extends Component {
                 alignItems: 'center',
                 justifyContent: 'flex-end',
               }}>
-              <Text
+              {/* <Text
                 style={{
                   fontSize: RFValue(13),
                   fontWeight: 'bold',
@@ -560,7 +560,7 @@ export default class SideMenu extends Component {
                   marginRight: wp('3'),
                 }}>
                 EDIT
-              </Text>
+              </Text> */}
               <TouchableOpacity onPress={() => Actions.drawerToggle()}>
                 <Image
                   style={{marginRight: wp('3')}}

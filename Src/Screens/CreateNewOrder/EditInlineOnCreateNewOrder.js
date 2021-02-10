@@ -1296,7 +1296,12 @@ export class EditInlineOnCreateNewOrder extends Component {
 
         <TouchableOpacity
           style={styles.applicableMainContainer}
-          onPress={() => this.props.navigation.navigate('ApplicableSchemess')}>
+          onPress={() =>
+            this.props.navigation.navigate('ApplicableSchemess', {
+              itemid1: this.props.ItemId,
+              itemn: this.props.ItemName,
+            })
+          }>
           <View style={styles.roundedtext}>
             <Image
               style={{tintColor: '#EAA304'}}
