@@ -424,22 +424,22 @@ SaveAsDraftMeeting(e){
           <View>
           <Loader loading={this.state.isLoading} message={'Sending Data to server..'} />
           <View style={{flexDirection:'row'}}>
- <TouchableOpacity  onPress={() => this.props.navigation.navigate('Meeting')} style={{marginLeft:wp('7%'), marginTop:hp('3%')}}>
-<Image
- source={require('../../assets/Icons/meeting.png')} 
-style={{ width:30,height:30}}/>
+      <TouchableOpacity  onPress={() => this.props.navigation.navigate('Meeting')} style={{marginLeft:wp('7%'), marginTop:hp('3%')}}>
+      <Image
+      source={require('../../assets/Icons/meeting.png')} 
+      style={{ width:30,height:30}}/>
 
-</TouchableOpacity>
-<Text style={{justifyContent:'center',alignItems:'center',fontWeight:'700', color:'#796A6A',fontSize:wp('5.2%'),marginTop:hp('3%'),marginLeft:wp('4%')}}>
-  Meeting Report
-  </Text>
-<TouchableOpacity  onPress={() => this.props.navigation.navigate('MJP_one')} style={{marginLeft:('34%'), marginTop:hp('3%')}}>
-<Image
+      </TouchableOpacity>
+      <Text style={{justifyContent:'center',alignItems:'center',fontWeight:'700', color:'#796A6A',fontSize:wp('5.2%'),marginTop:hp('3%'),marginLeft:wp('4%')}}>
+        Meeting Report
+        </Text>
+      <TouchableOpacity  onPress={() => this.props.navigation.navigate('MJP_one')} style={{marginLeft:('34%'), marginTop:hp('3%')}}>
+      <Image
 
-source={require('../../assets/Icons/cross.png')} 
-style={{ width:30,height:30}}/>
+      source={require('../../assets/Icons/cross.png')} 
+      style={{ width:30,height:30}}/>
 
-</TouchableOpacity>
+      </TouchableOpacity>
 
 </View>
 <View style={{

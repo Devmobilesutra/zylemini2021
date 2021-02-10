@@ -31,6 +31,7 @@ import Dialog, {
   DialogFooter,
   DialogButton,
   DialogTitle,
+  SlideAnimation
 } from 'react-native-popup-dialog';
 import {connect} from 'react-redux';
 import ModalDropdown from 'react-native-modal-dropdown';
@@ -58,6 +59,7 @@ export class CreateNewOrderPreview extends Component {
       outletId: '',
       outletName: '',
       visible: '',
+      visiblepopup :'',
       remark: '',
       // selectedStartDate: '',
       visiblecal: '',
@@ -79,9 +81,9 @@ export class CreateNewOrderPreview extends Component {
       mobile_no: '9545106161',
     };
   }
-  forceUpdateHandler() {
-    this.forceUpdate();
-  }
+  // forceUpdateHandler() {
+  //   this.forceUpdate();
+  // }
   componentDidMount() {
     BackHandler.addEventListener(
       'hardwareBackPress',
@@ -93,17 +95,14 @@ export class CreateNewOrderPreview extends Component {
       'hardwareBackPress',
       this.handleBackButtonClick,
     );
+  
+  }
+  shouldComponentUpdate() {
+    return true;
   }
   handleBackButtonClick() {
-    // Registered function to handle the Back Press
-    // We are generating an alert to show the back button pressed
-    // alert('You clicked back. Now Screen will move to ThirdPage');
-    // We can move to any screen. If we want
-    Actions.CreateNewOrderSecond();
-    //  this.props.navigation.navigate('CreateNewOrderFirst');
-    // Returning true means we have handled the backpress
-    // Returning false means we haven't handled the backpress
-    return true;
+ 
+      return true;
   }
   WhatsAppShare = () => {
     // [{"user_id":"52362","collection_type":"0","total_amount":"1100","longitude":"73.8100302","latitude":"18.4942158","entity_id":"47853","entity_type":"1","Current_date_time":"2020-6-14 17:47:52","id":"1462020174752"}]
@@ -167,6 +166,7 @@ export class CreateNewOrderPreview extends Component {
           justifyContent: 'center',
           alignSelf: 'center',
         }}>
+      
         <TouchableOpacity onPress={() => Actions.CreateNewOrderSecond()}>
           <Image
             style={{marginLeft: wp('4')}}
@@ -199,64 +199,7 @@ export class CreateNewOrderPreview extends Component {
     // this.props.refresh(orderId, this.props.ItemId)
   }
 
-  async saveClickHandlernew(e) {
-    //////////insert into main Detail Table
-    totalAmounts = 0;
-    await AsyncStorage.getItem('app_order_id').then(keyValue => {
-      var a = JSON.parse(keyValue);
-      db.getOrderDataFromTempOrderDetails(a).then(data => {
-        //console.log("data=",data)
-        this.setState({orderData: data});
-
-        //
-        // })  //not here
-
-        for (let k = 0; k < this.state.orderData.length; k++) {
-          //console.log("sachins1.//////////////////////////////////////////=",k)
-          db.checkOrderInOrderDetailsMain1(
-            this.state.orderData[k].item_id,
-            a,
-          ).then(item_data => {
-            //console.log("item_data=",item_data)
-            if (item_data.length == 0) {
-              // [{"Amount":"700","rate":"2","to_date":"","from_date":"2020-4-15 14:23:54","large_Unit":"0","small_Unit":"0","quantity_two":"0","quantity_one":"35","item_Name":"{0062}DYC SELECT 180 ML X 48 42.8 %","item_id":"81","order_id":"1542020142354","id":1},
-              // {"Amount":"60","rate":"3","to_date":"","from_date":"","large_Unit":"0","small_Unit":"0","quantity_two":"0","quantity_one":"2","item_Name":"{0063}DYC SELECT  375 ML X 24 42.8 %","item_id":"82","order_id":"1542020142354","id":11}]
-
-              db.insertOrderDetails(
-                this.state.orderData[k].order_id,
-                this.state.orderData[k].item_id,
-                this.state.orderData[k].item_Name,
-                this.state.orderData[k].quantity_one,
-                this.state.orderData[k].quantity_two,
-                this.state.orderData[k].small_Unit,
-                this.state.orderData[k].large_Unit,
-                this.state.orderData[k].rate,
-                this.state.orderData[k].Amount,
-                '1',
-                'N',
-              );
-            } else {
-              db.updateDetailMain(
-                this.state.orderData[k].quantity_one,
-                this.state.orderData[k].quantity_two,
-                this.state.orderData[k].small_Unit,
-                this.state.orderData[k].large_Unit,
-                this.state.orderData[k].rate,
-                this.state.orderData[k].Amount,
-                this.state.orderData[k].order_id,
-                this.state.orderData[k].item_id,
-              );
-            }
-          });
-          db.getTotalamountOfOrder(a).then(data1 => {
-            totalAmounts = data1[0].TotalAmount;
-          });
-          // totalAmounts = totalAmounts + parseInt(this.state.orderData[k].Amount)
-        } ////end of for loop
-      });
-    });
-    await this.insertIntoOrderMaster(totalAmounts);
-  }
+ 
 
   saveClickHandler(e) {
     //////////insert into main Detail Table
@@ -306,19 +249,22 @@ export class CreateNewOrderPreview extends Component {
           totalAmounts = totalAmounts + parseInt(item.Amount);
         }); ////end of for loop
 
-        Alert.alert(
-          'ZyleminiPlus',
-          'Order Inserted.',
-          [
-            // {
-            //   text: "Cancel",
-            //   onPress: () => console.log("Cancel Pressed"),
-            //   style: "cancel"onPress={() => this.props.navigation.navigate('MJP_one')}
-            // },
-            {text: 'OK', onPress: () => this.insertIntoOrderMaster()},
-          ],
-          {cancelable: false},
-        );
+        this.ordersavePopUp();
+        this.insertIntoOrderMaster();
+
+        // Alert.alert(
+        //   'ZyleminiPlus',
+        //   'Order Inserted.',
+        //   [
+        //     // {
+        //     //   text: "Cancel",
+        //     //   onPress: () => console.log("Cancel Pressed"),
+        //     //   style: "cancel"onPress={() => this.props.navigation.navigate('MJP_one')}
+        //     // },
+        //     {text: 'OK', onPress: () => this.insertIntoOrderMaster()},
+        //   ],
+        //   {cancelable: false},
+        // );
 
         //  insert into master main
         // AsyncStorage.getItem('app_order_id').then((keyValue) => {
@@ -552,7 +498,7 @@ export class CreateNewOrderPreview extends Component {
                         AsyncStorage.setItem('SearchString', "");
     
     
-                        Actions.CreateNewOrderFirst();
+                      //  Actions.CreateNewOrderFirst();
                     }
     
                 })
@@ -654,6 +600,88 @@ export class CreateNewOrderPreview extends Component {
     const {navigation} = this.props;
     this.setState({visible: true});
   };
+
+  ordersavePopUp = () => {
+    const {navigation} = this.props;
+    this.setState({visiblepopup: true});
+  };
+
+  renderPopup(){
+    return(
+<View style={styles.appliSchemesArrowContainer}>
+                  <TouchableOpacity onPress={this.ordersavePopUp.bind(this)}>
+                    <View>
+                      {/* <Button
+                                                title="Show Dialog"
+                                                onPress={() => {
+                                                this.setState({ visible: true });
+                                                }}
+                                            /> */}
+                      <Dialog
+                        visible={this.state.visiblepopup}
+                        dialogAnimation={new SlideAnimation({
+                          slideFrom: 'bottom',
+                        })}
+                        onTouchOutside={() => {
+                          this.setState({visiblepopup: true});
+                        }}
+                        width={wp('90')}
+                        dialogTitle={
+                          <DialogTitle
+                            title="Meeting Module"
+                          
+                            style={{
+                              backgroundColor: '#F7F7F8',
+                              height : wp('15'),
+                              alignItems :'center'
+                             
+                            }}
+                            hasTitleBar={false}
+                            align="left"
+                          />
+                        }
+                        footer={
+                          <DialogFooter>
+                            <DialogButton
+                              text="OK"
+                              textStyle={{color: 'white'}}
+                              style={{backgroundColor: '#46BE50'}}
+                              onPress={() => {
+                                this.setState({visiblepopup: false});
+                                Actions.Dashboard();
+                               // this.insertIntoOrderMaster();
+                              }}
+                            />
+                          </DialogFooter>
+                        }>
+                        <DialogContent>
+                          <View style={styles.appliSchemesMainContainer}>
+                            <View style={styles.appliSchemesRowContainer}>
+                              {/* <View style={styles.roundedtext}>
+                                <Image
+                                  style={{tintColor: '#EAA304'}}
+                                  source={require('../../assets/Icons/Schemes_drawer.png')}
+                                />
+                              </View> */}
+
+                              <Text style={styles.appliSchemeTextStyle}>
+                              Order Saved Successfully..
+                              </Text>
+                            </View>
+                          </View>
+                         
+                        </DialogContent>
+                      </Dialog>
+                    </View>
+
+                    {/* <Image
+                      style={styles.appliSchemesArrowStyle}
+                      source={require('../../assets/Icons/right_arrow_blue.png')}
+                    /> */}
+                  </TouchableOpacity>
+                </View>
+    )
+}
 
   SchemesArrow() {
     if (this.state.collapsed == false) {
@@ -1102,6 +1130,8 @@ export class CreateNewOrderPreview extends Component {
               </View>
             </TouchableOpacity>
           </View>
+
+          {this.renderPopup()}
         </ImageBackground>
       </View>
     );
@@ -1360,7 +1390,7 @@ const styles = StyleSheet.create({
   appliSchemeTextStyle: {
     marginLeft: wp('2'),
     fontFamily: 'Proxima Nova',
-    fontSize: wp('5'),
+    fontSize: wp('4'),
     color: '#3955CB',
   },
 

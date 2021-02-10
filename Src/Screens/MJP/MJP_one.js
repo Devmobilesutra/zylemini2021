@@ -144,11 +144,13 @@ componentWillUnmount() {
 
 handleBackButtonClick() {
     this.props.navigation.goBack(null);
+    this.setState({visiblepopup: false});
     return true;
 }
 Meeting_endsavePopUp = () => {
     const {navigation} = this.props;
     this.setState({visiblepopup: true});
+   
   };
 
 NextDate(i)
@@ -203,6 +205,82 @@ PrevDate(i)
 
 }
 
+renderPopup(){
+    return(
+<View style={styles.appliSchemesArrowContainer}>
+                  <TouchableOpacity onPress={this.Meeting_endsavePopUp.bind(this)}>
+                    <View>
+                      {/* <Button
+                                                title="Show Dialog"
+                                                onPress={() => {
+                                                this.setState({ visible: true });
+                                                }}
+                                            /> */}
+                      <Dialog
+                        visible={this.state.visiblepopup}
+                        dialogAnimation={new SlideAnimation({
+                          slideFrom: 'bottom',
+                        })}
+                        onTouchOutside={() => {
+                          this.setState({visiblepopup: true});
+                        }}
+                        width={wp('90')}
+                        dialogTitle={
+                          <DialogTitle
+                            title="Meeting Module"
+                          
+                            style={{
+                              backgroundColor: '#F7F7F8',
+                              height : wp('15'),
+                              alignItems :'center'
+                             
+                            }}
+                            hasTitleBar={false}
+                            align="left"
+                          />
+                        }
+                        footer={
+                          <DialogFooter>
+                            <DialogButton
+                              text="OK"
+                              textStyle={{color: 'white'}}
+                              style={{backgroundColor: '#46BE50'}}
+                              onPress={() => {
+                                this.setState({visiblepopup: false});
+                                this.props.navigation.navigate('MJP_one')
+                               // this.insertIntoOrderMaster();
+                              }}
+                            />
+                          </DialogFooter>
+                        }>
+                        <DialogContent>
+                          <View style={styles.appliSchemesMainContainer}>
+                            <View style={styles.appliSchemesRowContainer}>
+                              {/* <View style={styles.roundedtext}>
+                                <Image
+                                  style={{tintColor: '#EAA304'}}
+                                  source={require('../../assets/Icons/Schemes_drawer.png')}
+                                />
+                              </View> */}
+
+                              <Text style={styles.appliSchemeTextStyle}>
+                               {this.state.responseMsg}
+                              </Text>
+                            </View>
+                          </View>
+                         
+                        </DialogContent>
+                      </Dialog>
+                    </View>
+
+                    {/* <Image
+                      style={styles.appliSchemesArrowStyle}
+                      source={require('../../assets/Icons/right_arrow_blue.png')}
+                    /> */}
+                  </TouchableOpacity>
+                </View>
+    )
+}
 
 SubmitReport(Meeting_Id,PlannedDate)
     {
@@ -403,16 +481,11 @@ borderColor:'#362828'
 }}>
 </View>
 </View>
-
-<View style={styles.appliSchemesArrowContainer}>
+{ this.renderPopup()}
+{/* <View style={styles.appliSchemesArrowContainer}>
                   <TouchableOpacity onPress={this.Meeting_endsavePopUp.bind(this)}>
                     <View>
-                      {/* <Button
-                                                title="Show Dialog"
-                                                onPress={() => {
-                                                this.setState({ visible: true });
-                                                }}
-                                            /> */}
+                     
                       <Dialog
                         visible={this.state.visiblepopup}
                         dialogAnimation={new SlideAnimation({
@@ -453,12 +526,7 @@ borderColor:'#362828'
                         <DialogContent>
                           <View style={styles.appliSchemesMainContainer}>
                             <View style={styles.appliSchemesRowContainer}>
-                              {/* <View style={styles.roundedtext}>
-                                <Image
-                                  style={{tintColor: '#EAA304'}}
-                                  source={require('../../assets/Icons/Schemes_drawer.png')}
-                                />
-                              </View> */}
+                             
 
                               <Text style={styles.appliSchemeTextStyle}>
                                {this.state.responseMsg}
@@ -470,12 +538,9 @@ borderColor:'#362828'
                       </Dialog>
                     </View>
 
-                    {/* <Image
-                      style={styles.appliSchemesArrowStyle}
-                      source={require('../../assets/Icons/right_arrow_blue.png')}
-                    /> */}
+                   
                   </TouchableOpacity>
-                </View>
+                </View> */}
 
 
 

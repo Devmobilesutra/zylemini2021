@@ -5,7 +5,7 @@ import Dash from 'react-native-dash';
 import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
 import { Collapse, CollapseHeader, CollapseBody } from "accordion-collapse-react-native";
 import { Thumbnail, List, ListItem, Separator } from 'native-base';
-import Dialog, { DialogContent, DialogFooter, DialogButton, DialogTitle } from 'react-native-popup-dialog';
+import Dialog, { DialogContent, DialogFooter, DialogButton, DialogTitle,SlideAnimation } from 'react-native-popup-dialog';
 import { connect } from 'react-redux'
 import ModalDropdown from 'react-native-modal-dropdown';
 import moment from 'moment';
@@ -33,6 +33,7 @@ export class editpreview extends Component {
             outletId: '',
             outletName: '',
             visible: '',
+            visiblepopup :'',
             remark: '',
             // selectedStartDate: '',
             visiblecal: '',
@@ -56,9 +57,9 @@ export class editpreview extends Component {
 };
 
     }
-    forceUpdateHandler() {
-        this.forceUpdate();
-    };
+    // forceUpdateHandler() {
+    //     this.forceUpdate();
+    // };
     componentDidMount() {
       
        // setTimeout(function(){this.setState({showWarning: true}); }.bind(this), 1000);
@@ -67,16 +68,10 @@ export class editpreview extends Component {
     componentWillUnmount() {
         BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
     }
+    shouldComponentUpdate() {
+        return true;
+      }
     handleBackButtonClick() {
-        // Registered function to handle the Back Press
-        // We are generating an alert to show the back button pressed
-        // alert('You clicked back. Now Screen will move to ThirdPage');
-        // We can move to any screen. If we want
-      //  Actions.sideorderEdittNew({order_Id : this.props.order_Id});
-      Actions.sideorder();
-        //  this.props.navigation.navigate('CreateNewOrderFirst');
-        // Returning true means we have handled the backpress
-        // Returning false means we haven't handled the backpress
         return true;
     }
     WhatsAppShare = () => {
@@ -165,9 +160,9 @@ export class editpreview extends Component {
         // this.props.refresh(orderId, this.props.ItemId)      
     }
 
-    saveClickHandler(e) {
+   async saveClickHandler(e) {
         //////////insert into main Detail Table
-        AsyncStorage.getItem('app_order_id').then((keyValue) => {
+      await  AsyncStorage.getItem('app_order_id').then((keyValue) => {
             var a = JSON.parse(JSON.stringify(keyValue))
             db.getOrderDataFromTempOrderDetails(a).then((data) => {
                 //console.log("data=",data)
@@ -202,23 +197,26 @@ export class editpreview extends Component {
                     totalAmounts = totalAmounts + parseInt(item.Amount)
 
                 })////end of for loop
+                // this.ordersavePopUp();
+                // this.insertIntoOrderMaster()
 
-
-                Alert.alert(
-                    "ZyleminiPlus",
-                    "Order Updated.",
-                    [
-                      // {
-                      //   text: "Cancel",
-                      //   onPress: () => console.log("Cancel Pressed"),
-                      //   style: "cancel"onPress={() => this.props.navigation.navigate('MJP_one')}
-                      // },
-                      { text: "OK", onPress: () => this.insertIntoOrderMaster() }
-                    ],
-                    { cancelable: false }
-                  );
+                // Alert.alert(
+                //     "ZyleminiPlus",
+                //     "Order Updated.",
+                //     [
+                //       // {
+                //       //   text: "Cancel",
+                //       //   onPress: () => console.log("Cancel Pressed"),
+                //       //   style: "cancel"onPress={() => this.props.navigation.navigate('MJP_one')}
+                //       // },
+                //       { text: "OK", onPress: () => this.insertIntoOrderMaster() }
+                //     ],
+                //     { cancelable: false }
+                //   );
                   })
         })
+    await this.ordersavePopUp();
+   //  await   this.insertIntoOrderMaster()
  } 
 
  insertIntoOrderMaster()
@@ -293,7 +291,7 @@ export class editpreview extends Component {
                         AsyncStorage.setItem('SearchString', "");
     
     
-                        Actions.sideorder();
+                     //   Actions.sideorder();
                     }
     
                 })
@@ -302,197 +300,7 @@ export class editpreview extends Component {
         })
     }
 
-    saveClickHandlernew= async() => {
-        //////////insert into main Detail Table
-      await  AsyncStorage.getItem('app_order_id').then((keyValue) => {
-            var a = JSON.parse(keyValue)
-            db.getOrderDataFromTempOrderDetails(a).then((data) => {
-                //console.log("data=",data)
-                this.setState({ orderData: data })
-                totalAmounts = 0
-                let flag ='false';
-                //
-                // })  //not here
-
-                if(this.state.orderData){
-                    this.state.orderData.map((item, i) => {
-                        db.checkOrderInOrderDetailsMain1(item.item_id, a).then((item_data) => {
-                            console.log("item_data=",item_data)
-                            if (item_data.length == 0) {
-                                db.insertOrderDetailsedit(item.order_id, item.item_id, item.item_Name,
-                                    item.quantity_one,
-                                    item.quantity_two,
-                                    item.small_Unit, item.large_Unit, item.rate,
-                                    item.Amount, "1", "N").then((data1) =>{
-                                        if(data1.length != 0){
-                                            db.getOrderDataFromTempOrderMaster(a, "0").then((data) => {
-
-                                                this.setState({ MasterorderData: data })
-                                
-                                                for (let i = 0; i < this.state.MasterorderData.length; i++) {
-                                
-                                                    db.checkOrderInTempOrderMasterMain(this.state.MasterorderData[i].id, "0").then((item_data1) => {
-                                
-                                                        if (item_data1.length === 0) {
-                                
-                                                            var date = new Date().getDate();
-                                                            var month = new Date().getMonth() + 1;
-                                                            var year = new Date().getFullYear();
-                                                            datess = year + '-' + month + '-' + date
-                                                            //var  newDate = moment(datess, 'yyyy-MM-dd').format('yyyy-MMM-dd')
-                                                            newDate = moment().format('YYYY-MMM-DD')
-                                
-                                
-                                                            db.insertOrderMastersss(this.state.MasterorderData[0].id, this.state.MasterorderData[0].Current_date_time, this.state.MasterorderData[0].entity_type, this.state.MasterorderData[0].entity_id,
-                                                                this.state.MasterorderData[0].latitude, this.state.MasterorderData[0].longitude, data1[0].TotalAmount, item.from_date, item.from_date,
-                                                                "0", this.state.MasterorderData[0].user_id, this.state.remark, "1", "N", datess, "", newDate)
-                                
-                                                        } else {
-                                
-                                                            // Current_date_time,entity_type,entity_id,latitude,longitude,total_amount,from_date,to_date,order_id,collection_type
-                                                            db.updateMasterMain(this.state.MasterorderData[0].Current_date_time,
-                                                                this.state.MasterorderData[0].entity_type, this.state.MasterorderData[0].entity_id,
-                                                                this.state.MasterorderData[0].latitude,
-                                                                this.state.MasterorderData[0].longitude,
-                                                                data1[0].TotalAmount, item.from_date, item.from_date, this.state.MasterorderData[0].id, "0")
-                                
-                                
-                                                        }
-                                                    })
-                                
-                                                    db.deleteTempOrderDetailsvibha(item.item_id, "0",this.state.MasterorderData[0].id).then((data) => {
-                                                        AsyncStorage.setItem('outletName', "");
-                                                        AsyncStorage.setItem('outletId', "");
-                                                        AsyncStorage.setItem('beatName', "");
-                                                        AsyncStorage.setItem('beatId', "");
-                                                        AsyncStorage.setItem('distributorName', "");
-                                                        AsyncStorage.setItem('SearchString', "");
-                                
-                                                        db.getInsertedsTempOrder(a).then((getdata) => {
-                                
-                                                            this.setState({ BrandList: getdata })
-                                
-                                                        })
-                                                        AsyncStorage.setItem('outletName', "");
-                                                        AsyncStorage.setItem('outletId', "");
-                                                        AsyncStorage.setItem('beatName', "");
-                                                        AsyncStorage.setItem('beatId', "");
-                                                        AsyncStorage.setItem('distributorName', "");
-                                                        AsyncStorage.setItem('SearchString', "");
-                                
-                                
-                                
-                                                    })
-                                                    db.deleteTempOrderMater(this.state.MasterorderData[0].entity_id, "0").then((getdata) => {
-                                
-                                                    })
-                                                    AsyncStorage.setItem('outletName', "");
-                                                    AsyncStorage.setItem('outletId', "");
-                                                    AsyncStorage.setItem('beatName', "");
-                                                    AsyncStorage.setItem('beatId', "");
-                                                    AsyncStorage.setItem('distributorName', "");
-                                                    AsyncStorage.setItem('SearchString', "");
-                                
-                                
-                                                  //  Actions.sideorder();
-                                                }
-                                
-                                            })
-                                        }
-                                        
-                                    })
-                            } else {
-    
-                                db.updateDetailMainedit(item.quantity_one,
-                                    item.quantity_two, item.small_Unit, item.large_Unit, item.rate,
-                                    item.Amount, item.order_id, item.item_id).then((data2) => {
-                                        db.getOrderDataFromTempOrderMaster(a, "0").then((data) => {
-
-                                            this.setState({ MasterorderData: data })
-                            
-                                            for (let i = 0; i < this.state.MasterorderData.length; i++) {
-                            
-                                                db.checkOrderInTempOrderMasterMain(this.state.MasterorderData[i].id, "0").then((item_dataelse) => {
-                            
-                                                    var date = new Date().getDate();
-                                                    var month = new Date().getMonth() + 1;
-                                                    var year = new Date().getFullYear();
-                                                    datess = year + '-' + month + '-' + date
-                                                    //var  newDate = moment(datess, 'yyyy-MM-dd').format('yyyy-MMM-dd')
-                                                    newDate = moment().format('YYYY-MMM-DD')
-                                                    if (item_dataelse.length === 0) {
-                            
-                                                       
-                            
-                            
-                                                        db.insertOrderMastersss(this.state.MasterorderData[0].id, this.state.MasterorderData[0].Current_date_time, this.state.MasterorderData[0].entity_type, this.state.MasterorderData[0].entity_id,
-                                                            this.state.MasterorderData[0].latitude, this.state.MasterorderData[0].longitude, data2[0].TotalAmount, item.from_date, item.from_date,
-                                                            "0", this.state.MasterorderData[0].user_id, this.state.remark, "1", "N", datess, "", selectedStartDate)
-                            
-                                                    } else {
-                            
-                                                        // Current_date_time,entity_type,entity_id,latitude,longitude,total_amount,from_date,to_date,order_id,collection_type
-                                                        db.updateMasterMain(this.state.MasterorderData[0].Current_date_time,
-                                                            this.state.MasterorderData[0].entity_type, this.state.MasterorderData[0].entity_id,
-                                                            this.state.MasterorderData[0].latitude,
-                                                            this.state.MasterorderData[0].longitude,
-                                                            data2[0].TotalAmount, item.from_date, item.from_date, this.state.MasterorderData[0].id, "0",selectedStartDate,datess)
-                            
-                            
-                                                    }
-                                                })
-                            
-                                                db.deleteTempOrderDetailsvibha(item.item_id, "0",this.state.MasterorderData[0].id).then((data) => {
-                                                    AsyncStorage.setItem('outletName', "");
-                                                    AsyncStorage.setItem('outletId', "");
-                                                    AsyncStorage.setItem('beatName', "");
-                                                    AsyncStorage.setItem('beatId', "");
-                                                    AsyncStorage.setItem('distributorName', "");
-                                                    AsyncStorage.setItem('SearchString', "");
-                            
-                                                    db.getInsertedsTempOrder(a).then((getdata) => {
-                            
-                                                        this.setState({ BrandList: getdata })
-                            
-                                                    })
-                                                    AsyncStorage.setItem('outletName', "");
-                                                    AsyncStorage.setItem('outletId', "");
-                                                    AsyncStorage.setItem('beatName', "");
-                                                    AsyncStorage.setItem('beatId', "");
-                                                    AsyncStorage.setItem('distributorName', "");
-                                                    AsyncStorage.setItem('SearchString', "");
-                            
-                            
-                            
-                                                })
-                                                db.deleteTempOrderMater(this.state.MasterorderData[0].entity_id, "0").then((getdata) => {
-                            
-                                                })
-                                                AsyncStorage.setItem('outletName', "");
-                                                AsyncStorage.setItem('outletId', "");
-                                                AsyncStorage.setItem('beatName', "");
-                                                AsyncStorage.setItem('beatId', "");
-                                                AsyncStorage.setItem('distributorName', "");
-                                                AsyncStorage.setItem('SearchString', "");
-                            
-                            
-                                             //   Actions.sideorder();
-                                            }
-                            
-                                        })
-                                    })
-                            }
-                        })
-                       
-                      //  totalAmounts = totalAmounts + parseInt(item.Amount)
-                    })
-                    Actions.sideorder()
-                }
-               })
-        })
-
-    }
-
+   
   
 
    
@@ -501,8 +309,8 @@ export class editpreview extends Component {
         this.setState({ amount: value });
     }
 
-    componentDidMount() {
-        this.forceUpdate();
+    componentWillMount() {
+      //  this.forceUpdate();
        // this._componentFocused();
        let orderid;
        AsyncStorage.getItem('app_order_id').then((keyValue) => {
@@ -642,7 +450,89 @@ export class editpreview extends Component {
         const { navigation } = this.props;
         this.setState({ visible: true });
     }
+    ordersavePopUp = () => {
+        const {navigation} = this.props;
+        this.setState({visiblepopup: true});
+      };
 
+      renderPopup(){
+        return(
+    <View style={styles.appliSchemesArrowContainer}>
+                      <TouchableOpacity onPress={this.ordersavePopUp.bind(this)}>
+                        <View>
+                          {/* <Button
+                                                    title="Show Dialog"
+                                                    onPress={() => {
+                                                    this.setState({ visible: true });
+                                                    }}
+                                                /> */}
+                          <Dialog
+                            visible={this.state.visiblepopup}
+                            dialogAnimation={new SlideAnimation({
+                              slideFrom: 'bottom',
+                            })}
+                            onTouchOutside={() => {
+                              this.setState({visiblepopup: true});
+                            }}
+                            width={wp('90')}
+                            dialogTitle={
+                              <DialogTitle
+                                title="Meeting Module"
+                              
+                                style={{
+                                  backgroundColor: '#F7F7F8',
+                                  height : wp('15'),
+                                  alignItems :'center'
+                                 
+                                }}
+                                hasTitleBar={false}
+                                align="left"
+                              />
+                            }
+                            footer={
+                              <DialogFooter>
+                                <DialogButton
+                                  text="OK"
+                                  textStyle={{color: 'white'}}
+                                  style={{backgroundColor: '#46BE50'}}
+                                  onPress={() => {
+                                    this.setState({visiblepopup: false});
+                                    this.insertIntoOrderMaster();
+                                    Actions.Dashboard();
+                                   // this.insertIntoOrderMaster();
+                                  }}
+                                />
+                              </DialogFooter>
+                            }>
+                            <DialogContent>
+                              <View style={styles.appliSchemesMainContainer}>
+                                <View style={styles.appliSchemesRowContainer}>
+                                  {/* <View style={styles.roundedtext}>
+                                    <Image
+                                      style={{tintColor: '#EAA304'}}
+                                      source={require('../../assets/Icons/Schemes_drawer.png')}
+                                    />
+                                  </View> */}
+    
+                                  <Text style={styles.appliSchemeTextStyle}>
+                                  Order Updated Successfully..
+                                  </Text>
+                                </View>
+                              </View>
+                             
+                            </DialogContent>
+                          </Dialog>
+                        </View>
+    
+                        {/* <Image
+                          style={styles.appliSchemesArrowStyle}
+                          source={require('../../assets/Icons/right_arrow_blue.png')}
+                        /> */}
+                      </TouchableOpacity>
+                    </View>
+        )
+    }
+    
     SchemesArrow() {
         if (this.state.collapsed == false) {
             return (
@@ -982,6 +872,8 @@ export class editpreview extends Component {
                                 </View>
                             </View>
                         </View>
+
+                        {this.renderPopup()}
 
                         {/* Dash Line Below Applicable Schemes*/}
                         <View style={styles.dashLineContainerBelowApplicableSchemes}>
@@ -1351,7 +1243,7 @@ const styles = StyleSheet.create({
     appliSchemeTextStyle: {
         marginLeft: wp('2'),
         fontFamily: 'Proxima Nova',
-        fontSize: wp('5'),
+        fontSize: wp('4'),
         color: '#3955CB',
     },
 
