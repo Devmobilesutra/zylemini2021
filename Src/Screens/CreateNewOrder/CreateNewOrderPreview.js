@@ -474,100 +474,94 @@ export class CreateNewOrderPreview extends Component {
   }
 
   insertIntoOrderMaster() {
-    AsyncStorage.getItem('app_order_id').then(keyValue => {
-      var a = JSON.parse(keyValue);
-      db.getTotalamountOfOrder(a).then(data1 => {
-        db.getOrderDataFromTempOrderMaster(a, '0').then(data => {
-          this.setState({MasterorderData: data});
+    AsyncStorage.getItem('app_order_id').then((keyValue) => {
+        var a = JSON.parse(keyValue)
+        AsyncStorage.getItem('ActivityStart').then((keyValue) => {
+            // this.setState({ outletId: JSON.parse(keyValue) })
+            var ActivityStart = JSON.parse(keyValue)
+            db.getTotalamountOfOrder(a).then((data1) => {
+                db.getOrderDataFromTempOrderMaster(a, "0").then((data) => {
 
-          for (let i = 0; i < this.state.MasterorderData.length; i++) {
-            db.checkOrderInTempOrderMasterMain(
-              this.state.MasterorderData[i].id,
-              '0',
-            ).then(item_data => {
-              var date = new Date().getDate();
-              var month = new Date().getMonth() + 1;
-              var year = new Date().getFullYear();
-              datess = year + '-' + month + '-' + date;
-              //var  newDate = moment(datess, 'yyyy-MM-dd').format('yyyy-MMM-dd')
-              newDate = moment().format('YYYY-MMM-DD');
-              if (item_data.length === 0) {
-                db.insertOrderMastersss(
-                  this.state.MasterorderData[0].id,
-                  this.state.MasterorderData[0].Current_date_time,
-                  this.state.MasterorderData[0].entity_type,
-                  this.state.MasterorderData[0].entity_id,
-                  this.state.MasterorderData[0].latitude,
-                  this.state.MasterorderData[0].longitude,
-                  data1[0].TotalAmount,
-                  this.state.from_date,
-                  this.state.from_date,
-                  '0',
-                  this.state.MasterorderData[0].user_id,
-                  this.state.remark,
-                  '1',
-                  'N',
-                  datess,
-                  '',
-                  selectedStartDate,
-                );
-              } else {
-                // Current_date_time,entity_type,entity_id,latitude,longitude,total_amount,from_date,to_date,order_id,collection_type
-                db.updateMasterMain(
-                  this.state.MasterorderData[0].Current_date_time,
-                  this.state.MasterorderData[0].entity_type,
-                  this.state.MasterorderData[0].entity_id,
-                  this.state.MasterorderData[0].latitude,
-                  this.state.MasterorderData[0].longitude,
-                  data1[0].TotalAmount,
-                  this.state.from_date,
-                  this.state.from_date,
-                  this.state.MasterorderData[0].id,
-                  '0',
-                  selectedStartDate,
-                  datess,
-                );
-              }
-            });
-
-            db.deleteTempOrderDetails(
-              this.state.MasterorderData[0].entity_id,
-              '0',
-            ).then(data => {
-              AsyncStorage.setItem('outletName', '');
-              AsyncStorage.setItem('outletId', '');
-              AsyncStorage.setItem('beatName', '');
-              AsyncStorage.setItem('beatId', '');
-              AsyncStorage.setItem('distributorName', '');
-              AsyncStorage.setItem('SearchString', '');
-
-              db.getInsertedsTempOrder(a).then(getdata => {
-                this.setState({BrandList: getdata});
-              });
-              AsyncStorage.setItem('outletName', '');
-              AsyncStorage.setItem('outletId', '');
-              AsyncStorage.setItem('beatName', '');
-              AsyncStorage.setItem('beatId', '');
-              AsyncStorage.setItem('distributorName', '');
-              AsyncStorage.setItem('SearchString', '');
-            });
-            db.deleteTempOrderMater(
-              this.state.MasterorderData[0].entity_id,
-              '0',
-            ).then(getdata => {});
-            AsyncStorage.setItem('outletName', '');
-            AsyncStorage.setItem('outletId', '');
-            AsyncStorage.setItem('beatName', '');
-            AsyncStorage.setItem('beatId', '');
-            AsyncStorage.setItem('distributorName', '');
-            AsyncStorage.setItem('SearchString', '');
-
-            Actions.CreateNewOrderFirst();
-          }
-        });
-      });
-    });
-  }
+                    this.setState({ MasterorderData: data })
+    
+                    for (let i = 0; i < this.state.MasterorderData.length; i++) {
+    
+                        db.checkOrderInTempOrderMasterMain(this.state.MasterorderData[i].id, "0").then((item_data) => {
+                            var date = new Date().getDate();
+                            var month = new Date().getMonth() + 1;
+                            var year = new Date().getFullYear();
+                            datess = year + '-' + month + '-' + date
+                            var hours = new Date().getHours(); //Current Hours
+                            var min = new Date().getMinutes(); //Current Minutes
+                            var sec = new Date().getSeconds(); //Current Seconds
+                           
+                          var ActivityEnd = year + '-' + month + '-' + date + ' ' + hours + ':' + min + ':' + sec
+                             
+                            //var  newDate = moment(datess, 'yyyy-MM-dd').format('yyyy-MMM-dd')
+                            newDate = moment().format('YYYY-MMM-DD')
+                            if (item_data.length === 0) {
+    
+                                db.insertOrderMastersss(this.state.MasterorderData[0].id, this.state.MasterorderData[0].Current_date_time, this.state.MasterorderData[0].entity_type, this.state.MasterorderData[0].entity_id,
+                                    this.state.MasterorderData[0].latitude, this.state.MasterorderData[0].longitude, data1[0].TotalAmount, this.state.from_date, this.state.from_date,
+                                    "0", this.state.MasterorderData[0].user_id, this.state.remark, "1", "N", datess, "", selectedStartDate,"0",ActivityStart,ActivityEnd)
+    
+                            } else {
+    
+                                // Current_date_time,entity_type,entity_id,latitude,longitude,total_amount,from_date,to_date,order_id,collection_type
+                                db.updateMasterMain(this.state.MasterorderData[0].Current_date_time,
+                                    this.state.MasterorderData[0].entity_type, this.state.MasterorderData[0].entity_id,
+                                    this.state.MasterorderData[0].latitude,
+                                    this.state.MasterorderData[0].longitude,
+                                    data1[0].TotalAmount, this.state.from_date, this.state.from_date, this.state.MasterorderData[0].id, "0",selectedStartDate,datess,ActivityEnd)
+    
+    
+                            }
+                        })
+    
+                        db.deleteTempOrderDetails(this.state.MasterorderData[0].entity_id, "0").then((data) => {
+                            AsyncStorage.setItem('outletName', "");
+                            AsyncStorage.setItem('outletId', "");
+                            AsyncStorage.setItem('beatName', "");
+                            AsyncStorage.setItem('beatId', "");
+                            AsyncStorage.setItem('distributorName', "");
+                            AsyncStorage.setItem('SearchString', "");
+    
+                            db.getInsertedsTempOrder(a).then((getdata) => {
+    
+                                this.setState({ BrandList: getdata })
+    
+                            })
+                            AsyncStorage.setItem('outletName', "");
+                            AsyncStorage.setItem('outletId', "");
+                            AsyncStorage.setItem('beatName', "");
+                            AsyncStorage.setItem('beatId', "");
+                            AsyncStorage.setItem('distributorName', "");
+                            AsyncStorage.setItem('SearchString', "");
+    
+    
+    
+                        })
+                        db.deleteTempOrderMater(this.state.MasterorderData[0].entity_id, "0").then((getdata) => {
+    
+                        })
+                        AsyncStorage.setItem('outletName', "");
+                        AsyncStorage.setItem('outletId', "");
+                        AsyncStorage.setItem('beatName', "");
+                        AsyncStorage.setItem('beatId', "");
+                        AsyncStorage.setItem('distributorName', "");
+                        AsyncStorage.setItem('SearchString', "");
+    
+    
+                        Actions.CreateNewOrderFirst();
+                    }
+    
+                })
+            })
+           })
+      
+       
+    })
+}
   changeAmount(value) {
     //  alert("in change amount")
     this.setState({amount: value});

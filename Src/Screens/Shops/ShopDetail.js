@@ -66,7 +66,9 @@ export class ShopDetail extends Component {
             userLatitude: '',
             userLongitude: '',
           
-            aa:''
+            aa:'',
+            CheckInText : 'CHECK IN',
+            ShopId : ''
         };
     }
     
@@ -102,7 +104,7 @@ export class ShopDetail extends Component {
                   userLatitude: pos.coords.latitude,
                   userLongitude: pos.coords.longitude
               });
-              //console.log("my lat",this.state.userLatitude)
+              console.log("my lat",this.state.userLatitude)
           })
   }
   componentWillUnmount() {   
@@ -126,6 +128,25 @@ componentWillMount(){
   //     this._componentFocused
 
   // );
+
+
+  var date = new Date().getDate();
+  var month = new Date().getMonth() + 1;
+  var year = new Date().getFullYear();
+  var datess= year + '-' + month + '-' + date  
+  this.state.todaysDate=datess
+  this.setState({todaysDate:datess})    
+  AsyncStorage.getItem('shopId').then((keyValue) => {  
+    this.setState({ShopId : JSON.parse(keyValue)})  
+    db.CheckTodaysRecordForShopCheckIn(this.state.todaysDate,JSON.parse(keyValue),'4').then((data)=>{
+      if(data.length == 0){
+        this.setState({CheckInText : 'CHECK IN'})
+      }else{
+        this.setState({CheckInText : 'CHECK OUT'})
+      }
+    })               
+    })  
+
 }
  
 applicablePopUp =  () => {
@@ -147,7 +168,7 @@ AsyncStorage.getItem('shopId').then((keyValue) => {
     var datess= year + '-' + month + '-' + date  
     this.state.todaysDate=datess
     this.setState({todaysDate:datess})      
-    db.CheckTodaysRecordForShopCheckIn(this.state.todaysDate,this.props.shops.shopId,'4').then((data)=>{
+    db.CheckTodaysRecordForShopCheckIn(this.state.todaysDate,this.state.ShopId,'4').then((data)=>{
       if(data.length == '0'){    
         //console.log("innn if CheckTodaysRecordForShopCheckIn")
         var date = new Date().getDate(); //Current Date
@@ -161,15 +182,27 @@ AsyncStorage.getItem('shopId').then((keyValue) => {
         curentDatetime=year + '-' + month + '-' + date + ' ' + hours + ':' + min + ':' + sec
          
 //remain to insert colu==DefaultDistributorId,ExpectedDeliveryDate
-        db.insertRecordInOrderMasterForShopCheckIn(app_order_id,curentDatetime,"1",this.props.shops.shopId, this.state.userLatitude, this.state.userLongitude,
-        "0","","","4",this.props.dashboard.userId,"1","N","",this.state.todaysDate,"0",this.state.todaysDate).then((data)=>{
-          pressed=true
+db.insertRecordInOrderMasterForShopCheckIn(app_order_id,curentDatetime,"1",this.state.ShopId, this.state.userLatitude, this.state.userLongitude,
+"0","","","4",this.props.dashboard.userId,"1","N","",this.state.todaysDate,"0",this.state.todaysDate,'0',curentDatetime,'').then((data)=>{
+  pressed=true
+  this.setState({CheckInText : 'CHECK OUT'})
          
         })        
         
       }else{
+        var date = new Date().getDate(); //Current Date
+        var month = new Date().getMonth() + 1; //Current Month
+        var year = new Date().getFullYear(); //Current Year
+        var hours = new Date().getHours(); //Current Hours
+        var min = new Date().getMinutes(); //Current Minutes
+        var sec = new Date().getSeconds(); //Current Seconds
+       var CheckoutcurentDatetime=year + '-' + month + '-' + date + ' ' + hours + ':' + min + ':' + sec
         //change color of button
-        alert("already checkIn")
+        db.updateCheckoutOrderMaster("4",this.state.ShopId,this.state.todaysDate,CheckoutcurentDatetime,this.state.userLatitude, this.state.userLongitude).then((data)=>{
+          pressed=true
+         
+        }) 
+        alert("Checkout Successfully..")
       }
      
     })
@@ -181,7 +214,7 @@ render() {
   var month = new Date().getMonth() + 1;
   var year = new Date().getFullYear();
   var datess= year + '-' + month + '-' + date  
-   db.CheckTodaysRecordForShopCheckInforColor(datess,this.props.shops.shopId).then((data)=>{
+   db.CheckTodaysRecordForShopCheckInforColor(datess,this.state.ShopId).then((data)=>{
     if(data.length == 0){   
       pressed=false  
     }else{
@@ -256,7 +289,7 @@ render() {
  
           <View style={styles.checkInLableBGStyle}>
             <Text style={styles.checkInLabelTextStyle}>
-                CHECK IN
+            {this.state.CheckInText}
             </Text>
          </View>
         </TouchableOpacity>

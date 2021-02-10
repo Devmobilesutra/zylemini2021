@@ -328,87 +328,97 @@ export class sideordrDetails extends Component {
 
     }
     _componentFocused = () => {
-     //  console.log("shop details on sideorderdetails",this.props.entity_id);
-    //    if(!this.props.entity_id){ 
-    //        AsyncStorage.getItem('entityid').then((keyValue) => {
-    //     //console.log("UserIddd=", JSON.parse((keyValue)))
-    //     this.state.entityIdNew = (JSON.parse((keyValue)));
-    //   })}else{
-    //     this.state.entityIdNew =   this.props.entity_id;
-    //   }
-    AsyncStorage.getItem('entityid').then((keyValue) => {
-        console.log("UserIddd entityid="+ JSON.parse((keyValue)) + " "+this.state.app_order_id)
-        this.state.entityIdNew = (JSON.parse((keyValue)));
+        //  console.log("shop details on sideorderdetails",this.props.entity_id);
+       //    if(!this.props.entity_id){ 
+       //        AsyncStorage.getItem('entityid').then((keyValue) => {
+       //     //console.log("UserIddd=", JSON.parse((keyValue)))
+       //     this.state.entityIdNew = (JSON.parse((keyValue)));
+       //   })}else{
+       //     this.state.entityIdNew =   this.props.entity_id;
+       //   }
+       AsyncStorage.getItem('apporderid').then((keyValue) => {
+       this.state.app_order_id = JSON.parse(JSON.stringify(keyValue));
+       console.log("UserIddd="+ this.state.app_order_id )
+           AsyncStorage.getItem('entityid').then((keyValue) => {
+               // console.log("UserIddd entityid="+ JSON.parse((keyValue)) + " "+this.state.app_order_id)
+                this.state.entityIdNew = JSON.parse(JSON.stringify(keyValue));
+                // AsyncStorage.getItem('apporderid').then((keyValue) => {
+                //     console.log("UserIddd order=", JSON.parse(keyValue))
+                //     this.state.app_order_id = JSON.parse(keyValue);
+                //     console.log("amount details on entityIdNew",this.state.entityIdNew);
+                   
+                //   })
+                  db.getCustomerShopName(this.state.entityIdNew,this.state.app_order_id).then((data)=>{
+                    console.log("side order details....",data);
+                    this.setState({Shop_det:data})
+                    console.log("shop data final",this.state.Shop_det);
+                //    selectedStartDate = this.state.Shop_det[0].ExpectedDeliveryDate;
+                  //  console.log("id we want for details",this.state.Shop_det[0].id);
+                   
+                    })
+          
+                    db.getDetailsItem(this.state.app_order_id).then((data)=>{
+                      console.log("item id details....",data);
+                      this.setState({BrandList:data})
+                      // console.log("shop data final",this.state.Shop_det);
+                      
+                      var amountss = 0
+                      for (var i = 0; i < this.state.BrandList.length; i++) {
+                          amountss += parseInt(this.state.BrandList[i].Amount)
+                          this.state.total = amountss
+                          this.setState({ total: amountss })
+          
+                      }
+          
+                      })
         
-        console.log("amount details on entityIdNew",this.state.entityIdNew);
-        db.getCustomerShopName(this.state.entityIdNew,this.state.app_order_id).then((data)=>{
-          console.log("side order details....",data);
-          this.setState({Shop_det:data})
-          console.log("shop data final",this.state.Shop_det);
-      //    selectedStartDate = this.state.Shop_det[0].ExpectedDeliveryDate;
-        //  console.log("id we want for details",this.state.Shop_det[0].id);
+              })
+         })
+     
          
-          })
-
-          db.getDetailsItem(this.state.app_order_id).then((data)=>{
-            console.log("item id details....",data);
-            this.setState({BrandList:data})
-            // console.log("shop data final",this.state.Shop_det);
-            
-            var amountss = 0
-            for (var i = 0; i < this.state.BrandList.length; i++) {
-                amountss += parseInt(this.state.BrandList[i].Amount)
-                this.state.total = amountss
-                this.setState({ total: amountss })
-
-            }
-
-            })
-      })
-      
-      
-
-       
-        //getPrevOrdersDayNo
-        db.getPrevOrdersDayNo().then((data) => {
-            var prod = []
-            prod = data
-            prod.map((Value, i) => {
-                this.setState({ PREVIOUSDAYORDERDAYS: Value.Value })
-            })
-        })
-        var date = new Date().getDate();
-        var month = new Date().getMonth() + 1;
-        var year = new Date().getFullYear();
-        datess = year + '-' + month + '-' + date
-
-        newDate = moment().format('DD-MMM-YYYY')
-
-        AsyncStorage.getItem('outletId').then((keyValue) => {
-            this.setState({ outletId: JSON.parse(keyValue) })
-        })
-        AsyncStorage.getItem('outletName').then((keyValue) => {
-            this.setState({ outletName: JSON.parse(keyValue) })
-
-        })
-        // AsyncStorage.getItem('app_order_id').then((keyValue) => {
-        //     var a = JSON.parse(keyValue)
-
-        //     db.getInsertedsTempOrder(a).then((getdata) => {
-
-        //       // this.setState({ BrandList: getdata })
-        //         var amountss = 0
-        //         for (var i = 0; i < this.state.BrandList.length; i++) {
-        //             amountss += parseInt(this.state.BrandList[i].Amount)
-        //             this.state.total = amountss
-        //             this.setState({ total: amountss })
-
-        //         }
-
-        //     })
-        //     //    [{"to_date":"","from_date":"4/4/2020 19:44:39","large_Unit":"0","small_Unit":"0","Amount":"750.5","quantity_one":"25","id":4,"bpc":"12","quantity_two":"2","rate":"3","item_Name":"{0061}DYC  750 ML X 12 42.8 %","item_id":"78","order_id":"442020194439"}]
-
-        // })
+         
+   
+          
+           //getPrevOrdersDayNo
+           db.getPrevOrdersDayNo().then((data) => {
+               var prod = []
+               prod = data
+               prod.map((Value, i) => {
+                   this.setState({ PREVIOUSDAYORDERDAYS: Value.Value })
+               })
+           })
+           var date = new Date().getDate();
+           var month = new Date().getMonth() + 1;
+           var year = new Date().getFullYear();
+           datess = year + '-' + month + '-' + date
+   
+           newDate = moment().format('DD-MMM-YYYY')
+   
+           AsyncStorage.getItem('outletId').then((keyValue) => {
+               this.setState({ outletId: JSON.parse(keyValue) })
+           })
+           AsyncStorage.getItem('outletName').then((keyValue) => {
+               this.setState({ outletName: JSON.parse(keyValue) })
+   
+           })
+           // AsyncStorage.getItem('app_order_id').then((keyValue) => {
+           //     var a = JSON.parse(keyValue)
+   
+           //     db.getInsertedsTempOrder(a).then((getdata) => {
+   
+           //       // this.setState({ BrandList: getdata })
+           //         var amountss = 0
+           //         for (var i = 0; i < this.state.BrandList.length; i++) {
+           //             amountss += parseInt(this.state.BrandList[i].Amount)
+           //             this.state.total = amountss
+           //             this.setState({ total: amountss })
+   
+           //         }
+   
+           //     })
+           //     //    [{"to_date":"","from_date":"4/4/2020 19:44:39","large_Unit":"0","small_Unit":"0","Amount":"750.5","quantity_one":"25","id":4,"bpc":"12","quantity_two":"2","rate":"3","item_Name":"{0061}DYC  750 ML X 12 42.8 %","item_id":"78","order_id":"442020194439"}]
+   
+           // })
 
 
     }

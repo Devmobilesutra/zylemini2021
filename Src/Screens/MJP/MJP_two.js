@@ -160,156 +160,9 @@ async requestFineLocation() {
       console.warn(err);
   }
 }
- SubmitReportnew()
-    {
-      var OrderMaster = []
-    
-      this.state.isLoading = true
-      this.setState({ isLoading: true })
-      this.setState({ JSONObj: {} })
-        db.checkMeetingInOrderMaster(this.props.Meeting_Id).then((dataMaster) => {
-          console.log("orderm len : "+dataMaster)
-          if(dataMaster > 0){
-            db.getMeetForSyncByVibha(this.props.Meeting_Id,this.props.PlannedDate).then((data) => {
-              if (data.length > 0) {
-                console.log('meetreport update : '+JSON.stringify(data));
-          
-              db.UpdateOrderMastersssForMeetingCancel(data[0].Meeting_Id, data[0].CurrentDatetime, data[0].Type_sync, data[0].Shop_Id,
-                data[0].latitude,data[0].longitude, '', '', '',
-                "0", data[0].UserID, this.state.Remarks, "1", "N", '', "", '',data[0].ActivityStatus).then((data) =>{
-                  console.log("meeting cancel update"+ JSON.stringify(data));
-                  db.getOrderMasterSyncDataFor_Meeting(this.props.Meeting_Id,"N").then((dataMain) => {
-                    if (dataMain.length > 0) {
-                    //  console.log("ordermaster for sync", JSON.stringify(dataMain))
-                         this.SyncMeetingData(dataMain)
-                     } })
-                    })
-          }else{
-            
-            var date = new Date().getDate(); //Current Date
-            var month = new Date().getMonth() + 1; //Current Month
-            var year = new Date().getFullYear(); //Current Year
-            var hours = new Date().getHours(); //Current Hours
-            var min = new Date().getMinutes(); //Current Minutes
-            var sec = new Date().getSeconds(); //Current Seconds
-          
-            
-          var currentDateTime = year + '-' + month + '-' + date + ' ' + hours + ':' + min + ':' + sec
-            db.MeetDraftDetails(this.props.Meeting_Id).then((data) => {
-            db.InsertMeet(ID,this.props.Meeting_Id,this.props.EntityTypeID,this.props.ActivityTitle,this.props.PlannedDate,'',this.state.Shop_addFinal,this.state.Remarks,this.props.IsActivityDone,this.props.EntityType,this.state.collection_type,this.state.userLatitude,this.state.userLongitude,'',this.state.userId,currentDateTime,'','').then((datam) => {
-              db.checkMeetingInOrderMaster(this.props.Meeting_Id).then((dataMaster) => {
-                if(dataMaster.length > 0){
-                  db.getMeetForSyncByVibha(this.props.Meeting_Id,this.props.PlannedDate).then((data) => {
-                    if (data.length > 0) {
-                      console.log('meetreport cc: '+JSON.stringify(data));
-                
-                    db.UpdateOrderMastersssForMeetingCancel(data[0].Meeting_Id, data[0].CurrentDatetime, data[0].Type_sync, data[0].Shop_Id,
-                      data[0].latitude,data[0].longitude, '', '', '',
-                      this.state.collection_type, data[0].UserID, this.state.Remarks, "1", "N", '', "", '',data[0].ActivityStatus).then((data) =>{
-                        console.log("meeting cancel cc "+ JSON.stringify(data));
-                        db.getOrderMasterSyncDataFor_Meeting(this.props.Meeting_Id,"N").then((dataMain) => {
-                          if (dataMain.length > 0) {
-                                  //  console.log("ordermaster for sync", JSON.stringify(dataMain))
-                                this.SyncMeetingData(dataMain)
-                            }})
-                          })
-                }
-              })
-                }else{
-                  db.getMeetForSyncByVibha(this.props.Meeting_Id,this.props.PlannedDate).then((data) => {
-                    if (data.length > 0) {
-                   console.log('meetreport : '+JSON.stringify(data));
-                
-                db.insertOrderMastersssForMeetingCancel(data[0].Meeting_Id, data[0].CurrentDatetime, data[0].Type_sync, data[0].Shop_Id,
-                  data[0].latitude,data[0].longitude, '0', '', '',
-                  this.state.collection_type, data[0].UserID,this.state.Remarks, "1", "N", '', "", '',data[0].ActivityStatus).then((data) =>{
-                    console.log("meeting cancel "+ JSON.stringify(data));
-                    db.getOrderMasterSyncDataFor_Meeting(this.props.Meeting_Id,"N").then((dataMain) => {
-                      if (dataMain.length > 0) {
-                      //  console.log("ordermaster for sync", JSON.stringify(dataMain))
-                        this.SyncMeetingData(dataMain)
-                      } })
-                    })
-                  } })
-                  }
-                })
-              })
-              })
-            }
-          })
-        }else {
-            db.getMeetForSyncByVibha(this.props.Meeting_Id,this.props.PlannedDate).then((data) => {
-              if (data.length > 0) {
-          console.log('meetreport : '+JSON.stringify(data));
-          
-          db.insertOrderMastersssForMeetingCancel(data[0].Meeting_Id, data[0].CurrentDatetime, data[0].Type_sync, data[0].Shop_Id,
-            data[0].latitude,data[0].longitude, '0', '', '',
-            this.state.collection_type, data[0].UserID, this.state.Remarks, "1", "N", '', "", '',data[0].ActivityStatus).then((data) =>{
-              console.log("meeting cancel "+ JSON.stringify(data));
-              db.getOrderMasterSyncDataFor_Meeting(this.props.Meeting_Id,"N").then((dataMain) => {
-                if (dataMain.length > 0) {
-                //  console.log("ordermaster for sync", JSON.stringify(dataMain))
-                this.SyncMeetingData(dataMain)
-              } })
-           })
-          }else{
-            
-            var date = new Date().getDate(); //Current Date
-            var month = new Date().getMonth() + 1; //Current Month
-            var year = new Date().getFullYear(); //Current Year
-            var hours = new Date().getHours(); //Current Hours
-            var min = new Date().getMinutes(); //Current Minutes
-            var sec = new Date().getSeconds(); //Current Seconds
-          
-            
-          var currentDateTime = year + '-' + month + '-' + date + ' ' + hours + ':' + min + ':' + sec
-            db.MeetDraftDetails(this.props.Meeting_Id).then((data) => {
-            db.InsertMeet(ID,this.props.Meeting_Id,this.props.EntityTypeID,this.props.ActivityTitle,this.props.PlannedDate,'',this.state.Shop_addFinal,this.state.Remarks,this.props.IsActivityDone,this.props.EntityType,this.state.collection_type,this.state.userLatitude,this.state.userLongitude,'',this.state.userId,currentDateTime,'','').then((datam) => {
-              db.checkMeetingInOrderMaster(this.props.Meeting_Id).then((dataMaster) => {
-                if(dataMaster > 0){
-                  db.getMeetForSyncByVibha(this.props.Meeting_Id,this.props.PlannedDate).then((data) => {
-                    if (data.length > 0) {
-                      console.log('meetreport : '+JSON.stringify(data));
-                
-                db.UpdateOrderMastersssForMeetingCancel(data[0].Meeting_Id, data[0].CurrentDatetime, data[0].Type_sync, data[0].Shop_Id,
-                  data[0].latitude,data[0].longitude, '0', '', '',
-                  "0", data[0].UserID,this.state.Remarks, "1", "N", '', "", '',data[0].ActivityStatus).then((data) =>{
-                    console.log("meeting cancel "+ JSON.stringify(data));
-                    db.getOrderMasterSyncDataFor_Meeting(this.props.Meeting_Id,"N").then((dataMain) => {
-                      if (dataMain.length > 0) {
-                          //  console.log("ordermaster for sync", JSON.stringify(dataMain))
-                          this.SyncMeetingData(dataMain)
-                      } })
-                    })
-                }
-              })
-                } else{
-                  db.getMeetForSyncByVibha(this.props.Meeting_Id,this.props.PlannedDate).then((data) => {
-                    if (data.length > 0) {
-                console.log('meetreport : '+JSON.stringify(data));
-                
-                db.insertOrderMastersssForMeetingCancel(data[0].Meeting_Id, data[0].CurrentDatetime, data[0].Type_sync, data[0].Shop_Id,
-                  data[0].latitude,data[0].longitude, '0', '', '',
-                  "0", data[0].UserID, this.state.Remarks, "1", "N", '', "", '',data[0].ActivityStatus).then((data) =>{
-                    console.log("meeting cancel "+ JSON.stringify(data));
-                    db.getOrderMasterSyncDataFor_Meeting(this.props.Meeting_Id,"N").then((dataMain) => {
-                      if (dataMain.length > 0) {
-                      //  console.log("ordermaster for sync", JSON.stringify(dataMain))
-                         this.SyncMeetingData(dataMain)
-                    } })
-                  })
-                } })
-                }
-              })
-            })
-                // alert("meeting details saved in the draft");
-            }) }
-        }) }
-        })
- }
-    
+ 
 
- SubmitReport()
+SubmitReport()
     {
       var OrderMaster = []
     
@@ -334,7 +187,7 @@ async requestFineLocation() {
           
               db.UpdateOrderMastersssForMeetingCancel(data[0].ID, data[0].CurrentDatetime, data[0].Type_sync, data[0].Shop_Id,
                 data[0].latitude,data[0].longitude, '0', data[0].FromDate, ToDate,
-                this.state.collection_type, data[0].UserID, this.state.Remarks, "1", "N", '', data[0].Meeting_Id, '','0').then((data) =>{
+                this.state.collection_type, data[0].UserID, this.state.Remarks, "1", "N", '', data[0].Meeting_Id, '','0', data[0].FromDate, ToDate).then((data) =>{
                   console.log("meeting cancel update"+ JSON.stringify(data));
                   db.getOrderMasterSyncDataFor_Meeting(this.props.Meeting_Id,"N").then((dataMain) => {
                     if (dataMain.length > 0) {
@@ -351,7 +204,7 @@ async requestFineLocation() {
           
           db.insertOrderMastersssForMeetingCancel(data[0].ID, data[0].CurrentDatetime, data[0].Type_sync, data[0].Shop_Id,
             data[0].latitude,data[0].longitude, '0', data[0].FromDate, ToDate,
-            this.state.collection_type, data[0].UserID, this.state.Remarks, "1", "N", '', data[0].Meeting_Id, '','0').then((data) =>{
+            this.state.collection_type, data[0].UserID, this.state.Remarks, "1", "N", '', data[0].Meeting_Id, '','0',data[0].FromDate, ToDate).then((data) =>{
               console.log("meeting cancel "+ JSON.stringify(data));
               db.getOrderMasterSyncDataFor_Meeting(this.props.Meeting_Id,"N").then((dataMain) => {
                 if (dataMain.length > 0) {
