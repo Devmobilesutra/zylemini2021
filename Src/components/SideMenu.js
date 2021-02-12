@@ -185,6 +185,7 @@ export default class SideMenu extends Component {
                   'boduy of postApi=',
                   JSON.stringify(this.state.JSONObj),
                 );
+            
                 //  //console.log("boduy of postApi2=", datas)
                 //   const url = 'http://zylemdemo.com/ZyleminiPlusCoreAPI/api/Data/PostData'
 
@@ -199,6 +200,7 @@ export default class SideMenu extends Component {
                       'response of post=',
                       JSON.stringify(response.data),
                     );
+                    console.log('status code :'+response.status)
                     var responss = [];
                     // /{"Data":{"Order":{"Status":"Data saved successfully.",
                     //"Orders":[{"OrderStatus":"Order Existed","OrderId":"78",
@@ -211,6 +213,7 @@ export default class SideMenu extends Component {
                       try {
                         if (response.data.Data.Order.hasOwnProperty('Orders')) {
                           // alert("in ifffff")
+                          console.log('orders :'+response.data.Data.Order.Orders.length)
                           for (
                             let i = 0;
                             i < response.data.Data.Order.Orders.length;
@@ -275,20 +278,21 @@ export default class SideMenu extends Component {
                   });
               } else {
                 this.setState({isLoading: false});
+                this.GetNewData()
                // alert('You have no data for Sync');
-               Alert.alert(
-                "ZyleminiPlus",
-                'You have no data for Sync.',
-                [
-                  // {
-                  //   text: "Cancel",
-                  //   onPress: () => console.log("Cancel Pressed"),
-                  //   style: "cancel"onPress={() => this.props.navigation.navigate('MJP_one')}
-                  // },
-                  { text: "OK", onPress: () => this.GetNewData() }
-                ],
-                { cancelable: false }
-              );
+              //  Alert.alert(
+              //   "ZyleminiPlus",
+              //   'You have no data for Sync.',
+              //   [
+              //     // {
+              //     //   text: "Cancel",
+              //     //   onPress: () => console.log("Cancel Pressed"),
+              //     //   style: "cancel"onPress={() => this.props.navigation.navigate('MJP_one')}
+              //     // },
+              //     { text: "OK", onPress: () => this.GetNewData() }
+              //   ],
+              //   { cancelable: false }
+              // );
               }
 
               ///////////////////////////////////////////////////
@@ -499,7 +503,8 @@ export default class SideMenu extends Component {
   };
 
   LogoutFunction = async () => {
-    await AsyncStorage.clear();
+  //  await AsyncStorage.clear();
+  AsyncStorage.setItem('isLogged','')
     Actions.login();
   };
   SyncNow = () => {

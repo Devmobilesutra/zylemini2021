@@ -68,7 +68,6 @@ export class CreateNewOrderSecond extends Component {
 
 
     onDateChange1(dates) {
-
         var d = new Date(dates);
         var maxDate = moment(d).utc().format('DD-MMM-YYYY')
         selectedStartDate1 = maxDate

@@ -381,7 +381,7 @@ export default class Database {
 
                   db.transaction(tx => {
                     tx.executeSql(
-                      'CREATE TABLE Discounts(ID TEXT,OrderID TEXT,DiscountType TEXT, DiscountAmount TEXT,discountadd TEXT, discountless TEXT,RNP TEXT,OnAmount TEXT,OnAmountSmallUnit TEXT,Rate TEXT,BookCode TEXT,OrderedItemID TEXT,BrandCode TEXT,ItemCode TEXT;',
+                      'CREATE TABLE Discounts(ID TEXT,OrderID TEXT,DiscountType TEXT, DiscountAmount TEXT,discountadd TEXT, discountless TEXT,RNP TEXT,OnAmount TEXT,OnAmountSmallUnit TEXT,Rate TEXT,BookCode TEXT,OrderedItemID TEXT,BrandCode TEXT,ItemCode TEXT);',
                     );
                   })
                     .then(() => {})
@@ -4110,7 +4110,9 @@ export default class Database {
       var query =
         'select TABLE_TEMP_ORDER_DETAILS.order_id,TABLE_TEMP_ORDER_DETAILS.item_id,TABLE_TEMP_ORDER_DETAILS.quantity_one,TABLE_TEMP_ORDER_DETAILS.quantity_two,TABLE_TEMP_ORDER_DETAILS.rate,TABLE_TEMP_ORDER_DETAILS.Amount,TABLE_TEMP_ORDER_DETAILS.large_Unit,TABLE_TEMP_ORDER_DETAILS.small_Unit from TABLE_TEMP_ORDER_DETAILS where TABLE_TEMP_ORDER_DETAILS.order_id ="' +
         orderid +
-        '" UNION select OrderDetails.order_id,OrderDetails.item_id, OrderDetails.quantity_one,OrderDetails.quantity_two,OrderDetails.rate,  OrderDetails.Amount, OrderDetails.large_Unit,  OrderDetails.small_Unit from OrderDetails where OrderDetails.item_id NOT IN (select TABLE_TEMP_ORDER_DETAILS.item_id from TABLE_TEMP_ORDER_DETAILS  where TABLE_TEMP_ORDER_DETAILS.order_id ="' +
+        '" UNION select OrderDetails.order_id,OrderDetails.item_id, OrderDetails.quantity_one,OrderDetails.quantity_two,OrderDetails.rate,  OrderDetails.Amount, OrderDetails.large_Unit,  OrderDetails.small_Unit from OrderDetails where OrderDetails.order_id = "'+
+        orderid +
+        '" and OrderDetails.item_id NOT IN (select TABLE_TEMP_ORDER_DETAILS.item_id from TABLE_TEMP_ORDER_DETAILS  where TABLE_TEMP_ORDER_DETAILS.order_id ="' +
         orderid +
         '") ';
       //console.log("query==", query)
@@ -7062,8 +7064,8 @@ export default class Database {
   updateNewPartyOutletSyncFlag(order_id) {
     db1.transaction((tx) => {
       tx.executeSql(
-        'UPDATE newpartyoutlet  SET Is_Sync = ? WHERE OrderID = ?',
-        ['Y', order_id],
+        'UPDATE newpartyoutlet  SET Is_Sync = ? ',
+        ['Y'],
         (tx, results) => {
           //console.log('Results', results.rowsAffected);
 
@@ -7098,8 +7100,8 @@ export default class Database {
   updateNewPartyImageDetailSyncFlag(order_id){
     db1.transaction((tx) => {
       tx.executeSql(
-        'UPDATE newpartyImageoutlet  SET Is_Sync = ? WHERE OrderID = ?',
-        ['Y', order_id],
+        'UPDATE newpartyImageoutlet  SET Is_Sync = ? ',
+        ['Y'],
         (tx, results) => {
           //console.log('Results', results.rowsAffected);
 

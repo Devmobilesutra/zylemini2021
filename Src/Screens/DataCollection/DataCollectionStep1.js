@@ -162,7 +162,7 @@ export class DataCollectionStep1 extends Component {
     );
   }
   handleBackButtonClick() {
-    Actions.drawerMenu();
+  //  Actions.drawerMenu();
     return true;
   }
 

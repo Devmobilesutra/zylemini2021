@@ -23,10 +23,12 @@ import {
 import DeviceInfo from 'react-native-device-info';
 import checkVersion from 'react-native-store-version';
 import {Value} from 'react-native-reanimated';
-
+import axios from 'axios';
 import {Actions} from 'react-native-router-flux';
 import {connect} from 'react-redux';
 import Database from './../utility/Database';
+import SQLite from "react-native-sqlite-storage";
+import Loader from '../components/Loader'
 const db = new Database();
 
 db.initDB();
@@ -36,6 +38,7 @@ class SplashScreen extends React.Component {
     this.state = {
       deviceId: '',
       isLogged: '',
+      isLoading :'',
       tokens :''
     };
 
@@ -78,6 +81,20 @@ class SplashScreen extends React.Component {
   // }
 
   onStoreButtonPress=()=>{
+    SQLite.deleteDatabase({
+      name: "ZyleminiPlusDatabase.db",                               
+      location: "default",
+    }, function (res) {  
+      if(res === "database removal error") {
+        // if not successfully deleted
+        console.log('database removal error')
+      }
+      else if (res === "database removed") {
+        // if successfully deleted
+        console.log('database removed')
+        db.initDB();
+      }   
+    });
     if (Platform.OS === 'ios') {
       Linking.openURL('https://itunes.apple.com/app/id1321198947?mt=8');
     } else {
@@ -85,126 +102,133 @@ class SplashScreen extends React.Component {
     }
   }
 
-  async componentWillMount(){
-    try{
-      const check = await checkVersion({
-        version: DeviceInfo.getVersion(), // app local version
-        iosStoreURL: 'ios app store url',
-        androidStoreURL: 'https://play.google.com/store/apps/details?id=com.zyleminiplus',
-       // country: 'jp' // default value is 'jp'
-      });
-  console.log('app version : '+check.result +" : "+check.remote +" : local "+check.local + " deviceinfo : "+DeviceInfo.getVersion())
-      if(check.result === "new"){
-        // if app store version is new
-      //  this.setState({isLatest : false})
-      
+  // async componentWillMount(){
+  //   AsyncStorage.getItem('JWTToken').then(keyValue => {
+  //     const tok = JSON.parse(keyValue);
+  //     this.setState({tokens: tok});
+  //     console.log('token : '+this.state.tokens);
+  //   });
+  //   try{
+  //     const check = await checkVersion({
+  //       version: DeviceInfo.getVersion(), // app local version
+  //       iosStoreURL: 'ios app store url',
+  //       androidStoreURL: 'https://play.google.com/store/apps/details?id=com.zyleminiplus',
+  //      // country: 'jp' // default value is 'jp'
+  //     });
+  // console.log('app version : '+check.result +" : "+check.remote +" : local "+check.local + " deviceinfo : "+DeviceInfo.getVersion())
+  //     if(check.result === "new"){
+  //       // if app store version is new
+  //     //  this.setState({isLatest : false})
+  //     this.syncNowFunction();
         
-        Alert.alert(
-          "ZyleminiPlus",
-          'App Update Available.',
-          [
-            // {
-            //   text: "Cancel",
-            //   onPress: () => console.log("Cancel Pressed"),
-            //   style: "cancel"onPress={() => this.props.navigation.navigate('MJP_one')}
-            // },
-            { text: "Update", 
-            style: 'cancel',
-            onPress: () => this.onStoreButtonPress() }
-          ],
-          { cancelable: false }
-        );
+  //       // Alert.alert(
+  //       //   "ZyleminiPlus",
+  //       //   'App Update Available.',
+  //       //   [
+  //       //     // {
+  //       //     //   text: "Cancel",
+  //       //     //   onPress: () => console.log("Cancel Pressed"),
+  //       //     //   style: "cancel"onPress={() => this.props.navigation.navigate('MJP_one')}
+  //       //     // },
+  //       //     { text: "Update", 
+  //       //     style: 'cancel',
+  //       //     onPress: () => this.onStoreButtonPress() }
+  //       //   ],
+  //       //   { cancelable: false }
+  //       // );
 
 
-      }else{
-        setTimeout(() => {
-        //  this.setState({isLatest : true})
-          try {
-            AsyncStorage.setItem('deviceId', JSON.stringify(devices));
-            const devices = DeviceInfo.getUniqueId();
+  //     }else{
+  //       setTimeout(() => {
+  //       //  this.setState({isLatest : true})
+  //         try {
+  //           const devices = DeviceInfo.getUniqueId();
+  //           AsyncStorage.setItem('deviceId', JSON.stringify(devices));
+           
     
-            AsyncStorage.getItem('isLogged').then(
-              keyValue => {
-                //  Actions.Auth({type: "reset"})
-                /////////////////////////////////////
-                if (JSON.parse(keyValue) == true && JSON.parse(keyValue) != null) {
-                  Actions.App({type: 'reset'});
-                } else {
-                  Actions.Auth({type: 'reset'});
-                }
+  //           AsyncStorage.getItem('isLogged').then(
+  //             keyValue => {
+  //               db.initDB();
+  //               //  Actions.Auth({type: "reset"})
+  //               /////////////////////////////////////
+  //               if (JSON.parse(keyValue) == true && JSON.parse(keyValue) != null) {
+  //                 Actions.App({type: 'reset'});
+  //               } else {
+  //                 Actions.Auth({type: 'reset'});
+  //               }
     
-                ////////////////////////
-              },
-              error => {
-                //console.log(error) //Display error
-              },
-            );
-          } catch {
-            console.error();
-          }
-        }, 4000);
+  //               ////////////////////////
+  //             },
+  //             error => {
+  //               //console.log(error) //Display error
+  //             },
+  //           );
+  //         } catch {
+  //           console.error();
+  //         }
+  //       }, 4000);
     
-      }
-    } catch(e) {
-      console.log(e);
-    }
-  }
-
-
-  // async componentDidMount() {
-  //   setTimeout(() => {
-  //     try {
-  //       AsyncStorage.setItem('deviceId', JSON.stringify(devices));
-  //       const devices = DeviceInfo.getUniqueId();
-
-  //       AsyncStorage.getItem('isLogged').then(
-  //         keyValue => {
-  //           //  Actions.Auth({type: "reset"})
-  //           /////////////////////////////////////
-  //           if (JSON.parse(keyValue) == true && JSON.parse(keyValue) != null) {
-  //             Actions.App({type: 'reset'});
-  //           } else {
-  //             Actions.Auth({type: 'reset'});
-  //           }
-
-  //           ////////////////////////
-  //         },
-  //         error => {
-  //           //console.log(error) //Display error
-  //         },
-  //       );
-  //     } catch {
-  //       console.error();
   //     }
-  //   }, 4000);
-
-  //   // console.log('in componentDidMount');
-  //   // const devices = DeviceInfo.getUniqueId();
-  //   // //console.log( "devices=",devices)
-  //   // AsyncStorage.setItem('deviceId', JSON.stringify(devices));
-  //   // // this._bootstrapAsync()
-  //   // const data = this.performTimeConsumingTask().then(data => {
-  //   //   if (data !== null) {
-  //   //     AsyncStorage.getItem('isLogged').then(
-  //   //       keyValue => {
-  //   //         //  Actions.Auth({type: "reset"})
-  //   //         /////////////////////////////////////
-  //   //         if (JSON.parse(keyValue) == true && JSON.parse(keyValue) != null) {
-  //   //           Actions.App({type: 'reset'});
-  //   //         } else {
-  //   //           Actions.Auth({type: 'reset'});
-  //   //         }
-
-  //   //         ////////////////////////
-  //   //       },
-  //   //       error => {
-  //   //         //console.log(error) //Display error
-  //   //       },
-  //   //     );
-  //   //   }
-  //   // });
-  //   // console.log('this is data', data);
+  //   } catch(e) {
+  //     console.log(e);
+  //   }
   // }
+
+
+  async componentDidMount() {
+    setTimeout(() => {
+      try {
+        AsyncStorage.setItem('deviceId', JSON.stringify(devices));
+        const devices = DeviceInfo.getUniqueId();
+
+        AsyncStorage.getItem('isLogged').then(
+          keyValue => {
+            //  Actions.Auth({type: "reset"})
+            /////////////////////////////////////
+            if (JSON.parse(keyValue) == true && JSON.parse(keyValue) != null) {
+              Actions.App({type: 'reset'});
+            } else {
+              Actions.Auth({type: 'reset'});
+            }
+
+            ////////////////////////
+          },
+          error => {
+            //console.log(error) //Display error
+          },
+        );
+      } catch {
+        console.error();
+      }
+    }, 4000);
+
+    // console.log('in componentDidMount');
+    // const devices = DeviceInfo.getUniqueId();
+    // //console.log( "devices=",devices)
+    // AsyncStorage.setItem('deviceId', JSON.stringify(devices));
+    // // this._bootstrapAsync()
+    // const data = this.performTimeConsumingTask().then(data => {
+    //   if (data !== null) {
+    //     AsyncStorage.getItem('isLogged').then(
+    //       keyValue => {
+    //         //  Actions.Auth({type: "reset"})
+    //         /////////////////////////////////////
+    //         if (JSON.parse(keyValue) == true && JSON.parse(keyValue) != null) {
+    //           Actions.App({type: 'reset'});
+    //         } else {
+    //           Actions.Auth({type: 'reset'});
+    //         }
+
+    //         ////////////////////////
+    //       },
+    //       error => {
+    //         //console.log(error) //Display error
+    //       },
+    //     );
+    //   }
+    // });
+    // console.log('this is data', data);
+  }
 
   syncNowFunction() {
 
@@ -338,6 +362,7 @@ class SplashScreen extends React.Component {
                       'response of post=',
                       JSON.stringify(response.data),
                     );
+                    console.log('status code :'+response.status)
                     var responss = [];
                     // /{"Data":{"Order":{"Status":"Data saved successfully.",
                     //"Orders":[{"OrderStatus":"Order Existed","OrderId":"78",
@@ -350,61 +375,31 @@ class SplashScreen extends React.Component {
                       try {
                         if (response.data.Data.Order.hasOwnProperty('Orders')) {
                           // alert("in ifffff")
-                          for (
-                            let i = 0;
-                            i < response.data.Data.Order.Orders.length;
-                            i++
-                          ) {
-                            db.updateOrderMasterSyncFlag(
-                              response.data.Data.Order.Orders[i]
-                                .MobileGenPrimaryKey,
-                            );
-                            db.updateOrderDetailSyncFlag(
-                              response.data.Data.Order.Orders[i]
-                                .MobileGenPrimaryKey,
-                            );
-                            db.updateimageDetailSyncFlag(
-                              response.data.Data.Order.Orders[i]
-                                .MobileGenPrimaryKey,
-                            );
-                            db.updateDiscountSyncFlag(
-                              response.data.Data.Order.Orders[i]
-                                .MobileGenPrimaryKey,
-                            );
-                            db.updateNewPartyOutletSyncFlag( response.data.Data.Order.Orders[i]
-                              .MobileGenPrimaryKey,);
-                              
-                              db.updateNewPartyImageDetailSyncFlag( response.data.Data.Order.Orders[i]
-                                .MobileGenPrimaryKey,);
-                          }
-                        //  alert('Data Sync Successfull');
-                          Alert.alert(
-                            "ZyleminiPlus",
-                            response.data.Data.Order.Status,
-                            [
-                              // {
-                              //   text: "Cancel",
-                              //   onPress: () => console.log("Cancel Pressed"),
-                              //   style: "cancel"onPress={() => this.props.navigation.navigate('MJP_one')}
-                              // },
-                              { text: "OK", onPress: () => this.GetNewData() }
-                            ],
-                            { cancelable: false }
-                          );
+                          console.log('orders :'+response.data.Data.Order.Orders.length)
+                      
+                      
+                        Alert.alert(
+                          "ZyleminiPlus",
+                          'App Update Available.',
+                          [
+                            // {
+                            //   text: "Cancel",
+                            //   onPress: () => console.log("Cancel Pressed"),
+                            //   style: "cancel"onPress={() => this.props.navigation.navigate('MJP_one')}
+                            // },
+                            { text: "Update", 
+                            style: 'cancel',
+                            onPress: () => this.onStoreButtonPress() }
+                          ],
+                          { cancelable: false }
+                        );
 
                         }
                       } catch (error) {}
 
                     //  alert(response.data.Data.Order.Status);
                     } else {
-                      //console.log("count is..........", count)
-                      //  alert("in else")
-                      // if(count>0){
-                      //
-                      // }else{
-                      //     alert("There is No data for Sync")
-                      // }
-                      //  alert("Sync Failed Please Try Again!")
+                     
                     }
                     this.setState({isLoading: false});
                   })
@@ -415,24 +410,25 @@ class SplashScreen extends React.Component {
                   });
               } else {
                 this.setState({isLoading: false});
-               // alert('You have no data for Sync');
-                Alert.alert(
-                  "ZyleminiPlus",
-                  'You have no data for Sync.',
-                  [
-                    // {
-                    //   text: "Cancel",
-                    //   onPress: () => console.log("Cancel Pressed"),
-                    //   style: "cancel"onPress={() => this.props.navigation.navigate('MJP_one')}
-                    // },
-                    { text: "OK", onPress: () => this.GetNewData() }
-                  ],
-                  { cancelable: false }
+                AsyncStorage.getItem('isLogged').then(
+                  keyValue => {
+                    db.initDB();
+                    //  Actions.Auth({type: "reset"})
+                    /////////////////////////////////////
+                    if (JSON.parse(keyValue) == true && JSON.parse(keyValue) != null) {
+                      Actions.App({type: 'reset'});
+                    } else {
+                      Actions.Auth({type: 'reset'});
+                    }
+        
+                    ////////////////////////
+                  },
+                  error => {
+                    //console.log(error) //Display error
+                  },
                 );
 
               }
-
-              ///////////////////////////////////////////////////
             });
           });
         });
@@ -445,6 +441,7 @@ class SplashScreen extends React.Component {
       <SafeAreaView style={styles.splashContainer}>
         <StatusBar barStyle="light-content" />
         <View style={styles.logoView}>
+        <Loader loading={this.state.isLoading} message={'Sending Data To server..'}/>
           <ImageBackground
             source={require('../assets/Icons/splashBottom.png')}
             style={{

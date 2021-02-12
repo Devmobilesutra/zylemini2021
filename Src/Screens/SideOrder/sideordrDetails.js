@@ -132,7 +132,7 @@ export class sideordrDetails extends Component {
     }
 
     static navigationOptions = {
-        title: 'Order 1111',
+        title: 'Orders',
         color: 'white',
         headerStyle: {
             backgroundColor: '#221818'
@@ -612,7 +612,7 @@ export class sideordrDetails extends Component {
                                 </Text>
                                 <Text style={styles.totalOrderValuesValueText} >
                                     {/* {this.props.createOrder.totalOrderValue} */}
-                                  kumar subramniyam
+                                  {/* kumar subramniyam */}
                                 </Text>
 
                             </View>

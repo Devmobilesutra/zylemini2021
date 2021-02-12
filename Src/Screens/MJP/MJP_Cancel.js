@@ -31,6 +31,7 @@ import Dialog, {
   DialogTitle,
   SlideAnimation,
 } from 'react-native-popup-dialog';
+import { BackHandler } from 'react-native';
 const db = new Database();
 var ID;
 class MJP_Cancel extends React.Component {
@@ -97,6 +98,22 @@ class MJP_Cancel extends React.Component {
       //       }
       //   })
  }
+
+        componentDidMount() {
+              
+          // setTimeout(function(){this.setState({showWarning: true}); }.bind(this), 1000);
+          BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
+        }
+        componentWillUnmount() {
+          BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
+        }
+        shouldComponentUpdate() {
+          return true;
+        }
+        handleBackButtonClick() {
+          return true;
+        }
+
 
      componentWillMount(){
       this.requestFineLocation(); 

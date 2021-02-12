@@ -85,25 +85,24 @@ export class CreateNewOrderPreview extends Component {
   //   this.forceUpdate();
   // }
   componentDidMount() {
-    BackHandler.addEventListener(
-      'hardwareBackPress',
-      this.handleBackButtonClick,
-    );
-  }
-  componentWillUnmount() {
-    BackHandler.removeEventListener(
-      'hardwareBackPress',
-      this.handleBackButtonClick,
-    );
-  
-  }
-  shouldComponentUpdate() {
-    return true;
-  }
-  handleBackButtonClick() {
- 
-      return true;
-  }
+      
+    // setTimeout(function(){this.setState({showWarning: true}); }.bind(this), 1000);
+     BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
+ }
+ componentWillUnmount() {
+  console.log('in back press')
+//  this.setState({visiblepopup : false})
+     BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
+ }
+ shouldComponentUpdate() {
+     return true;
+   }
+   
+ handleBackButtonClick() {
+   
+  // this.setState({visiblepopup : false})
+     return true;
+ }
   WhatsAppShare = () => {
     // [{"user_id":"52362","collection_type":"0","total_amount":"1100","longitude":"73.8100302","latitude":"18.4942158","entity_id":"47853","entity_type":"1","Current_date_time":"2020-6-14 17:47:52","id":"1462020174752"}]
     //console.log("MasterorderData+++++",JSON.stringify(this.state.MasterorderData))
@@ -343,80 +342,7 @@ export class CreateNewOrderPreview extends Component {
       });
     });
 
-    //  insert into master main
-    // AsyncStorage.getItem('app_order_id').then((keyValue) => {
-    //     var a = JSON.parse(keyValue)
-    //     db.getOrderDataFromTempOrderMaster(a, "0").then((data) => {
-
-    //         this.setState({ MasterorderData: data })
-
-    //         for (let i = 0; i < this.state.MasterorderData.length; i++) {
-
-    //             db.checkOrderInTempOrderMasterMain(this.state.MasterorderData[i].id, "0").then((item_data) => {
-
-    //                 if (item_data.length === 0) {
-
-    //                     var date = new Date().getDate();
-    //                     var month = new Date().getMonth() + 1;
-    //                     var year = new Date().getFullYear();
-    //                     datess = year + '-' + month + '-' + date
-    //                     //var  newDate = moment(datess, 'yyyy-MM-dd').format('yyyy-MMM-dd')
-    //                     newDate = moment().format('YYYY-MMM-DD')
-
-    //                     db.insertOrderMastersss(this.state.MasterorderData[0].id, this.state.MasterorderData[0].Current_date_time, this.state.MasterorderData[0].entity_type, this.state.MasterorderData[0].entity_id,
-    //                         this.state.MasterorderData[0].latitude, this.state.MasterorderData[0].longitude, totalAmounts, this.state.from_date, this.state.from_date,
-    //                         "0", this.state.MasterorderData[0].user_id, this.state.remark, "1", "N", datess, "", newDate)
-
-    //                 } else {
-
-    //                     // Current_date_time,entity_type,entity_id,latitude,longitude,total_amount,from_date,to_date,order_id,collection_type
-    //                     db.updateMasterMain(this.state.MasterorderData[0].Current_date_time,
-    //                         this.state.MasterorderData[0].entity_type, this.state.MasterorderData[0].entity_id,
-    //                         this.state.MasterorderData[0].latitude,
-    //                         this.state.MasterorderData[0].longitude,
-    //                         totalAmounts, this.state.from_date, this.state.from_date, this.state.MasterorderData[0].id, "0")
-
-    //                 }
-    //             })
-
-    //             db.deleteTempOrderDetails(this.state.MasterorderData[0].entity_id, "0").then((data) => {
-    //                 AsyncStorage.setItem('outletName', "");
-    //                 AsyncStorage.setItem('outletId', "");
-    //                 AsyncStorage.setItem('beatName', "");
-    //                 AsyncStorage.setItem('beatId', "");
-    //                 AsyncStorage.setItem('distributorName', "");
-    //                 AsyncStorage.setItem('SearchString', "");
-
-    //                 db.getInsertedsTempOrder(a).then((getdata) => {
-
-    //                     this.setState({ BrandList: getdata })
-
-    //                 })
-    //                 AsyncStorage.setItem('outletName', "");
-    //                 AsyncStorage.setItem('outletId', "");
-    //                 AsyncStorage.setItem('beatName', "");
-    //                 AsyncStorage.setItem('beatId', "");
-    //                 AsyncStorage.setItem('distributorName', "");
-    //                 AsyncStorage.setItem('SearchString', "");
-
-    //             })
-    //             db.deleteTempOrderMater(this.state.MasterorderData[0].entity_id, "0").then((getdata) => {
-
-    //             })
-    //             AsyncStorage.setItem('outletName', "");
-    //             AsyncStorage.setItem('outletId', "");
-    //             AsyncStorage.setItem('beatName', "");
-    //             AsyncStorage.setItem('beatId', "");
-    //             AsyncStorage.setItem('distributorName', "");
-    //             AsyncStorage.setItem('SearchString', "");
-
-    //             Actions.CreateNewOrderFirst();
-    //         }
-
-    //     })
-    // })
-
-    //  delete from TABLE_TEMP_ORDER_DETAILS where order_id IN (select id from TABLE_TEMP_OrderMaster where entity_id = '%@' and collection_type = '%@')",entity_id,collection_type
+   //  delete from TABLE_TEMP_ORDER_DETAILS where order_id IN (select id from TABLE_TEMP_OrderMaster where entity_id = '%@' and collection_type = '%@')",entity_id,collection_type
   }
 
   insertIntoOrderMaster() {
@@ -514,7 +440,7 @@ export class CreateNewOrderPreview extends Component {
   }
 
   componentWillMount() {
-    this._componentFocused();
+  //  this._componentFocused();
 
     this._sub = this.props.navigation.addListener(
       'didFocus',
@@ -608,7 +534,7 @@ export class CreateNewOrderPreview extends Component {
 
   renderPopup(){
     return(
-<View style={styles.appliSchemesArrowContainer}>
+
                   <TouchableOpacity onPress={this.ordersavePopUp.bind(this)}>
                     <View>
                       {/* <Button
@@ -679,7 +605,7 @@ export class CreateNewOrderPreview extends Component {
                       source={require('../../assets/Icons/right_arrow_blue.png')}
                     /> */}
                   </TouchableOpacity>
-                </View>
+               
     )
 }
 
@@ -1012,8 +938,9 @@ export class CreateNewOrderPreview extends Component {
                   </TouchableOpacity>
                 </View>
               </View>
+            
             </View>
-
+          
             {/* Dash Line Below Applicable Schemes*/}
             <View style={styles.dashLineContainerBelowApplicableSchemes}>
               <Dash
@@ -1115,13 +1042,17 @@ export class CreateNewOrderPreview extends Component {
                 </View> */}
 
           <View style={{flexDirection: 'row'}}>
+          
             <TouchableOpacity
               style={styles.buttonContainer}
               onPress={e => this.saveClickHandler(e)}>
               <View style={styles.button}>
                 <Text style={styles.buttonText}>SAVE</Text>
               </View>
+              {this.renderPopup()}
             </TouchableOpacity>
+           
+           
             <TouchableOpacity
               style={styles.buttonContainer}
               onPress={e => this.discardClickHandler(e)}>
@@ -1129,9 +1060,10 @@ export class CreateNewOrderPreview extends Component {
                 <Text style={styles.buttonText}>DISCARD</Text>
               </View>
             </TouchableOpacity>
+          
           </View>
 
-          {this.renderPopup()}
+        
         </ImageBackground>
       </View>
     );
