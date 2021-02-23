@@ -63,7 +63,7 @@ const actions = [
     },
 ];
 let countvisited = 0
-var month = new Date().getMonth() + 1
+var month = new Date().getMonth() + 1;
 export class Month1 extends Component {
     constructor(props) {
         super(props);
@@ -253,6 +253,7 @@ export class Month1 extends Component {
     }
     getdata() {
         //  alert("aaa")
+        console.log('month in 1 : '+month )
         var curr = moment().month(new Date().getMonth()).format("MMM");
         var prev1 = moment().month(new Date().getMonth() - 1).format("MMM");
         var prev2 = moment().month(new Date().getMonth() - 2).format("MMM");
@@ -292,6 +293,7 @@ export class Month1 extends Component {
             var res = str.split(",");
             this.setState({ UOMListArray: res })
         })
+        console.log('report2_ComboClassification : '+User.report2_ComboClassification)
 
         db.getControlId(User.report2_ComboClassification).then((data) => {
             this.setState({ controllId: data.ControlId })
@@ -303,7 +305,7 @@ export class Month1 extends Component {
 
 
             db.getAllBrandForFilters(this.state.controllId).then((data) => {
-
+                this.state.films1 =[];
                 this.state.films1.push({ "BRAND": "FOCUS" })
                 this.state.films1.push({ "BRAND": "ALL" })
                 this.setState({ BransListArray22: data })
@@ -362,84 +364,178 @@ export class Month1 extends Component {
 
             if (month == 0) {
               //  alert(User.conversionFormula2)
-                if (this.state.selectedProduct != 'ALL' && this.state.selectedProduct != 'FOCUS') {
-                //    alert("111")
-                    db.getAllBrandListTVSAC1(this.state.controllId, newclassification[1], User.conversionFormula2, 'Yes', this.state.selectedProduct).then((data) => {
-                        this.setState({ BransListArray: [] })
-                        this.setState({ BransListArray: data })
-                        User.BrandCount = this.state.BransListArray.length
-                    })
+              month ='12';
+              if(this.state.selectedProduct == 'FOCUS'){
+                db.getAllBrandListTVSAC7(this.state.controllId, newclassification[1], User.conversionFormula2, 'Yes', this.state.selectedProduct, month).then((data) => {
+                    console.log("myquerrrrrrrrrrrrrrrry======", JSON.stringify(data))
+                    this.setState({ BransListArray: [] })
+                    this.setState({ BransListArray: data })
+                    var targetarray =[];
+                    this.state.BransListArray.map((item,i)=>{
+                        db.getTotaltarget(item.BRANDID,month).then((data) =>{
+                            console.log('array..... : '+JSON.stringify(data))
+                            targetarray.push(data);
+                            this.state.BransListArray[i].target = data.Target;
+                           
+                            this.setState({TargetArray : targetarray})
+                            console.log("sonali2 with target array ",JSON.stringify(this.state.TargetArray));
+                            console.log("sonali2 with target new",JSON.stringify(this.state.BransListArray));
+                        })
 
+                     })
+                   
+                 
+                    User.BrandCount = this.state.BransListArray.length
+                })
 
-                }
-                else if (this.state.selectedProduct == 'ALL' && this.state.selectedProduct != 'FOCUS') {
-                 //   alert("222")
-                    db.getAllBrandListTVSAC2(this.state.controllId, newclassification[1], User.conversionFormula2).then((data) => {
-                        this.setState({ BransListArray: [] })
-                        this.setState({ BransListArray: data })
-                        User.BrandCount = this.state.BransListArray.length
-                    })
-                }
+            }else if(this.state.selectedProduct == 'ALL'){
+                db.getAllBrandListTVSAC6(this.state.controllId, newclassification[1], User.conversionFormula2, 'Yes', this.state.selectedProduct, month).then((data) => {
+                    this.setState({ BransListArray: [] })
+                    this.setState({ BransListArray: data })
+                    var targetarray =[];
+                    this.state.BransListArray.map((item,i)=>{
+                        db.getTotaltarget(item.BRANDID,month).then((data) =>{
+                            console.log('array..... : '+JSON.stringify(data))
+                            targetarray.push(data);
+                            this.state.BransListArray[i].target = data.Target;
+                           
+                            this.setState({TargetArray : targetarray})
+                            console.log("sonali2 with target array ",JSON.stringify(this.state.TargetArray));
+                            console.log("sonali2 with target new",JSON.stringify(this.state.BransListArray));
+                        })
 
-                else if (this.state.selectedProduct != 'ALL' && this.state.selectedProduct == 'FOCUS') {
-                   // alert("3333")
-                    db.getAllBrandListTVSAC3(this.state.controllId, newclassification[1], User.conversionFormula2, 'Yes', this.state.selectedProduct).then((data) => {
-                        this.setState({ BransListArray: [] })
-                        this.setState({ BransListArray: data })
-                        User.BrandCount = this.state.BransListArray.length
-                    })
+                     })
+                    User.BrandCount = this.state.BransListArray.length
+                })
 
+            }else{
+                db.getAllBrandListTVSAC5(this.state.controllId, newclassification[1], User.conversionFormula2, 'Yes', this.state.selectedProduct, month).then((data) => {
+                    this.setState({ BransListArray: [] })
+                    this.setState({ BransListArray: data })
+                    var targetarray =[];
+                    this.state.BransListArray.map((item,i)=>{
+                        db.getTotaltarget(item.BRANDID,month).then((data) =>{
+                            console.log('array..... : '+JSON.stringify(data))
+                            targetarray.push(data);
+                            this.state.BransListArray[i].target = data.Target;
+                           
+                            this.setState({TargetArray : targetarray})
+                            console.log("sonali2 with target array ",JSON.stringify(this.state.TargetArray));
+                            console.log("sonali2 with target new",JSON.stringify(this.state.BransListArray));
+                        })
 
-                }
-                else {
-                    db.getAllBrandListTVSAC4(this.state.controllId, newclassification[1], User.conversionFormula2, 'Yes', this.state.selectedProduct).then((data) => {
-                      //  alert("4444")
-                        this.setState({ BransListArray: [] })
-                        this.setState({ BransListArray: data })
-                        User.BrandCount = this.state.BransListArray.length
-                    })
+                     })
+                    User.BrandCount = this.state.BransListArray.length
+                })
 
-                }
+            }
+                console.log("in if brand list : "+JSON.stringify(this.state.BransListArray))
             }
             else {
 
-                if (this.state.selectedProduct != 'ALL' && this.state.selectedProduct != 'FOCUS') {
-                  //  alert("555")
-                    db.getAllBrandListTVSAC5(this.state.controllId, newclassification[1], User.conversionFormula2, 'Yes', this.state.selectedProduct, month).then((data) => {
+                if(this.state.selectedProduct == 'FOCUS'){
+                    db.getAllBrandListTVSAC7(this.state.controllId, newclassification[1], User.conversionFormula2, 'Yes', this.state.selectedProduct, month).then((data) => {
+                        console.log("myquerrrrrrrrrrrrrrrry======", JSON.stringify(data))
                         this.setState({ BransListArray: [] })
                         this.setState({ BransListArray: data })
+                        var targetarray =[];
+                        this.state.BransListArray.map((item,i)=>{
+                            db.getTotaltarget(item.BRANDID,month).then((data) =>{
+                                console.log('array..... : '+JSON.stringify(data))
+                                targetarray.push(data);
+                                this.state.BransListArray[i].target = data.Target;
+                               
+                                this.setState({TargetArray : targetarray})
+                                console.log("sonali2 with target array ",JSON.stringify(this.state.TargetArray));
+                                console.log("sonali2 with target new",JSON.stringify(this.state.BransListArray));
+                            })
+
+                         })
+                       
+                     
                         User.BrandCount = this.state.BransListArray.length
                     })
 
-                }
-                else if (this.state.selectedProduct == 'ALL' && this.state.selectedProduct != 'FOCUS') {
-                 //   alert("666")
+                }else if(this.state.selectedProduct == 'ALL'){
                     db.getAllBrandListTVSAC6(this.state.controllId, newclassification[1], User.conversionFormula2, 'Yes', this.state.selectedProduct, month).then((data) => {
                         this.setState({ BransListArray: [] })
                         this.setState({ BransListArray: data })
+                        var targetarray =[];
+                        this.state.BransListArray.map((item,i)=>{
+                            db.getTotaltarget(item.BRANDID,month).then((data) =>{
+                                console.log('array..... : '+JSON.stringify(data))
+                                targetarray.push(data);
+                                this.state.BransListArray[i].target = data.Target;
+                               
+                                this.setState({TargetArray : targetarray})
+                                console.log("sonali2 with target array ",JSON.stringify(this.state.TargetArray));
+                                console.log("sonali2 with target new",JSON.stringify(this.state.BransListArray));
+                            })
+
+                         })
+                        User.BrandCount = this.state.BransListArray.length
+                    })
+
+                }else{
+                    db.getAllBrandListTVSAC5(this.state.controllId, newclassification[1], User.conversionFormula2, 'Yes', this.state.selectedProduct, month).then((data) => {
+                        this.setState({ BransListArray: [] })
+                        this.setState({ BransListArray: data })
+                        var targetarray =[];
+                        this.state.BransListArray.map((item,i)=>{
+                            db.getTotaltarget(item.BRANDID,month).then((data) =>{
+                                console.log('array..... : '+JSON.stringify(data))
+                                targetarray.push(data);
+                                this.state.BransListArray[i].target = data.Target;
+                               
+                                this.setState({TargetArray : targetarray})
+                                console.log("sonali2 with target array ",JSON.stringify(this.state.TargetArray));
+                                console.log("sonali2 with target new",JSON.stringify(this.state.BransListArray));
+                            })
+
+                         })
                         User.BrandCount = this.state.BransListArray.length
                     })
 
                 }
-                else if (this.state.selectedProduct != 'ALL' && this.state.selectedProduct == 'FOCUS') {
-                 //   alert("777")
-                    db.getAllBrandListTVSAC7(this.state.controllId, newclassification[1], User.conversionFormula2, 'Yes', this.state.selectedProduct, month).then((data) => {
-                        console.log("myquerrrrrrrrrrrrrrrry==", JSON.stringify(data))
-                        this.setState({ BransListArray: [] })
-                        this.setState({ BransListArray: data })
-                        console.log("sonali array",data);
-                        User.BrandCount = this.state.BransListArray.length
-                    })
-                }
-                else {
-                  //  alert("888")
-                    db.getAllBrandListTVSAC8(this.state.controllId, newclassification[1], User.conversionFormula2, 'Yes', this.state.selectedProduct, month).then((data) => {
-                        this.setState({ BransListArray: [] })
-                        this.setState({ BransListArray: data })
-                        User.BrandCount = this.state.BransListArray.length
-                    })
 
-                }
+                // if (this.state.selectedProduct != 'ALL' && this.state.selectedProduct != 'FOCUS') {
+                //   //  alert("555")
+                //     db.getAllBrandListTVSAC5(this.state.controllId, newclassification[1], User.conversionFormula2, 'Yes', this.state.selectedProduct, month).then((data) => {
+                //         this.setState({ BransListArray: [] })
+                //         this.setState({ BransListArray: data })
+                //         User.BrandCount = this.state.BransListArray.length
+                //     })
+
+                // }
+                // else if (this.state.selectedProduct == 'ALL' && this.state.selectedProduct != 'FOCUS') {
+                //  //   alert("666")
+                //     db.getAllBrandListTVSAC6(this.state.controllId, newclassification[1], User.conversionFormula2, 'Yes', this.state.selectedProduct, month).then((data) => {
+                //         this.setState({ BransListArray: [] })
+                //         this.setState({ BransListArray: data })
+                //         User.BrandCount = this.state.BransListArray.length
+                //     })
+
+                // }
+                // else if (this.state.selectedProduct != 'ALL' && this.state.selectedProduct == 'FOCUS') {
+                //  //   alert("777")
+                //     db.getAllBrandListTVSAC7(this.state.controllId, newclassification[1], User.conversionFormula2, 'Yes', this.state.selectedProduct, month).then((data) => {
+                //         console.log("myquerrrrrrrrrrrrrrrry==", JSON.stringify(data))
+                //         this.setState({ BransListArray: [] })
+                //         this.setState({ BransListArray: data })
+                //         console.log("sonali array",data);
+                //         User.BrandCount = this.state.BransListArray.length
+                //     })
+                // }
+                // else {
+                //   //  alert("888")
+                //     db.getAllBrandListTVSAC8(this.state.controllId, newclassification[1], User.conversionFormula2, 'Yes', this.state.selectedProduct, month).then((data) => {
+                //         this.setState({ BransListArray: [] })
+                //         this.setState({ BransListArray: data })
+                //         User.BrandCount = this.state.BransListArray.length
+                //     })
+
+                // }
+                console.log("in else brand list : "+JSON.stringify(this.state.BransListArray))
             }
 
 
@@ -603,6 +699,7 @@ export class Month1 extends Component {
 
 
                         <FlatList
+                       
                             data={this.state.BransListArray}
 
                             renderItem={({ item, index }) => {

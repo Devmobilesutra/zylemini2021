@@ -17,7 +17,7 @@ import { pascalCase } from "change-case";
 import Communications from 'react-native-communications';
 var arr = [], getData = [], crData = [],rrdata=[],Tarr=[]
 var result2
-export default class Month1Child extends Component {
+export default class Month3Child extends Component {
     constructor(props) {
         super(props);
         this.state = {
