@@ -86,6 +86,7 @@ import sideordernav from './Src/Screens/SideOrder/sideordernav';
 import DataCollectionStep1 from './Src/Screens/DataCollection/DataCollectionStep1';
 import DataCollectionStep2 from './Src/Screens/DataCollection/DataCollectionStep2';
 import DataCollectionStep3 from './Src/Screens/DataCollection/DataCollectionStep3';
+import Datacards from './Src/Screens/DataCollection/Datacards';
 import ReportsNav from './Src/Screens/Reports/ReportsNav';
 import MyReport from './Src/Screens/Reports/MyReport';
 import Team from './Src/Screens/Reports/Team';
@@ -557,6 +558,7 @@ export default class RouterComponent extends Component {
               component={DataCollectionStep3}
               title="Data Collection : Step 3/3"
             />
+            <Scene key="Datacards" component={Datacards} title="Data Cards" />
 
             <Scene
               key="TabBarReports"

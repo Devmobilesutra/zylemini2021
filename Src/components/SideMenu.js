@@ -56,7 +56,7 @@ export default class SideMenu extends Component {
       isLoading: false,
       AssetDetails: [],
       JSONObj: {},
-      messagetext :''
+      messagetext: '',
     };
   }
 
@@ -72,7 +72,7 @@ export default class SideMenu extends Component {
     var NewPartyTargetId = [];
     this.state.isLoading = true;
     this.setState({isLoading: true});
-    this.setState({messagetext : 'Sending Data to server..'})
+    this.setState({messagetext: 'Sending Data to server..'});
     this.setState({JSONObj: {}});
     db.getOrderMasterSyncData('N').then(data => {
       if (data.length > 0) {
@@ -185,7 +185,7 @@ export default class SideMenu extends Component {
                   'boduy of postApi=',
                   JSON.stringify(this.state.JSONObj),
                 );
-            
+
                 //  //console.log("boduy of postApi2=", datas)
                 //   const url = 'http://zylemdemo.com/ZyleminiPlusCoreAPI/api/Data/PostData'
 
@@ -200,7 +200,7 @@ export default class SideMenu extends Component {
                       'response of post=',
                       JSON.stringify(response.data),
                     );
-                    console.log('status code :'+response.status)
+                    console.log('status code :' + response.status);
                     var responss = [];
                     // /{"Data":{"Order":{"Status":"Data saved successfully.",
                     //"Orders":[{"OrderStatus":"Order Existed","OrderId":"78",
@@ -213,7 +213,9 @@ export default class SideMenu extends Component {
                       try {
                         if (response.data.Data.Order.hasOwnProperty('Orders')) {
                           // alert("in ifffff")
-                          console.log('orders :'+response.data.Data.Order.Orders.length)
+                          console.log(
+                            'orders :' + response.data.Data.Order.Orders.length,
+                          );
                           for (
                             let i = 0;
                             i < response.data.Data.Order.Orders.length;
@@ -235,11 +237,15 @@ export default class SideMenu extends Component {
                               response.data.Data.Order.Orders[i]
                                 .MobileGenPrimaryKey,
                             );
-                            db.updateNewPartyOutletSyncFlag( response.data.Data.Order.Orders[i]
-                              .MobileGenPrimaryKey,);
-                              
-                              db.updateNewPartyImageDetailSyncFlag( response.data.Data.Order.Orders[i]
-                                .MobileGenPrimaryKey,);
+                            db.updateNewPartyOutletSyncFlag(
+                              response.data.Data.Order.Orders[i]
+                                .MobileGenPrimaryKey,
+                            );
+
+                            db.updateNewPartyImageDetailSyncFlag(
+                              response.data.Data.Order.Orders[i]
+                                .MobileGenPrimaryKey,
+                            );
                           }
                           //  alert('Data Sync Successfull');
                           Alert.alert(
@@ -278,21 +284,21 @@ export default class SideMenu extends Component {
                   });
               } else {
                 this.setState({isLoading: false});
-                this.GetNewData()
-               // alert('You have no data for Sync');
-              //  Alert.alert(
-              //   "ZyleminiPlus",
-              //   'You have no data for Sync.',
-              //   [
-              //     // {
-              //     //   text: "Cancel",
-              //     //   onPress: () => console.log("Cancel Pressed"),
-              //     //   style: "cancel"onPress={() => this.props.navigation.navigate('MJP_one')}
-              //     // },
-              //     { text: "OK", onPress: () => this.GetNewData() }
-              //   ],
-              //   { cancelable: false }
-              // );
+                this.GetNewData();
+                // alert('You have no data for Sync');
+                //  Alert.alert(
+                //   "ZyleminiPlus",
+                //   'You have no data for Sync.',
+                //   [
+                //     // {
+                //     //   text: "Cancel",
+                //     //   onPress: () => console.log("Cancel Pressed"),
+                //     //   style: "cancel"onPress={() => this.props.navigation.navigate('MJP_one')}
+                //     // },
+                //     { text: "OK", onPress: () => this.GetNewData() }
+                //   ],
+                //   { cancelable: false }
+                // );
               }
 
               ///////////////////////////////////////////////////
@@ -305,7 +311,7 @@ export default class SideMenu extends Component {
 
   GetNewData() {
     this.setState({isLoading: true});
-    this.setState({messagetext : 'Getting Data from server..'})
+    this.setState({messagetext: 'Getting Data from server..'});
     const url1 = 'http://sapltest.com/ZyleminiPlusAPI/api/Data/GetData';
     //console.log("url is===", url1)
     //console.log("aaaaaaa========",response.data.Token)
@@ -503,8 +509,8 @@ export default class SideMenu extends Component {
   };
 
   LogoutFunction = async () => {
-  //  await AsyncStorage.clear();
-  AsyncStorage.setItem('isLogged','')
+    //  await AsyncStorage.clear();
+    AsyncStorage.setItem('isLogged', '');
     Actions.login();
   };
   SyncNow = () => {
@@ -565,7 +571,10 @@ export default class SideMenu extends Component {
   render() {
     return DrawerList.map((item, index) => (
       <View style={styles.container}>
-        <Loader loading={this.state.isLoading} message={this.state.messagetext}/>
+        <Loader
+          loading={this.state.isLoading}
+          message={this.state.messagetext}
+        />
 
         {/* Header */}
         <View style={styles.headerBackgrounContainer}>
@@ -666,6 +675,17 @@ export default class SideMenu extends Component {
                   source={require('../assets/Icons/Shop_sidebar.png')}
                 />
                 <Text style={styles.drawerLabelStyle2}>Data Collection</Text>
+              </View>
+            </TouchableOpacity>
+            {/* //////////////////data collection///////// */}
+            <TouchableOpacity
+              onPress={() => this.props.navigation.navigate('Datacards')}>
+              <View style={styles.drawerNmaeImgContainer2}>
+                <Image
+                  style={styles.drawerLabelImgStyle2}
+                  source={require('../assets/Icons/Shop_sidebar.png')}
+                />
+                <Text style={styles.drawerLabelStyle2}>Data Cards</Text>
               </View>
             </TouchableOpacity>
 
