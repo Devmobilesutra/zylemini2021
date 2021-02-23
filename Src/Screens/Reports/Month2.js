@@ -17,8 +17,9 @@ import Communications from 'react-native-communications';
 // or can import single methods and call straight via the method name
 // import { web, phonecall } from 'react-native-communications';
 // e.g. onPress={() => { phonecall('0123456789', true) }}
-import Month1Child from './Month1Child';
+import Month2Child from './Month2Child';
 import { FloatingAction } from "react-native-floating-action";
+import { da } from 'date-fns/locale';
 var open
 var arr = [], getData = [], crData = [],rrdata=[]
 var result2
@@ -60,7 +61,11 @@ const actions = [
     },
 ];
 let countvisited = 0
-var month = new Date().getMonth()
+//var month = new Date().getMonth();
+var month1 = new Date().getMonth() + 1;
+var year = new Date().getFullYear();
+var month = moment(month1,"MM").add(-1, 'months').format('MM');
+console.log('month 2 : '+month)
 
 export class Month2 extends Component {
     constructor(props) {
@@ -71,6 +76,7 @@ export class Month2 extends Component {
             modalVisiblefilter: false,
             distributorArray: [],
             BransListArray: [],
+            TargetArray :[],
             BransListArrayFilter: [], BransListArrayFilterFinal: [], films1: [],
             UOMListArray: [],
             ProductsArray: [],
@@ -84,7 +90,8 @@ export class Month2 extends Component {
             prev2Month: '',
             BransListArray22: [],
             TargetVal: '',
-
+            TotalTarget :'',
+            TotalTargetFinal :'0.00',
 
             Gedata: [],
             selfachivedata: [],
@@ -94,6 +101,7 @@ export class Month2 extends Component {
             rrdata: [],
             ge: "0.0",
             rr: "0.00",
+            NOOFDECIMAL :'',
 
             list: [
                 {
@@ -249,20 +257,21 @@ export class Month2 extends Component {
 
         );
         var target1 = "sum(Target)";
+        console.log('month in 2 : '+month)
 
-        if (this.props.month == 0) {
-            db.getTargetData(this.props.brandid, target1).then((data) => {
-                this.setState({ TargetVal: data })
+        // if (this.props.month == 0) {
+        //     db.getTargetData(this.props.brandid, target1).then((data) => {
+        //         this.setState({ TargetVal: data })
 
-            })
-            console.log("only target",this.state.TargetVal);
-        }
-        else {
-            db.getTargetDatabymonth(this.props.brandid, target1, this.props.month).then((data) => {
-                this.setState({ TargetVal: data })
-            })
-            console.log("bymonth target",this.state.TargetVal);
-        }
+        //     })
+        //     console.log("only target",this.state.TargetVal);
+        // }
+        // else {
+        //     db.getTargetDatabymonth(this.props.brandid, target1, this.props.month).then((data) => {
+        //         this.setState({ TargetVal: data })
+        //     })
+        //     console.log("bymonth target",this.state.TargetVal);
+        // }
 
          this.getdata()
     }
@@ -283,6 +292,10 @@ export class Month2 extends Component {
             })
 
         })
+       
+        db.getNOOFDECIMAL().then((data) =>{
+            this.setState({ NOOFDECIMAL: data.Value })
+        })
         db.getDefaultUOM().then((data) => {
             this.setState({ defaultUOM: data.Value })
             User.DefaultUOM = data.Value
@@ -302,6 +315,9 @@ export class Month2 extends Component {
 
             })
         })
+        db.getTotalTarget(month).then((data) => {
+            this.setState({ TotalTarget : (data.Target).toFixed(this.state.NOOFDECIMAL)})
+        })
         db.getUOMList().then((data) => {
             var str = data.Value
             var res = str.split(",");
@@ -318,7 +334,7 @@ export class Month2 extends Component {
 
 
             db.getAllBrandForFilters(this.state.controllId).then((data) => {
-
+                this.state.films1 =[];
                 this.state.films1.push({ "BRAND": "FOCUS" })
                 this.state.films1.push({ "BRAND": "ALL" })
                 this.setState({ BransListArray22: data })
@@ -375,87 +391,276 @@ export class Month2 extends Component {
             // })
 
 
-            if (month == 0) {
-              //  alert(User.conversionFormula2)
-                if (this.state.selectedProduct != 'ALL' && this.state.selectedProduct != 'FOCUS') {
-                //    alert("111")
-                    db.getAllBrandListTVSAC1(this.state.controllId, newclassification[1], User.conversionFormula2, 'Yes', this.state.selectedProduct).then((data) => {
+            // if (month == 0) {
+            //   //  alert(User.conversionFormula2)
+
+
+            //   month = '12';
+            //   if(this.state.selectedProduct == 'FOCUS'){
+            //     db.getAllBrandListTVSAC7(this.state.controllId, newclassification[1], User.conversionFormula2, 'Yes', this.state.selectedProduct, month).then((data) => {
+            //         console.log("myquerrrrrrrrrrrrrrrry======", JSON.stringify(data))
+            //         this.setState({ BransListArray: [] })
+            //         this.setState({ BransListArray: data })
+            //         var targetarray =[];
+            //         var totalTarget ='0';
+            //         this.state.BransListArray.map((item,i)=>{
+            //             db.getTotaltarget(item.BRANDID,month).then((data) =>{
+            //                 console.log('array..... : '+JSON.stringify(data))
+            //                 targetarray.push(data);
+            //                 this.state.BransListArray[i].target = (data.Target).toFixed(this.state.NOOFDECIMAL);
+            //                 totalTarget = totalTarget + item.achi;
+            //                 var res = (item.achi / data.Target) * 100;
+            //                     this.state.BransListArray[i].average =Math.round(res) ;
+            //                     var daysInMonth = new Date(year, month, 0).getDate();
+            //                     console.log('days in month : '+ daysInMonth)
+            //                     var CR = (item.achi / daysInMonth);
+            //                     console.log('days in cr : '+ CR)
+            //                     this.state.BransListArray[i].CR =CR.toFixed(this.state.NOOFDECIMAL) ;
+            //                     this.state.BransListArray[i].RR ='0' ;
+            //                 this.setState({TargetArray : targetarray})
+            //                 this.setState({TotalTargetFinal : totalTarget})
+            //                 console.log("sonali2 with target array ",JSON.stringify(this.state.TargetArray));
+            //                 console.log("sonali2 with target new",JSON.stringify(this.state.BransListArray));
+            //             })
+
+            //          })
+                   
+                 
+            //         User.BrandCount = this.state.BransListArray.length
+            //     })
+
+            // }else if(this.state.selectedProduct == 'ALL'){
+            //     db.getAllBrandListTVSAC6(this.state.controllId, newclassification[1], User.conversionFormula2, 'Yes', this.state.selectedProduct, month).then((data) => {
+            //         this.setState({ BransListArray: [] })
+            //         this.setState({ BransListArray: data })
+            //         var targetarray =[];
+            //         this.state.BransListArray.map((item,i)=>{
+            //             db.getTotaltarget(item.BRANDID,month).then((data) =>{
+            //                 console.log('array..... : '+JSON.stringify(data))
+            //                 targetarray.push(data);
+            //                 this.state.BransListArray[i].target = (data.Target).toFixed(this.state.NOOFDECIMAL);
+            //                 var res = (item.achi / data.Target) * 100;
+            //                     this.state.BransListArray[i].average =Math.round(res) ;
+            //                     var daysInMonth = new Date(year, month, 0).getDate();
+            //                     console.log('days in month : '+ daysInMonth)
+            //                     var CR = (item.achi / daysInMonth);
+            //                     console.log('days in cr : '+ CR)
+            //                     this.state.BransListArray[i].CR =CR.toFixed(this.state.NOOFDECIMAL) ;
+            //                     this.state.BransListArray[i].RR ='0' ;
+            //                 this.setState({TargetArray : targetarray})
+            //                 console.log("sonali2 with target array ",JSON.stringify(this.state.TargetArray));
+            //                 console.log("sonali2 with target new",JSON.stringify(this.state.BransListArray));
+            //             })
+
+            //          })
+            //         User.BrandCount = this.state.BransListArray.length
+            //     })
+
+            // }else{
+            //     db.getAllBrandListTVSAC5(this.state.controllId, newclassification[1], User.conversionFormula2, 'Yes', this.state.selectedProduct, month).then((data) => {
+            //         this.setState({ BransListArray: [] })
+            //         this.setState({ BransListArray: data })
+            //         var targetarray =[];
+            //         this.state.BransListArray.map((item,i)=>{
+            //             db.getTotaltarget(item.BRANDID,month).then((data) =>{
+            //                 console.log('array..... : '+JSON.stringify(data))
+            //                 targetarray.push(data);
+            //                 this.state.BransListArray[i].target = (data.Target).toFixed(this.state.NOOFDECIMAL);
+            //                 var res = (item.achi / data.Target) * 100;
+            //                     this.state.BransListArray[i].average =Math.round(res) ;
+            //                     var daysInMonth = new Date(year, month, 0).getDate();
+            //                     console.log('days in month : '+ daysInMonth)
+            //                     var CR = (item.achi / daysInMonth);
+            //                     console.log('days in cr : '+ CR)
+            //                     this.state.BransListArray[i].CR =CR.toFixed(this.state.NOOFDECIMAL) ;
+            //                     this.state.BransListArray[i].RR ='0' ;
+            //                 this.setState({TargetArray : targetarray})
+            //                 console.log("sonali2 with target array ",JSON.stringify(this.state.TargetArray));
+            //                 console.log("sonali2 with target new",JSON.stringify(this.state.BransListArray));
+            //             })
+
+            //          })
+            //         User.BrandCount = this.state.BransListArray.length
+            //     })
+
+            // }
+
+            //     // if (this.state.selectedProduct != 'ALL' && this.state.selectedProduct != 'FOCUS') {
+            //     // //    alert("111")
+            //     //     db.getAllBrandListTVSAC1(this.state.controllId, newclassification[1], User.conversionFormula2, 'Yes', this.state.selectedProduct).then((data) => {
+            //     //         this.setState({ BransListArray: [] })
+            //     //         this.setState({ BransListArray: data })
+            //     //         User.BrandCount = this.state.BransListArray.length
+            //     //     })
+
+
+            //     // }
+            //     // else if (this.state.selectedProduct == 'ALL' && this.state.selectedProduct != 'FOCUS') {
+            //     //  //   alert("222")
+            //     //     db.getAllBrandListTVSAC2(this.state.controllId, newclassification[1], User.conversionFormula2).then((data) => {
+            //     //         this.setState({ BransListArray: [] })
+            //     //         this.setState({ BransListArray: data })
+            //     //         User.BrandCount = this.state.BransListArray.length
+            //     //     })
+            //     // }
+
+            //     // else if (this.state.selectedProduct != 'ALL' && this.state.selectedProduct == 'FOCUS') {
+            //     //    // alert("3333")
+            //     //     db.getAllBrandListTVSAC3(this.state.controllId, newclassification[1], User.conversionFormula2, 'Yes', this.state.selectedProduct).then((data) => {
+            //     //         this.setState({ BransListArray: [] })
+            //     //         this.setState({ BransListArray: data })
+            //     //         User.BrandCount = this.state.BransListArray.length
+            //     //     })
+
+
+            //     // }
+            //     // else {
+            //     //     db.getAllBrandListTVSAC4(this.state.controllId, newclassification[1], User.conversionFormula2, 'Yes', this.state.selectedProduct).then((data) => {
+            //     //       //  alert("4444")
+            //     //         this.setState({ BransListArray: [] })
+            //     //         this.setState({ BransListArray: data })
+            //     //         User.BrandCount = this.state.BransListArray.length
+            //     //     })
+
+            //     // }
+            //     console.log("in if brand list : "+JSON.stringify(this.state.BransListArray))
+            // }
+            // else {
+
+                if(this.state.selectedProduct == 'FOCUS'){
+                    db.getAllBrandListTVSAC7(this.state.controllId, newclassification[1], User.conversionFormula2, 'Yes', this.state.selectedProduct, month).then((data) => {
+                        console.log("myquerrrrrrrrrrrrrrrry======", JSON.stringify(data))
                         this.setState({ BransListArray: [] })
                         this.setState({ BransListArray: data })
+                        var targetarray =[];
+                        var totalTarget ='0';
+                        this.state.BransListArray.map((item,i)=>{
+                            db.getTotaltarget(item.BRANDID,month).then((data) =>{
+                                console.log('array..... : '+JSON.stringify(data))
+                                targetarray.push(data);
+                                this.state.BransListArray[i].target = (data.Target).toFixed(this.state.NOOFDECIMAL);
+                                totalTarget = parseFloat(totalTarget) + parseFloat(item.achi);
+                                var res = (item.achi / data.Target) * 100;
+                                this.state.BransListArray[i].average =Math.round(res) ;
+                                var daysInMonth = new Date(year, month, 0).getDate();
+                                console.log('days in month : '+ daysInMonth)
+                                var CR = (item.achi / daysInMonth);
+                                console.log('days in cr : '+ CR)
+                                this.state.BransListArray[i].CR =CR.toFixed(this.state.NOOFDECIMAL) ;
+                                this.state.BransListArray[i].RR ='0' ;
+                                this.setState({TargetArray : targetarray})
+                                this.setState({TotalTargetFinal : totalTarget.toFixed(this.state.NOOFDECIMAL)})
+                                console.log("sonali2 with target array ",JSON.stringify(this.state.TargetArray));
+                                console.log("sonali2 with target new",JSON.stringify(this.state.BransListArray));
+                            })
+
+                         })
+                       
+                     
                         User.BrandCount = this.state.BransListArray.length
                     })
 
-
-                }
-                else if (this.state.selectedProduct == 'ALL' && this.state.selectedProduct != 'FOCUS') {
-                 //   alert("222")
-                    db.getAllBrandListTVSAC2(this.state.controllId, newclassification[1], User.conversionFormula2).then((data) => {
-                        this.setState({ BransListArray: [] })
-                        this.setState({ BransListArray: data })
-                        User.BrandCount = this.state.BransListArray.length
-                    })
-                }
-
-                else if (this.state.selectedProduct != 'ALL' && this.state.selectedProduct == 'FOCUS') {
-                   // alert("3333")
-                    db.getAllBrandListTVSAC3(this.state.controllId, newclassification[1], User.conversionFormula2, 'Yes', this.state.selectedProduct).then((data) => {
-                        this.setState({ BransListArray: [] })
-                        this.setState({ BransListArray: data })
-                        User.BrandCount = this.state.BransListArray.length
-                    })
-
-
-                }
-                else {
-                    db.getAllBrandListTVSAC4(this.state.controllId, newclassification[1], User.conversionFormula2, 'Yes', this.state.selectedProduct).then((data) => {
-                      //  alert("4444")
-                        this.setState({ BransListArray: [] })
-                        this.setState({ BransListArray: data })
-                        User.BrandCount = this.state.BransListArray.length
-                    })
-
-                }
-            }
-            else {
-
-                if (this.state.selectedProduct != 'ALL' && this.state.selectedProduct != 'FOCUS') {
-                    alert("555")
-                    db.getAllBrandListTVSAC5(this.state.controllId, newclassification[1], User.conversionFormula2, 'Yes', this.state.selectedProduct, month).then((data) => {
-                        this.setState({ BransListArray: [] })
-                        this.setState({ BransListArray: data })
-                        User.BrandCount = this.state.BransListArray.length
-                    })
-
-                }
-                else if (this.state.selectedProduct == 'ALL' && this.state.selectedProduct != 'FOCUS') {
-                 //   alert("666")
+                }else if(this.state.selectedProduct == 'ALL'){
                     db.getAllBrandListTVSAC6(this.state.controllId, newclassification[1], User.conversionFormula2, 'Yes', this.state.selectedProduct, month).then((data) => {
                         this.setState({ BransListArray: [] })
                         this.setState({ BransListArray: data })
+                        var targetarray =[];
+                        var totalTarget ='0';
+                        this.state.BransListArray.map((item,i)=>{
+                            db.getTotaltarget(item.BRANDID,month).then((data) =>{
+                                console.log('array..... : '+JSON.stringify(data))
+                                targetarray.push(data);
+                                this.state.BransListArray[i].target = (data.Target).toFixed(this.state.NOOFDECIMAL);
+                                totalTarget = parseFloat(totalTarget) + parseFloat(item.achi);
+                                var res = (item.achi / data.Target) * 100;
+                                this.state.BransListArray[i].average =Math.round(res) ;
+                                var daysInMonth = new Date(year, month, 0).getDate();
+                                console.log('days in month : '+ daysInMonth)
+                                var CR = (item.achi / daysInMonth);
+                                console.log('days in cr : '+ CR)
+                                this.state.BransListArray[i].CR =CR.toFixed(this.state.NOOFDECIMAL) ;
+                                this.state.BransListArray[i].RR ='0' ;
+                                this.setState({TargetArray : targetarray})
+                                this.setState({TotalTargetFinal : totalTarget.toFixed(this.state.NOOFDECIMAL)})
+                                console.log("sonali2 with target array ",JSON.stringify(this.state.TargetArray));
+                                console.log("sonali2 with target new",JSON.stringify(this.state.BransListArray));
+                            })
+
+                         })
+                        User.BrandCount = this.state.BransListArray.length
+                    })
+
+                }else{
+                    db.getAllBrandListTVSAC5(this.state.controllId, newclassification[1], User.conversionFormula2, 'Yes', this.state.selectedProduct, month).then((data) => {
+                        this.setState({ BransListArray: [] })
+                        this.setState({ BransListArray: data })
+                        var targetarray =[];
+                       var  totalTarget ='0';
+                        this.state.BransListArray.map((item,i)=>{
+                            db.getTotaltarget(item.BRANDID,month).then((data) =>{
+                                console.log('array..... : '+JSON.stringify(data))
+                                targetarray.push(data);
+                                this.state.BransListArray[i].target = (data.Target).toFixed(this.state.NOOFDECIMAL);
+                                totalTarget = parseFloat(totalTarget) + parseFloat(item.achi);
+                                var res = (item.achi / data.Target) * 100;
+                                this.state.BransListArray[i].average =Math.round(res) ;
+                                var daysInMonth = new Date(year, month, 0).getDate();
+                                console.log('days in month : '+ daysInMonth)
+                                var CR = (item.achi / daysInMonth);
+                                console.log('days in cr : '+ CR)
+                                this.state.BransListArray[i].CR =CR.toFixed(this.state.NOOFDECIMAL) ;
+                                this.state.BransListArray[i].RR ='0' ;
+                                this.setState({TargetArray : targetarray})
+                                this.setState({TotalTargetFinal : totalTarget.toFixed(this.state.NOOFDECIMAL)})
+                                console.log("sonali2 with target array ",JSON.stringify(this.state.TargetArray));
+                                console.log("sonali2 with target new",JSON.stringify(this.state.BransListArray));
+                            })
+
+                         })
                         User.BrandCount = this.state.BransListArray.length
                     })
 
                 }
-                else if (this.state.selectedProduct != 'ALL' && this.state.selectedProduct == 'FOCUS') {
-                 //   alert("777")
-                    db.getAllBrandListTVSAC7(this.state.controllId, newclassification[1], User.conversionFormula2, 'Yes', this.state.selectedProduct, month).then((data) => {
-                        console.log("myquerrrrrrrrrrrrrrrry==", JSON.stringify(data))
-                        this.setState({ BransListArray: [] })
-                        this.setState({ BransListArray: data })
-                        console.log("sonali2",this.state.BransListArray);
-                        User.BrandCount = this.state.BransListArray.length
-                    })
-                }
-                else {
-                  //  alert("888")
-                    db.getAllBrandListTVSAC8(this.state.controllId, newclassification[1], User.conversionFormula2, 'Yes', this.state.selectedProduct, month).then((data) => {
-                        this.setState({ BransListArray: [] })
-                        this.setState({ BransListArray: data })
-                        User.BrandCount = this.state.BransListArray.length
-                    })
 
-                }
-            }
+                // if (this.state.selectedProduct != 'ALL' && this.state.selectedProduct != 'FOCUS') {
+                //     alert("555")
+                //     db.getAllBrandListTVSAC5(this.state.controllId, newclassification[1], User.conversionFormula2, 'Yes', this.state.selectedProduct, month).then((data) => {
+                //         this.setState({ BransListArray: [] })
+                //         this.setState({ BransListArray: data })
+                //         User.BrandCount = this.state.BransListArray.length
+                //     })
+
+                // }
+                // else if (this.state.selectedProduct == 'ALL' && this.state.selectedProduct != 'FOCUS') {
+                //  //   alert("666")
+                //     db.getAllBrandListTVSAC6(this.state.controllId, newclassification[1], User.conversionFormula2, 'Yes', this.state.selectedProduct, month).then((data) => {
+                //         this.setState({ BransListArray: [] })
+                //         this.setState({ BransListArray: data })
+                //         User.BrandCount = this.state.BransListArray.length
+                //     })
+
+                // }
+                // else if (this.state.selectedProduct != 'ALL' && this.state.selectedProduct == 'FOCUS') {
+                //  //   alert("777")
+                //     db.getAllBrandListTVSAC7(this.state.controllId, newclassification[1], User.conversionFormula2, 'Yes', this.state.selectedProduct, month).then((data) => {
+                //         console.log("myquerrrrrrrrrrrrrrrry==", JSON.stringify(data))
+                //         this.setState({ BransListArray: [] })
+                //         this.setState({ BransListArray: data })
+                //         console.log("sonali2",this.state.BransListArray);
+                //         User.BrandCount = this.state.BransListArray.length
+                //     })
+                // }
+                // else {
+                //   //  alert("888")
+                //     db.getAllBrandListTVSAC8(this.state.controllId, newclassification[1], User.conversionFormula2, 'Yes', this.state.selectedProduct, month).then((data) => {
+                //         this.setState({ BransListArray: [] })
+                //         this.setState({ BransListArray: data })
+                //         User.BrandCount = this.state.BransListArray.length
+                //     })
+
+                // }
+                console.log("in else brand list : "+JSON.stringify(this.state.BransListArray))
+          //  }  // end of else month 0
 
 
 
@@ -574,10 +779,10 @@ console.log("aaa in month2",this.state.BransListArray);
                         <View style={styles.totalShopsMainContainer}>
                             <View style={styles.totalShopColContainer}>
                                 <Text style={styles.totalShopCountTextStyle}>
-                                    Total Yearly Target
+                                    Total Target
                     </Text>
                                 <Text style={styles.totalShopHeadingTextStyle}>
-                                    60,00000
+                                   {this.state.TotalTarget}
                     </Text>
                             </View>
 
@@ -611,7 +816,7 @@ console.log("aaa in month2",this.state.BransListArray);
                                         marginTop: hp('0.5'),
                                         fontFamily: 'Proxima Nova',
                                     }}>
-                                        12,23,1234.00
+                                        {this.state.TotalTargetFinal}
                     </Text>
 
                                 </View>
@@ -628,14 +833,18 @@ console.log("aaa in month2",this.state.BransListArray);
                                     <View style={styles.collapseHeaderStyle}>
                                         <View style={{ flex: 1, marginLeft: wp('4'), marginTop: wp('3'), }} >
                                             <Text style={styles.brandnameTextStyle} >
-                                                {item.BRANDSEQUENCE}
+                                                {item.BRAND}
                                             </Text>
                                         </View>
 
-                                        <Month1Child
+                                        <Month2Child
                                             month={month}
                                             brandid={item.BRANDID}
                                             achi={item.achi}
+                                            target ={item.target}
+                                            average ={item.average}
+                                            CR = {item.CR}
+                                            RR={item.RR}
                                             brandlistarr={this.state.BransListArray}
                                         />
                                         {/* <View style={{ flex: 2, marginLeft: wp('4'), marginTop: wp('3'), flexDirection: 'row', }}>

@@ -24,218 +24,264 @@ export default class SaleReportChild extends Component {
         }
     }
 
-    componentWillMount() {
+  async componentWillMount() {
         ///////////////////////////ytd//////////////////////
 
 
         var data = []
         var month = 0
+        console.log('current mnt : '+this.props.currentMonth +" prev1 : "+this.props.prev1Month + " prev 2 : "+this.props.prev2Month +" this.props.selectedDist "+this.props.selectedDist)
+            
+      await  db.getDataforytd1ByVibha(this.props.brandid, this.props.selectedProduct, this.props.selectedDist, this.props.ConversionFormula2,month,this.props.ControlId).then((data) => {
+            //   this.state.ytds.push(data.qty)
+            if (data.qty == null || data.qty== ''||data.qty== 0) {
+                this.state.ytds.push('0.00')
+            } else {
+                this.state.ytds.push((data.qty).toFixed(this.props.NOOFDECIMAL))
+            }
+        })
 
-        if (month == 0 && this.props.selectedDist == "ALL") {
-            db.getDataforytd(this.props.brandid, month, this.props.ConversionFormula2).then((data) => {
-              //   this.state.ytds.push(data.qty)
-                if (data.qty == null || data.qty== ''||data.qty== 0) {
-                    this.state.ytds.push('0.00')
-                } else {
-                    this.state.ytds.push(data.qty)
-                }
+// if (month == 0 && this.props.selectedDist == "ALL") {
+//             db.getDataforytd(this.props.brandid, month, this.props.ConversionFormula2).then((data) => {
+//               //   this.state.ytds.push(data.qty)
+//                 if (data.qty == null || data.qty== ''||data.qty== 0) {
+//                     this.state.ytds.push('0.00')
+//                 } else {
+//                     this.state.ytds.push(data.qty)
+//                 }
 
 
-            })
+//             })
 
 
-        }
-        else if (month == 0 && this.props.selectedDist != "ALL") {
-            db.getDataforytd1(this.props.brandid, this.props.selectedProduct, this.props.selectedDist, this.props.ConversionFormula2).then((data) => {
+//         }
+//         else if (month == 0 && this.props.selectedDist != "ALL") {
+//             db.getDataforytd1(this.props.brandid, this.props.selectedProduct, this.props.selectedDist, this.props.ConversionFormula2).then((data) => {
                
-                if (data.qty == null || data.qty== ''||data.qty== 0) {
-                    this.state.ytds.push('0.00')
-                } else {
-                    this.state.ytds.push(data.qty)
-                }
+//                 if (data.qty == null || data.qty== ''||data.qty== 0) {
+//                     this.state.ytds.push('0.00')
+//                 } else {
+//                     this.state.ytds.push(data.qty)
+//                 }
 
-            })
+//             })
 
-        }
-        else if (this.state.selectedDist == "ALL") {
-            db.getDataforytd2(this.props.brandid, month, this.props.ConversionFormula2).then((data) => {
+//         }
+//         else if (this.state.selectedDist == "ALL") {
+//             db.getDataforytd2(this.props.brandid, month, this.props.ConversionFormula2).then((data) => {
                
-                if (data.qty == null || data.qty== ''||data.qty== 0) {
-                    this.state.ytds.push('0.00')
-                } else {
-                    this.state.ytds.push(data.qty)
-                }
+//                 if (data.qty == null || data.qty== ''||data.qty== 0) {
+//                     this.state.ytds.push('0.00')
+//                 } else {
+//                     this.state.ytds.push(data.qty)
+//                 }
 
-            })
+//             })
 
-        }
-        else {
-           // db.getDataforytd3(this.props.brandid, this.props.ConversionFormula2, month, this.props.selectedProduct, this.props.selectedDist).then((data) => {                   
-            db.getDataforytd3(this.props.brandid, this.props.ConversionFormula2, month, this.props.brandid).then((data) => {
-                if (data.qty == null || data.qty== ''||data.qty== 0) {
-                    this.state.ytds.push('0.00')
-                } else {
-                    this.state.ytds.push(data.qty)
-                    console.log("qty in ytd",data.qty);
-                }
+//         }
+//         else {
+//            // db.getDataforytd3(this.props.brandid, this.props.ConversionFormula2, month, this.props.selectedProduct, this.props.selectedDist).then((data) => {                   
+//             db.getDataforytd3(this.props.brandid, this.props.ConversionFormula2, month, this.props.brandid).then((data) => {
+//                 if (data.qty == null || data.qty== ''||data.qty== 0) {
+//                     this.state.ytds.push('0.00')
+//                 } else {
+//                     this.state.ytds.push(data.qty)
+//                     console.log("qty in ytd",data.qty);
+//                 }
 
-            })
-
-
-
-        }
+//             })
+//         }
         /////////////////////////////qty1
         console.log("month11111111111111")
-        var month1 = new Date().getMonth() + 1
-        if (month1 == 0 && this.props.selectedDist == "ALL") {
-            db.getDataforytd(this.props.brandid, month1, this.props.ConversionFormula2).then((data) => {
-                console.log("sales qty1",data.qty);
-                if (data.qty == null || data.qty== ''||data.qty== 0) {
-                    this.state.qty1.push('0.00')
-                } else {
-                    console.log("qty is not null",data.qty);
-                    this.state.qty1.push(data.qty)
-                }
+       // var month1 = new Date().getMonth() + 1
+        var month1 = moment().month(new Date().getMonth()).format('M')
+        console.log('mont 1 : '+month1)
+     await   db.getDataforytd1ByVibha(this.props.brandid, this.props.selectedProduct, this.props.selectedDist, this.props.ConversionFormula2,month1,this.props.ControlId).then((data) => {
+            //   this.state.ytds.push(data.qty)
+            console.log("sales qty1",data.qty);
+                    if (data.qty == null || data.qty== ''||data.qty== 0) {
+                        this.state.qty1.push('0.00')
+                    } else {
+                        console.log("qty is not null",data.qty);
+                        this.state.qty1.push((data.qty).toFixed(this.props.NOOFDECIMAL))
+                    }
+        })
+        // if (month1 == 0 && this.props.selectedDist == "ALL") {
+        //     db.getDataforytd(this.props.brandid, month1, this.props.ConversionFormula2).then((data) => {
+        //         console.log("sales qty1",data.qty);
+        //         if (data.qty == null || data.qty== ''||data.qty== 0) {
+        //             this.state.qty1.push('0.00')
+        //         } else {
+        //             console.log("qty is not null",data.qty);
+        //             this.state.qty1.push(data.qty)
+        //         }
 
-            })
-        }
-        else if (month1 == 0 && this.props.selectedDist != "ALL") {
-            db.getDataforytd1(this.props.brandid, this.props.selectedProduct, this.props.selectedDist, this.props.ConversionFormula2).then((data) => {
-                console.log("sales qty2",data.qty);
-                if (data.qty == null || data.qty== ''||data.qty== 0) {
-                    this.state.qty1.push('0.00')
-                } else {
-                    console.log("qty is not null",data.qty);
-                    this.state.qty1.push(data.qty)
-                }
-            })
+        //     })
+        // }
+        // else if (month1 == 0 && this.props.selectedDist != "ALL") {
+        //     db.getDataforytd1(this.props.brandid, this.props.selectedProduct, this.props.selectedDist, this.props.ConversionFormula2).then((data) => {
+        //         console.log("sales qty2",data.qty);
+        //         if (data.qty == null || data.qty== ''||data.qty== 0) {
+        //             this.state.qty1.push('0.00')
+        //         } else {
+        //             console.log("qty is not null",data.qty);
+        //             this.state.qty1.push(data.qty)
+        //         }
+        //     })
 
-        }
-        else if (this.props.selectedDist == "ALL") {
-            db.getDataforytd2(this.props.brandid, month1, this.props.ConversionFormula2).then((data) => {
-                console.log("sales qty3",data.qty);
-                console.log("mont1 we are passing",month1);
-                if (data.qty == null || data.qty== ''||data.qty== 0) {
-                    this.state.qty1.push('0.00')
-                } else {
-                    console.log("qty is not null",data.qty);
-                    this.state.qty1.push(data.qty)
-                }
-            })
-        }
-        else {
-            db.getDataforytd3(this.props.brandid, this.props.ConversionFormula2, month1, this.props.brandid).then((data) => {
-                if (data.qty == null || data.qty== ''||data.qty== 0) {
-                    this.state.qty1.push('0.00')
-                } else {
-                    console.log("qty in month1",data.qty);
-                    this.state.qty1.push(data.qty)
-                }
-            })
-        }
+        // }
+        // else if (this.props.selectedDist == "ALL") {
+        //     db.getDataforytd2(this.props.brandid, month1, this.props.ConversionFormula2).then((data) => {
+        //         console.log("sales qty3",data.qty);
+        //         console.log("mont1 we are passing",month1);
+        //         if (data.qty == null || data.qty== ''||data.qty== 0) {
+        //             this.state.qty1.push('0.00')
+        //         } else {
+        //             console.log("qty is not null",data.qty);
+        //             this.state.qty1.push(data.qty)
+        //         }
+        //     })
+        // }
+        // else {
+        //     db.getDataforytd3(this.props.brandid, this.props.ConversionFormula2, month1, this.props.brandid).then((data) => {
+        //         if (data.qty == null || data.qty== ''||data.qty== 0) {
+        //             this.state.qty1.push('0.00')
+        //         } else {
+        //             console.log("qty in month1",data.qty);
+        //             this.state.qty1.push(data.qty)
+        //         }
+        //     })
+        // }
         /////////////////////////qty2///////
         console.log("month22222222222")
       
-        var month2 = new Date().getMonth()
-        if (month2 == 0 && this.props.selectedDist == "ALL") {
-            console.log("if1");
-            db.getDataforytd(this.props.brandid, month2, this.props.ConversionFormula2).then((data) => {
-                if (data.qty == null || data.qty== ''||data.qty== 0) {
-                    this.state.qty2.push('0.00')
-                } else {
-                    this.state.qty2.push(data.qty)
-                }
+       // var month2 = new Date().getMonth()
+       var month2 = moment().month(new Date().getMonth() - 1).format('M')
+        console.log('mont 2 : '+month2)
 
-            })
-        }
-        else if (month2 == 0 && this.state.selectedDist != "ALL") {
-            console.log("if2");
-            db.getDataforytd1(this.props.brandid, this.props.selectedProduct, this.props.selectedDist, this.props.ConversionFormula2).then((data) => {
-                if (data.qty == null || data.qty== ''||data.qty== 0) {
-                    this.state.qty2.push('0.00')
-                } else {
-                    this.state.qty2.push(data.qty)
-                }
+    await    db.getDataforytd1ByVibha(this.props.brandid, this.props.selectedProduct, this.props.selectedDist, this.props.ConversionFormula2,month2,this.props.ControlId).then((data) => {
+            //   this.state.ytds.push(data.qty)
+            console.log("sales qty1",data.qty);
+            if (data.qty == null || data.qty== ''||data.qty== 0) {
+                            this.state.qty2.push('0.00')
+                        } else {
+                            this.state.qty2.push((data.qty).toFixed(this.props.NOOFDECIMAL))
+                        }
+        })
 
-            })
+        // if (month2 == 0 && this.props.selectedDist == "ALL") {
+        //     console.log("if1");
+        //     db.getDataforytd(this.props.brandid, month2, this.props.ConversionFormula2).then((data) => {
+        //         if (data.qty == null || data.qty== ''||data.qty== 0) {
+        //             this.state.qty2.push('0.00')
+        //         } else {
+        //             this.state.qty2.push(data.qty)
+        //         }
 
-        }
-        else if (this.state.selectedDist == "ALL") {
-            console.log("if3");
-            db.getDataforytd2(this.props.brandid, month2, this.props.ConversionFormula2).then((data) => {
-                console.log("mont2 we are passing",month3);
-                if (data.qty == null || data.qty== ''||data.qty== 0) {
-                    this.state.qty2.push('0.00')
-                } else {
-                    this.state.qty2.push(data.qty)
-                }
+        //     })
+        // }
+        // else if (month2 == 0 && this.state.selectedDist != "ALL") {
+        //     console.log("if2");
+        //     db.getDataforytd1(this.props.brandid, this.props.selectedProduct, this.props.selectedDist, this.props.ConversionFormula2).then((data) => {
+        //         if (data.qty == null || data.qty== ''||data.qty== 0) {
+        //             this.state.qty2.push('0.00')
+        //         } else {
+        //             this.state.qty2.push(data.qty)
+        //         }
 
-            })
+        //     })
 
-        }
-        else {
-            console.log("mont2 we are passing",month2);
-            db.getDataforytd3(this.props.brandid, this.props.ConversionFormula2, month2,this.props.brandid).then((data) => {
-                console.log("if4");
+        // }
+        // else if (this.state.selectedDist == "ALL") {
+        //     console.log("if3");
+        //     db.getDataforytd2(this.props.brandid, month2, this.props.ConversionFormula2).then((data) => {
+        //         console.log("mont2 we are passing",month3);
+        //         if (data.qty == null || data.qty== ''||data.qty== 0) {
+        //             this.state.qty2.push('0.00')
+        //         } else {
+        //             this.state.qty2.push(data.qty)
+        //         }
+
+        //     })
+
+        // }
+        // else {
+        //     console.log("mont2 we are passing",month2);
+        //     db.getDataforytd3(this.props.brandid, this.props.ConversionFormula2, month2,this.props.brandid).then((data) => {
+        //         console.log("if4");
                
-                if (data.qty == null || data.qty== ''||data.qty== 0) {
-                    this.state.qty2.push('0.00')
-                } else {
-                    console.log("qty in month2",data.qty);
-                    this.state.qty2.push(data.qty)
-                }
-            })
+        //         if (data.qty == null || data.qty== ''||data.qty== 0) {
+        //             this.state.qty2.push('0.00')
+        //         } else {
+        //             console.log("qty in month2",data.qty);
+        //             this.state.qty2.push(data.qty)
+        //         }
+        //     })
 
-        }
+        // }
 
 
         console.log("month33333333")
         //////qty3//////////
-        var month3 = new Date().getMonth() - 1
-           if (month3 == 0 && this.props.selectedDist == "ALL") {
-            db.getDataforytd(this.props.brandid, month3, this.props.ConversionFormula2).then((data) => {
-                if (data.qty == null || data.qty== ''||data.qty== 0) {
-                    this.state.qty3.push('0.00')
-                } else {
-                    this.state.qty3.push(data.qty)
-                }
+      //  var month3 = new Date().getMonth() - 1
+         var month3 = moment().month(new Date().getMonth() - 2).format('M')
+        console.log('mont 3 : '+month3)
 
-            })
+      await  db.getDataforytd1ByVibha(this.props.brandid, this.props.selectedProduct, this.props.selectedDist, this.props.ConversionFormula2,month3,this.props.ControlId).then((data) => {
+            //   this.state.ytds.push(data.qty)
+            console.log("sales qty1",data.qty);
+            if (data.qty == null || data.qty== ''||data.qty== 0) {
+                            this.state.qty3.push('0.00')
+                        } else {
+                            this.state.qty3.push((data.qty).toFixed(this.props.NOOFDECIMAL))
+                        }
+        })
 
-        }
-        else if (month3 == 0 && this.state.selectedDist != "ALL") {
-            db.getDataforytd1(this.props.brandid, this.props.selectedProduct, this.props.selectedDist, this.props.ConversionFormula2).then((data) => {
-                if (data.qty == null || data.qty== ''||data.qty== 0) {
-                    this.state.qty3.push('0.00')
-                } else {
-                    this.state.qty3.push(data.qty)
-                }
-            })
+        //    if (month3 == 0 && this.props.selectedDist == "ALL") {
+        //     db.getDataforytd(this.props.brandid, month3, this.props.ConversionFormula2).then((data) => {
+        //         if (data.qty == null || data.qty== ''||data.qty== 0) {
+        //             this.state.qty3.push('0.00')
+        //         } else {
+        //             this.state.qty3.push(data.qty)
+        //         }
 
-        }
-        else if (this.state.selectedDist == "ALL") {
-            db.getDataforytd2(this.props.brandid, month3, this.props.ConversionFormula2).then((data) => {
-                console.log("mont3 we are passing",month3);
-                if (data.qty == null || data.qty== ''||data.qty== 0) {
-                    this.state.qty3.push('0.00')
-                } else {
-                    this.state.qty3.push(data.qty)
-                }
-            })
+        //     })
 
-        }
-        else {
-            db.getDataforytd3(this.props.brandid, this.props.ConversionFormula2, month3,this.props.brandid ).then((data) => {
-                if (data.qty == null || data.qty== ''||data.qty== 0) {
-                    this.state.qty3.push('0.00')
-                } else {
-                    console.log("qty in month3",data.qty);
-                    this.state.qty3.push(data.qty)
-                }
-            })
+        // }
+        // else if (month3 == 0 && this.state.selectedDist != "ALL") {
+        //     db.getDataforytd1(this.props.brandid, this.props.selectedProduct, this.props.selectedDist, this.props.ConversionFormula2).then((data) => {
+        //         if (data.qty == null || data.qty== ''||data.qty== 0) {
+        //             this.state.qty3.push('0.00')
+        //         } else {
+        //             this.state.qty3.push(data.qty)
+        //         }
+        //     })
+
+        // }
+        // else if (this.state.selectedDist == "ALL") {
+        //     db.getDataforytd2(this.props.brandid, month3, this.props.ConversionFormula2).then((data) => {
+        //         console.log("mont3 we are passing",month3);
+        //         if (data.qty == null || data.qty== ''||data.qty== 0) {
+        //             this.state.qty3.push('0.00')
+        //         } else {
+        //             this.state.qty3.push(data.qty)
+        //         }
+        //     })
+
+        // }
+        // else {
+        //     db.getDataforytd3(this.props.brandid, this.props.ConversionFormula2, month3,this.props.brandid ).then((data) => {
+        //         if (data.qty == null || data.qty== ''||data.qty== 0) {
+        //             this.state.qty3.push('0.00')
+        //         } else {
+        //             console.log("qty in month3",data.qty);
+        //             this.state.qty3.push(data.qty)
+        //         }
+        //     })
 
 
-        }
+        // }
+        console.log('qty 3 render : '+this.state.qty3)
 
 
         /////////////////end./////////////////
@@ -278,6 +324,7 @@ export default class SaleReportChild extends Component {
 
     _renderQTY3View = () => {
 
+        
         return this.state.qty3.map((info, index) => {
             ////console.log("info::",this.state.InfoString[2])
             return (

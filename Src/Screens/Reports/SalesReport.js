@@ -77,11 +77,14 @@ export class SalesReport extends Component {
             UOMListArray: [],
             ProductsArray: [],
             selectedDist: 'ALL',
+            selectedDistName :'',
+            NOOFDECIMAL :'',
             controllId: '',
             selectedProduct: 'FOCUS',
             defaultUOM: '',
             selectedUOM: '',
             currentMonth: '',
+            TotalMonthlySales : '',
             prev1Month: '',
             prev2Month: '',BransListArray12:[],y:''
         };
@@ -139,11 +142,20 @@ export class SalesReport extends Component {
 
     _renderEntity() {
         const beat = []
+        const BeatId =[];
+      //  console.log('distributorArray : '+JSON.stringify(this.state.distributorArray))
         for (var i = 0; i < this.state.distributorArray.length; i++) {
             beat.push({
                 value: this.state.distributorArray[i].Distributor
             })
+            BeatId.push({
+                value: this.state.distributorArray[i].DistributorID
+            })
         }
+      //  console.log('beat id : '+JSON.stringify(BeatId))
+
+      //  const array = [{"Distributor":"CSD BANGALORE","DistributorID":"789"},{"Distributor":"KARNATAKA STATE BEVERAGES","DistributorID":"1409"},{"Distributor":"KSBCL - ATTIBELE","DistributorID":"437"},{"Distributor":"KSBCL - BAGALKOT","DistributorID":"1"},{"Distributor":"KSBCL - BAGALKUNTE","DistributorID":"2"},{"Distributor":"KSBCL - BAGALKUNTE-2","DistributorID":"1165"},{"Distributor":"KSBCL - BANGARPET","DistributorID":"3"},{"Distributor":"KSBCL - BANNERGHATTA ROAD","DistributorID":"4"}]
+        
         return (
             <Dropdown
                 containerStyle={styles.dropDownContainer}
@@ -159,13 +171,16 @@ export class SalesReport extends Component {
                 dropdownOffset={{ top: 20, left: 18, }}
                 inputContainerStyle={{ borderBottomColor: 'transparent' }}
                 data={beat}
-                onChangeText={(value) => { this.onChangeHandlerDistributor(value) }}
+             //   onChangeText={(value) => { this.onChangeHandlerDistributor(value) }}
+                onChangeText={(value, index, data) => this.onChangeHandlerDistributor(BeatId[index].value,value)}
             />
         )
     }
 
-    onChangeHandlerDistributor = (value) => {
-        this.setState({ selectedDist: value })
+    onChangeHandlerDistributor = (distId,value) => {
+        this.setState({ selectedDist: distId })
+        console.log('dist id : '+distId)
+      //  this.setState({selectedDistName : name})
     }
 
     _renderEntityProduct() {
@@ -199,7 +214,7 @@ export class SalesReport extends Component {
     onChangeHandlerProduct = (value) => {
 
         //  AsyncStorage.setItem('distributorName', JSON.stringify(value));
-
+console.log('selected prodcut : '+value)
         this.setState({ selectedProduct: value })
     }
     onChangeHandlerEntity = (value) => {
@@ -238,6 +253,7 @@ export class SalesReport extends Component {
 
     onChangeHandlerUOM = (value) => {
         this.setState({ selectedUOM: value })
+        this.setState({ defaultUOM: value }) 
     }
     setModalVisible = (bools) => {
 
@@ -267,25 +283,37 @@ export class SalesReport extends Component {
         });
         this.getdata()
     }
-    getdata(){    
+    getdata(){  
+        var month = new Date().getMonth() + 1;  
         var curr = moment().month(new Date().getMonth()).format("MMM");
         var prev1 = moment().month(new Date().getMonth() - 1).format("MMM");
         var prev2 = moment().month(new Date().getMonth() - 2).format("MMM");
+        console.log('current mnt : '+curr +" prev1 : "+prev1 + " prev 2 : "+prev2 +" month : "+ month)
+        console.log('month : '+ moment().month(new Date().getMonth() - 2).format('M'))
         this.setState({
             currentMonth: curr,
             prev1Month: prev1,
             prev2Month: prev2
         })
 
+
+
         db.getDistributorData().then((data) => {
             this.setState({
                 distributorArray: data
             })
         })
-        db.getDefaultUOM().then((data) => {
-            this.setState({ defaultUOM: data.Value })
-            User.DefaultUOM= data.Value
-            //   alert(this.state.defaultUOM)
+
+        db.getTotalMonthlySales(month).then((data) => {
+            this.setState({TotalMonthlySales : data.sales})
+        })
+
+        db.getNOOFDECIMAL().then((data) =>{
+            this.setState({ NOOFDECIMAL: data.Value })
+        })
+        console.log('selectedUOM : '+this.state.selectedUOM);
+        if(this.state.selectedUOM){
+            this.setState({ defaultUOM: this.state.selectedUOM })
             db.ConversionUOMFormula(pascalCase(this.state.defaultUOM)).then((data) => {
                 ConversionFormula = data.ConversionUomFormula
                 if (ConversionFormula == "VALUE" || ConversionFormula == "9LCASE" || ConversionFormula == "VOLUME" || ConversionFormula == "POINTS" || ConversionFormula == "KG") {
@@ -295,8 +323,25 @@ export class SalesReport extends Component {
                     ConversionFormula2 = 'sum(' + ConversionFormula + ')'
                 }
 
+            }) 
+        }else{
+            db.getDefaultUOM().then((data) => {
+                this.setState({ defaultUOM: data.Value })
+                User.DefaultUOM= data.Value
+                   alert(this.state.defaultUOM)
+                db.ConversionUOMFormula(pascalCase(this.state.defaultUOM)).then((data) => {
+                    ConversionFormula = data.ConversionUomFormula
+                    if (ConversionFormula == "VALUE" || ConversionFormula == "9LCASE" || ConversionFormula == "VOLUME" || ConversionFormula == "POINTS" || ConversionFormula == "KG") {
+                        ConversionFormula2 = ConversionFormula
+                    }
+                    else {
+                        ConversionFormula2 = 'sum(' + ConversionFormula + ')'
+                    }
+    
+                })
             })
-        })
+        }
+        
         db.getUOMList().then((data) => {
             var str = data.Value
             var res = str.split(",");
@@ -307,6 +352,7 @@ export class SalesReport extends Component {
             this.setState({ controllId: data.ControlId })      
             db.getAllBrandList(this.state.controllId).then((data) => {
                 this.setState({ BransListArray12: [] })
+                this.state.films1 =[];
                 this.state.films1.push({ "BRAND": "FOCUS" })
                 this.state.films1.push({ "BRAND": "ALL" })
                 this.setState({ BransListArray12: [] })
@@ -315,12 +361,12 @@ export class SalesReport extends Component {
                     BransListArrayFilterFinal: [...this.state.films1, ...this.state.BransListArray12]
                 })
             })
-
+            console.log('this.state.selectedDist : '+this.state.selectedDist);
             
-                if(this.state.selectedProduct == 'FOCUS' && this.state.selectedDist == 'ALL')
+                if((this.state.selectedProduct == 'FOCUS' || this.state.selectedProduct == 'ALL') && this.state.selectedDist == 'ALL')
             {
           //    alert("111")
-                 db.getAllBrandList1(this.state.controllId, 'Yes').then((data) => {                
+                 db.getAllBrandList1(this.state.controllId, '1',this.state.selectedProduct).then((data) => {                
             //    db.getAllBrandList(this.state.controllId).then((data) => {
                 //console.log("3333333333=",data)
                 console.log("brands of all",data);
@@ -328,92 +374,43 @@ export class SalesReport extends Component {
                     this.setState({ BransListArray: data })
                    
                 })
-            }else if(this.state.selectedProduct == 'FOCUS' && this.state.selectedDist != 'ALL'){
-                alert("222")
-                db.getAllBrandList2(this.state.controllId, 'Yes',this.state.selectedDist).then((data) => {
+            }else if((this.state.selectedProduct == 'FOCUS' || this.state.selectedProduct == 'ALL') && this.state.selectedDist != 'ALL'){
+              //  alert("222")
+              console.log('this.state.selectedDist in if : '+this.state.selectedDist);
+                db.getAllBrandList2(this.state.controllId, '1',this.state.selectedDist,this.state.selectedProduct).then((data) => {
                     this.setState({ BransListArray: [] })
                     this.setState({ BransListArray: data })                    
               })
       
-            }else if(this.state.selectedProduct != 'FOCUS' && this.state.selectedDist == 'ALL'){
+            }else if((this.state.selectedProduct != 'FOCUS' || this.state.selectedProduct != 'ALL') && this.state.selectedDist == 'ALL'){
              
                 db.getAllBrandList3(this.state.controllId, this.state.selectedProduct).then((data) => {
-                    alert(JSON.stringify(data))
+                   // alert(JSON.stringify(data))
                     this.setState({ BransListArray: [] })
                     this.setState({ BransListArray: data })                        
                 })
-            }else if(this.state.selectedProduct == 'ALL' && this.state.selectedDist == 'ALL'){
-                alert("444")
-                db.getAllBrandList4(this.state.controllId).then((data) => {
-                    this.setState({ BransListArray: [] })
-                    this.setState({ BransListArray: data })                 
-           })
+            }else if((this.state.selectedProduct != 'FOCUS' || this.state.selectedProduct != 'ALL') && this.state.selectedDist != 'ALL'){
+             
+                db.getAllBrandList4(this.state.controllId,this.state.selectedProduct,this.state.selectedDist).then((data) => {
+                                this.setState({ BransListArray: [] })
+                                this.setState({ BransListArray: data })                 
+                       })
+            }
+            
+        //     else if(this.state.selectedProduct == 'ALL' && this.state.selectedDist == 'ALL'){
+        //         alert("444")
+        //         db.getAllBrandList4(this.state.controllId).then((data) => {
+        //             this.setState({ BransListArray: [] })
+        //             this.setState({ BransListArray: data })                 
+        //    })
                 
-        }    
+        // }  else if (this.state.selectedProduct != 'ALL' && this.state.selectedDist != 'ALL'){
+        //     db.getAllBrandList5(this.state.controllId,this.state.selectedProduct,this.state.selectedDist).then((data) => {
+        //         this.setState({ BransListArray: [] })
+        //         this.setState({ BransListArray: data })                 
+        //      })
+        // }  
 
-
-
-        for(var i=0;i< this.state.BransListArray.length;i++){
-        if (month == 0 && this.state.selectedDist == "ALL") {
-            db.getDataforytd(this.state.BransListArray[i].BRANDID, month, ConversionFormula2).then((datas) => {
-                ytds = JSON.parse(datas[0].qty)
-                if (data[0].qty == 'null') {
-                    ytds = 0.00
-                } else {
-                    ytds = JSON.parse(datas[0].qty)
-                    //console.log("ytd=............." + ytds)
-                }
-                ytdData.push(ytds)
-            })
-        }
-        else if (month == 0 && this.state.selectedDist != "ALL") {
-            //(brandId,selectedbarand,selecteddist,ConversionUOMFormula) 
-            db.getDataforytd1(this.state.BransListArray[i].BRANDID, this.state.selectedProduct, this.state.selectedDist, ConversionFormula2).then((datas) => {
-                ytds = JSON.parse(datas[0].qty)
-                if (data[0].qty == 'null') {
-                    ytds = '0.00'
-                } else {
-                    ytds = JSON.parse(datas[0].qty)
-                    //console.log("ytd=............." + ytds)
-                }
-               ytdData.push(ytds)
-
-            })
-
-        }
-        else if (this.state.selectedDist == "ALL") {
-            db.getDataforytd2(this.state.BransListArray[i].BRANDID, month, ConversionFormula2).then((datas) => {
-                ytds = JSON.parse(datas[0].qty)
-                if (data[0].qty == 'null') {
-                    ytds = '0.00'
-                } else {
-                    ytds = JSON.parse(datas[0].qty)
-                    //console.log("ytd=............." + ytds)
-                }
-                 ytdData.push(ytds)
-               
-
-            })
-
-        }
-        else {
-            //brandId,ConversionFormula,month,selectedbrand,selecteddist) 
-            db.getDataforytd3(this.state.BransListArray[i].BRANDID, ConversionFormula2, month, this.state.selectedProduct, this.state.selectedDist).then((datas) => {
-                ytds = JSON.parse(datas[0].qty)
-                if (data[0].qty == 'null') {
-                    ytds = '0.00'
-                } else {
-                    ytds = JSON.parse(datas[0].qty)
-                    //console.log("ytd=............." + ytds)
-                }
-               ytdData.push(ytds)
-
-            })
-
-        }
-
-
-    }
     })
     }
     _handleFilterPress() {
@@ -977,7 +974,7 @@ export class SalesReport extends Component {
                                     Monthly Total Sales
                     </Text>
                                 <Text style={styles.totalShopHeadingTextStyle}>
-                                    60,00000
+                                   {this.state.TotalMonthlySales}
                     </Text>
 
                             </View>
@@ -1027,6 +1024,8 @@ export class SalesReport extends Component {
                                      selectedProduct={this.state.selectedProduct}
                                      selectedDist={this.state.selectedDist}                                   
                                       ConversionFormula2={ConversionFormula2}
+                                      ControlId ={this.state.controllId}
+                                      NOOFDECIMAL ={this.state.NOOFDECIMAL}
                                     //  achi={item.achi}
                                     //  brandlistarr={this.state.BransListArray}
                                     />
