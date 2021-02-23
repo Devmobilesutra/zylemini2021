@@ -22,6 +22,7 @@ export default class Month1Child extends Component {
         super(props);
         this.state = {
             TargetVal: [],
+            average :'',
            // Tarr: json.items
         }
     }
@@ -31,7 +32,9 @@ export default class Month1Child extends Component {
         var target1 = "sum(Target)";
        
         // var newDate = moment(Date(this.props.month)).format('DD-MM-YYYY');
-        console.log("new target",this.props.Target);
+        console.log("new achiv  ",this.props.achi);
+        console.log("new target  ",this.props.Target);
+      
         // if (this.props.month == 0) {
         //     db.getTargetData(this.props.brandid, target1).then((data) => {
         //         this.setState({ TargetVal: data })
@@ -60,117 +63,117 @@ export default class Month1Child extends Component {
         // }
         /////////////////////////////////////////////////////////AchivedData//////////////////
 
-        console.log("aaaaaaaaaaaaaaaa=", this.props.brandlistarr)
-        var brandArray_data = []
-        brandArray_data = this.props.brandlistarr
-        var itemarr = []
-        db.getItemIdArray(this.props.brandid).then((data) => {
-            itemarr = data
-        })
-        var sales = 0.0
-        var quantitys
+        // console.log("aaaaaaaaaaaaaaaa=", this.props.brandlistarr)
+        // var brandArray_data = []
+        // brandArray_data = this.props.brandlistarr
+        // var itemarr = []
+        // db.getItemIdArray(this.props.brandid).then((data) => {
+        //     itemarr = data
+        // })
+        // var sales = 0.0
+        // var quantitys
 
-        var arr2 = []
-        for (var i = 0; i < itemarr.length; i++) {
-            if (month == 0) {
-                db.getTargetDataif(itemarr[i].ItemId).then((data) => {
-                    quantitys = data
-                    arr.push({ Quantity: data })
-                })
-            }
-            else {
-                db.getTargetDataelse(itemarr[i].ItemId, month).then((data) => {
-                    quantitys = data
-                    arr.push({ Quantity: data })
-                })
-            }
-            db.getBPCdata(itemarr[i].ItemId).then((data) => {
-                arr2.push({ BPC: data })
-            })
-
-
-            if (arr.length != 0) {
-                var dataQuantity = arr[i].Quantity
-                var dataBPC = arr2[i].BPC
-                var val = dataQuantity / dataBPC;
-                sales += val;
-                salesarr.push(sales)
-            }
-        }
+        // var arr2 = []
+        // for (var i = 0; i < itemarr.length; i++) {
+        //     if (month == 0) {
+        //         db.getTargetDataif(itemarr[i].ItemId).then((data) => {
+        //             quantitys = data
+        //             arr.push({ Quantity: data })
+        //         })
+        //     }
+        //     else {
+        //         db.getTargetDataelse(itemarr[i].ItemId, month).then((data) => {
+        //             quantitys = data
+        //             arr.push({ Quantity: data })
+        //         })
+        //     }
+        //     db.getBPCdata(itemarr[i].ItemId).then((data) => {
+        //         arr2.push({ BPC: data })
+        //     })
 
 
+        //     if (arr.length != 0) {
+        //         var dataQuantity = arr[i].Quantity
+        //         var dataBPC = arr2[i].BPC
+        //         var val = dataQuantity / dataBPC;
+        //         sales += val;
+        //         salesarr.push(sales)
+        //     }
+        // }
 
-        for (var i = 0; i < brandArray_data.lenght; i++) {
-            var brandData = brandArray_data[i]
-            var _achivedata = division_data[i].Achieved;
 
-            var month1 = this.props.month  //tab
-            var month1 = new Date().getMonth() + 1
+
+        // for (var i = 0; i < brandArray_data.lenght; i++) {
+        //     var brandData = brandArray_data[i]
+        //     var _achivedata = division_data[i].Achieved;
+
+        //     var month1 = this.props.month  //tab
+        //     var month1 = new Date().getMonth() + 1
            
-            if (month1 == month2) {
-                result2 = currentdate - 1;
-            }
-            Else
-            {
-                result2 = numberOfDays_1;
-            }
-            brandID_1 = salesarr[i];
-            var achievedValue = parseFloat(brandID_1) / result2;
-            crData.push(achievedValue)
+        //     if (month1 == month2) {
+        //         result2 = currentdate - 1;
+        //     }
+        //     Else
+        //     {
+        //         result2 = numberOfDays_1;
+        //     }
+        //     brandID_1 = salesarr[i];
+        //     var achievedValue = parseFloat(brandID_1) / result2;
+        //     crData.push(achievedValue)
         
-        }
+        // }
 
 
 
 
-        ///////////////per///////////////////////////////////
-        var target_data = []
-        if (this.props.month == 0) {
-            db.getTargetData(this.props.brandid, target1).then((data) => {
-                target_data.push(data)
+        // ///////////////per///////////////////////////////////
+        // var target_data = []
+        // if (this.props.month == 0) {
+        //     db.getTargetData(this.props.brandid, target1).then((data) => {
+        //         target_data.push(data)
 
-            })
-        }
-        else {
-            db.getTargetDatabymonth(this.props.brandid, target1, this.props.month).then((data) => {
-                target_data.push(data)
-            })
-        }
-        for (var i = 0; i < target_data.lenght; i++) {
-            var target = target_data[i];
-            var achive = salesarr[i];
-            var rounded;
-            var res = (achive / target) * 100;
-            rounded = roundf(res);
-            var tval1 = rounded1;
-            var tval12;
-            if (tval1 < 0) {
-                tval12 = 0.0;
-            }
-            else {
-                tval12 = tval1;
-            }
-            getData.push(tval12)
-            console.log('get data '+ JSON.stringify(getData))
+        //     })
+        // }
+        // else {
+        //     db.getTargetDatabymonth(this.props.brandid, target1, this.props.month).then((data) => {
+        //         target_data.push(data)
+        //     })
+        // }
+        // for (var i = 0; i < target_data.lenght; i++) {
+        //     var target = target_data[i];
+        //     var achive = salesarr[i];
+        //     var rounded;
+        //     var res = (achive / target) * 100;
+        //     rounded = roundf(res);
+        //     var tval1 = rounded1;
+        //     var tval12;
+        //     if (tval1 < 0) {
+        //         tval12 = 0.0;
+        //     }
+        //     else {
+        //         tval12 = tval1;
+        //     }
+        //     getData.push(tval12)
+        //     console.log('get data '+ JSON.stringify(getData))
 
 
-            var rr = (target - achive) / (30 - result2); //please check above value for reference result2 = number days which is selected month
+        //     var rr = (target - achive) / (30 - result2); //please check above value for reference result2 = number days which is selected month
 
-            var month1 = new Date().getMonth() + 1
-            if (month1== this.props.month) {
-                if (rr < 0) {
-                    rr = 0;                  
-                   rrdata.push(rr)
-                }
-                else {
-                    rrdata.push(rr)
-                }
-            }
-            else {
-                var rr = 0;
-                rrdata.push(rr)
-            }
-        }
+        //     var month1 = new Date().getMonth() + 1
+        //     if (month1== this.props.month) {
+        //         if (rr < 0) {
+        //             rr = 0;                  
+        //            rrdata.push(rr)
+        //         }
+        //         else {
+        //             rrdata.push(rr)
+        //         }
+        //     }
+        //     else {
+        //         var rr = 0;
+        //         rrdata.push(rr)
+        //     }
+        // }
 
 
 
@@ -212,19 +215,20 @@ render() {
                 </View>
                 <View style={{ flex: 1, flexDirection: 'column' }}>
                     <Text style={{ color: '#796A6A', fontSize: 10, fontWeight: 'bold' }}>%</Text>
-                    {
+                    <Text style={{ color: '#362828', fontSize: 12 }}>{this.props.average}</Text>
+                    {/* {
                         getData.map((item) => {
                             return (
                                 <Text style={{ color: '#362828', fontSize: 12 }}>{item}</Text>
                             )
+                         })
 
-                        })
-
-                    }
+                    } */}
                 </View>
                 <View style={{ flex: 1, flexDirection: 'column' }}>
                     <Text style={{ color: '#796A6A', fontSize: 10, fontWeight: 'bold' }}>PR</Text>
-                    {
+                    <Text style={{ color: '#362828', fontSize: 12 }}>{this.props.RR}</Text>
+                    {/* {
                         rrdata.map((item) => {
                             return (
                                 <Text style={{ color: '#362828', fontSize: 12 }}>{item}</Text>
@@ -232,11 +236,12 @@ render() {
 
                         })
 
-                    }
+                    } */}
                 </View>
                 <View style={{ flex: 1, flexDirection: 'column' }}>
                     <Text style={{ color: '#796A6A', fontSize: 10, fontWeight: 'bold' }}>CR</Text>
-                    {
+                    <Text style={{ color: '#362828', fontSize: 12 }}>{this.props.CR}</Text>
+                    {/* {
                         crData.map((item) => {
                             return (
                                 <Text style={{ color: '#362828', fontSize: 12 }}>{item}</Text>
@@ -244,7 +249,7 @@ render() {
 
                         })
 
-                    }
+                    } */}
                 </View>
 
             </View>

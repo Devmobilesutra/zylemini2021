@@ -17,7 +17,7 @@ import { pascalCase } from "change-case";
 import Communications from 'react-native-communications';
 var arr = [], getData = [], crData = [],rrdata=[],Tarr=[]
 var result2
-export default class Month3Child extends Component {
+export default class Month2Child extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -27,12 +27,16 @@ export default class Month3Child extends Component {
     }
 
     componentDidMount() {
+        /////////////////target data render//////////
+        var target1 = "sum(Target)";
        
         // var newDate = moment(Date(this.props.month)).format('DD-MM-YYYY');
         console.log("new target",this.props.Target);
-      
+       
+
         console.log("aaaaaaaaaaaaaaaa=", this.props.brandlistarr)
-       }
+     
+  }
 
 
   

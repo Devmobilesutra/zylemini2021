@@ -7653,6 +7653,33 @@ export default class Database {
 
     });
   }
+
+  getTotalTarget(month) {
+    const products = [];
+    var query = 'select sum(Target) as Target from Target where  substr(Target.TDate,6,2)="'+month+'"'
+    return new Promise((resolve) => {
+      // this.initDB().then((db) => {
+      db1.transaction((tx) => {
+        tx.executeSql(query, [], (tx, results) => {
+          var tempSearchProdect = '';
+          for (let i = 0; i < results.rows.length; i++) {
+            tempSearchProdect = results.rows.item(i)
+          }
+
+          //console.log("tempSearchProdect=", tempSearchProdect)
+          resolve(tempSearchProdect);
+        });
+      })
+        .then((result) => {
+          // 
+        })
+        .catch((err) => {
+          //console.log(err);
+        });
+
+    });
+  }
+
   getUOMList() {
     const products = [];
     var query = "select Value from Settings where Key='UOMKey'";
@@ -8260,9 +8287,9 @@ export default class Database {
         ConversionUOMFormula +
         ' as achi,PItem.' +
         ControlId +
-        'ID,PItem.' +
+        'ID as BRANDID,PItem.' +
         classification +
-        ' FROM Sales,PItem,Target where Sales.ItemID = PItem.ItemId and Target.ClassificationID =  PItem.BrandID and PItem.' +
+        ' as BRAND FROM Sales,PItem,Target where Sales.ItemID = PItem.ItemId and Target.ClassificationID =  PItem.BrandID and PItem.' +
         ControlId +
         ' in ("' +
         selectedbrand +
@@ -8305,9 +8332,9 @@ export default class Database {
         ConversionUOMFormula +
         ' as achi,PItem.' +
         ControlId +
-        'ID,PItem.' +
+        'ID as BRANDID,PItem.' +
         classification +
-        ' FROM Sales,PItem,Target where Sales.ItemID = PItem.ItemId and Target.ClassificationID =  PItem.BrandID  and Sales.Month= ' +
+        ' as BRAND FROM Sales,PItem,Target where Sales.ItemID = PItem.ItemId and Target.ClassificationID =  PItem.BrandID  and Sales.Month= ' +
         month +
         ' group by PItem.' +
         ControlId +
@@ -8352,9 +8379,9 @@ export default class Database {
         ConversionUOMFormula +
         ' as achi,PItem.' +
         ControlId +
-        'ID,PItem.' +
+        'ID as BRANDID,PItem.' +
         classification +
-        ' FROM Sales,PItem,Target where Sales.ItemID = PItem.ItemId and Target.ClassificationID = PItem.BRANDID and Sales.Month =' +
+        ' as BRAND FROM Sales,PItem,Target where Sales.ItemID = PItem.ItemId and Target.ClassificationID = PItem.BRANDID and Sales.Month =' +
         month +
         ' group by PItem.' +
         ControlId +
