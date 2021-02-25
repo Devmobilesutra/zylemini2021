@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import moment from 'moment';
 import Moment from 'react-moment';
-import { pascalCase } from "change-case";
+import {pascalCase} from 'change-case';
 SQLite.DEBUG(true);
 SQLite.enablePromise(true);
 const database_name = 'ZyleminiPlusDatabase.db';
@@ -7359,7 +7359,7 @@ export default class Database {
 
   getDatacards() {
     var query =
-      'select  Pcustomer.Party, OrderMaster.check_date, OrderMaster.id, OrderDetails.item_Name, OrderDetails.quantity_one, OrderDetails.quantity_two from OrderDetails,OrderMaster,Pcustomer where OrderDetails.order_id == OrderMaster.id and Pcustomer.CustomerId == OrderMaster.entity_id';
+      'select  Pcustomer.Party, OrderMaster.check_date, OrderMaster.id, OrderDetails.item_Name, OrderDetails.quantity_one, OrderDetails.quantity_two from OrderDetails,OrderMaster,Pcustomer where OrderDetails.order_id == OrderMaster.id and Pcustomer.CustomerId == OrderMaster.entity_id and OrderMaster.collection_type=1';
     //console.log("q---", query)
     return new Promise(resolve => {
       db1
@@ -7713,7 +7713,14 @@ export default class Database {
       //   'ID", IsSelectedBrand , IsSelectedBrandProduct FROM PItem order by "' +
       //   ControlId +
       //   '" ';
-        var query = 'Select distinct ' + ControlId + ' as BRAND,' + ControlId + 'ID as BRANDID, IsSelectedBrand , IsSelectedBrandProduct FROM PItem order by "' + ControlId + '" '
+      var query =
+        'Select distinct ' +
+        ControlId +
+        ' as BRAND,' +
+        ControlId +
+        'ID as BRANDID, IsSelectedBrand , IsSelectedBrandProduct FROM PItem order by "' +
+        ControlId +
+        '" ';
       console.log(query);
       db1
         .transaction(tx => {
@@ -7759,79 +7766,84 @@ export default class Database {
 
   getNOOFDECIMAL() {
     const products = [];
-    var query = "select Value from Settings where Key='NOOFDECIMAL'"
-    return new Promise((resolve) => {
+    var query = "select Value from Settings where Key='NOOFDECIMAL'";
+    return new Promise(resolve => {
       // this.initDB().then((db) => {
-      db1.transaction((tx) => {
-        tx.executeSql(query, [], (tx, results) => {
-          var tempSearchProdect = '';
-          for (let i = 0; i < results.rows.length; i++) {
-            tempSearchProdect = results.rows.item(i)
-          }
+      db1
+        .transaction(tx => {
+          tx.executeSql(query, [], (tx, results) => {
+            var tempSearchProdect = '';
+            for (let i = 0; i < results.rows.length; i++) {
+              tempSearchProdect = results.rows.item(i);
+            }
 
-          //console.log("tempSearchProdect=", tempSearchProdect)
-          resolve(tempSearchProdect);
-        });
-      })
-        .then((result) => {
-          // 
+            //console.log("tempSearchProdect=", tempSearchProdect)
+            resolve(tempSearchProdect);
+          });
         })
-        .catch((err) => {
+        .then(result => {
+          //
+        })
+        .catch(err => {
           //console.log(err);
         });
-
     });
   }
 
   getTotalMonthlySales(month) {
     const products = [];
-    var query = "select ifnull(sum(Sales.Quantity),0) as sales from Sales where Sales.Month="+month
-    return new Promise((resolve) => {
+    var query =
+      'select ifnull(sum(Sales.Quantity),0) as sales from Sales where Sales.Month=' +
+      month;
+    return new Promise(resolve => {
       // this.initDB().then((db) => {
-      db1.transaction((tx) => {
-        tx.executeSql(query, [], (tx, results) => {
-          var tempSearchProdect = '';
-          for (let i = 0; i < results.rows.length; i++) {
-            tempSearchProdect = results.rows.item(i)
-          }
+      db1
+        .transaction(tx => {
+          tx.executeSql(query, [], (tx, results) => {
+            var tempSearchProdect = '';
+            for (let i = 0; i < results.rows.length; i++) {
+              tempSearchProdect = results.rows.item(i);
+            }
 
-          //console.log("tempSearchProdect=", tempSearchProdect)
-          resolve(tempSearchProdect);
-        });
-      })
-        .then((result) => {
-          // 
+            //console.log("tempSearchProdect=", tempSearchProdect)
+            resolve(tempSearchProdect);
+          });
         })
-        .catch((err) => {
+        .then(result => {
+          //
+        })
+        .catch(err => {
           //console.log(err);
         });
-
     });
   }
 
   getTotalTarget(month) {
     const products = [];
-    var query = 'select sum(Target) as Target from Target where  substr(Target.TDate,6,2)="'+month+'"'
-    return new Promise((resolve) => {
+    var query =
+      'select sum(Target) as Target from Target where  substr(Target.TDate,6,2)="' +
+      month +
+      '"';
+    return new Promise(resolve => {
       // this.initDB().then((db) => {
-      db1.transaction((tx) => {
-        tx.executeSql(query, [], (tx, results) => {
-          var tempSearchProdect = '';
-          for (let i = 0; i < results.rows.length; i++) {
-            tempSearchProdect = results.rows.item(i)
-          }
+      db1
+        .transaction(tx => {
+          tx.executeSql(query, [], (tx, results) => {
+            var tempSearchProdect = '';
+            for (let i = 0; i < results.rows.length; i++) {
+              tempSearchProdect = results.rows.item(i);
+            }
 
-          //console.log("tempSearchProdect=", tempSearchProdect)
-          resolve(tempSearchProdect);
-        });
-      })
-        .then((result) => {
-          // 
+            //console.log("tempSearchProdect=", tempSearchProdect)
+            resolve(tempSearchProdect);
+          });
         })
-        .catch((err) => {
+        .then(result => {
+          //
+        })
+        .catch(err => {
           //console.log(err);
         });
-
     });
   }
 
@@ -7911,185 +7923,315 @@ export default class Database {
   // SELECT distinct(PItem.%@ID), PItem.%@ as Item FROM PItem where PItem.Focus = '%@'",clm1,clm1,@"Yes"
   // Print value = SELECT distinct(PItem.BRANDID), PItem.BRAND as Item FROM PItem where PItem.Focus = 'Yes'
 
-  getAllBrandList1(controlId, yes,product) {
-   
-    return new Promise((resolve) => {
+  getAllBrandList1(controlId, yes, product) {
+    return new Promise(resolve => {
       //   var query = 'Select "'+ControlId+'" FROM PItem order by "'+ControlId+'"  '
-      //where PItem.Focus = 'YES' and 
-     // SELECT distinct(PItem.BRANDID), PItem.BRAND as Item FROM PItem where PItem.Focus = 'Yes'
-     // before adding if 
-    //  var query = ' SELECT distinct PItem.' + controlId + 'ID as BRANDID, PItem.'+ controlId +' as BRAND FROM PItem where PItem.Focus= 1  order by ' + controlId + '  '
-    var query;
-   
-      if(product == 'FOCUS'){
-      query = 'select distinct PItem.' + controlId + 'ID as BRANDID, PItem.'+ controlId +' as BRAND FROM SalesYTD INNER JOIN PItem on SalesYTD.ItemID = PItem.ItemId and PItem.Focus=1 UNION select distinct PItem.' + controlId + 'ID as BRANDID, PItem.'+ controlId +' as BRAND from Sales INNER JOIN PItem on Sales.ItemID = PItem.ItemId and PItem.Focus=1  ORDER by PItem.'+ controlId 
-      }else{
-        query = 'select distinct PItem.' + controlId + 'ID as BRANDID, PItem.'+ controlId +' as BRAND FROM SalesYTD INNER JOIN PItem on SalesYTD.ItemID = PItem.ItemId UNION select distinct PItem.' + controlId + 'ID as BRANDID, PItem.'+ controlId +' as BRAND from Sales INNER JOIN PItem on Sales.ItemID = PItem.ItemId ORDER by PItem.'+ controlId 
+      //where PItem.Focus = 'YES' and
+      // SELECT distinct(PItem.BRANDID), PItem.BRAND as Item FROM PItem where PItem.Focus = 'Yes'
+      // before adding if
+      //  var query = ' SELECT distinct PItem.' + controlId + 'ID as BRANDID, PItem.'+ controlId +' as BRAND FROM PItem where PItem.Focus= 1  order by ' + controlId + '  '
+      var query;
+
+      if (product == 'FOCUS') {
+        query =
+          'select distinct PItem.' +
+          controlId +
+          'ID as BRANDID, PItem.' +
+          controlId +
+          ' as BRAND FROM SalesYTD INNER JOIN PItem on SalesYTD.ItemID = PItem.ItemId and PItem.Focus=1 UNION select distinct PItem.' +
+          controlId +
+          'ID as BRANDID, PItem.' +
+          controlId +
+          ' as BRAND from Sales INNER JOIN PItem on Sales.ItemID = PItem.ItemId and PItem.Focus=1  ORDER by PItem.' +
+          controlId;
+      } else {
+        query =
+          'select distinct PItem.' +
+          controlId +
+          'ID as BRANDID, PItem.' +
+          controlId +
+          ' as BRAND FROM SalesYTD INNER JOIN PItem on SalesYTD.ItemID = PItem.ItemId UNION select distinct PItem.' +
+          controlId +
+          'ID as BRANDID, PItem.' +
+          controlId +
+          ' as BRAND from Sales INNER JOIN PItem on Sales.ItemID = PItem.ItemId ORDER by PItem.' +
+          controlId;
       }
-   
 
-      db1.transaction((tx) => {
-        tx.executeSql(query, [], (tx, results) => {
-          var getOrdersFromDb = []
-          for (let i = 0; i < results.rows.length; i++) {
-            getOrdersFromDb.push(results.rows.item(i));
-          }
+      db1
+        .transaction(tx => {
+          tx.executeSql(query, [], (tx, results) => {
+            var getOrdersFromDb = [];
+            for (let i = 0; i < results.rows.length; i++) {
+              getOrdersFromDb.push(results.rows.item(i));
+            }
 
-          resolve(getOrdersFromDb);
-        });
-      }).then((result) => {
-
-      }).catch((err) => {
-
-      });
-    })
-
+            resolve(getOrdersFromDb);
+          });
+        })
+        .then(result => {})
+        .catch(err => {});
+    });
   }
   //SELECT distinct(PItem.%@ID),PItem.%@ as Item FROM SalesYTD,PItem where PItem.Focus = '%@' and SalesYTD.DistributorID in('%@') Union SELECT distinct(PItem.%@ID),PItem.%@ as Item FROM Sales,PItem where PItem.Focus = '%@' and Sales.DistributorID in('%@') ",clm1,clm1,@"Yes",dis_id,clm1,clm1,@"Yes",dis_id
   //Print value =SELECT distinct(PItem.BRANDID),PItem.BRAND as Item FROM SalesYTD,PItem where PItem.Focus = 'Yes' and SalesYTD.DistributorID in('151') Union SELECT distinct(PItem.BRANDID),PItem.BRAND as Item FROM Sales,PItem where PItem.Focus = 'Yes' and Sales.DistributorID in('151')
-  getAllBrandList2(controlId, yes, distributor_id,product) {
-    return new Promise((resolve) => {
+  getAllBrandList2(controlId, yes, distributor_id, product) {
+    return new Promise(resolve => {
       //    var query = 'SELECT distinct(PItem.' + controlId + 'ID),PItem.' + controlId + ' as Item FROM SalesYTD,PItem where PItem.Focus = "' + yes + '" and SalesYTD.DistributorID in(' + distributor_id + ') Union SELECT distinct(PItem.' + controlId + 'ID),PItem.%@ as Item FROM Sales,PItem where PItem.Focus = ' + yes + ' and Sales.DistributorID in(' + distributor_id + ')  '
-    // before adding if
+      // before adding if
       //  var query = 'SELECT distinct(PItem.' + controlId + 'ID) as BRANDID,PItem.' + controlId + ' as  BRAND FROM SalesYTD,PItem where PItem.Focus = "' + yes + '" and SalesYTD.DistributorID in("' + distributor_id + '") Union SELECT distinct(PItem.' + controlId + 'ID),PItem.Item as Item FROM Sales,PItem where Sales.DistributorID in("' + distributor_id + '")  '
-     
+
       var query;
-   
-      if(product == 'FOCUS'){
-      query = 'select distinct PItem.' + controlId + 'ID as BRANDID, PItem.'+ controlId +' as BRAND FROM SalesYTD INNER JOIN PItem on SalesYTD.ItemID = PItem.ItemId and SalesYTD.DistributorID in("' + distributor_id + '") and PItem.Focus=1 UNION select distinct PItem.' + controlId + 'ID as BRANDID, PItem.'+ controlId +' as BRAND from Sales INNER JOIN PItem on Sales.ItemID = PItem.ItemId and Sales.DistributorID in("' + distributor_id + '") and PItem.Focus=1  ORDER by PItem.'+ controlId 
-      }else{
-        query = 'select distinct PItem.' + controlId + 'ID as BRANDID, PItem.'+ controlId +' as BRAND FROM SalesYTD INNER JOIN PItem on SalesYTD.ItemID = PItem.ItemId and SalesYTD.DistributorID in("' + distributor_id + '") UNION select distinct PItem.' + controlId + 'ID as BRANDID, PItem.'+ controlId +' as BRAND from Sales INNER JOIN PItem on Sales.ItemID = PItem.ItemId and Sales.DistributorID in("' + distributor_id + '") ORDER by PItem.'+ controlId 
+
+      if (product == 'FOCUS') {
+        query =
+          'select distinct PItem.' +
+          controlId +
+          'ID as BRANDID, PItem.' +
+          controlId +
+          ' as BRAND FROM SalesYTD INNER JOIN PItem on SalesYTD.ItemID = PItem.ItemId and SalesYTD.DistributorID in("' +
+          distributor_id +
+          '") and PItem.Focus=1 UNION select distinct PItem.' +
+          controlId +
+          'ID as BRANDID, PItem.' +
+          controlId +
+          ' as BRAND from Sales INNER JOIN PItem on Sales.ItemID = PItem.ItemId and Sales.DistributorID in("' +
+          distributor_id +
+          '") and PItem.Focus=1  ORDER by PItem.' +
+          controlId;
+      } else {
+        query =
+          'select distinct PItem.' +
+          controlId +
+          'ID as BRANDID, PItem.' +
+          controlId +
+          ' as BRAND FROM SalesYTD INNER JOIN PItem on SalesYTD.ItemID = PItem.ItemId and SalesYTD.DistributorID in("' +
+          distributor_id +
+          '") UNION select distinct PItem.' +
+          controlId +
+          'ID as BRANDID, PItem.' +
+          controlId +
+          ' as BRAND from Sales INNER JOIN PItem on Sales.ItemID = PItem.ItemId and Sales.DistributorID in("' +
+          distributor_id +
+          '") ORDER by PItem.' +
+          controlId;
       }
-     
-     
-      db1.transaction((tx) => {
-        tx.executeSql(query, [], (tx, results) => {
-          var getOrdersFromDb = []
-          for (let i = 0; i < results.rows.length; i++) {
-            getOrdersFromDb.push(results.rows.item(i));
-          }
 
-          resolve(getOrdersFromDb);
-        });
-      }).then((result) => {
+      db1
+        .transaction(tx => {
+          tx.executeSql(query, [], (tx, results) => {
+            var getOrdersFromDb = [];
+            for (let i = 0; i < results.rows.length; i++) {
+              getOrdersFromDb.push(results.rows.item(i));
+            }
 
-      }).catch((err) => {
-
-      });
-
-    })
-
+            resolve(getOrdersFromDb);
+          });
+        })
+        .then(result => {})
+        .catch(err => {});
+    });
   }
 
   //SELECT distinct(PItem.%@ID),PItem.%@ as Item FROM PItem where PItem.%@  in('%@') ",clm1,clm1,clm1,selected_brand.
   //Print value =SELECT distinct(PItem.BRANDID),PItem.BRAND as Item FROM PItem where PItem.BRAND  in('ARDMORE')
   getAllBrandList3(controlId, selectedbrand) {
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       //   var query = 'Select "'+ControlId+'" FROM PItem order by "'+ControlId+'" '
       // before adding if
-     // var query = 'SELECT distinct(PItem.' + controlId + 'ID) as BRANDID,PItem.' + controlId + ' as  BRAND  FROM PItem where PItem.' + controlId + '  in("' + selectedbrand + '") '
-    
-      var query = 'select distinct PItem.' + controlId + 'ID as BRANDID, PItem.'+ controlId +' as BRAND FROM SalesYTD INNER JOIN PItem on SalesYTD.ItemID = PItem.ItemId and  PItem.' + controlId + '  in("' + selectedbrand + '")  UNION select distinct PItem.' + controlId + 'ID as BRANDID, PItem.'+ controlId +' as BRAND from Sales INNER JOIN PItem on Sales.ItemID = PItem.ItemId and  PItem.' + controlId + '  in("' + selectedbrand + '") ORDER by PItem.'+ controlId 
-      
-      db1.transaction((tx) => {
-        tx.executeSql(query, [], (tx, results) => {
-          var getOrdersFromDb = []
-          for (let i = 0; i < results.rows.length; i++) {
-            getOrdersFromDb.push(results.rows.item(i));
-          }
+      // var query = 'SELECT distinct(PItem.' + controlId + 'ID) as BRANDID,PItem.' + controlId + ' as  BRAND  FROM PItem where PItem.' + controlId + '  in("' + selectedbrand + '") '
 
-          resolve(getOrdersFromDb);
-        });
-      }).then((result) => {
+      var query =
+        'select distinct PItem.' +
+        controlId +
+        'ID as BRANDID, PItem.' +
+        controlId +
+        ' as BRAND FROM SalesYTD INNER JOIN PItem on SalesYTD.ItemID = PItem.ItemId and  PItem.' +
+        controlId +
+        '  in("' +
+        selectedbrand +
+        '")  UNION select distinct PItem.' +
+        controlId +
+        'ID as BRANDID, PItem.' +
+        controlId +
+        ' as BRAND from Sales INNER JOIN PItem on Sales.ItemID = PItem.ItemId and  PItem.' +
+        controlId +
+        '  in("' +
+        selectedbrand +
+        '") ORDER by PItem.' +
+        controlId;
 
-      }).catch((err) => {
+      db1
+        .transaction(tx => {
+          tx.executeSql(query, [], (tx, results) => {
+            var getOrdersFromDb = [];
+            for (let i = 0; i < results.rows.length; i++) {
+              getOrdersFromDb.push(results.rows.item(i));
+            }
 
-      });
-
-    })
-
+            resolve(getOrdersFromDb);
+          });
+        })
+        .then(result => {})
+        .catch(err => {});
+    });
   }
   //SELECT distinct(PItem.%@ID),PItem.%@ as Item FROM PItem ",clm1,clm1
   //Print value =SELECT distinct(PItem.BRANDID),PItem.BRAND as Item FROM PItem
-  getAllBrandList4(controlId,selectedbrand,distributor_id) {
-    return new Promise((resolve) => {
+  getAllBrandList4(controlId, selectedbrand, distributor_id) {
+    return new Promise(resolve => {
       //   var query = 'Select "'+ControlId+'" FROM PItem order by "'+ControlId+'" '
       // before adding if
-     // var query = 'SELECT distinct(PItem.' + controlId + 'ID),PItem.' + controlId + ' as  BRAND  FROM PItem '
-    
-      var query = 'select distinct PItem.' + controlId + 'ID as BRANDID, PItem.'+ controlId +' as BRAND FROM SalesYTD INNER JOIN PItem on SalesYTD.ItemID = PItem.ItemId and  PItem.' + controlId + '  in("' + selectedbrand + '") and SalesYTD.DistributorID in("' + distributor_id + '")  UNION select distinct PItem.' + controlId + 'ID as BRANDID, PItem.'+ controlId +' as BRAND from Sales INNER JOIN PItem on Sales.ItemID = PItem.ItemId and  PItem.' + controlId + '  in("' + selectedbrand + '") and Sales.DistributorID in("' + distributor_id + '")  ORDER by PItem.'+ controlId 
-     
-      db1.transaction((tx) => {
-        tx.executeSql(query, [], (tx, results) => {
-          var getOrdersFromDb = []
-          for (let i = 0; i < results.rows.length; i++) {
-            getOrdersFromDb.push(results.rows.item(i));
-          }
+      // var query = 'SELECT distinct(PItem.' + controlId + 'ID),PItem.' + controlId + ' as  BRAND  FROM PItem '
 
-          resolve(getOrdersFromDb);
-        });
-      }).then((result) => {
+      var query =
+        'select distinct PItem.' +
+        controlId +
+        'ID as BRANDID, PItem.' +
+        controlId +
+        ' as BRAND FROM SalesYTD INNER JOIN PItem on SalesYTD.ItemID = PItem.ItemId and  PItem.' +
+        controlId +
+        '  in("' +
+        selectedbrand +
+        '") and SalesYTD.DistributorID in("' +
+        distributor_id +
+        '")  UNION select distinct PItem.' +
+        controlId +
+        'ID as BRANDID, PItem.' +
+        controlId +
+        ' as BRAND from Sales INNER JOIN PItem on Sales.ItemID = PItem.ItemId and  PItem.' +
+        controlId +
+        '  in("' +
+        selectedbrand +
+        '") and Sales.DistributorID in("' +
+        distributor_id +
+        '")  ORDER by PItem.' +
+        controlId;
 
-      }).catch((err) => {
+      db1
+        .transaction(tx => {
+          tx.executeSql(query, [], (tx, results) => {
+            var getOrdersFromDb = [];
+            for (let i = 0; i < results.rows.length; i++) {
+              getOrdersFromDb.push(results.rows.item(i));
+            }
 
-      });
-
-    })
-
+            resolve(getOrdersFromDb);
+          });
+        })
+        .then(result => {})
+        .catch(err => {});
+    });
   }
 
-  getDataforytd1ByVibha(brandId, selectedbarand, selecteddist, ConversionUOMFormula,month,ControlId) {
+  getDataforytd1ByVibha(
+    brandId,
+    selectedbarand,
+    selecteddist,
+    ConversionUOMFormula,
+    month,
+    ControlId,
+  ) {
     return new Promise((resolve, reject) => {
-    var query;
-      if(month == 0){
-        if(selecteddist == "ALL"){
-         //  query = 'SELECT ' + ConversionUOMFormula + ' AS qty FROM Sales,PItem where Sales.ItemID=PItem.ItemId and PItem.BRANDID="' + brandId + '" and Month="' + month + '" '
-      query =  'SELECT ' + ConversionUOMFormula + ' AS qty  FROM SalesYTD , PItem  where SalesYTD.ItemID=PItem.ItemId and PItem.Focus= 1 AND PItem.'+ControlId+'Id=' + brandId 
-         
-    }else {
-      if(selectedbarand == "FOCUS" || selectedbarand == "ALL"){
-        query = 'SELECT ' + ConversionUOMFormula + ' AS qty FROM SalesYTD,PItem where SalesYTD.ItemID=PItem.ItemId and PItem.Focus= 1 and PItem.'+ControlId+'Id=' + brandId +' and SalesYTD.DistributorID in ("' + selecteddist + '")'
-      }else{
-        query = 'SELECT ' + ConversionUOMFormula + ' AS qty FROM SalesYTD,PItem where SalesYTD.ItemID=PItem.ItemId and PItem.Focus= 1 and PItem.'+ControlId+' in ("' + selectedbarand + '") and SalesYTD.DistributorID in ("' + selecteddist + '")'
-      }
-         
-     // SELECT SalesYTD.ItemID, SalesYTD.DistributorID, PItem.BRANDSEQUENCE, sum(SalesYTD.Quantity) as Quantity, SUM(Quantity/1) as Sale, SalesYTD.UserID, SalesYTD.CustomerID, PItem.BRANDID as BRANDID  FROM SalesYTD , PItem  where SalesYTD.ItemID=PItem.ItemId    and SalesYTD.DistributorID in ('144')  and PItem.BRANDID = '24827'  group by PItem.BRANDSEQUENCE
-        } 
-
-      }else{
-        if(selecteddist == "ALL")
-        {
-          query = 'SELECT ' + ConversionUOMFormula + ' AS qty FROM Sales,PItem where Sales.ItemID=PItem.ItemId and PItem.'+ControlId+'Id=' + brandId + ' and Month="' + month + '" '
-        }else{
-          if(selectedbarand == "FOCUS" || selectedbarand == "ALL"){
-            query = 'SELECT ' + ConversionUOMFormula + ' AS qty FROM Sales , PItem where Sales.ItemID=PItem.ItemId  and Month=' + month + ' and PItem.'+ControlId+'Id=' + brandId + ' and Sales.DistributorID in ("' + selecteddist + '")'
-          }else{
-            query = 'SELECT ' + ConversionUOMFormula + ' AS qty FROM Sales , PItem where Sales.ItemID=PItem.ItemId  and Month=' + month + ' and PItem.'+ControlId+' in ("' + selectedbarand + '") and Sales.DistributorID in ("' + selecteddist + '")'
+      var query;
+      if (month == 0) {
+        if (selecteddist == 'ALL') {
+          //  query = 'SELECT ' + ConversionUOMFormula + ' AS qty FROM Sales,PItem where Sales.ItemID=PItem.ItemId and PItem.BRANDID="' + brandId + '" and Month="' + month + '" '
+          query =
+            'SELECT ' +
+            ConversionUOMFormula +
+            ' AS qty  FROM SalesYTD , PItem  where SalesYTD.ItemID=PItem.ItemId and PItem.Focus= 1 AND PItem.' +
+            ControlId +
+            'Id=' +
+            brandId;
+        } else {
+          if (selectedbarand == 'FOCUS' || selectedbarand == 'ALL') {
+            query =
+              'SELECT ' +
+              ConversionUOMFormula +
+              ' AS qty FROM SalesYTD,PItem where SalesYTD.ItemID=PItem.ItemId and PItem.Focus= 1 and PItem.' +
+              ControlId +
+              'Id=' +
+              brandId +
+              ' and SalesYTD.DistributorID in ("' +
+              selecteddist +
+              '")';
+          } else {
+            query =
+              'SELECT ' +
+              ConversionUOMFormula +
+              ' AS qty FROM SalesYTD,PItem where SalesYTD.ItemID=PItem.ItemId and PItem.Focus= 1 and PItem.' +
+              ControlId +
+              ' in ("' +
+              selectedbarand +
+              '") and SalesYTD.DistributorID in ("' +
+              selecteddist +
+              '")';
           }
-         
-        //  SELECT Sales.ItemID, Sales.DistributorID, PItem.BRANDSEQUENCE, sum(Sales.Quantity) as Quantity, SUM(Quantity/1) as Sale, Sales.UserID, Sales.CustomerID, Sales.Month, PItem.BRANDID as BRANDID  FROM Sales , PItem  WHERE Sales.ItemID=PItem.ItemId  and  Sales.Month=2  and Sales.DistributorID in ('144')  and PItem.BRANDID = '24827'  group by PItem.BRANDSEQUENCE
-        }
 
+          // SELECT SalesYTD.ItemID, SalesYTD.DistributorID, PItem.BRANDSEQUENCE, sum(SalesYTD.Quantity) as Quantity, SUM(Quantity/1) as Sale, SalesYTD.UserID, SalesYTD.CustomerID, PItem.BRANDID as BRANDID  FROM SalesYTD , PItem  where SalesYTD.ItemID=PItem.ItemId    and SalesYTD.DistributorID in ('144')  and PItem.BRANDID = '24827'  group by PItem.BRANDSEQUENCE
+        }
+      } else {
+        if (selecteddist == 'ALL') {
+          query =
+            'SELECT ' +
+            ConversionUOMFormula +
+            ' AS qty FROM Sales,PItem where Sales.ItemID=PItem.ItemId and PItem.' +
+            ControlId +
+            'Id=' +
+            brandId +
+            ' and Month="' +
+            month +
+            '" ';
+        } else {
+          if (selectedbarand == 'FOCUS' || selectedbarand == 'ALL') {
+            query =
+              'SELECT ' +
+              ConversionUOMFormula +
+              ' AS qty FROM Sales , PItem where Sales.ItemID=PItem.ItemId  and Month=' +
+              month +
+              ' and PItem.' +
+              ControlId +
+              'Id=' +
+              brandId +
+              ' and Sales.DistributorID in ("' +
+              selecteddist +
+              '")';
+          } else {
+            query =
+              'SELECT ' +
+              ConversionUOMFormula +
+              ' AS qty FROM Sales , PItem where Sales.ItemID=PItem.ItemId  and Month=' +
+              month +
+              ' and PItem.' +
+              ControlId +
+              ' in ("' +
+              selectedbarand +
+              '") and Sales.DistributorID in ("' +
+              selecteddist +
+              '")';
+          }
+
+          //  SELECT Sales.ItemID, Sales.DistributorID, PItem.BRANDSEQUENCE, sum(Sales.Quantity) as Quantity, SUM(Quantity/1) as Sale, Sales.UserID, Sales.CustomerID, Sales.Month, PItem.BRANDID as BRANDID  FROM Sales , PItem  WHERE Sales.ItemID=PItem.ItemId  and  Sales.Month=2  and Sales.DistributorID in ('144')  and PItem.BRANDID = '24827'  group by PItem.BRANDSEQUENCE
+        }
       }
 
-
-     // var query = 'SELECT ' + ConversionUOMFormula + ' AS qty FROM SalesYTD,PItem where SalesYTD.ItemID=PItem.ItemId and PItem.BRANDID in ("' + selectedbarand + '") and SalesYTD.DistributorID in ("' + selecteddist + '")'
-      db1.transaction((tx) => {
-        tx.executeSql(query, [], (tx, results) => {
-          var getOrdersFromDb = ''
-          for (let i = 0; i < results.rows.length; i++) {
-            getOrdersFromDb=results.rows.item(i);
-          }         
-          resolve(getOrdersFromDb);
-        });
-      }).then((result) => {
-        //return (getOrdersFromDb)
-      }).catch((err) => {
-
-      });
-
-    })
-
+      // var query = 'SELECT ' + ConversionUOMFormula + ' AS qty FROM SalesYTD,PItem where SalesYTD.ItemID=PItem.ItemId and PItem.BRANDID in ("' + selectedbarand + '") and SalesYTD.DistributorID in ("' + selecteddist + '")'
+      db1
+        .transaction(tx => {
+          tx.executeSql(query, [], (tx, results) => {
+            var getOrdersFromDb = '';
+            for (let i = 0; i < results.rows.length; i++) {
+              getOrdersFromDb = results.rows.item(i);
+            }
+            resolve(getOrdersFromDb);
+          });
+        })
+        .then(result => {
+          //return (getOrdersFromDb)
+        })
+        .catch(err => {});
+    });
   }
 
   getDataforytd(brandId, month, ConversionUOMFormula) {
@@ -8524,11 +8666,15 @@ export default class Database {
     return new Promise(resolve => {
       //(original quruyyy)  var query = 'SELECT '+ ConversionUOMFormula + ' as achi,PItem.' + ControlId +'ID,PItem.' + classification + ' FROM Sales,PItem,Target where Sales.ItemID = PItem.ItemId and Target.ClassificationID = PItem.BrandID and  PItem.Focus ="'+Yes+'" and Sales.Month ='+month+' group by PItem.'+ControlId+'ID order by '+classification+' '
       // var   ConversionUOMFormula = 'Quantity/PItem.BPC';
-      var curr = moment().month(month-1).format("MMM");
-      console.log("month trans",curr);
+      var curr = moment()
+        .month(month - 1)
+        .format('MMM');
+      console.log('month trans', curr);
       var transMonth;
-      transMonth= moment().month(curr).format("YYYY-MM-31T00:00:00");
-     console.log("transMonth",transMonth);
+      transMonth = moment()
+        .month(curr)
+        .format('YYYY-MM-31T00:00:00');
+      console.log('transMonth', transMonth);
       var query =
         'SELECT ' +
         ConversionUOMFormula +
@@ -8552,8 +8698,8 @@ export default class Database {
             for (let i = 0; i < results.rows.length; i++) {
               getOrdersFromDb.push(results.rows.item(i));
             }
-           
-           console.log('targetvsachi data', JSON.stringify(getOrdersFromDb));
+
+            console.log('targetvsachi data', JSON.stringify(getOrdersFromDb));
             resolve(getOrdersFromDb);
           });
         })
@@ -8562,31 +8708,32 @@ export default class Database {
     });
   }
 
-  getTotaltarget(brandid,month){
+  getTotaltarget(brandid, month) {
     return new Promise(resolve => {
-     
-     
-      console.log('month in target '+ month)
-    //   var curr = moment().month(month-1).format("MMM");
-    //   console.log("month trans",curr);
-    //   var transMonth;
-    //   transMonth= moment().month(curr).format("YYYY-MM-31T00:00:00");
-    //  console.log("transMonth",transMonth);
-      var query1 = 'select sum(Target) as Target from Target where ClassificationID="'+brandid+'" and substr(Target.TDate,6,2)="'+month+'"'
-      console.log('target : '+ query1)
+      console.log('month in target ' + month);
+      //   var curr = moment().month(month-1).format("MMM");
+      //   console.log("month trans",curr);
+      //   var transMonth;
+      //   transMonth= moment().month(curr).format("YYYY-MM-31T00:00:00");
+      //  console.log("transMonth",transMonth);
+      var query1 =
+        'select sum(Target) as Target from Target where ClassificationID="' +
+        brandid +
+        '" and substr(Target.TDate,6,2)="' +
+        month +
+        '"';
+      console.log('target : ' + query1);
       db1.transaction(tx => {
-      
-        tx.executeSql(query1,[],(tx,results) =>{
+        tx.executeSql(query1, [], (tx, results) => {
           var getOrdersFromDb = '';
           for (let i = 0; i < results.rows.length; i++) {
             getOrdersFromDb = results.rows.item(i);
           }
           console.log('targetvsachi data 1', JSON.stringify(getOrdersFromDb));
-            resolve(getOrdersFromDb);
-         
-        })
-      })
-    })
+          resolve(getOrdersFromDb);
+        });
+      });
+    });
   }
 
   //   SELECT %@ as achi,PItem.%@ID,PItem.%@ FROM Sales,PItem where Sales.ItemID = PItem.ItemId and Sales.%@ID= %@ and Sales.Month = %@ group by PItem.%@ID order by %@",formula,clm2,clm,clm2,br_id,month,clm2,clm];

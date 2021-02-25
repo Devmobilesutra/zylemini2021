@@ -27,8 +27,8 @@ import axios from 'axios';
 import {Actions} from 'react-native-router-flux';
 import {connect} from 'react-redux';
 import Database from './../utility/Database';
-import SQLite from "react-native-sqlite-storage";
-import Loader from '../components/Loader'
+import SQLite from 'react-native-sqlite-storage';
+import Loader from '../components/Loader';
 const db = new Database();
 
 db.initDB();
@@ -38,8 +38,8 @@ class SplashScreen extends React.Component {
     this.state = {
       deviceId: '',
       isLogged: '',
-      isLoading :'',
-      tokens :''
+      isLoading: '',
+      tokens: '',
     };
 
     //  this._bootstrapAsync();
@@ -80,27 +80,31 @@ class SplashScreen extends React.Component {
   // }
   // }
 
-  onStoreButtonPress=()=>{
-    SQLite.deleteDatabase({
-      name: "ZyleminiPlusDatabase.db",                               
-      location: "default",
-    }, function (res) {  
-      if(res === "database removal error") {
-        // if not successfully deleted
-        console.log('database removal error')
-      }
-      else if (res === "database removed") {
-        // if successfully deleted
-        console.log('database removed')
-        db.initDB();
-      }   
-    });
+  onStoreButtonPress = () => {
+    SQLite.deleteDatabase(
+      {
+        name: 'ZyleminiPlusDatabase.db',
+        location: 'default',
+      },
+      function(res) {
+        if (res === 'database removal error') {
+          // if not successfully deleted
+          console.log('database removal error');
+        } else if (res === 'database removed') {
+          // if successfully deleted
+          console.log('database removed');
+          db.initDB();
+        }
+      },
+    );
     if (Platform.OS === 'ios') {
       Linking.openURL('https://itunes.apple.com/app/id1321198947?mt=8');
     } else {
-      Linking.openURL('https://play.google.com/store/apps/details?id=com.zyleminiplus');
+      Linking.openURL(
+        'https://play.google.com/store/apps/details?id=com.zyleminiplus',
+      );
     }
-  }
+  };
 
   // async componentWillMount(){
   //   AsyncStorage.getItem('JWTToken').then(keyValue => {
@@ -120,7 +124,7 @@ class SplashScreen extends React.Component {
   //       // if app store version is new
   //     //  this.setState({isLatest : false})
   //     this.syncNowFunction();
-        
+
   //       // Alert.alert(
   //       //   "ZyleminiPlus",
   //       //   'App Update Available.',
@@ -130,13 +134,12 @@ class SplashScreen extends React.Component {
   //       //     //   onPress: () => console.log("Cancel Pressed"),
   //       //     //   style: "cancel"onPress={() => this.props.navigation.navigate('MJP_one')}
   //       //     // },
-  //       //     { text: "Update", 
+  //       //     { text: "Update",
   //       //     style: 'cancel',
   //       //     onPress: () => this.onStoreButtonPress() }
   //       //   ],
   //       //   { cancelable: false }
   //       // );
-
 
   //     }else{
   //       setTimeout(() => {
@@ -144,8 +147,7 @@ class SplashScreen extends React.Component {
   //         try {
   //           const devices = DeviceInfo.getUniqueId();
   //           AsyncStorage.setItem('deviceId', JSON.stringify(devices));
-           
-    
+
   //           AsyncStorage.getItem('isLogged').then(
   //             keyValue => {
   //               db.initDB();
@@ -156,7 +158,7 @@ class SplashScreen extends React.Component {
   //               } else {
   //                 Actions.Auth({type: 'reset'});
   //               }
-    
+
   //               ////////////////////////
   //             },
   //             error => {
@@ -167,13 +169,12 @@ class SplashScreen extends React.Component {
   //           console.error();
   //         }
   //       }, 4000);
-    
+
   //     }
   //   } catch(e) {
   //     console.log(e);
   //   }
   // }
-
 
   async componentDidMount() {
     setTimeout(() => {
@@ -231,18 +232,17 @@ class SplashScreen extends React.Component {
   }
 
   syncNowFunction() {
-
     var OrderMaster = [];
     var OrderDetails = [];
     var Discount = [];
     var ImageDetails = [];
     var NewPartyImageDetails = [];
     var AssetDetails = [];
-    var NewPartyOutlet =[];
-    var NewPartyTargetId =[];
+    var NewPartyOutlet = [];
+    var NewPartyTargetId = [];
     this.state.isLoading = true;
     this.setState({isLoading: true});
-    this.setState({messagetext : 'Sending Data to server..'})
+    this.setState({messagetext: 'Sending Data to server..'});
     this.setState({JSONObj: {}});
     db.getOrderMasterSyncData('N').then(data => {
       if (data.length > 0) {
@@ -257,13 +257,13 @@ class SplashScreen extends React.Component {
           this.state.JSONObj['OrderDetails'] = data;
         }
 
-        db.getNewPartyOutletSyncData().then(data =>{
-          if(data.length > 0){
+        db.getNewPartyOutletSyncData().then(data => {
+          if (data.length > 0) {
             console.log('New Party for sync', JSON.stringify(data));
             NewPartyOutlet = data;
             this.state.JSONObj['NewParty'] = data;
           }
-        })
+        });
         this.state.newPartyImagedetails1 = [];
         db.getNewPartyImageDetailsyncData().then(data => {
           if (data.length > 0) {
@@ -274,27 +274,31 @@ class SplashScreen extends React.Component {
               RNFS.readFile(item.ImagePath, 'base64').then(res => {
                 bytess = res;
                 this.state.newPartyImagedetails.push({
-                 // ID: item.ID,
-                 Id: item.id,
-               //   ImageDatetime: item.ImageDateTime,
-               ImageName: item.ImageName,
+                  // ID: item.ID,
+                  Id: item.id,
+                  //   ImageDatetime: item.ImageDateTime,
+                  ImageName: item.ImageName,
                   data: bytess,
                 });
               });
             });
             NewPartyImageDetails = this.state.newPartyImagedetails;
-            this.state.JSONObj['NewPartyImage'] = this.state.newPartyImagedetails;
+            this.state.JSONObj[
+              'NewPartyImage'
+            ] = this.state.newPartyImagedetails;
           }
-        })
+        });
 
-        db.getnewPartyTargetId().then(data =>{
-          if(data.length > 0){
-            console.log('New getnewPartyTargetId for sync', JSON.stringify(data)); 
+        db.getnewPartyTargetId().then(data => {
+          if (data.length > 0) {
+            console.log(
+              'New getnewPartyTargetId for sync',
+              JSON.stringify(data),
+            );
             NewPartyTargetId = data;
             this.state.JSONObj['newPartyTargetId'] = data;
           }
-        })
-
+        });
 
         db.getDiscountSyncData().then(data => {
           if (data.length > 0) {
@@ -347,7 +351,10 @@ class SplashScreen extends React.Component {
                   ImageDetails: ImageDetails,
                   AssetDetails: AssetDetails,
                 };
-                console.log("boduy of postApi=", JSON.stringify(this.state.JSONObj))
+                console.log(
+                  'boduy of postApi=',
+                  JSON.stringify(this.state.JSONObj),
+                );
                 //  //console.log("boduy of postApi2=", datas)
                 //   const url = 'http://zylemdemo.com/ZyleminiPlusCoreAPI/api/Data/PostData'
 
@@ -362,7 +369,7 @@ class SplashScreen extends React.Component {
                       'response of post=',
                       JSON.stringify(response.data),
                     );
-                    console.log('status code :'+response.status)
+                    console.log('status code :' + response.status);
                     var responss = [];
                     // /{"Data":{"Order":{"Status":"Data saved successfully.",
                     //"Orders":[{"OrderStatus":"Order Existed","OrderId":"78",
@@ -375,31 +382,32 @@ class SplashScreen extends React.Component {
                       try {
                         if (response.data.Data.Order.hasOwnProperty('Orders')) {
                           // alert("in ifffff")
-                          console.log('orders :'+response.data.Data.Order.Orders.length)
-                      
-                      
-                        Alert.alert(
-                          "ZyleminiPlus",
-                          'App Update Available.',
-                          [
-                            // {
-                            //   text: "Cancel",
-                            //   onPress: () => console.log("Cancel Pressed"),
-                            //   style: "cancel"onPress={() => this.props.navigation.navigate('MJP_one')}
-                            // },
-                            { text: "Update", 
-                            style: 'cancel',
-                            onPress: () => this.onStoreButtonPress() }
-                          ],
-                          { cancelable: false }
-                        );
+                          console.log(
+                            'orders :' + response.data.Data.Order.Orders.length,
+                          );
 
+                          Alert.alert(
+                            'ZyleminiPlus',
+                            'App Update Available.',
+                            [
+                              // {
+                              //   text: "Cancel",
+                              //   onPress: () => console.log("Cancel Pressed"),
+                              //   style: "cancel"onPress={() => this.props.navigation.navigate('MJP_one')}
+                              // },
+                              {
+                                text: 'Update',
+                                style: 'cancel',
+                                onPress: () => this.onStoreButtonPress(),
+                              },
+                            ],
+                            {cancelable: false},
+                          );
                         }
                       } catch (error) {}
 
-                    //  alert(response.data.Data.Order.Status);
+                      //  alert(response.data.Data.Order.Status);
                     } else {
-                     
                     }
                     this.setState({isLoading: false});
                   })
@@ -415,19 +423,21 @@ class SplashScreen extends React.Component {
                     db.initDB();
                     //  Actions.Auth({type: "reset"})
                     /////////////////////////////////////
-                    if (JSON.parse(keyValue) == true && JSON.parse(keyValue) != null) {
+                    if (
+                      JSON.parse(keyValue) == true &&
+                      JSON.parse(keyValue) != null
+                    ) {
                       Actions.App({type: 'reset'});
                     } else {
                       Actions.Auth({type: 'reset'});
                     }
-        
+
                     ////////////////////////
                   },
                   error => {
                     //console.log(error) //Display error
                   },
                 );
-
               }
             });
           });
@@ -441,7 +451,10 @@ class SplashScreen extends React.Component {
       <SafeAreaView style={styles.splashContainer}>
         <StatusBar barStyle="light-content" />
         <View style={styles.logoView}>
-        <Loader loading={this.state.isLoading} message={'Sending Data To server..'}/>
+          <Loader
+            loading={this.state.isLoading}
+            message={'Sending Data To server..'}
+          />
           <ImageBackground
             source={require('../assets/Icons/splashBottom.png')}
             style={{
@@ -495,7 +508,7 @@ const styles = {
   },
   logo: {
     width: hp('15'),
-    height: hp('19'),
+    height: hp('18'),
     // resizeMode: 'center',
   },
 };

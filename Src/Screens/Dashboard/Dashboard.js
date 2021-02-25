@@ -111,25 +111,25 @@ export class Dashboard extends Component {
         </TouchableOpacity>
         <TouchableOpacity style={{marginLeft: wp('52%')}}>
           <Image
-            // style={{backgroundColor: 'red'}}
+            style={{height: hp('4.2'), width: wp('7.5'), marginTop: 2}}
             source={require('../../assets/Icons/synck.png')}
+            // color="white"
+            // onPress={() => navigation.openDrawer() }
+            // onPress={() => navigation.toggleDrawer()}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity style={{marginLeft: wp('5%'), marginTop: 2}}>
+          <Image
+            style={{height: hp('4.2'), width: wp('7.5')}}
+            source={require('../../assets/Icons/location_check.png')}
             color="white"
             // onPress={() => navigation.openDrawer() }
             // onPress={() => navigation.toggleDrawer()}
           />
         </TouchableOpacity>
-        <TouchableOpacity style={{marginLeft: wp('5%'), marginTop: 7}}>
+        <TouchableOpacity style={{marginLeft: wp('6%'), marginTop: 6}}>
           <Image
-            // style={{backgroundColor: 'red'}}
-            source={require('../../assets/Icons/location_checkin.png')}
-            color="white"
-            // onPress={() => navigation.openDrawer() }
-            // onPress={() => navigation.toggleDrawer()}
-          />
-        </TouchableOpacity>
-        <TouchableOpacity style={{marginLeft: wp('6%'), marginTop: 10}}>
-          <Image
-            // style={{backgroundColor: 'red'}}
+            style={{height: hp('3.7'), width: wp('6')}}
             source={require('../../assets/Icons/Search.png')}
             color="white"
             // onPress={() => navigation.openDrawer() }
@@ -341,8 +341,8 @@ export class Dashboard extends Component {
                 active: !this.state.active,
               });
             } else if (name == 'add_shop') {
-            //  Actions.AddNewShop();
-            Actions.Shops();
+              //  Actions.AddNewShop();
+              Actions.Shops();
             }
           }}
           onPressMain={() => {

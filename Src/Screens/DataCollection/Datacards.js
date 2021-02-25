@@ -324,16 +324,16 @@ export class Datacards extends Component {
           <View style={{marginBottom: hp('3')}} />
         </ScrollView>
 
-        <View>
+        {/* <View>
           <TouchableOpacity
-            onPress={() => this.props.navigation.navigate('Dashboard')}>
-            {/* // this.props.navigation.navigate('EditInlineOnCreateNewOrder') */}
+            onPress={() => this.props.navigation.navigate('Dashboard')}> */}
+        {/* // this.props.navigation.navigate('EditInlineOnCreateNewOrder') */}
 
-            <View style={styles.buttonOk}>
+        {/* <View style={styles.buttonOk}>
               <Text style={styles.buttonTextOk}> OK </Text>
             </View>
           </TouchableOpacity>
-        </View>
+        </View> */}
       </View>
     );
   }

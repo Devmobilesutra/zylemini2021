@@ -10,7 +10,7 @@ export default class Logo extends Component {
     return (
       <View style={styles.container}>
         <Image
-          style={{width: hp('17'), height: hp(20)}}
+          style={{width: hp('16'), height: hp('19')}}
           source={require('../assets/Icons/zylemini_logo.png')}
         />
       </View>
