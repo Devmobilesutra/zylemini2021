@@ -242,7 +242,7 @@ renderName(userid){
 
 
 static navigationOptions = {
-    title: 'Orders',
+    title: 'IN_PROCESS',
     color: 'white',
     headerStyle: {
         backgroundColor: '#221818'
@@ -439,17 +439,20 @@ renderFABIcon = () => {
                       
                         <Text style = {styles.inProcessHeadingTextStyle}>
                         {/* Total orderInProcess */}
-                        Total Orders : {this.state.TotalOrderLen}
-                        </Text>
+                        Total Orders 
+                        </Text> 
+                        <Text style={styles.surveysTakenCountStyle}>
+                        {this.state.TotalOrderLen}
+                    </Text>
                     </View>
                    
                    
                     {/* Filter Icon */}
-                    <View style= {styles.filterIconContainer}>
+                    {/* <View style= {styles.filterIconContainer}>
                     <Image  source={require('../../assets/Icons/filter_list_shop.png')}
                             style={styles.filterIconStyle}>
                         </Image>
-                    </View>
+                    </View> */}
                 </View>
 
                 {/* Dash Line */}
@@ -500,8 +503,8 @@ const styles = StyleSheet.create({
     },
 
     processColContainer:{ 
-        flex:0.5, 
-        flexDirection:'column', 
+        flex:0.3, 
+        flexDirection:'row',  
         alignItems:'flex-start',
         justifyContent:'center',
     },
@@ -521,6 +524,13 @@ const styles = StyleSheet.create({
         marginTop:hp('0.5'), 
         marginLeft: wp('5'), 
         fontFamily: 'Proxima Nova', 
+    },
+    surveysTakenCountStyle:{ 
+        color: '#221818', 
+        fontSize:RFValue(20), 
+        marginLeft: wp('3'), 
+        fontFamily: 'Proxima Nova', 
+        fontWeight:'bold', 
     },
 
     deliveredColContainer:{ 
