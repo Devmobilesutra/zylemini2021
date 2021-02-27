@@ -101,20 +101,20 @@ export const login = (username, password, navigation) => {
         // }
 
         //for dilip k
-        // const headers = {
-        //     'LoginId': username,
-        //     'Password': password,
-        //     'ClientCode': "XXCPA2020",
-        //     'DeviceId': "111"
-        // }
-
-          //for dinkars 
-          const headers = {
+        const headers = {
             'LoginId': username,
             'Password': password,
-            'ClientCode': "GDWC2020",
+            'ClientCode': "XXCPA2020",
             'DeviceId': "111"
         }
+
+          //for dinkars 
+        //   const headers = {
+        //     'LoginId': username,
+        //     'Password': password,
+        //     'ClientCode': "GDWC2020",
+        //     'DeviceId': "111"
+        // }
 
 
 
