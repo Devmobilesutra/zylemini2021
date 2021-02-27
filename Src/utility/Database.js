@@ -6125,7 +6125,7 @@ export default class Database {
 
   //change by vibha
   //sideorderfunction
-  getAllOrders() {
+  getAllOrders(SyncFlag) {
     //  var query = 'SELECT * FROM OrderMaster where collection_type =0';
     // var query =
     //   'select OrderMaster.*,Pcustomer.AREA,Pcustomer.Party from OrderMaster INNER JOIN Pcustomer on OrderMaster.entity_id = Pcustomer.CustomerId where OrderMaster.entity_type =1';

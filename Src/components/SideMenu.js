@@ -189,8 +189,10 @@ export default class SideMenu extends Component {
                 //  //console.log("boduy of postApi2=", datas)
                 //   const url = 'http://zylemdemo.com/ZyleminiPlusCoreAPI/api/Data/PostData'
 
-                const url =
-                  'http://sapltest.com/ZyleminiPlusAPI/api/Data/PostData';
+                // testing
+                const url = 'http://sapltest.com/ZyleminiPlusAPI/api/Data/PostData';
+                   //live
+                //   const url = 'http://zyleminiplus.com/ZyleminiPlusCoreAPI/api/Data/PostData'
                 axios
                   .post(url, this.state.JSONObj, {
                     headers: headers,
@@ -312,7 +314,12 @@ export default class SideMenu extends Component {
   GetNewData() {
     this.setState({isLoading: true});
     this.setState({messagetext: 'Getting Data from server..'});
+    // testing
     const url1 = 'http://sapltest.com/ZyleminiPlusAPI/api/Data/GetData';
+
+    // live 
+ //   const url1 = "http://zyleminiplus.com/ZyleminiPlusCoreAPI/api/Data/GetData";
+
     //console.log("url is===", url1)
     //console.log("aaaaaaa========",response.data.Token)
     const headers1 = {

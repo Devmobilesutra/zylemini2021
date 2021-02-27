@@ -101,17 +101,29 @@ export const login = (username, password, navigation) => {
         // }
 
         //for dilip k
-        const headers = {
+        // const headers = {
+        //     'LoginId': username,
+        //     'Password': password,
+        //     'ClientCode': "XXCPA2020",
+        //     'DeviceId': "111"
+        // }
+
+          //for dinkars 
+          const headers = {
             'LoginId': username,
             'Password': password,
-            'ClientCode': "XXCPA2020",
+            'ClientCode': "GDWC2020",
             'DeviceId': "111"
         }
 
 
-        //  const url2 = "http://zylemdemo.com/ZyleminiPlusCoreAPI/api/Login/Login";
 
+        //  const url2 = "http://zylemdemo.com/ZyleminiPlusCoreAPI/api/Login/Login";
+//testing
         const url2 = "http://sapltest.com/ZyleminiPlusAPI/api/Login/Login";
+
+         // live 
+    //   const url2 = "http://zyleminiplus.com/ZyleminiPlusCoreAPI/api/Login/Login";
         //console.log("url is===", url2)
         axios({
             method: 'post',
@@ -131,7 +143,12 @@ export const login = (username, password, navigation) => {
             AsyncStorage.setItem("AreaId", JSON.stringify(decoded.AreaId));
             AsyncStorage.setItem("JWTToken", JSON.stringify(response.data.Token));
             //const url1 = "http://zylemdemo.com/ZyleminiPlusCoreAPI/api/Data/GetData"
+
+              //  testing
             const url1 = "http://sapltest.com/ZyleminiPlusAPI/api/Data/GetData"
+
+              // live 
+        //  const url1 = "http://zyleminiplus.com/ZyleminiPlusCoreAPI/api/Data/GetData";
             //console.log("url is===", url1)
             //console.log("aaaaaaa========",response.data.Token)
             const headers1 = {

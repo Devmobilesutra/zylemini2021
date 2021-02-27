@@ -480,7 +480,7 @@ export class Month1 extends Component {
                                 this.state.BransListArray[i].target = (data.Target).toFixed(this.state.NOOFDECIMAL);
                                 totalTarget = parseFloat(totalTarget) + parseFloat(item.achi);
                                 var res = (item.achi / data.Target) * 100;
-                                this.state.BransListArray[i].average =Math.round(res) ;
+                                this.state.BransListArray[i].average =Math.round(res.toFixed(this.state.NOOFDECIMAL)) ;
                                 var daysInMonth = new Date(year, month, 0).getDate();
                                 var date = new Date().getDate();
                                 console.log('days in month : '+ daysInMonth + 'day of month : '+date)
@@ -490,7 +490,7 @@ export class Month1 extends Component {
                                      CR = (item.achi) / (date - 1) ;
                                     RR = (data.Target - item.achi) / (daysInMonth -(date -1))
                                 }else{
-                                    CR = '0'
+                                    CR = '0.00'
                                     RR = (data.Target - item.achi) / (daysInMonth -(date -1)) 
                                 }
                                
@@ -522,7 +522,7 @@ export class Month1 extends Component {
                                 this.state.BransListArray[i].target = (data.Target).toFixed(this.state.NOOFDECIMAL);
                                 totalTarget = parseFloat(totalTarget) + parseFloat(item.achi);
                                 var res = (item.achi / data.Target) * 100;
-                                this.state.BransListArray[i].average =Math.round(res) ;
+                                this.state.BransListArray[i].average =Math.round(res.toFixed(this.state.NOOFDECIMAL)) ;
                                 var daysInMonth = new Date(year, month, 0).getDate();
                                 var date = new Date().getDate();
                                 console.log('days in month : '+ daysInMonth + 'day of month : '+date)
@@ -532,7 +532,7 @@ export class Month1 extends Component {
                                      CR = (item.achi) / (date - 1) ;
                                     RR = (data.Target - item.achi) / (daysInMonth -(date -1))
                                 }else{
-                                    CR = '0'
+                                    CR = '0.00'
                                     RR = (data.Target - item.achi) / (daysInMonth -(date -1)) 
                                 }
                                
@@ -562,7 +562,7 @@ export class Month1 extends Component {
                                 this.state.BransListArray[i].target = (data.Target).toFixed(this.state.NOOFDECIMAL);
                                 totalTarget = parseFloat(totalTarget) + parseFloat(item.achi);
                                 var res = (item.achi / data.Target) * 100;
-                                this.state.BransListArray[i].average =Math.round(res) ;
+                                this.state.BransListArray[i].average =Math.round(res.toFixed(this.state.NOOFDECIMAL)) ;
                                 var daysInMonth = new Date(year, month, 0).getDate();
                                 var date = new Date().getDate();
                                 console.log('days in month : '+ daysInMonth + 'day of month : '+date)
@@ -572,7 +572,7 @@ export class Month1 extends Component {
                                      CR = (item.achi) / (date - 1) ;
                                     RR = (data.Target - item.achi) / (daysInMonth -(date -1))
                                 }else{
-                                    CR = '0'
+                                    CR = '0.00'
                                     RR = (data.Target - item.achi) / (daysInMonth -(date -1)) 
                                 }
                                

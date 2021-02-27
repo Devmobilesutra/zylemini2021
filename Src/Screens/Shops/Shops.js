@@ -104,7 +104,7 @@ export class Shops extends Component {
         headerTintColor: '#fff',
         headerTitleStyle: {
           color: '#fff',
-          marginLeft: wp('-2'),
+          marginLeft: wp('-1'),
         },
         headerRight: (
           <View
@@ -182,7 +182,7 @@ export class Shops extends Component {
         headerTintColor: '#fff',
         headerTitleStyle: {
           color: '#fff',
-          marginLeft: wp('-2'),
+          marginLeft: wp('-1'),
         },
         headerRight: (
           <View
@@ -471,9 +471,9 @@ export class Shops extends Component {
                     <Text style={styles.shopAddressTextStyle}>
                       {item.Outlet_Info.split('||')[0]}
                     </Text>
-                    <Text style={styles.shopDistanceTextStyle}>
+                    {/* <Text style={styles.shopDistanceTextStyle}>
                       1 Km Away ETA 5Mins
-                    </Text>
+                    </Text> */}
                   </View>
                   <View style={styles.callContainer}>
                     <TouchableOpacity
@@ -512,13 +512,15 @@ export class Shops extends Component {
                   </View>
                   <View style={styles.shopNameAddContainerCard}>
                     <Text style={styles.shopDistanceTextStyleCard}>
-                      {item.Outlet_Info.split('||')[0]} 1Km Away ETA 5 mins
+                      {item.Outlet_Info.split('||')[0]} 
+                      {/* 1Km Away ETA 5 mins */}
                     </Text>
                   </View>
                   <View style={styles.imgBackContainerCard}>
                     <Image
                       style={styles.imageStylesCard}
-                      source={require('../../assets/Icons/Shop_card_watermark.png')}
+                      source={require('../../assets/Icons/shopImg.png')}
+                      // source={require('../../assets/Icons/Shop_card_watermark.png')}
                     />
                   </View>
                   <View style={styles.NCMContainerCard}>
@@ -592,10 +594,10 @@ export class Shops extends Component {
               </View>
               {/* Filter Icon */}
               <View style={styles.filterIconContainer}>
-                <Image
+                {/* <Image
                   source={require('../../assets/Icons/filter_list_shop.png')}
                   style={styles.filterIconStyle}
-                />
+                /> */}
               </View>
             </View>
 
@@ -853,7 +855,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontFamily: 'Proxima Nova',
     fontSize: 14,
-    marginTop: hp('2.5'),
+    marginTop: hp('2'),
   },
 
   shopAddressTextStyle: {
@@ -929,9 +931,9 @@ const styles = StyleSheet.create({
   },
 
   imageStylesCard: {
-    marginLeft: wp('5'),
-    height: hp('8'),
-    width: wp('15'),
+    // marginLeft: wp('4'),
+    height: hp('17'),
+    width: wp('22'),
   },
 
   NCMContainerCard: {
@@ -966,7 +968,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: 'bold',
     fontFamily: 'Proxima Nova',
-    marginLeft: wp('5'),
+    // marginLeft: wp('5'),
   },
 
   msgContainerCard: {

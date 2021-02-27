@@ -11,7 +11,8 @@ import { Card, CardTitle, CardContent, CardAction, CardButton, CardImage } from 
 import { Item } from 'native-base';
 import axios from 'axios'
 import { Alert } from 'react-native';
-import Loader from './../../components/LoaderSync'
+import Loader from './../../components/LoaderSync';
+import Communications from 'react-native-communications';
 import Dialog, {
     DialogContent,
     DialogFooter,
@@ -112,12 +113,13 @@ componentWillMount() {
   //  app_order_id = app_order_id.replace(/[|&:$%@"/" "()+,]/g, "");                  
     currentDateTime = year + '-' + month + '-' + date + ' ' + hours + ':' + min + ':' + sec
 
-    this.setState({currentDate:moment().format('DD MMM')})
+    this.setState({currentDate:moment().format('DD-MMM-YYYY')})
+    console.log('currrwt : '+moment().format('DD-MMM-YYYY'))
     db.getPlannedDates().then((data)=>{
         this.setState({ Planned_dates: data})
     console.log("card data planned date",this.state.Planned_dates);
     console.log("first date",this.state.Planned_dates[0].PlannedDate);
-    this.setState({currentDate:this.state.Planned_dates[0].PlannedDate});
+   // this.setState({currentDate:this.state.Planned_dates[0].PlannedDate});
         db.GetMJPMasterDetails(this.state.currentDate).then((data)=>{
         console.log("shop Card info",data);
             this.setState({ Card_data: data })
@@ -153,15 +155,21 @@ Meeting_endsavePopUp = () => {
    
   };
 
-NextDate(i)
+async NextDate(i)
 {
         this.setState({DateNow:i})
-        
-            try{
-        
+         var month = new Date().getMonth() + 1;
+           //   var nextDate = moment(month,"MM").add(-i, 'months').format('DD-MMM-YYYY');
+              var new_date = moment(this.state.currentDate, "DD-MMM-YYYY").add(1, 'days');
+                        var day = new_date.format('DD');
+          var month = new_date.format('MMM');
+          var year = new_date.format('YYYY');
+       var NextDate = day + '-' + month + '-' + year;
+        //  alert(day + '-' + month + '-' + year);
+              console.log('next date : '+new_date +" "+month);
         console.log(this.state.Planned_dates[i].PlannedDate);
-        this.setState({currentDate:this.state.Planned_dates[i].PlannedDate})
-        db.GetMJPMasterDetails(this.state.Planned_dates[i].PlannedDate).then((data)=>{
+      await  this.setState({currentDate:NextDate})
+        db.GetMJPMasterDetails(this.state.currentDate).then((data)=>{
             console.log("shop Card info",data);
                 this.setState({ Card_data: data })
             
@@ -169,39 +177,38 @@ NextDate(i)
             
             })
             
-            }
-        catch(error)
-        {
-            alert("No more meetings available")
-        }
+           
 
 }
 
-PrevDate(i)
+async PrevDate(i)
 {
    // alert(parseInt(this.state.DateNow));
-   this.setState({DateNow:i})
+             this.setState({DateNow:i})
  
-        try{
-        
-            console.log(this.state.Planned_dates[i].PlannedDate);
+       
+            var month = new Date().getMonth() + 1;
+            //   var nextDate = moment(month,"MM").add(-i, 'months').format('DD-MMM-YYYY');
+                var new_date = moment(this.state.currentDate, "DD-MMM-YYYY").add(-1, 'days');
+                var day = new_date.format('DD');
+            var month = new_date.format('MMM');
+            var year = new_date.format('YYYY');
+          var NextDate = day + '-' + month + '-' + year;
+           // alert(day + '-' + month + '-' + year);
+          //  console.log(this.state.Planned_dates[i].PlannedDate);
         // this.setState({DateNow:this.state.DateNow+1});
 
-        console.log(this.state.Planned_dates[i].PlannedDate);
-        this.setState({currentDate:this.state.Planned_dates[i].PlannedDate})
-        db.GetMJPMasterDetails(this.state.Planned_dates[i].PlannedDate).then((data)=>{
-        console.log("shop Card info",data);
-            this.setState({ Card_data: data })
-        
-            console.log("card data for meet1",this.state.Card_data);
-        
-        })
+       // console.log(this.state.Planned_dates[i].PlannedDate);
+          await  this.setState({currentDate:NextDate})
+            db.GetMJPMasterDetails(this.state.currentDate).then((data)=>{
+            console.log("shop Card info",data);
+                this.setState({ Card_data: data })
+            
+                console.log("card data for meet1",this.state.Card_data);
+            
+            })
 
-        }   
-        catch(error)
-        {
-        alert("No more meetings available")
-        }
+       
 
 }
 
@@ -427,13 +434,17 @@ render() {
 
   <View style={{flexDirection:'row'}}>
 
-  <TouchableOpacity onPress={() =>this.handleBackButtonClick()} style={{ marginTop:hp('4%'),marginLeft:wp('2%')}}>
-    <Text style={{color:'white',fontSize:wp('12%')}}>
+  <TouchableOpacity onPress={() =>this.handleBackButtonClick()} style={{ marginTop:hp('7.5%'),marginLeft:wp('2%')}}>
+    {/* <Text style={{color:'white',fontSize:wp('10%')}}>
     ←
-    </Text>
+    </Text> */}
+    <Image
+        style={{marginLeft: wp('3')}}
+         source={require('../../assets/Icons/Back_White.png')}
+     />
 
   </TouchableOpacity>
-  <Text style={{justifyContent:'center',alignItems:'center', color:'#796A6A',fontSize:wp('6%'),marginTop:hp('7.4%'),marginLeft:wp('3%')}}>
+  <Text style={{justifyContent:'center',alignItems:'center', color:'#796A6A',fontSize:wp('6%'),marginTop:hp('7%'),marginLeft:wp('3%')}}>
     Meetings
     </Text>
   <TouchableOpacity  onPress={() => this.props.navigation.navigate('Meeting')} style={{marginLeft:('7%'), marginTop:hp('7.1%')}}>
@@ -563,7 +574,7 @@ showsVerticalScrollIndicator={false}>
         </View>
         <View style={styles.amtContainer}>
         <Text style={styles.amtTextStyle}>
-        {moment(item.PlannedDate).format('MMM DD')}
+        {moment(item.PlannedDate).format('DD MMM')}
         </Text>
         </View> 
         </View>
@@ -574,11 +585,12 @@ showsVerticalScrollIndicator={false}>
         <Text style={styles.ordDateLabelStyle}>
         {item.ActivityTitle}
         </Text>
-        <Text style={styles.orderDateDateStyle}>
-        </Text>
+       
         </View>
         <View>
-        <TouchableOpacity  onPress={() => this.props.navigation.navigate('Meeting')} style={{marginRight:wp('5')}}>
+        <TouchableOpacity   onPress={() =>
+                        Communications.phonecall('0123456789', true)
+                      } style={{marginRight:wp('5'),marginTop:hp('5')}}>
         <Image source={require('../../assets/Icons/Call.png')} style={{ width:40,height:40}}/>
         </TouchableOpacity>
         </View>
@@ -834,7 +846,7 @@ const styles = StyleSheet.create({
       backgroundColor: 'white',
       borderBottomWidth: 0,
       borderWidth: 1,
-      height:hp('10'),
+      height:hp('5'),
       width:wp('90'),
       borderColor: '#E6DFDF',
       borderTopLeftRadius: wp('2'), 
@@ -846,6 +858,7 @@ const styles = StyleSheet.create({
 
   ordHeaderRowContainer:{
       flexDirection:'row',
+      marginTop:hp('2'),
   },
 
   orderLabelContainer:{

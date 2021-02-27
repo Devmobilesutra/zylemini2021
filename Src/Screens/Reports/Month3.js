@@ -477,13 +477,13 @@ export class Month3 extends Component {
                               this.state.BransListArray[i].target = (data.Target).toFixed(this.state.NOOFDECIMAL);
                               totalTarget = parseFloat(totalTarget) + parseFloat(item.achi);
                               var res = (item.achi / data.Target) * 100;
-                                this.state.BransListArray[i].average =Math.round(res) ;
+                                this.state.BransListArray[i].average =Math.round(res.toFixed(this.state.NOOFDECIMAL)) ;
                                 var daysInMonth = new Date(year, month, 0).getDate();
                                 console.log('days in month : '+ daysInMonth)
                                 var CR = (item.achi / daysInMonth);
                                 console.log('days in cr : '+ CR)
                                 this.state.BransListArray[i].CR =CR.toFixed(this.state.NOOFDECIMAL) ;
-                                this.state.BransListArray[i].RR ='0' ;
+                                this.state.BransListArray[i].RR ='0.00' ;
                               this.setState({TargetArray : targetarray})
                               this.setState({TotalTargetFinal : totalTarget.toFixed(this.state.NOOFDECIMAL)})
                               console.log("sonali2 with target array 12 ",JSON.stringify(this.state.TargetArray));
@@ -509,13 +509,13 @@ export class Month3 extends Component {
                               this.state.BransListArray[i].target = (data.Target).toFixed(this.state.NOOFDECIMAL);
                               totalTarget = parseFloat(totalTarget) + parseFloat(item.achi);
                               var res = (item.achi / data.Target) * 100;
-                                this.state.BransListArray[i].average =Math.round(res) ;
+                                this.state.BransListArray[i].average =Math.round(res.toFixed(this.state.NOOFDECIMAL)) ;
                                 var daysInMonth = new Date(year, month, 0).getDate();
                                 console.log('days in month : '+ daysInMonth)
                                 var CR = (item.achi / daysInMonth);
                                 console.log('days in cr : '+ CR)
                                 this.state.BransListArray[i].CR =CR.toFixed(this.state.NOOFDECIMAL) ;
-                                this.state.BransListArray[i].RR ='0' ;
+                                this.state.BransListArray[i].RR ='0.00' ;
                               this.setState({TargetArray : targetarray})
                               this.setState({TotalTargetFinal : totalTarget.toFixed(this.state.NOOFDECIMAL)})
                               console.log("sonali2 with target array 12 ",JSON.stringify(this.state.TargetArray));
@@ -539,13 +539,13 @@ export class Month3 extends Component {
                               this.state.BransListArray[i].target = (data.Target).toFixed(this.state.NOOFDECIMAL);
                               totalTarget = parseFloat(totalTarget) + parseFloat(item.achi);
                               var res = (item.achi / data.Target) * 100;
-                                this.state.BransListArray[i].average =Math.round(res) ;
+                                this.state.BransListArray[i].average =Math.round(res.toFixed(this.state.NOOFDECIMAL)) ;
                                 var daysInMonth = new Date(year, month, 0).getDate();
                                 console.log('days in month : '+ daysInMonth)
                                 var CR = (item.achi / daysInMonth);
                                 console.log('days in cr : '+ CR)
                                 this.state.BransListArray[i].CR =CR.toFixed(this.state.NOOFDECIMAL) ;
-                                this.state.BransListArray[i].RR ='0' ;
+                                this.state.BransListArray[i].RR ='0.00' ;
                               this.setState({TargetArray : targetarray})
                               this.setState({TotalTargetFinal : totalTarget.toFixed(this.state.NOOFDECIMAL)})
                               console.log("sonali2 with target array 12 ",JSON.stringify(this.state.TargetArray));

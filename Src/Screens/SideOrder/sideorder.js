@@ -172,7 +172,7 @@ _componentFocused = () => {
     this.setState({Shop_det:[]})
     AsyncStorage.getItem('username').then((keyValue) => {                   
         this.setState({ name: JSON.parse(keyValue) })})
-    db.getAllOrders().then((data)=>{
+    db.getAllOrders('N').then((data)=>{
         console.log("getTotalOrderFromDB",JSON.stringify(data))
         this.setState({Shop_det:data})
         console.log("TotalOrder",this.state.Shop_det);

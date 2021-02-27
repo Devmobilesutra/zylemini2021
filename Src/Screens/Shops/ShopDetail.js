@@ -235,9 +235,10 @@ render() {
           </View>
 
         <View style={styles.checkInPopUpMainContainer}>
-        <TouchableOpacity        
-          onPress={this.applicablePopUp.bind(this)}
-           >
+        <TouchableOpacity  
+         onPress={() => { this.ConfirmClickHandler()}} >       
+          {/* onPress={this.applicablePopUp.bind(this)} */}
+           
             <View >
               <Dialog
                 visible={this.state.visible}

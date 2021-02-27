@@ -106,6 +106,7 @@ import TargetVsAchevementTeamGraph from './Src/Screens/Reports/TargetVsAchevemen
 import {Manual1} from './Src/Screens/Assets/Manual1';
 import sideorder from './Src/Screens/SideOrder/sideorder';
 import preorders from './Src/Screens/SideOrder/preorders';
+import OrderHistory from './Src/Screens/SideOrder/OrderHistory'
 import sideordrDetails from './Src/Screens/SideOrder/sideordrDetails';
 import SideorderEdit from './Src/Screens/SideOrder/SideorderEdit';
 import sideordermedit from './Src/Screens/SideOrder/sideordermedit';
@@ -712,7 +713,7 @@ export default class RouterComponent extends Component {
               scrollEnabled
               showLabel={true}
               tabBarPosition="top"
-              tabStyle={{width: wp('50')}}
+              tabStyle={{width: wp('35')}}
               labelStyle={{
                 fontFamily: 'Proxima Nova',
                 width: wp(35),
@@ -731,13 +732,19 @@ export default class RouterComponent extends Component {
               <Scene
                 key="sideorder"
                 component={sideorder}
-                title="Orders"
+                title="IN-PROCESS"
                 hideNavBar={true}
               />
-              <Scene
+             <Scene
                 key="preorders"
-                component={History}
-                title="IN-PROCESS"
+                component={preorders}
+                title="PRE-ORDERS"
+                hideNavBar={true}
+              />
+               <Scene
+                key="OrderHistory"
+                component={OrderHistory}
+                title="HISTORY"
                 hideNavBar={true}
               />
               {/* <Scene key='History' component={History} title='HISTORY' hideNavBar={true} /> */}
