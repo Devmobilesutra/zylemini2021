@@ -127,9 +127,9 @@ export class Dashboard extends Component {
             // onPress={() => navigation.toggleDrawer()}
           />
         </TouchableOpacity>
-        <TouchableOpacity style={{marginLeft: wp('6%'), marginTop: 6}}>
+        <TouchableOpacity style={{marginLeft: wp('6.3%'), marginTop: 6}}>
           <Image
-            style={{height: hp('3.7'), width: wp('6')}}
+            style={{height: hp('3.7'), width: wp('6.2')}}
             source={require('../../assets/Icons/Search.png')}
             color="white"
             // onPress={() => navigation.openDrawer() }
