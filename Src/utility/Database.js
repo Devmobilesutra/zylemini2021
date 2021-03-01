@@ -5897,7 +5897,7 @@ export default class Database {
     return new Promise(resolve => {
       db1
         .transaction(tx => {
-          alert('CheckedIn Successfully!');
+        //  alert('CheckedIn Successfully!');
           tx.executeSql(
             `insert into OrderMaster(id,Current_date_time,entity_type,entity_id,latitude,
             longitude ,total_amount ,from_date,to_date,collection_type ,user_id,selected_flag,sync_flag,remark,check_date,DefaultDistributorId,ExpectedDeliveryDate,ActivityStatus,ActivityStart,ActivityEnd   )
@@ -6602,7 +6602,7 @@ export default class Database {
               String(ShopArea),
             ],
             (tx, results) => {
-              alert('shop added successfully!');
+            //  alert('shop added successfully!');
               //console.log("Shop inserted Successfully!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
               resolve(results);
             },

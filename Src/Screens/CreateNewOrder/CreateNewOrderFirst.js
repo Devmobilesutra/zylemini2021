@@ -65,7 +65,7 @@ export class CreateNewOrderFirst extends Component {
       films: [],
       visiblecal1: '',
       getRouteId: '',
-      films1: [],
+      films1: [{"party":"Add New Outlet"}],
       films2: [],
       query: '',
     };
@@ -343,6 +343,7 @@ export class CreateNewOrderFirst extends Component {
         this.setState({
           films: [...this.state.films1, ...this.state.films2],
         });
+        console.log('films  : '+JSON.stringify(this.state.films))
       });
     });
   };
@@ -395,11 +396,16 @@ export class CreateNewOrderFirst extends Component {
   }
   onSelectedParty = (id, party) => {
     if (this.state.query.length) {
-      this.setState({selectedOutletId: id});
-      this.state.selectedOutletId = id;
-      this.setState({query: party});
-      this.setState({shopDetailFlag: 'true'});
-      this.shopDetailss();
+      if(party === 'Add New Outlet'){
+        Actions.Shops();
+      }else{
+        this.setState({selectedOutletId: id});
+        this.state.selectedOutletId = id;
+        this.setState({query: party});
+        this.setState({shopDetailFlag: 'true'});
+        this.shopDetailss();
+      }
+     
     } else {
       this.setState({shopDetailFlag: 'false'});
     }
@@ -472,7 +478,11 @@ export class CreateNewOrderFirst extends Component {
                   <TouchableHighlight
                     key={i}
                     onPress={() => this.onSelectedParty(item.id, item.party)}>
-                    <Text style={styles.itemText}>{item.party}</Text>
+                      {
+                        (item.party === 'Add New Outlet')  ? ( <Text style={styles.itemTextIndex0}>{item.party}</Text>) 
+                        : ( <Text style={styles.itemText}>{item.party}</Text>)
+                      }
+                     {/* <Text style={styles.itemTextIndex0}>{item.party}</Text>  */}
                   </TouchableHighlight>
                 )}
               />
@@ -706,10 +716,23 @@ const styles = StyleSheet.create({
   },
 
   itemText: {
-    fontSize: 15,
+    fontSize: 12,
     paddingTop: 5,
     paddingBottom: 5,
-    margin: 2,
+    paddingLeft : wp('2'),
+    margin: 4,
+    fontFamily: 'Proxima Nova',
+    color :'#8C7878'
+  },
+  itemTextIndex0: {
+    fontSize: 14,
+    paddingTop: 5,
+    paddingBottom: 5,
+    fontWeight: 'bold',
+    fontFamily: 'Proxima Nova',
+    paddingLeft : wp('2'),
+    margin: 4,
+    color :'#8C7878'
   },
   itemSubText: {
     fontSize: 10,

@@ -473,7 +473,7 @@ style={{marginTop:hp('1%'),marginLeft:wp('3%'), width:30,height:30}}/>
 
 </TouchableOpacity>
 <Text style={{justifyContent:'center',alignItems:'center', color:'white',fontWeight:'bold',fontSize:wp('5.5%'),marginTop:hp('3.2%'),marginLeft:wp('25%')}}>
-{moment(this.state.currentDate).format('MMM DD')}
+{moment(this.state.currentDate).format('DD MMM')}
 </Text>
 <TouchableOpacity  onPress={() => this.NextDate(this.state.DateNow+1)} style={{marginLeft:('7%'), marginTop:hp('2.5%')}}>
 <Image
