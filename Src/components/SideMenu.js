@@ -786,7 +786,7 @@ export default class SideMenu extends Component {
               </View>
             </TouchableOpacity> */}
 
-            <TouchableOpacity onPress={this.Logout}>
+            <TouchableOpacity style={{marginBottom: 5}} onPress={this.Logout}>
               <View style={styles.drawerNmaeImgContainer2}>
                 <Image
                   style={styles.drawerLabelImgStyle2}
@@ -796,6 +796,7 @@ export default class SideMenu extends Component {
                 {/* <Icon name="log-out" color="black" /> */}
 
                 <Text style={styles.drawerLabelStyle2}>LogOut</Text>
+                <Text style={{marginBottom: 15}} />
               </View>
             </TouchableOpacity>
           </ScrollView>
@@ -816,14 +817,15 @@ export default class SideMenu extends Component {
               flex: 1,
               flexDirection: 'row',
               alignItems: 'flex-start',
-              marginLeft: hp('4'),
+              marginLeft: hp('5'),
+
               marginTop: hp('2'),
             }}>
             <Image
               style={{
                 width: hp('6'),
                 height: hp('7'),
-                marginRight: hp('2'),
+                marginRight: hp('4'),
               }}
               source={require('../assets/Icons/Logo1.png')}
             />
@@ -923,7 +925,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'flex-start',
     justifyContent: 'center',
-    marginLeft: wp('5'),
+    marginLeft: wp('10'),
   },
 
   headerImgStyle: {
@@ -964,6 +966,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'flex-start',
     alignItems: 'center',
+    marginLeft: wp('3'),
   },
 
   drawerLabelImgStyle: {
@@ -975,7 +978,7 @@ const styles = StyleSheet.create({
     color: '#362828',
     fontFamily: 'Proxima Nova',
     fontSize: hp('2'),
-    marginLeft: wp('4'),
+    marginLeft: wp('6'),
   },
 
   drawerNmaeImgContainer2: {
@@ -983,6 +986,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     alignItems: 'center',
     marginTop: hp('4'),
+    marginLeft: wp('3'),
   },
 
   drawerLabelImgStyle2: {
@@ -1000,7 +1004,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Proxima Nova',
     fontSize: hp('2'),
     fontWeight: 'normal',
-    marginLeft: wp('4'),
+    marginLeft: wp('5'),
   },
 
   footerMainContainer: {},
