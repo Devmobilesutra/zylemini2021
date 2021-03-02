@@ -65,7 +65,7 @@ export class CreateNewOrderFirst extends Component {
       films: [],
       visiblecal1: '',
       getRouteId: '',
-      films1: [{"party":"Add New Outlet"}],
+      films1: [{"party":"+Add New Outlet"}],
       films2: [],
       query: '',
     };
@@ -164,12 +164,13 @@ export class CreateNewOrderFirst extends Component {
         //  alert(JSON.parse(keyValue))
         this.setState({selectedBeat: JSON.parse(keyValue)});
         this.state.selectedBeat = JSON.parse(keyValue);
+        
         db.getRouteId(this.state.selectedBeat).then(data => {
           const abc = JSON.parse(data);
           let result = abc.map(a => a.RouteID);
           this.setState({getRouteId: result});
           getRouteId = JSON.parse(result);
-
+          AsyncStorage.setItem('routeId', JSON.stringify(getRouteId));
           db.getOutletArray(this.state.getRouteId).then(data => {
             var getOutletArray = data;
             this.setState({films2: getOutletArray});
@@ -326,7 +327,7 @@ export class CreateNewOrderFirst extends Component {
     this.setState({query: ''});
     this.state.query = '';
     AsyncStorage.setItem('beatName', JSON.stringify(value));
-
+    AsyncStorage.setItem('routeName', JSON.stringify(value));
     db.getRouteId(this.state.selectedBeat).then(data => {
       const abc = JSON.parse(data);
       let result = abc.map(a => a.RouteID);
@@ -334,6 +335,7 @@ export class CreateNewOrderFirst extends Component {
       getRouteId = JSON.parse(result);
       this.setState({getRouteId: result});
       AsyncStorage.setItem('beatId', JSON.stringify(getRouteId));
+      AsyncStorage.setItem('routeId', JSON.stringify(getRouteId));
       this.state.selectedBeatId = getRouteId;
       db.getOutletArray(this.state.getRouteId).then(data => {
         this.state.films2 = [];
@@ -364,7 +366,7 @@ export class CreateNewOrderFirst extends Component {
     // if(this.state.selectedBeat){
     const {films} = this.state;
     //making a case insensitive regular expression to get similar value from the film json
-    const regex = new RegExp(`${query.trim()}`, 'i');
+   // const regex = new RegExp(`${query.trim()}`, 'i');
     //return the filtered film array according the query from the input
 
     // var results = arrayName.filter(function(value) {
@@ -396,8 +398,9 @@ export class CreateNewOrderFirst extends Component {
   }
   onSelectedParty = (id, party) => {
     if (this.state.query.length) {
-      if(party === 'Add New Outlet'){
-        Actions.Shops();
+      if(party === '+Add New Outlet'){
+      //  Actions.Shops();
+      Actions.AddNewShop();
       }else{
         this.setState({selectedOutletId: id});
         this.state.selectedOutletId = id;
@@ -475,15 +478,15 @@ export class CreateNewOrderFirst extends Component {
                 onChangeText={text => this.onchanges(text)}
                 placeholder="Search"
                 renderItem={({item, i}) => (
-                  <TouchableHighlight
+                  <TouchableOpacity
                     key={i}
                     onPress={() => this.onSelectedParty(item.id, item.party)}>
                       {
-                        (item.party === 'Add New Outlet')  ? ( <Text style={styles.itemTextIndex0}>{item.party}</Text>) 
+                        (item.party === '+Add New Outlet')  ? ( <Text style={styles.itemTextIndex0}>{item.party}</Text>) 
                         : ( <Text style={styles.itemText}>{item.party}</Text>)
                       }
                      {/* <Text style={styles.itemTextIndex0}>{item.party}</Text>  */}
-                  </TouchableHighlight>
+                  </TouchableOpacity>
                 )}
               />
             </View>

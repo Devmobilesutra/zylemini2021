@@ -3089,7 +3089,7 @@ export default class Database {
       //   var query = "select distinct CustomerId as id ,Party as Party,Outlet_Info as Outlet_Info from Pcustomer where CustomerId='" + id + "' union select  distinct OrderID as id ,OutletName as Party ,OutletAddress as Outlet_Info from newpartyoutlet where OrderID ='" + id + "' order by Party asc"
       //  var query = "select * from MJPMasterDetails where PlannedDate='" + currentDate + "'"
       var query =
-        "select MJPMasterDetails.*,OrderMaster.id,OrderMaster.sync_flag,OrderMaster.ActivityStatus from MJPMasterDetails left JOIN OrderMaster on MJPMasterDetails.ID = OrderMaster.DefaultDistributorId where PlannedDate='" +
+        "select MJPMasterDetails.*,OrderMaster.id,OrderMaster.sync_flag,OrderMaster.ActivityStatus,MeetReport.Type_sync from MJPMasterDetails left JOIN OrderMaster on MJPMasterDetails.ID = OrderMaster.DefaultDistributorId left join MeetReport on MJPMasterDetails.ID = MeetReport.Meeting_Id where MJPMasterDetails.PlannedDate='" +
         currentDate +
         "'";
       console.log('getShopCardInfo', query);
@@ -7229,6 +7229,28 @@ export default class Database {
           //console.log('Results', results.rowsAffected);
         },
       );
+    });
+  }
+
+  deleteMeetReportMeeting(id) {
+    return new Promise(resolve => {
+   //   alert('order Deleted');
+      //  this.initDB().then((db) => {
+      db1
+        .transaction(tx => {
+          tx.executeSql('DELETE FROM MeetReport WHERE ID = ?', [id]).then(
+            ([tx, results]) => {
+              //console.log(results);
+              resolve(results);
+            },
+          );
+        })
+        .then(result => {
+          //
+        })
+        .catch(err => {
+          //console.log(err);
+        });
     });
   }
 

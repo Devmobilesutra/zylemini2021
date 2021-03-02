@@ -272,9 +272,9 @@ console.log("date passing post",datas);
                                                   
                   for (let i = 0; i < response.data.Data.Order.Orders.length; i++) {
                     db.updateOrderMasterSyncFlag(response.data.Data.Order.Orders[i].MobileGenPrimaryKey)
-                    db.updateOrderDetailSyncFlag(response.data.Data.Order.Orders[i].MobileGenPrimaryKey)
-                    db.updateimageDetailSyncFlag(response.data.Data.Order.Orders[i].MobileGenPrimaryKey)
-                    db.updateDiscountSyncFlag(response.data.Data.Order.Orders[i].MobileGenPrimaryKey)
+                    db.deleteMeetReportMeeting(response.data.Data.Order.Orders[i].MobileGenPrimaryKey)
+                //    db.updateimageDetailSyncFlag(response.data.Data.Order.Orders[i].MobileGenPrimaryKey)
+                //    db.updateDiscountSyncFlag(response.data.Data.Order.Orders[i].MobileGenPrimaryKey)
                       
                   }
                 //  alert("Data Sync Successfull")

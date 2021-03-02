@@ -600,7 +600,7 @@ export class editpreview extends Component {
                         <CollapseHeader style={styles.collapseHeaderStyle}>
                             <View style={styles.brandNameContainer}>
                                 <Text style={styles.brandNameTextContainer}>
-                                    {item.item_Name}
+                                    {item.item_Name.substr(6)}
                                 </Text>
                             </View>
                             <View style={styles.sublistExtendIconAmountContainer}>
