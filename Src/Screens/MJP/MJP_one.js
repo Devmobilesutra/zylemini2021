@@ -134,7 +134,10 @@ componentWillMount() {
         const tok = JSON.parse((keyValue))
         this.setState({ tokens: tok })
     })
+
+   
 }
+
 
 shouldComponentUpdate() {
     return true;
@@ -376,9 +379,9 @@ SubmitReport(Meeting_Id,PlannedDate)
                                                     
                     for (let i = 0; i < response.data.Data.Order.Orders.length; i++) {
                       db.updateOrderMasterSyncFlag(response.data.Data.Order.Orders[i].MobileGenPrimaryKey)
-                      db.updateOrderDetailSyncFlag(response.data.Data.Order.Orders[i].MobileGenPrimaryKey)
-                      db.updateimageDetailSyncFlag(response.data.Data.Order.Orders[i].MobileGenPrimaryKey)
-                      db.updateDiscountSyncFlag(response.data.Data.Order.Orders[i].MobileGenPrimaryKey)
+                      db.deleteMeetReportMeeting(response.data.Data.Order.Orders[i].MobileGenPrimaryKey)
+                    //  db.updateimageDetailSyncFlag(response.data.Data.Order.Orders[i].MobileGenPrimaryKey)
+                    //  db.updateDiscountSyncFlag(response.data.Data.Order.Orders[i].MobileGenPrimaryKey)
                         
                     }
                   //  alert("Data Sync Successfull")
@@ -612,14 +615,23 @@ showsVerticalScrollIndicator={false}>
                         CANCEL
                         </Text>
                          </TouchableOpacity> 
-                         <TouchableOpacity style={{justifyContent: 'center',alignContent: 'center'}}
+                         {
+                            (item.Type_sync == '1') ? (
+                          <TouchableOpacity style={{justifyContent: 'center',alignContent: 'center'}}
                          onPress={() => this.SubmitReport(item.ID,item.PlannedDate)}>
-               <Text style={{color:'blue',marginLeft:wp('8%') ,fontSize:wp('3.5%')}}>
-               SUBMIT REPORT
-               </Text>
+                        <Text style={{color:'blue',marginLeft:wp('8%') ,fontSize:wp('3.5%')}}>
+                        SUBMIT REPORT
+                        </Text>
 
-             </TouchableOpacity>
-                 
+                      </TouchableOpacity>
+                            ) : ( <TouchableOpacity style={{justifyContent: 'center',alignContent: 'center'}}>
+                           <Text style={{color:'transparent',marginLeft:wp('8%') ,fontSize:wp('3.5%')}}>
+                           SUBMIT REPORT
+                           </Text>
+   
+                         </TouchableOpacity>)
+                         }
+                         
                  <TouchableOpacity onPress={() => Actions.MJP_two({PlannedDate:item.PlannedDate,EntityTypeID:item.EntityTypeID,EntityType:item.EntityType,Meeting_Id:item.ID,IsActivityDone:item.IsActivityDone,ActivityTitle : item.ActivityTitle,currentDateTimestart : currentDateTime})}
                     style={{
                     width: wp('25%'),
@@ -648,8 +660,8 @@ showsVerticalScrollIndicator={false}>
                     </Text>
                      </TouchableOpacity>
                       <TouchableOpacity style={{justifyContent: 'center',alignContent: 'center'}}>
-                      <Text style={{color:'blue',marginLeft:wp('8%') ,fontSize:wp('3.5%')}}>
-                      SUBMIT REPORT
+                      <Text style={{color:'transparent',marginLeft:wp('8%') ,fontSize:wp('3.5%')}}>
+                     Submit Report
                       </Text>
        
                     </TouchableOpacity>
@@ -681,8 +693,8 @@ showsVerticalScrollIndicator={false}>
                     </Text>
                      </TouchableOpacity>
                       <TouchableOpacity style={{justifyContent: 'center',alignContent: 'center'}}>
-                      <Text style={{color:'blue',marginLeft:wp('8%') ,fontSize:wp('3.5%')}}>
-                      SUBMIT REPORT
+                      <Text style={{color:'transparent',marginLeft:wp('8%') ,fontSize:wp('3.5%')}}>
+                    Submit report
                       </Text>
        
                     </TouchableOpacity>

@@ -402,7 +402,7 @@ export class Shops extends Component {
       let result = abc.map(a => a.RouteID);
       var getRouteId = '';
       getRouteId = result;
-      // alert(getRouteId)
+    //  alert(getRouteId)
       this.setState({getRouteId: result});
       AsyncStorage.setItem('routeId', JSON.stringify(getRouteId));
       this.state.selectedBeatId = getRouteId;

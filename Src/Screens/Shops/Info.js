@@ -6,6 +6,7 @@ import { Actions } from 'react-native-router-flux';
 import { FAB, Portal, Provider } from 'react-native-paper';
 import { FloatingAction } from "react-native-floating-action";
 import Geolocation from 'react-native-geolocation-service';
+import Geocoder from 'react-native-geocoding';
 import { TOTAL_SHOPS, SHOP_INFO, SHOP_VISITED_TODAY } from '../../Redux/actions/ShopAction'
 import { connect } from 'react-redux'
 import MapView, { Polyline, Marker } from "react-native-maps";
@@ -168,6 +169,13 @@ export class Info extends Component {
                     userLatitude: pos.coords.latitude,
                     userLongitude: pos.coords.longitude
                 });
+                console.log(this.state.userLatitude + " long : "+this.state.userLongitude)
+                Geocoder.init("AIzaSyA2z_MFnYb-A_V2YXjxl7gzZ4I9eOEWmBM");
+                Geocoder.from(pos.coords.latitude, pos.coords.longitude)
+                 .then(json => {
+                    console.log('Geocode : '+json);
+                    var addressComponent = json.results[0].address_components;
+                  }).catch(error => console.log(error));
                 //console.log(this.state.userLatitude)
             })
     }
