@@ -29,6 +29,7 @@ import utilss from '../../utility/usableFunctions';
 const utils = new utilss();
 import {connect} from 'react-redux';
 import Database from './../../utility/Database';
+import {color} from 'react-native-reanimated';
 const db = new Database();
 const actions = [
   {
@@ -37,7 +38,12 @@ const actions = [
     name: 'accept_payment',
     position: 4,
     textColor: 'black',
-    textStyle: {fontSize: 14, fontWeight: 'bold', marginHorizontal: 19},
+    textStyle: {
+      fontSize: 12,
+      fontWeight: 'bold',
+      marginTop: 5,
+      marginHorizontal: 23,
+    },
     buttonSize: 0,
   },
   {
@@ -46,7 +52,12 @@ const actions = [
     name: 'bt_accessibility',
     position: 3,
     textColor: 'black',
-    textStyle: {fontSize: 14, fontWeight: 'bold', marginHorizontal: 18},
+    textStyle: {
+      fontSize: 12,
+      fontWeight: 'bold',
+      marginHorizontal: 18,
+      marginTop: 5,
+    },
     buttonSize: 0,
   },
   {
@@ -55,7 +66,12 @@ const actions = [
     name: 'add_shop',
     position: 2,
     textColor: 'black',
-    textStyle: {fontSize: 14, fontWeight: 'bold', marginHorizontal: 26},
+    textStyle: {
+      fontSize: 12,
+      fontWeight: 'bold',
+      marginHorizontal: 29,
+      marginTop: 5,
+    },
     buttonSize: 0,
   },
   {
@@ -64,7 +80,12 @@ const actions = [
     name: 'collection',
     position: 1,
     textColor: 'black',
-    textStyle: {fontSize: 14, fontWeight: 'bold', marginHorizontal: 25},
+    textStyle: {
+      fontSize: 12,
+      fontWeight: 'bold',
+      marginHorizontal: 26,
+      marginTop: 5,
+    },
     buttonSize: 0,
   },
 ];
@@ -289,7 +310,7 @@ export class Dashboard extends Component {
                 marginTop: hp('6%'),
                 marginLeft: wp('2%'),
               }}>
-              Hello {this.state.username}
+              Hello, {this.state.username}
             </Text>
           </View>
           <TodaysRoute />
