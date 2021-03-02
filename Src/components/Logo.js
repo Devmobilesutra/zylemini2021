@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     justifyContent: 'flex-start',
     alignItems: 'center',
-    marginTop: hp('15'),
+    marginTop: hp('8'),
   },
   // logoText: {
   //     marginVertical: 15,

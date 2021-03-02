@@ -190,8 +190,9 @@ export default class SideMenu extends Component {
                 //   const url = 'http://zylemdemo.com/ZyleminiPlusCoreAPI/api/Data/PostData'
 
                 // testing
-                const url = 'http://sapltest.com/ZyleminiPlusAPI/api/Data/PostData';
-                   //live
+                const url =
+                  'http://sapltest.com/ZyleminiPlusAPI/api/Data/PostData';
+                //live
                 //   const url = 'http://zyleminiplus.com/ZyleminiPlusCoreAPI/api/Data/PostData'
                 axios
                   .post(url, this.state.JSONObj, {
@@ -317,8 +318,8 @@ export default class SideMenu extends Component {
     // testing
     const url1 = 'http://sapltest.com/ZyleminiPlusAPI/api/Data/GetData';
 
-    // live 
- //   const url1 = "http://zyleminiplus.com/ZyleminiPlusCoreAPI/api/Data/GetData";
+    // live
+    //   const url1 = "http://zyleminiplus.com/ZyleminiPlusCoreAPI/api/Data/GetData";
 
     //console.log("url is===", url1)
     //console.log("aaaaaaa========",response.data.Token)
@@ -605,7 +606,7 @@ export default class SideMenu extends Component {
               </Text> */}
               <TouchableOpacity onPress={() => Actions.drawerToggle()}>
                 <Image
-                  style={{marginRight: wp('3')}}
+                  style={{marginRight: wp('6')}}
                   source={require('../assets/Icons/Close.png')}
                 />
               </TouchableOpacity>
@@ -628,10 +629,10 @@ export default class SideMenu extends Component {
         </View>
         <View
           style={{
-            width: hp('35'),
+            width: wp('100'),
             borderWidth: hp('0.09'),
             borderColor: '#E6DFDF',
-            marginLeft: hp('3'),
+            // marginLeft: hp('3'),
           }}
         />
         {/* List */}
@@ -690,7 +691,7 @@ export default class SideMenu extends Component {
               <View style={styles.drawerNmaeImgContainer2}>
                 <Image
                   style={styles.drawerLabelImgStyle2}
-                  source={require('../assets/Icons/Shop_sidebar.png')}
+                  source={require('../assets/Icons/cards.png')}
                 />
                 <Text style={styles.drawerLabelStyle2}>Data Cards</Text>
               </View>
@@ -785,7 +786,7 @@ export default class SideMenu extends Component {
               </View>
             </TouchableOpacity> */}
 
-            <TouchableOpacity onPress={this.Logout}>
+            <TouchableOpacity style={{marginBottom: 5}} onPress={this.Logout}>
               <View style={styles.drawerNmaeImgContainer2}>
                 <Image
                   style={styles.drawerLabelImgStyle2}
@@ -795,6 +796,7 @@ export default class SideMenu extends Component {
                 {/* <Icon name="log-out" color="black" /> */}
 
                 <Text style={styles.drawerLabelStyle2}>LogOut</Text>
+                <Text style={{marginBottom: 15}} />
               </View>
             </TouchableOpacity>
           </ScrollView>
@@ -804,10 +806,10 @@ export default class SideMenu extends Component {
         <View style={{flex: 0.2, flexDirection: 'column'}}>
           <View
             style={{
-              width: hp('35'),
+              width: wp('100'),
               borderWidth: hp('0.09'),
               borderColor: '#E6DFDF',
-              marginLeft: hp('3'),
+              // marginLeft: hp('3'),
             }}
           />
           <View
@@ -815,14 +817,15 @@ export default class SideMenu extends Component {
               flex: 1,
               flexDirection: 'row',
               alignItems: 'flex-start',
-              marginLeft: hp('4'),
+              marginLeft: hp('5'),
+
               marginTop: hp('2'),
             }}>
             <Image
               style={{
                 width: hp('6'),
                 height: hp('7'),
-                marginRight: hp('2'),
+                marginRight: hp('4'),
               }}
               source={require('../assets/Icons/Logo1.png')}
             />
@@ -922,7 +925,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'flex-start',
     justifyContent: 'center',
-    marginLeft: wp('5'),
+    marginLeft: wp('10'),
   },
 
   headerImgStyle: {
@@ -963,6 +966,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'flex-start',
     alignItems: 'center',
+    marginLeft: wp('3'),
   },
 
   drawerLabelImgStyle: {
@@ -973,8 +977,8 @@ const styles = StyleSheet.create({
   drawerLabelStyle: {
     color: '#362828',
     fontFamily: 'Proxima Nova',
-    fontSize: hp('2.5'),
-    marginLeft: wp('4'),
+    fontSize: hp('2'),
+    marginLeft: wp('6'),
   },
 
   drawerNmaeImgContainer2: {
@@ -982,6 +986,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     alignItems: 'center',
     marginTop: hp('4'),
+    marginLeft: wp('3'),
   },
 
   drawerLabelImgStyle2: {
@@ -997,8 +1002,9 @@ const styles = StyleSheet.create({
   drawerLabelStyle2: {
     color: '#362828',
     fontFamily: 'Proxima Nova',
-    fontSize: hp('2.5'),
-    marginLeft: wp('4'),
+    fontSize: hp('2'),
+    fontWeight: 'normal',
+    marginLeft: wp('5'),
   },
 
   footerMainContainer: {},

@@ -458,24 +458,25 @@ class SplashScreen extends React.Component {
           <ImageBackground
             source={require('../assets/Icons/splashBottom.png')}
             style={{
-              flex: 1,
-              height: hp('100'),
-              width: wp('100'),
-              resizeMode: 'cover',
-              justifyContent: 'center',
+              // flex: 1,
+              height: hp('100%'),
+              width: wp('100%'),
+              // resizeMode: 'cover',
+              // justifyContent: 'center',
             }}>
             <View
               style={{
                 flex: 1,
                 alignItems: 'center',
                 justifyContent: 'flex-start',
-                marginTop: hp('20'),
+                marginTop: hp('12'),
               }}>
               {/* <Image style={{width: wp('29'), height: hp('18')}} */}
               <Image
                 style={styles.logo}
                 source={require('../assets/Icons/zylemini_logo.png')}
               />
+              <Text style={{marginTop: 10}}>Salesforce Automation App</Text>
             </View>
           </ImageBackground>
         </View>
@@ -507,8 +508,8 @@ const styles = {
     padding: 24,
   },
   logo: {
-    width: hp('15'),
-    height: hp('18'),
+    width: hp('19'),
+    height: hp('23'),
     // resizeMode: 'center',
   },
 };

@@ -106,7 +106,7 @@ import TargetVsAchevementTeamGraph from './Src/Screens/Reports/TargetVsAchevemen
 import {Manual1} from './Src/Screens/Assets/Manual1';
 import sideorder from './Src/Screens/SideOrder/sideorder';
 import preorders from './Src/Screens/SideOrder/preorders';
-import OrderHistory from './Src/Screens/SideOrder/OrderHistory'
+import OrderHistory from './Src/Screens/SideOrder/OrderHistory';
 import sideordrDetails from './Src/Screens/SideOrder/sideordrDetails';
 import SideorderEdit from './Src/Screens/SideOrder/SideorderEdit';
 import sideordermedit from './Src/Screens/SideOrder/sideordermedit';
@@ -177,7 +177,7 @@ export default class RouterComponent extends Component {
               hideNavBar
               key="drawerMenu"
               contentComponent={SideMenu}
-              drawerWidth={wp('80')}
+              drawerWidth={wp('100')}
               drawerPosition="left">
               <Scene key="Dashboard" component={Dashboard} />
 
@@ -735,13 +735,13 @@ export default class RouterComponent extends Component {
                 title="IN-PROCESS"
                 hideNavBar={true}
               />
-             <Scene
+              <Scene
                 key="preorders"
                 component={preorders}
                 title="PRE-ORDERS"
                 hideNavBar={true}
               />
-               <Scene
+              <Scene
                 key="OrderHistory"
                 component={OrderHistory}
                 title="HISTORY"
