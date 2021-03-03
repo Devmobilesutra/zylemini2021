@@ -177,7 +177,7 @@ export class AddNewShop extends Component {
       // width: 300,
       // height: 400,
       // cropping: true,
-      compressImageQuality : 0.5
+      compressImageQuality: 0.5,
     }).then(image => {
       this.onSelectedImage(image);
       //console.log(image);
@@ -189,8 +189,8 @@ export class AddNewShop extends Component {
       // width: 300,
       // height: 400,
       // cropping: true
-       //  includeBase64 : true
-      compressImageQuality : 0.5
+      //  includeBase64 : true
+      compressImageQuality: 0.5,
     }).then(image => {
       this.onSelectedImage(image);
       //console.log(image);
@@ -353,7 +353,7 @@ export class AddNewShop extends Component {
               <View style={styles.OODTextBoxMainContainer}>
                 <TextInput
                   //multiline= {}
-                  placeholder="Type Here"
+                  // placeholder="Type Here"
                   style={styles.OODTextBoxSelfContainer}
                   onChangeText={text => this.OutletNameChangeHandler(text)}
                   //  value={this.state.outletNAme}
@@ -369,7 +369,7 @@ export class AddNewShop extends Component {
               <View style={styles.OODTextBoxMainContainer}>
                 <TextInput
                   //multiline= {}
-                  placeholder="Type Here"
+                  // placeholder="Type Here"
                   style={styles.OODTextBoxSelfContainer}
                   onChangeText={text => this.OwnerNameChangeHandler(text)}
                   // value={this.state.OwnerName}
@@ -385,7 +385,7 @@ export class AddNewShop extends Component {
               <View style={styles.OODTextBoxMainContainer}>
                 <TextInput
                   //multiline= {}
-                  placeholder="Type Here"
+                  // placeholder="Type Here"
                   style={styles.OODTextBoxSelfContainer}
                   onChangeText={text => this.AddressChangeHandler(text)}
                   // value={this.state.address}
@@ -409,7 +409,7 @@ export class AddNewShop extends Component {
               <View style={styles.addLocTextBoxMainCont}>
                 <View style={styles.addLocTextBoxColCont}>
                   <TextInput
-                    placeholder="Type Here"
+                    // placeholder="Type Here"
                     style={styles.addLocTextBoxStyle}
                     onChangeText={text => this.onChangeLocation()}
                     // value={this.state.userLatitude}
@@ -483,7 +483,11 @@ export class AddNewShop extends Component {
                   horizontal={true}
                   showsHorizontalScrollIndicator={false}
                   showsVerticalScrollIndicator={false}>
-                  <View style={{flexDirection: 'column', marginTop: hp('7')}}>
+                  <View
+                    style={{
+                      flexDirection: 'column',
+                      marginTop: hp('7'),
+                    }}>
                     <TouchableOpacity onPress={this.onClickAddImage}>
                       <Image
                         style={{height: hp('7'), width: wp('12')}}

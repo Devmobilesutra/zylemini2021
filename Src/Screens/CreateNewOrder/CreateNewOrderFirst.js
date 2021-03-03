@@ -65,7 +65,7 @@ export class CreateNewOrderFirst extends Component {
       films: [],
       visiblecal1: '',
       getRouteId: '',
-      films1: [{"party":"+Add New Outlet"}],
+      films1: [{party: '+Add New Outlet'}],
       films2: [],
       query: '',
     };
@@ -164,7 +164,7 @@ export class CreateNewOrderFirst extends Component {
         //  alert(JSON.parse(keyValue))
         this.setState({selectedBeat: JSON.parse(keyValue)});
         this.state.selectedBeat = JSON.parse(keyValue);
-        
+
         db.getRouteId(this.state.selectedBeat).then(data => {
           const abc = JSON.parse(data);
           let result = abc.map(a => a.RouteID);
@@ -345,7 +345,7 @@ export class CreateNewOrderFirst extends Component {
         this.setState({
           films: [...this.state.films1, ...this.state.films2],
         });
-        console.log('films  : '+JSON.stringify(this.state.films))
+        console.log('films  : ' + JSON.stringify(this.state.films));
       });
     });
   };
@@ -366,7 +366,7 @@ export class CreateNewOrderFirst extends Component {
     // if(this.state.selectedBeat){
     const {films} = this.state;
     //making a case insensitive regular expression to get similar value from the film json
-   // const regex = new RegExp(`${query.trim()}`, 'i');
+    // const regex = new RegExp(`${query.trim()}`, 'i');
     //return the filtered film array according the query from the input
 
     // var results = arrayName.filter(function(value) {
@@ -398,17 +398,16 @@ export class CreateNewOrderFirst extends Component {
   }
   onSelectedParty = (id, party) => {
     if (this.state.query.length) {
-      if(party === '+Add New Outlet'){
-      //  Actions.Shops();
-      Actions.AddNewShop();
-      }else{
+      if (party === '+Add New Outlet') {
+        //  Actions.Shops();
+        Actions.AddNewShop();
+      } else {
         this.setState({selectedOutletId: id});
         this.state.selectedOutletId = id;
         this.setState({query: party});
         this.setState({shopDetailFlag: 'true'});
         this.shopDetailss();
       }
-     
     } else {
       this.setState({shopDetailFlag: 'false'});
     }
@@ -481,11 +480,12 @@ export class CreateNewOrderFirst extends Component {
                   <TouchableOpacity
                     key={i}
                     onPress={() => this.onSelectedParty(item.id, item.party)}>
-                      {
-                        (item.party === '+Add New Outlet')  ? ( <Text style={styles.itemTextIndex0}>{item.party}</Text>) 
-                        : ( <Text style={styles.itemText}>{item.party}</Text>)
-                      }
-                     {/* <Text style={styles.itemTextIndex0}>{item.party}</Text>  */}
+                    {item.party === '+Add New Outlet' ? (
+                      <Text style={styles.itemTextIndex0}>{item.party}</Text>
+                    ) : (
+                      <Text style={styles.itemText}>{item.party}</Text>
+                    )}
+                    {/* <Text style={styles.itemTextIndex0}>{item.party}</Text>  */}
                   </TouchableOpacity>
                 )}
               />
@@ -506,16 +506,17 @@ export class CreateNewOrderFirst extends Component {
   NextButton = () => {
     if (this.state.query) {
       //  if (this.state.selectedDist) {
-        var date = new Date().getDate(); //Current Date
-        var month = new Date().getMonth() + 1; //Current Month
-        var year = new Date().getFullYear(); //Current Year
-        var hours = new Date().getHours(); //Current Hours
-        var min = new Date().getMinutes(); //Current Minutes
-        var sec = new Date().getSeconds(); //Current Seconds
-       var ActivityStart =year + '-' + month + '-' + date + ' ' + hours + ':' + min + ':' + sec
-      
-        AsyncStorage.setItem('ActivityStart', JSON.stringify(ActivityStart));
-       
+      var date = new Date().getDate(); //Current Date
+      var month = new Date().getMonth() + 1; //Current Month
+      var year = new Date().getFullYear(); //Current Year
+      var hours = new Date().getHours(); //Current Hours
+      var min = new Date().getMinutes(); //Current Minutes
+      var sec = new Date().getSeconds(); //Current Seconds
+      var ActivityStart =
+        year + '-' + month + '-' + date + ' ' + hours + ':' + min + ':' + sec;
+
+      AsyncStorage.setItem('ActivityStart', JSON.stringify(ActivityStart));
+
       Actions.CreateNewOrderSecond();
       // } else {
       //   alert('Please Select Distributor');
@@ -722,10 +723,10 @@ const styles = StyleSheet.create({
     fontSize: 12,
     paddingTop: 5,
     paddingBottom: 5,
-    paddingLeft : wp('2'),
+    paddingLeft: wp('2'),
     margin: 4,
     fontFamily: 'Proxima Nova',
-    color :'#8C7878'
+    color: '#8C7878',
   },
   itemTextIndex0: {
     fontSize: 14,
@@ -733,9 +734,9 @@ const styles = StyleSheet.create({
     paddingBottom: 5,
     fontWeight: 'bold',
     fontFamily: 'Proxima Nova',
-    paddingLeft : wp('2'),
+    paddingLeft: wp('2'),
     margin: 4,
-    color :'#8C7878'
+    color: '#8C7878',
   },
   itemSubText: {
     fontSize: 10,
@@ -749,10 +750,10 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   listStyle: {
-    position: 'relative',
+    // position: 'relative',
     zIndex: 999,
-    padding: 10,
-    width: wp('77'),
+    // padding: 10,
+    width: wp('80'),
     fontSize: 12,
   },
 });

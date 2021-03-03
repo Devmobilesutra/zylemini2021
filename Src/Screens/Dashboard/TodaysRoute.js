@@ -47,9 +47,11 @@ class TodaysRoute extends Component {
           </Text>
           <Dropdown
             // label='Select Route'
+            rippleOpacity={0}
             placeholder="     Select Route"
             dropdownOffset={{top: 15}}
             dropdownPosition={-4.3}
+            pickerStyle={{width: wp('87.3')}}
             dropdownOffset={{top: 10, left: 15}}
             containerStyle={{
               alignContent: 'center',

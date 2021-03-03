@@ -54,7 +54,8 @@ export class Login extends Component {
 
     if (!isInternet) {
       alert('Please Check Your Internet Connection');
-    } else {
+    }
+    {
       if (user) {
         if (pass) {
           AsyncStorage.setItem('usernamess', JSON.stringify(user));
@@ -62,10 +63,10 @@ export class Login extends Component {
           AsyncStorage.setItem('password', JSON.stringify(pass));
           this.props.onLogin(user, pass, this.props.navigation);
         } else {
-          alert('Please Enter Password');
+          // alert('Please Enter Password');
         }
       } else {
-        alert('Please Enter UserName');
+        // alert('Please Enter UserName');
       }
     }
   };

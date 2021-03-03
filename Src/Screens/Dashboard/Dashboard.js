@@ -309,6 +309,7 @@ export class Dashboard extends Component {
                 type: 'font-awesome',
                 marginTop: hp('6%'),
                 marginLeft: wp('2%'),
+                marginBottom: hp('3%'),
               }}>
               Hello, {this.state.username}
             </Text>
