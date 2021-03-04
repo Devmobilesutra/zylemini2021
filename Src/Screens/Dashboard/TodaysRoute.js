@@ -34,27 +34,42 @@ class TodaysRoute extends Component {
     return (
       <View style={{flex: 10}}>
         <View style={{flex: 0.5}}>
-          <Text
-            style={{
-              color: 'black',
-              fontSize: wp('3%'),
-              fontWeight: 'bold',
-              marginTop: hp('3%'),
-              marginLeft: wp('3%'),
-              type: 'font-awesome',
-            }}>
-            TODAY'S ROUTE
-          </Text>
+          <View style={{flexDirection: 'row'}}>
+            <Text
+              style={{
+                color: 'grey',
+                fontSize: wp('3%'),
+                fontWeight: 'bold',
+                marginTop: hp('3%'),
+                marginLeft: wp('5%'),
+                type: 'font-awesome',
+              }}>
+              TODAY'S ROUTE
+            </Text>
+            <Text
+              style={{
+                color: 'blue',
+                fontSize: wp('2.5%'),
+                fontWeight: 'bold',
+                marginTop: hp('3%'),
+                marginLeft: wp('32%'),
+                type: 'font-awesome',
+              }}>
+              See The Shop List
+            </Text>
+          </View>
           <Dropdown
             // label='Select Route'
             rippleOpacity={0}
-            placeholder="     Select Route"
+            // fontSize="3"
+            placeholder="Select Route"
             dropdownOffset={{top: 15}}
-            dropdownPosition={-4.3}
-            pickerStyle={{width: wp('87.3')}}
+            dropdownPosition={-4.4}
+            pickerStyle={{width: wp('89.3')}}
             dropdownOffset={{top: 10, left: 15}}
             containerStyle={{
               alignContent: 'center',
+
               borderWidth: 1,
               borderColor: 'grey',
               borderRadius: wp('1%'),
@@ -64,24 +79,17 @@ class TodaysRoute extends Component {
               paddingRight: wp('2%'),
             }}
             rippleCentered={true}
-            inputContainerStyle={{borderBottomColor: 'transparent'}}
+            inputContainerStyle={{
+              borderBottomColor: 'transparent',
+              marginLeft: 20,
+              color: 'black',
+            }}
+            style={{fontSize: 13, color: 'black'}}
             data={data}
           />
 
-          <View style={{flex: 1, flexDirection: 'row'}}>
-            <View
-              style={{flex: 0.5, flexDirection: 'column', alignItem: 'center'}}>
-              <Text
-                style={{
-                  color: 'black',
-                  fontSize: wp('3%'),
-                  fontWeight: 'bold',
-                  marginTop: hp('2%'),
-                  marginLeft: wp('3%'),
-                  type: 'font-awesome',
-                }}>
-                Target Shop's
-              </Text>
+          {/* <View style={{flex: 1, flexDirection: 'row'}}>
+         
               <Text
                 style={{
                   color: 'blue',
@@ -93,27 +101,10 @@ class TodaysRoute extends Component {
                 }}>
                 See The Shop List
               </Text>
-            </View>
+           
 
-            <View
-              style={{
-                flex: 0.5,
-                flexDirection: 'column',
-                alignItems: 'flex-end',
-              }}>
-              <Text
-                style={{
-                  color: 'blue',
-                  fontSize: wp('3%'),
-                  fontWeight: 'bold',
-                  marginTop: hp('2%'),
-                  type: 'font-awesome',
-                  marginRight: wp('5%'),
-                }}>
-                See More
-              </Text>
-            </View>
-          </View>
+            
+          </View> */}
         </View>
 
         <View style={{flex: 0.1}}>

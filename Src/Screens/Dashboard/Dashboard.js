@@ -307,7 +307,7 @@ export class Dashboard extends Component {
                 color: 'white',
                 fontSize: 30,
                 type: 'font-awesome',
-                marginTop: hp('6%'),
+                marginTop: hp('4%'),
                 marginLeft: wp('2%'),
                 marginBottom: hp('3%'),
               }}>
