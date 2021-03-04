@@ -497,7 +497,7 @@ export class CreateNewOrderSecond extends Component {
                             />
 
                         </View>
-                        <View style={styles.storeInfoMainContainer}>
+                        {/* <View style={styles.storeInfoMainContainer}>
                         <View style={styles.searchResultContainer}>
                             <Text style={styles.searchResultTextStyle} >
                                 Search Results
@@ -523,7 +523,37 @@ export class CreateNewOrderSecond extends Component {
                            )
                         }
                        
-                        </View>
+                        </View> */}
+
+                            {/* search results */}
+                            <View style={styles.searchResultTextRowContainer}>
+                                        <View style={styles.searchResultTextColContainer}>
+                                            <Text style={styles.searchResultText}>Search Results</Text>
+                                        </View>
+
+                                {
+                                   (this.props.createOrder.totalOrderValue > 0) ?(
+                                    <View style={styles.CPDMaintContainer}>
+                                    <View>
+                                    <Text style={styles.CPDTextStyle}>
+                                    IN CART
+                                    </Text>
+                                    </View>
+                                    <View style={styles.roundedtextBlue}>
+                                    <Text style={styles.roundInnerValue}>
+                                    {this.props.createOrder.totalOrderValue}
+                                    </Text>
+                                    </View>
+                                </View>
+                                   ) :(
+                                    <View style={styles.CPDMaintContainer}>
+                                   
+                                </View>
+                                   )  
+                                }
+                                       
+                                        </View>
+
                         {this.searchResultss()}
                     </ScrollView>
 
@@ -902,7 +932,67 @@ const styles = StyleSheet.create({
         backgroundColor: "#CC1167",
     },
 
-
+    searchResultTextRowContainer: {
+        flex: 1,
+        flexDirection: 'row',
+      },
+    
+      searchResultTextColContainer: {
+        flex: 1,
+        flexDirection: 'column',
+        // flex: 1,
+         alignItems: 'flex-start',
+         marginHorizontal: hp('2'),
+        // marginTop: hp('3'),
+      },
+    
+      searchResultText: {
+        color: '#8C7878',
+        // fontWeight: 'bold',
+        fontFamily: 'Proxima Nova',
+        fontSize: 12,
+        marginTop: hp('2.5'),
+        marginLeft: wp('5'),
+        fontFamily: 'Proxima Nova',
+      },
+    
+      CPDMaintContainer: {
+        flex: 0.5,
+        flexDirection: 'row',
+        alignItems: 'flex-end',
+        marginBottom: wp('1'),
+        marginTop: hp('2'),
+      },
+    
+      CPDTextStyle: {
+        color: '#3955CB',
+        fontFamily: 'Proxima Nova',
+        fontSize: 13,
+        fontWeight: 'bold',
+        justifyContent: 'center',
+        alignItems: 'center',
+        // marginRight: wp('2'),
+        marginLeft: wp('4'),
+      },
+    
+      roundedtextBlue: {
+        width: 24,
+        height: 24,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 25 / 2,
+        backgroundColor: '#3955CB',
+        borderColor: '#3955CB',
+        borderWidth: 3,
+        marginLeft: hp('1'),
+        marginBottom: hp('-0.4'),
+      },
+    
+      roundInnerValue: {
+        color: '#ffffff',
+        fontFamily: 'Proxima Nova',
+        fontSize: RFValue(13),
+      },
 
 
 
