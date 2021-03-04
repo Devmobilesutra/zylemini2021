@@ -202,6 +202,7 @@ export class SublistDataCollection extends Component {
         // //console.log("finalArayyy=",this.state.list)
         this.setState({list: this.state.list});
       });
+      this.props.SublistExtendedParent();
     });
   }
 
@@ -249,6 +250,7 @@ export class SublistDataCollection extends Component {
                   ptr={item.PTR}
                   bpc={item.BPC}
                   outletId={outletId}
+                  brandId = {this.props.id}
                   SublistExtendedParent={this.ComputeBottls.bind(this)}
                   refresh={this.refreshDelete.bind(this)}
                 />

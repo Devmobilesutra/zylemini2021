@@ -39,6 +39,7 @@ export class CreateNewOrderSecond extends Component {
             PREVIOUSDAYORDERDAYS: '',
             totalOrder: '0',
             visiblecal1: '',
+            Collection_type: '0',
             productChoose: 'false', date: '', list1: [], list2: [], JoinString: [], getBrandData: [], dataSource: [], dataSourceSubBrand: [], isbrandSelect: 'false', search: '', brandId: ''
         };
         this.handleBackButtonClick = this.handleBackButtonClick.bind(this);
@@ -111,15 +112,26 @@ export class CreateNewOrderSecond extends Component {
                         this.setState({ search: JSON.parse(keyValue) })
                         this.setState({ isbrandSelect: 'true' })
 
-                        db.getBrandSearchData(this.state.search, this.state.list1, this.state.JoinString).then((data) => {
+                        // db.getBrandSearchData(this.state.search, this.state.list1, this.state.JoinString).then((data) => {
+                        //     this.state.dataSource = []
+                        //     this.setState({
+                        //         dataSource: data,
+                        //     });
+                        //     this.setState({
+                        //         dataSource: data,
+                        //     });
+                        // })
+
+
+                        db.getBrandSearchDataForChangeBrandColor(this.state.search, this.state.list1, this.state.JoinString,this.state.outletId,this.state.Collection_type).then((data) => {
                             this.state.dataSource = []
                             this.setState({
-                                dataSource: data,
-                            });
-                            this.setState({
-                                dataSource: data,
+                                dataSource: data.sort(function (a, b) {
+                                    return a.BRAND.localeCompare(b.BRAND); //using String.prototype.localCompare()
+                                  })
                             });
                         })
+
                     }
                 })
             })
@@ -143,13 +155,45 @@ export class CreateNewOrderSecond extends Component {
             search: text,
         });
 
-        db.getBrandSearchData(text, this.state.list1, this.state.JoinString).then((data) => {
+        // db.getBrandSearchData(text, this.state.list1, this.state.JoinString).then((data) => {
+        //     this.state.dataSource = []
+        //     this.setState({
+        //         dataSource: data,
+        //     });
+        // })
+
+        db.getBrandSearchDataForChangeBrandColor(text, this.state.list1, this.state.JoinString,this.state.outletId,this.state.Collection_type).then((data) => {
             this.state.dataSource = []
             this.setState({
-                dataSource: data,
+                dataSource: data.sort(function (a, b) {
+                    return a.BRAND.localeCompare(b.BRAND); //using String.prototype.localCompare()
+                  })
             });
         })
 
+    }
+
+    RefreshBrandList(){
+        console.log('RefreshBrandList is called')
+     //   Actions.CreateNewOrderSecond();
+        AsyncStorage.getItem('SearchString').then((keyValue) => {
+            if (JSON.parse(keyValue) != null) {
+                this.state.search = JSON.parse(keyValue)
+                this.setState({ search: JSON.parse(keyValue) })
+                this.setState({ isbrandSelect: 'true' })
+
+                db.getBrandSearchDataForChangeBrandColor(this.state.search, this.state.list1, this.state.JoinString,this.state.outletId,this.state.Collection_type).then((data) => {
+                    this.state.dataSource = []
+                    this.setState({
+                        dataSource: data.sort(function (a, b) {
+                            return a.BRAND.localeCompare(b.BRAND); //using String.prototype.localCompare()
+                          })
+                    });
+                })
+
+            }
+        })
+        
     }
 
 
@@ -161,7 +205,7 @@ export class CreateNewOrderSecond extends Component {
 
                 <TouchableOpacity >
                     <Image style={styles.downSublistArrowStyle}
-                        source={require('../../assets/Icons/Add.png')} />
+                        source={require('../../assets/Icons/Add_white.png')} />
                 </TouchableOpacity>
             )
         }
@@ -192,7 +236,52 @@ export class CreateNewOrderSecond extends Component {
 
                                     })}
                                 >
-                                    <CollapseHeader style={styles.collapseHeaderStyle} >
+                                    {
+                                        item.bottleQty == 'true' ? (
+                                            <CollapseHeader style={styles.collapseHeaderStyleForTrue} >
+                                            <View style={styles.nameOfBrandContainer} >
+                                                <Text key={i} style={styles.nameOfBrandTextStyleForTrue}  >
+                                                    {item.BRAND}
+                                                </Text>
+    
+                                            </View>
+                                            <View style={styles.schemesIconContainer}>
+                                                <View style={styles.roundedtext}>
+                                                    <Image style={{ tintColor: "#EAA304" }}
+                                                        source={require('../../assets/Icons/Schemes_drawer.png')} />
+                                                </View>
+    
+                                            </View>
+                                            <View style={styles.schemesDownArrowContainer} key={i}>
+    
+                                                {this.SchemesArrow()}
+                                            </View>
+    
+                                        </CollapseHeader>  
+                                        ) : (
+                                            <CollapseHeader style={styles.collapseHeaderStyle} >
+                                            <View style={styles.nameOfBrandContainer} >
+                                                <Text key={i} style={styles.nameOfBrandTextStyle}  >
+                                                    {item.BRAND}
+                                                </Text>
+    
+                                            </View>
+                                            <View style={styles.schemesIconContainer}>
+                                                <View style={styles.roundedtext}>
+                                                    <Image style={{ tintColor: "#EAA304" }}
+                                                        source={require('../../assets/Icons/Schemes_drawer.png')} />
+                                                </View>
+    
+                                            </View>
+                                            <View style={styles.schemesDownArrowContainer} key={i}>
+    
+                                                {this.SchemesArrow()}
+                                            </View>
+    
+                                        </CollapseHeader>
+                                        )
+                                    }
+                                    {/* <CollapseHeader style={styles.collapseHeaderStyle} >
                                         <View style={styles.nameOfBrandContainer} >
                                             <Text key={i} style={styles.nameOfBrandTextStyle}  >
                                                 {item.BRAND}
@@ -211,7 +300,7 @@ export class CreateNewOrderSecond extends Component {
                                             {this.SchemesArrow()}
                                         </View>
 
-                                    </CollapseHeader>
+                                    </CollapseHeader> */}
                                     <CollapseBody>
                                         <ListItem >
                                             <SublistExtended navigation={navigation}
@@ -219,6 +308,7 @@ export class CreateNewOrderSecond extends Component {
                                                 search={this.state.search}
                                                 list1={this.state.list1}
                                                 JoinString={this.state.JoinString}
+                                                SublistExtendedParent={this.RefreshBrandList.bind(this)}
                                                 outletId={this.state.outletId} />
                                         </ListItem>
                                     </CollapseBody>
@@ -407,11 +497,63 @@ export class CreateNewOrderSecond extends Component {
                             />
 
                         </View>
+                        {/* <View style={styles.storeInfoMainContainer}>
                         <View style={styles.searchResultContainer}>
                             <Text style={styles.searchResultTextStyle} >
                                 Search Results
                             </Text>
                         </View>
+                        {
+                           (this.props.createOrder.totalOrderValue > 0) ?(
+                            <View style={styles.CartTextContainer}>
+                            <Text style={styles.InCartText}>
+                                IN CART
+                            </Text>
+                            <View style={styles.CartCountBG}>
+                            <Text style={styles.InCartTextCount}>
+                            {this.props.createOrder.totalOrderValue}
+                            </Text>
+                            </View>
+                        </View>
+                           ) : (
+                            <View style={styles.CartTextContainer}>
+                            
+                           
+                            </View>
+                           )
+                        }
+                       
+                        </View> */}
+
+                            {/* search results */}
+                            <View style={styles.searchResultTextRowContainer}>
+                                        <View style={styles.searchResultTextColContainer}>
+                                            <Text style={styles.searchResultText}>Search Results</Text>
+                                        </View>
+
+                                {
+                                   (this.props.createOrder.totalOrderValue > 0) ?(
+                                    <View style={styles.CPDMaintContainer}>
+                                    <View>
+                                    <Text style={styles.CPDTextStyle}>
+                                    IN CART
+                                    </Text>
+                                    </View>
+                                    <View style={styles.roundedtextBlue}>
+                                    <Text style={styles.roundInnerValue}>
+                                    {this.props.createOrder.totalOrderValue}
+                                    </Text>
+                                    </View>
+                                </View>
+                                   ) :(
+                                    <View style={styles.CPDMaintContainer}>
+                                   
+                                </View>
+                                   )  
+                                }
+                                       
+                                        </View>
+
                         {this.searchResultss()}
                     </ScrollView>
 
@@ -535,7 +677,11 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         alignItems: 'flex-end',
     },
-
+    CartTextContainer: {
+        flex: 0.48,
+        flexDirection: 'row',
+        alignItems: 'flex-end',
+    },
     storeNameText: {
         color: '#796A6A',
      //   fontSize: wp('3.5%'),
@@ -552,6 +698,35 @@ const styles = StyleSheet.create({
         marginTop: hp('2.5%'),
         fontFamily: 'Proxima Nova',
         marginRight: wp('9%'),fontSize:10
+    },
+
+    InCartText: {
+        color: '#3955CB',
+     //   fontSize: wp('3%'),
+        fontWeight: 'bold',
+        marginTop: hp('1.5%'),
+        fontFamily: 'Proxima Nova',
+        marginRight: wp('2%'),
+        fontSize:13
+    },
+    CartCountBG:{
+        backgroundColor : '#3955CB',
+        width : wp('6.5')  ,
+        height :hp('3.5'),
+        marginTop: hp('1%'),
+        borderRadius : 50,
+        justifyContent : 'center',
+       // alignSelf :'center'
+
+    },
+    InCartTextCount: {
+        color: '#FFFFFF',
+     //   fontSize: wp('3%'),
+        fontWeight: 'bold',
+        fontFamily: 'Proxima Nova',
+        textAlign : 'center',
+      
+        fontSize:13
     },
 
     storeIdText: {
@@ -645,7 +820,6 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'flex-start',
         marginHorizontal: hp('3'),
-        marginTop: wp('2'),
         marginTop: hp('3'),
     },
 
@@ -675,6 +849,19 @@ const styles = StyleSheet.create({
         // marginHorizontal: wp('4'),
     },
 
+    collapseHeaderStyleForTrue: {
+        alignItems: 'center',
+        alignSelf: 'center',
+        flexDirection: 'row',
+        backgroundColor: '#362828',
+        borderColor: '#E6DFDF',
+        borderRadius: wp('2'),
+        height: hp('9'),
+        width: wp('88'),
+        borderWidth: hp('0.2'),
+        // marginHorizontal: wp('4'),
+    },
+
     nameOfBrandContainer: {
         flex: 3,                                                                                  //28-03
         alignItems: 'flex-start',
@@ -687,6 +874,15 @@ const styles = StyleSheet.create({
      //   fontSize: RFValue(13),
      fontSize:12,
         color: '#362828'
+    },
+
+    nameOfBrandTextStyleForTrue: {
+        marginLeft: wp('5'),
+      
+        fontFamily: 'Proxima Nova',
+     //   fontSize: RFValue(13),
+     fontSize:12,
+        color: '#FFFFFF'
     },
 
     schemesIconContainer: {
@@ -736,7 +932,67 @@ const styles = StyleSheet.create({
         backgroundColor: "#CC1167",
     },
 
-
+    searchResultTextRowContainer: {
+        flex: 1,
+        flexDirection: 'row',
+      },
+    
+      searchResultTextColContainer: {
+        flex: 1,
+        flexDirection: 'column',
+        // flex: 1,
+         alignItems: 'flex-start',
+         marginHorizontal: hp('2'),
+        // marginTop: hp('3'),
+      },
+    
+      searchResultText: {
+        color: '#8C7878',
+        // fontWeight: 'bold',
+        fontFamily: 'Proxima Nova',
+        fontSize: 12,
+        marginTop: hp('2.5'),
+        marginLeft: wp('5'),
+        fontFamily: 'Proxima Nova',
+      },
+    
+      CPDMaintContainer: {
+        flex: 0.5,
+        flexDirection: 'row',
+        alignItems: 'flex-end',
+        marginBottom: wp('1'),
+        marginTop: hp('2'),
+      },
+    
+      CPDTextStyle: {
+        color: '#3955CB',
+        fontFamily: 'Proxima Nova',
+        fontSize: 13,
+        fontWeight: 'bold',
+        justifyContent: 'center',
+        alignItems: 'center',
+        // marginRight: wp('2'),
+        marginLeft: wp('4'),
+      },
+    
+      roundedtextBlue: {
+        width: 24,
+        height: 24,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 25 / 2,
+        backgroundColor: '#3955CB',
+        borderColor: '#3955CB',
+        borderWidth: 3,
+        marginLeft: hp('1'),
+        marginBottom: hp('-0.4'),
+      },
+    
+      roundInnerValue: {
+        color: '#ffffff',
+        fontFamily: 'Proxima Nova',
+        fontSize: RFValue(13),
+      },
 
 
 

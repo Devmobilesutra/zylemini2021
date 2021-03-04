@@ -66,7 +66,7 @@ SchemesArrow(){
         return(
             <View>
             <Image style={styles.downSublistArrowStyle} 
-                source = {require('../../assets/Icons/Add.png')}/>
+                source = {require('../../assets/Icons/Add_white.png')}/>
             </View>
         )
     }
@@ -95,22 +95,58 @@ searchResult(){
                             onToggle={( )=>this.setState({collapsed:!this.state.collapsed})}
                             // onToggle={this.toggle()}
                         >
-                        <CollapseHeader style={styles.collapseHeaderStyle}>
+                            {
+                                item.bottleQty == 'true' ? (
+                                    <CollapseHeader style={styles.collapseHeaderStyleForTrue}>
+                                    <View style={styles.nameOfBrandContainer}>
+                                            <Text style= {styles.nameOfBrandTextStyleForTrue}>
+                                            {item.BRAND}
+                                            </Text>
+                                    </View>
+                                    <View style={styles.schemesIconContainer}>
+                                        {/* //    <View style={styles.roundedtext}></View> */}
+                                    </View>
+                                    <View style={styles.schemesDownArrowContainer}>
+                                                        {/* <Image style={styles.downSublistArrowStyle} 
+                                                                source = {require('../../Assets/Icons/Add.png')}/> */}
+                                        {this.SchemesArrow()}
+                                    </View>  
+                                    
+                                </CollapseHeader> 
+                                ) : (
+                                    <CollapseHeader style={styles.collapseHeaderStyle}>
+                                    <View style={styles.nameOfBrandContainer}>
+                                            <Text style= {styles.nameOfBrandTextStyle}>
+                                            {item.BRAND}
+                                            </Text>
+                                    </View>
+                                    <View style={styles.schemesIconContainer}>
+                                        {/* //    <View style={styles.roundedtext}></View> */}
+                                    </View>
+                                    <View style={styles.schemesDownArrowContainer}>
+                                                        {/* <Image style={styles.downSublistArrowStyle} 
+                                                                source = {require('../../Assets/Icons/Add.png')}/> */}
+                                        {this.SchemesArrow()}
+                                    </View>  
+                                    
+                                </CollapseHeader>
+                                )
+                            }
+                        {/* <CollapseHeader style={styles.collapseHeaderStyle}>
                             <View style={styles.nameOfBrandContainer}>
                                     <Text style= {styles.nameOfBrandTextStyle}>
                                     {item.BRAND}
                                     </Text>
                             </View>
                             <View style={styles.schemesIconContainer}>
-                                {/* //    <View style={styles.roundedtext}></View> */}
+                               
                             </View>
                             <View style={styles.schemesDownArrowContainer}>
-                                                {/* <Image style={styles.downSublistArrowStyle} 
-                                                        source = {require('../../Assets/Icons/Add.png')}/> */}
+                                               
                                 {this.SchemesArrow()}
                             </View>  
                             
-                        </CollapseHeader>
+                        </CollapseHeader> */}
                         <CollapseBody>
                             <ListItem >
                             <SublistDataCollection 
@@ -119,6 +155,7 @@ searchResult(){
                              id={item.BRANDID}
                             search={this.state.search}
                             list1={this.state.list1}
+                            SublistExtendedParent={this.RefreshBrandList.bind(this)}
                             JoinString={this.state.JoinString}
                             outletId={this.state.outletId} 
                             />                           
@@ -161,11 +198,59 @@ SearchFilterFunction(text) {
         search: text,            
     });
   
-    db.getBrandSearchData(text, this.state.list1, this.state.JoinString).then((data) => {
-        this.state.dataSource=[]
+    // db.getBrandSearchData(text, this.state.list1, this.state.JoinString).then((data) => {
+    //     this.state.dataSource=[]
+    //     this.setState({
+    //         dataSource: data,               
+    //     });
+    // })
+
+    db.getBrandSearchDataForChangeBrandColor(text, this.state.list1, this.state.JoinString,this.state.outletId,this.props.datacollection.collectiontype).then((data) => {
+        this.state.dataSource = []
         this.setState({
-            dataSource: data,               
+            dataSource: data.sort(function (a, b) {
+                return a.BRAND.localeCompare(b.BRAND); //using String.prototype.localCompare()
+              })
         });
+        //      this.setState({
+        //    dataSource: data,
+        // });
+    })
+
+}
+
+RefreshBrandList(){
+    AsyncStorage.getItem('SearchStringDC').then((keyValue) => {
+        if (JSON.parse(keyValue) != null) {
+            this.state.search = JSON.parse(keyValue)
+            this.setState({ search: JSON.parse(keyValue) })
+            this.setState({ isbrandSelect: 'true' })
+            //console.log("asasas", this.state.list1)
+            // db.getBrandSearchData(this.state.search, this.state.list1, this.state.JoinString).then((data) => {
+            //     this.state.dataSource = []
+            //     this.setState({
+            //         dataSource: data,
+            //     });
+            //     this.setState({
+            //         dataSource: data,
+            //     });
+
+
+            // })
+
+            db.getBrandSearchDataForChangeBrandColor(this.state.search, this.state.list1, this.state.JoinString,this.state.outletId,this.props.datacollection.collectiontype).then((data) => {
+                this.state.dataSource = []
+                this.setState({
+                    dataSource: data.sort(function (a, b) {
+                        return a.BRAND.localeCompare(b.BRAND); //using String.prototype.localCompare()
+                      })
+                });
+                //      this.setState({
+                //    dataSource: data,
+                // });
+            })
+
+        }
     })
 
 }
@@ -198,17 +283,30 @@ componentWillMount() {
                     this.setState({ search: JSON.parse(keyValue) })
                     this.setState({ isbrandSelect: 'true' })
                     //console.log("asasas", this.state.list1)
-                    db.getBrandSearchData(this.state.search, this.state.list1, this.state.JoinString).then((data) => {
+                    // db.getBrandSearchData(this.state.search, this.state.list1, this.state.JoinString).then((data) => {
+                    //     this.state.dataSource = []
+                    //     this.setState({
+                    //         dataSource: data,
+                    //     });
+                    //     this.setState({
+                    //         dataSource: data,
+                    //     });
+
+
+                    // })
+
+                    db.getBrandSearchDataForChangeBrandColor(this.state.search, this.state.list1, this.state.JoinString,this.state.outletId,this.props.datacollection.collectiontype).then((data) => {
                         this.state.dataSource = []
                         this.setState({
-                            dataSource: data,
+                            dataSource: data.sort(function (a, b) {
+                                return a.BRAND.localeCompare(b.BRAND); //using String.prototype.localCompare()
+                              })
                         });
-                        this.setState({
-                            dataSource: data,
-                        });
-
-
+                        //      this.setState({
+                        //    dataSource: data,
+                        // });
                     })
+
                 }
             })
 
@@ -224,10 +322,10 @@ componentWillMount() {
 
 }
 componentDidMount(){
-    this._subscribe = this.props.navigation.addListener('didFocus', () => {
-        this._componentFocused();
-        //Put your Data loading function here instead of my this.LoadData()
-      });
+    // this._subscribe = this.props.navigation.addListener('didFocus', () => {
+    //     this._componentFocused();
+    //     //Put your Data loading function here instead of my this.LoadData()
+    //   });
 BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
 }
   
@@ -267,12 +365,22 @@ AsyncStorage.getItem('SearchStringDC').then((keyValue) => {
         this.state.search = JSON.parse(keyValue)
         this.setState({ search: JSON.parse(keyValue) })
         this.setState({ isbrandSelect: 'true' })
-        db.getBrandSearchData(this.state.search, this.state.list1, this.state.JoinString).then((data) => {
+        // db.getBrandSearchData(this.state.search, this.state.list1, this.state.JoinString).then((data) => {
+        //     this.state.dataSource = []
+        //     this.setState({
+        //         dataSource: data,
+        //     });
+        //     this.setState({
+        //         dataSource: data,
+        //     });
+        // })
+
+        db.getBrandSearchDataForChangeBrandColor(this.state.search, this.state.list1, this.state.JoinString,this.state.outletId,this.props.datacollection.collectiontype).then((data) => {
             this.state.dataSource = []
             this.setState({
                 dataSource: data,
             });
-            this.setState({
+                 this.setState({
                 dataSource: data,
             });
         })
@@ -571,6 +679,19 @@ const styles = StyleSheet.create({
         // marginHorizontal: wp('4'),
     },
 
+    collapseHeaderStyleForTrue: {
+        alignItems: 'center',
+        alignSelf: 'center',
+        flexDirection: 'row',
+        backgroundColor: '#362828',
+        borderColor: '#E6DFDF',
+        borderRadius: wp('2'),
+        height: hp('9'),
+        width: wp('88'),
+        borderWidth: hp('0.2'),
+        // marginHorizontal: wp('4'),
+    },
+
     nameOfBrandContainer: { 
         flex:3,                                                                                  //28-03
         alignItems: 'flex-start',
@@ -581,6 +702,15 @@ const styles = StyleSheet.create({
         fontFamily: 'Proxima Nova', 
         fontSize:12, 
         color:'#362828'
+    },
+
+    nameOfBrandTextStyleForTrue: {
+        marginLeft: wp('5'),
+      
+        fontFamily: 'Proxima Nova',
+     //   fontSize: RFValue(13),
+     fontSize:12,
+        color: '#FFFFFF'
     },
 
     schemesIconContainer: { 

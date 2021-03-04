@@ -38,6 +38,7 @@ var app_order_id = '';
 const oorderid = '';
 var entity_id = '';
 var orderIds = '';
+var Brandid ='';
 
 export class EditInlineOnCreateNewOrder extends Component {
   constructor(props) {
@@ -110,6 +111,8 @@ export class EditInlineOnCreateNewOrder extends Component {
     itemId = this.props.ItemId;
     this.state.ptr = this.props.ptr;
     this.state.bpc = this.props.bpc;
+    Brandid = this.props.BrandId;
+
 
     console.log(
       'ptr : ' +
@@ -860,7 +863,7 @@ export class EditInlineOnCreateNewOrder extends Component {
                       this.state.bpc,
                       this.state.amount,
                       '1',
-                      'true',
+                      'true',Brandid,entity_id,this.state.Collection_type,
                     ).then(data => {
                       totalOrderValue++;
                       this.props.orderValue(totalOrderValue);
@@ -938,7 +941,7 @@ export class EditInlineOnCreateNewOrder extends Component {
                             this.state.bpc,
                             this.state.amount,
                             '1',
-                            'true',
+                            'true',Brandid,entity_id, this.state.Collection_type,
                           );
                           totalOrderValue++;
                           this.props.orderValue(totalOrderValue);

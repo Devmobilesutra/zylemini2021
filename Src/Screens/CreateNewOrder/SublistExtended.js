@@ -149,8 +149,8 @@ console.log("all data for testing",outletId,id,search,JoinString);
           }
         }
         this.setState({ list: this.state.list })
-      }
-      )
+      } )
+      this.props.SublistExtendedParent();
 
     })
 
