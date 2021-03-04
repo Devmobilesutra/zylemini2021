@@ -4,7 +4,7 @@ import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-nativ
 import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
 import { Actions } from 'react-native-router-flux';
 import Dash from 'react-native-dash';
-
+import { ORDER_DELEVERED,ORDER_IN_PROCESS,ORDER_TOTAL} from '../../Redux/actions/ShopAction'
 import moment from 'moment';
 import { connect } from 'react-redux'
 import Database from './../../utility/Database'

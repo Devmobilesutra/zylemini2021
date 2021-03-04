@@ -428,7 +428,8 @@ export default class MyReport extends React.Component {
                 </View>
                 <View style={styles.pastSurveyContainer1}>
                   <TouchableOpacity
-                    onPress={() => Actions.OutletVisitReports()}>
+                    // onPress={() => Actions.OutletVisitReports()}
+                    >
                     <Text style={styles.pastSurveyNameTextStyle1}>
                       Outlet Visit Report
                     </Text>
@@ -437,7 +438,8 @@ export default class MyReport extends React.Component {
 
                 <View style={styles.cardDashLineMainContainer1}>
                   <TouchableOpacity
-                    onPress={() => Actions.OutletVisitReports()}>
+                    // onPress={() => Actions.OutletVisitReports()}
+                    >
                     <View style={styles.viewDetailesLabelContainer}>
                       <Text style={styles.viewDetaileTextStyle}>View More</Text>
                     </View>

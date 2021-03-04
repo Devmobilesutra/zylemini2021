@@ -30,7 +30,8 @@ var itemName = ''
 var detail_order_id = []
 var app_order_id = '';
 const oorderid = ''
-var entity_id = ''
+var entity_id = '';
+var BrandId ='';
 var orderIds=''
 var aa
 var Collection_types
@@ -64,6 +65,7 @@ export  class EditInlineDataCollection extends Component {
          itemId = this.props.ItemId
          this.state.ptr = this.props.ptr
          this.state.bpc = this.props.bpc
+         BrandId = this.props.brandId;
      
          db.getUOMLable().then((data)=>{ //[{"Value":"CS/BTL"}]
              var prod = []
@@ -251,7 +253,7 @@ export  class EditInlineDataCollection extends Component {
                             //  //console.log("inm ifff sara........", this.props.createOrder.totalOrderValue)
                             AsyncStorage.setItem('app_order_idDC', JSON.stringify(app_order_id));  
                            
-                            db.insertTABLE_TEMP_ORDER_DETAILSDC(app_order_id, this.props.ItemId, itemName, this.state.box, this.state.unit, this.state.freeBox, this.state.freeUnit,this.props.datacollection.fromDate,this.props.datacollection.toDate, this.state.enteredRate, this.state.bpc, this.state.amount, '1', 'true').then((data)=>
+                            db.insertTABLE_TEMP_ORDER_DETAILSDC(app_order_id, this.props.ItemId, itemName, this.state.box, this.state.unit, this.state.freeBox, this.state.freeUnit,this.props.datacollection.fromDate,this.props.datacollection.toDate, this.state.enteredRate, this.state.bpc, this.state.amount, '1', 'true',BrandId,entity_id,this.props.datacollection.collectiontype).then((data)=>
                             {
                                 dataCollected++
                                this.props.collectedData(dataCollected)
@@ -303,7 +305,7 @@ export  class EditInlineDataCollection extends Component {
                                             //console.log("A........", this.state.detail_order_id.length)
                                             AsyncStorage.setItem('app_order_idDC', JSON.stringify(app_order_id)); 
                                                                               //order_id ,item_id ,item_Name ,quantity_one ,quantity_two,small_Unit,large_Unit,from_date ,to_date ,rate ,bpc ,Amount,selected_flag,bottleQty                                     
-                                            db.insertTABLE_TEMP_ORDER_DETAILSDC(app_order_id, this.props.ItemId, itemName, this.state.box, this.state.unit, this.state.freeBox, this.state.freeUnit, currentDateTime, "", this.state.enteredRate, this.state.bpc, this.state.amount, '1', 'true')
+                                            db.insertTABLE_TEMP_ORDER_DETAILSDC(app_order_id, this.props.ItemId, itemName, this.state.box, this.state.unit, this.state.freeBox, this.state.freeUnit, currentDateTime, "", this.state.enteredRate, this.state.bpc, this.state.amount, '1', 'true',BrandId,entity_id,this.props.datacollection.collectiontype)
                                             dataCollected++
                                                this.props.collectedData(dataCollected)
                                             this.props.SublistExtendedParent(this.props.ItemId);

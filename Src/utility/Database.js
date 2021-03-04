@@ -302,7 +302,7 @@ export default class Database {
 
                   db.transaction(tx => {
                     tx.executeSql(
-                      'CREATE TABLE TABLE_TEMP_ORDER_DETAILS(id INTEGER PRIMARY KEY AUTOINCREMENT,order_id TEXT,item_id TEXT,item_Name TEXT,quantity_one TEXT,quantity_two TEXT,small_Unit  TEXT,large_Unit  TEXT,from_date TEXT,to_date TEXT,rate TEXT ,bpc TEXT ,Amount TEXT,selected_flag TEXT,bottleQty TEXT);',
+                      'CREATE TABLE TABLE_TEMP_ORDER_DETAILS(id INTEGER PRIMARY KEY AUTOINCREMENT,order_id TEXT,item_id TEXT,item_Name TEXT,quantity_one TEXT,quantity_two TEXT,small_Unit  TEXT,large_Unit  TEXT,from_date TEXT,to_date TEXT,rate TEXT ,bpc TEXT ,Amount TEXT,selected_flag TEXT,bottleQty TEXT,BrandId TEXT,entityId TEXT,CollectionType TEXT);',
                     );
                   })
                     .then(() => {})
@@ -603,6 +603,11 @@ export default class Database {
         if (abc.UOMMaster) {
           let UOMMaster = abc.UOMMaster;
           this.insertuommaster(UOMMaster);
+        }
+
+        if (abc.OrderMaster) {
+          let OrderMaster = abc.OrderMaster;
+          this.insertOrderMaster(OrderMaster);
         }
 
         // if (abc.CollectionType) {
@@ -2011,7 +2016,7 @@ export default class Database {
     bpc,
     Amount,
     selected_flag,
-    bottleQty,
+    bottleQty,BrandId,entityId,CollectionType
   ) {
     //  alert("Order Inserted")
     return new Promise(resolve => {
@@ -2020,8 +2025,8 @@ export default class Database {
           tx.executeSql(
             `insert into  TABLE_TEMP_ORDER_DETAILS(order_id,item_id,item_Name,quantity_one ,quantity_two ,
               small_Unit ,large_Unit,from_date,
-              to_date ,rate  ,bpc  ,Amount ,selected_flag,bottleQty )
-                VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+              to_date ,rate  ,bpc  ,Amount ,selected_flag,bottleQty,BrandId,entityId,CollectionType)
+                VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
             [
               order_id,
               item_id,
@@ -2036,7 +2041,7 @@ export default class Database {
               bpc,
               Amount,
               selected_flag,
-              bottleQty,
+              bottleQty,BrandId,entityId,CollectionType
             ],
           ).then(([tx, results]) => {
             resolve(results);
@@ -2150,6 +2155,59 @@ export default class Database {
             });
         });
       });
+    }
+  }
+
+  insertOrderMaster(OrderMaster){
+    if (OrderMaster.length) {
+      // db1.transaction(tx => {
+      //   tx.executeSql('DELETE FROM OrderMaster  ', []).then(([tx, results]) => {
+          db1.transaction(tx => {
+              var len = OrderMaster.length;
+              var count = 0;
+
+              for (var item of OrderMaster) {
+                tx.executeSql(
+                  `insert into OrderMaster(id,Current_date_time ,entity_type,entity_id ,latitude ,longitude ,total_amount ,from_date ,to_date ,collection_type ,user_id ,remark,selected_flag ,sync_flag ,check_date,DefaultDistributorId,ExpectedDeliveryDate,ActivityStatus,ActivityStart,ActivityEnd)
+                  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+                  [
+                    item.MobileGenPrimaryKey,
+                    item.OrderTakenDatetime,
+                    item.EntityType,
+                    item.EntityID,
+                    item.Latitude,
+                    item.Longitude,
+                    item.TotalAmount,
+                    item.FromDate,
+                    item.ToDate,
+                    item.CollectionType,
+                    item.ExecutiveID,
+                    item.Remarks,
+                    '',
+                    'Y',
+                    '',
+                    item.DefaultDistributorID,
+                    item.ExpectedDeliveryDate,
+                    item.ActivityStatus,
+                    item.ActivityStartTime,
+                    item.ActivityEndTime,
+
+                  ],
+                  (tx, results) => {},
+                  err => {
+                    console.error('error=', err);
+                  },
+                );
+              }
+            })
+            .then(result => {
+              //
+            })
+            .catch(err => {
+              //console.log(err);
+            });
+       // });
+    //  });
     }
   }
 
@@ -3827,6 +3885,54 @@ export default class Database {
             }
             console.log('te=', tempfilter);
             resolve(tempfilter);
+          });
+        })
+        .then(result => {})
+        .catch(err => {
+          //console.log(err);
+        });
+    });
+  }
+
+  getBrandSearchDataForChangeBrandColor(searchkey, list1, joinString,entityId,collectionType) {
+    //// SELECT distinct BRAND , BRANDID FROM PItem where (%@ LIKE '%%%@%%') order by %@,BRAND",joinedString,search_text,search_product
+    var query =
+      'select distinct PItem.BRANDID,BRAND,TABLE_TEMP_ORDER_DETAILS.bottleQty from PItem INNER join TABLE_TEMP_ORDER_DETAILS on TABLE_TEMP_ORDER_DETAILS.BrandId = PItem.BRANDID where BRAND  like "%' +
+      searchkey +
+      '%" and TABLE_TEMP_ORDER_DETAILS.entityId="' + entityId +'" and TABLE_TEMP_ORDER_DETAILS.CollectionType="'+collectionType +'"  order by "' +
+      searchkey +
+      '","' +
+      list1 +
+      '",' +
+      joinString;
+       // var query = 'select distinct BRANDID,BRAND from PItem where BRAND  like %?% order by ?,?,?';
+    console.log('brand query : ' + query);
+    return new Promise(resolve => {
+      // this.initDB().then((db) => {
+      //console.log("in getFilterData 3");
+      db1
+        .transaction(tx => {
+          tx.executeSql(query, [], (tx, results) => {
+            var tempfilter = [];
+            for (let i = 0; i < results.rows.length; i++) {
+              tempfilter.push(results.rows.item(i));
+            }
+            var query1 = ' select distinct PItem.BRANDID,BRAND,CASE WHEN PItem.bottleQut IS NOT NULL THEN "false" ELSE "false" END bottleQty from PItem left join TABLE_TEMP_ORDER_DETAILS on TABLE_TEMP_ORDER_DETAILS.BrandId = PItem.BRANDID  where BRAND  like "%' +
+            searchkey + '%" and PItem.BRANDID not in (select distinct PItem.BRANDID from PItem INNER join TABLE_TEMP_ORDER_DETAILS on TABLE_TEMP_ORDER_DETAILS.BrandId = PItem.BRANDID where BRAND  like "%' +
+            searchkey + '%" and TABLE_TEMP_ORDER_DETAILS.entityId="'+entityId+'" and TABLE_TEMP_ORDER_DETAILS.CollectionType="'+collectionType +'"  order by "' +
+            searchkey +'","' +list1 +'",' +
+            joinString +' ) order by "' +
+            searchkey + '","' + list1 + '",' + joinString;
+            db1.transaction(tx => {
+              tx.executeSql(query1 ,[] ,(tx,results1) =>{
+                for (let i = 0; i < results1.rows.length; i++) {
+                  tempfilter.push(results1.rows.item(i));
+                }
+                console.log('te=', tempfilter);
+                resolve(tempfilter);
+              })
+            })
+            
           });
         })
         .then(result => {})
@@ -6131,7 +6237,7 @@ export default class Database {
     //   'select OrderMaster.*,Pcustomer.AREA,Pcustomer.Party from OrderMaster INNER JOIN Pcustomer on OrderMaster.entity_id = Pcustomer.CustomerId where OrderMaster.entity_type =1';
     // //console.log("checkIsOrderIdInDb=", query)
     var query =
-      'select OrderMaster.*,Pcustomer.AREA,Pcustomer.Party from OrderMaster INNER JOIN Pcustomer on OrderMaster.entity_id = Pcustomer.CustomerId where collection_type = 0';
+      'select OrderMaster.*,Pcustomer.AREA,Pcustomer.Party from OrderMaster INNER JOIN Pcustomer on OrderMaster.entity_id = Pcustomer.CustomerId where collection_type = 0 and sync_flag="'+SyncFlag +'"';
     return new Promise(resolve => {
       //  this.initDB().then((db) => {
       db1
@@ -7445,7 +7551,7 @@ export default class Database {
     bpc,
     Amount,
     selected_flag,
-    bottleQty,
+    bottleQty,BrandId,entityId,CollectionType
   ) {
     alert('Data inserted');
     return new Promise(resolve => {
@@ -7454,8 +7560,8 @@ export default class Database {
           tx.executeSql(
             `insert into  TABLE_TEMP_ORDER_DETAILS(order_id,item_id,item_Name,quantity_one ,quantity_two ,
               small_Unit ,large_Unit,from_date,
-              to_date ,rate  ,bpc  ,Amount ,selected_flag,bottleQty )
-                VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+              to_date ,rate  ,bpc  ,Amount ,selected_flag,bottleQty,BrandId,entityId,CollectionType )
+                VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
             [
               order_id,
               item_id,
@@ -7470,7 +7576,7 @@ export default class Database {
               bpc,
               Amount,
               selected_flag,
-              bottleQty,
+              bottleQty,BrandId,entityId,CollectionType
             ],
           ).then(([tx, results]) => {
             resolve(results);
@@ -8993,6 +9099,56 @@ export default class Database {
         .catch(err => {});
     });
   }
+
+
+  getDataForActivity() {
+    var query =
+      'select * from OrderMaster';
+    //console.log("q---", query)
+    return new Promise(resolve => {
+      db1
+        .transaction(tx => {
+          tx.executeSql(query, [], (tx, results) => {
+            var ImageDetails = [];
+            for (let i = 0; i < results.rows.length; i++) {
+              ImageDetails.push(results.rows.item(i));
+            }
+
+            resolve(ImageDetails);
+          });
+        })
+        .then(result => {})
+        .catch(err => {
+          //console.log(err);
+        });
+    });
+  }
+
+
+  getdatafromcust(entity_id)
+  {
+    var query =
+    'select * from Pcustomer where CustomerId= "' + entity_id + '"';
+  //console.log("q---", query)
+  return new Promise(resolve => {
+    db1
+      .transaction(tx => {
+        tx.executeSql(query, [], (tx, results) => {
+          var ImageDetails = [];
+          for (let i = 0; i < results.rows.length; i++) {
+            ImageDetails.push(results.rows.item(i));
+          }
+
+          resolve(ImageDetails);
+        });
+      })
+      .then(result => {})
+      .catch(err => {
+        //console.log(err);
+      });
+  });
+  }
+
 }
 
 //SELECT * FROM SchemeDetails WHERE LIKE( '%' || SchemeID || '%', '100,300' )

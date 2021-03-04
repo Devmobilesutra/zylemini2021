@@ -112,6 +112,7 @@ import SideorderEdit from './Src/Screens/SideOrder/SideorderEdit';
 import sideordermedit from './Src/Screens/SideOrder/sideordermedit';
 import sideorderEdittNew from './Src/Screens/SideOrder/sideorderEdittNew';
 import editpreview from './Src/Screens/SideOrder/editpreview';
+import Activities from './Src/Screens/Reports/Activities';
 import MJP_one from './Src/Screens/MJP/MJP_one';
 import MJP_two from './Src/Screens/MJP/MJP_two';
 import MJP_Cancel from './Src/Screens/MJP/MJP_Cancel';
@@ -660,6 +661,11 @@ export default class RouterComponent extends Component {
               key="editpreview"
               component={editpreview}
               title="editpreview"
+            />
+             <Scene
+              key="Activities"
+              component={Activities}
+              title="Activities"
             />
 
             {/* <Scene

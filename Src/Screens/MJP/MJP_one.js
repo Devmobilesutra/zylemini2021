@@ -237,7 +237,7 @@ renderPopup(){
                         width={wp('90')}
                         dialogTitle={
                           <DialogTitle
-                            title="Meeting Module"
+                            title="Meeting"
                           
                             style={{
                               backgroundColor: '#F7F7F8',
@@ -363,7 +363,12 @@ SubmitReport(Meeting_Id,PlannedDate)
         var datas = JSON.stringify(this.state.JSONObj)
     
   console.log("date passing post",datas);
+//  testing
     const url = 'http://sapltest.com/ZyleminiPlusAPI/api/Data/PostData'
+
+     //live
+   //  const url = 'https://zyleminiplus.com/ZyleminiPlusCoreAPI/api/Data/PostData'
+
     axios.post(url, datas, {
         headers: headers
     }).then((response) => {
