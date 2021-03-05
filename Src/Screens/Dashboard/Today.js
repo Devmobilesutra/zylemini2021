@@ -29,7 +29,7 @@ class Today extends Component {
               fontWeight: 'bold',
               marginTop: hp('2%'),
               marginBottom: hp('2'),
-              marginLeft: wp('3%'),
+              marginLeft: wp('6%'),
               type: 'font-awesome',
             }}>
             TODAY
@@ -39,7 +39,7 @@ class Today extends Component {
         <View style={{flexDirection: 'column'}}>
           <View>
             <View style={{flexDirection: 'row'}}>
-              <View style={{flexDirection: 'row', marginLeft: wp('8')}}>
+              <View style={{flexDirection: 'row', marginLeft: wp('6')}}>
                 <Image
                   style={{height: hp('4.2'), width: wp('7.5')}}
                   source={require('../../assets/Icons/Shop2.png')}
@@ -61,7 +61,7 @@ class Today extends Component {
                 </View>
               </View>
 
-              <View style={{flexDirection: 'row', marginLeft: wp('12')}}>
+              <View style={{flexDirection: 'row', marginLeft: wp('18')}}>
                 <Image
                   style={{height: hp('4.2'), width: wp('7.5')}}
                   source={require('../../assets/Icons/Orders2.png')}
@@ -86,7 +86,7 @@ class Today extends Component {
             </View>
           </View>
           <View>
-            <View style={{flexDirection: 'row', marginLeft: wp('8')}}>
+            <View style={{flexDirection: 'row', marginLeft: wp('6')}}>
               <View style={{flexDirection: 'row'}}>
                 <Image
                   style={{height: hp('4.2'), width: wp('7.5')}}
@@ -109,7 +109,7 @@ class Today extends Component {
                 </View>
               </View>
 
-              <View style={{flexDirection: 'row', marginLeft: wp('10')}}>
+              <View style={{flexDirection: 'row', marginLeft: wp('16')}}>
                 <Image
                   style={{height: hp('4.2'), width: wp('7.5')}}
                   source={require('../../assets/Icons/Payment2.png')}
