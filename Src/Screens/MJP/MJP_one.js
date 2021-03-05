@@ -660,13 +660,13 @@ showsVerticalScrollIndicator={false}>
                         <View style={{flexDirection:'row',justifyContent: 'center',alignContent: 'center'}}>
                         <TouchableOpacity style={{marginLeft:('4%'),justifyContent: 'center',
                     alignContent: 'center'}} >
-                    <Text style={{color:'red',fontSize:wp('3.5%'),}}>
+                    <Text style={{color:'transparent',fontSize:wp('3.5%'),}}>
                     CANCEL
                     </Text>
                      </TouchableOpacity>
                       <TouchableOpacity style={{justifyContent: 'center',alignContent: 'center'}}>
-                      <Text style={{color:'transparent',marginLeft:wp('8%') ,fontSize:wp('3.5%')}}>
-                     Submit Report
+                      <Text style={{color:'blue',marginLeft:wp('9%') ,fontSize:wp('3.5%')}}>
+                    ADD NOTES
                       </Text>
        
                     </TouchableOpacity>
@@ -676,9 +676,9 @@ showsVerticalScrollIndicator={false}>
                            width: wp('25%'),
                            height: 35,
                            borderRadius: 15,
-                           marginLeft:wp('8%'),
+                           marginLeft:wp('12.5%'),
                            margin:wp('2%'),
-                           backgroundColor: '#2FC36E',
+                           backgroundColor: '#E23333',
                            justifyContent: 'center',
                            alignContent: 'center'
                            }}
@@ -719,7 +719,7 @@ showsVerticalScrollIndicator={false}>
                      <Text style={{
                        color: 'white',
                        marginLeft:wp('6.5%')
-                     }}>START</Text>
+                     }}></Text>
                    </TouchableOpacity>
                    </View>
                     )
