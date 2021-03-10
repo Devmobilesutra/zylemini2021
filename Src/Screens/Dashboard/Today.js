@@ -142,7 +142,7 @@ class Today extends Component {
               alignItems: 'flex-start',
               flexDirection: 'row',
               backgroundColor: '#d9dbda',
-              height: hp('0.5%'),
+              height: hp('0.3%'),
               width: wp('100%'),
               marginTop: hp('4%'),
             }}

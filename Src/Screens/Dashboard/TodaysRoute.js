@@ -112,7 +112,7 @@ class TodaysRoute extends Component {
           <View
             style={{
               backgroundColor: '#d9dbda',
-              height: hp('0.5%'),
+              height: hp('0.3%'),
               width: wp('100%'),
               marginTop: hp('2%'),
             }}
