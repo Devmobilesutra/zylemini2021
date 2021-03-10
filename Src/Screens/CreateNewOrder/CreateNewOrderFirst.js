@@ -463,7 +463,7 @@ export class CreateNewOrderFirst extends Component {
                 autoCorrect={false}
                 inputContainerStyle={styles.inputContainerStyle}
                 listStyle={styles.listStyle}
-                //data to show in suggestion
+                //data to s how in suggestion
                 data={
                   films.length === 1 && comp(query, films[0].party) ? [] : films
                 }
@@ -485,7 +485,7 @@ export class CreateNewOrderFirst extends Component {
                     ) : (
                       <Text style={styles.itemText}>{item.party}</Text>
                     )}
-                    {/* <Text style={styles.itemTextIndex0}>{item.party}</Text>  */}
+                    {/* ]<Text style={styles.itemTextIndex0}>{item.party}</Text>  */}
                   </TouchableOpacity>
                 )}
               />
