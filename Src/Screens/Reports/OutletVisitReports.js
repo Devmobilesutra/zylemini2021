@@ -13,7 +13,8 @@ import Communications from 'react-native-communications';
 import { Searchbar } from 'react-native-paper';
 export default class OutletVisitReports extends Component {
     state={
-        Cust_array:[]
+        Cust_array:[],
+        entity_id:''
     }
 
 // @refresh reset
@@ -49,21 +50,19 @@ export default class OutletVisitReports extends Component {
         db.getDataForActivity().then((data)=>{
             
             console.log("data for activity",data);
-           
+            
            for(var i=0;i<data.length;i++)
-           {
-               
+           {     
        if(data[i].entity_type=1)
             {
-               
+                
+                  console.log("entity id getttt",this.state.entity_id);
                 db.getdatafromcust(data[i].entity_id).then((data)=>{
-                  
-                    
-                    
-                    this.setState({
-                        Cust_array: this.state.Cust_array.concat(data)
+                   this.setState({
+                        Cust_array: this.state.Cust_array.concat(data),
+                       
                       })
-                      console.log("data for display",this.state.Cust_array);  
+                      console.log("data for display",this.state.Cust_array)  
            })
         }
             else if(data[i].entity_type=2)
@@ -85,8 +84,9 @@ export default class OutletVisitReports extends Component {
     renderParty()
 {
     return(
-        this.state.Cust_array.map((item, index) => (
-        <TouchableOpacity onPress={() => Actions.Activities({Party:item.Party})}>
+      //  this.state.Cust_array.map((item, index) => (
+            this.state.Cust_array.map(item =>
+        <TouchableOpacity onPress={() => Actions.Activities({Party:item.Party,entity_id:item.CustomerId})}>
         
         <View style={styles.collapseHeaderStyle}>
         <View style={styles.imageContainer}>
@@ -105,7 +105,7 @@ export default class OutletVisitReports extends Component {
             </View>
           </View>
           </TouchableOpacity>
-            )))
+            ))
     
 }
     render() {
@@ -158,13 +158,11 @@ export default class OutletVisitReports extends Component {
 
 const styles = StyleSheet.create({
 headerMainContainer:{
-
     flex:0.3,
     backgroundColor: '#221818',
 },
 
 todaysRouteTextStyle:{
-
     color:'#ADA2A2',
     fontSize:RFValue(11),
     fontFamily: 'Proxima Nova',

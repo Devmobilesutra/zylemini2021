@@ -256,12 +256,12 @@ SyncMeetingData(dataMainMeeting){
       var datas = JSON.stringify(this.state.JSONObj)
   
 console.log("date passing post",datas);
-  const url = 'http://sapltest.com/ZyleminiPlusAPI/api/Data/PostData'
+//  const url = 'http://sapltest.com/ZyleminiPlusAPI/api/Data/PostData'
 
    //live
  //  const url = 'https://zyleminiplus.com/ZyleminiPlusCoreAPI/api/Data/PostData'
 
-  axios.post(url, datas, {
+  axios.post(User.posturl, datas, {
       headers: headers
   }).then((response) => {
 

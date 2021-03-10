@@ -11,7 +11,7 @@ import { Avatar } from 'react-native-elements'
 import { TOTAL_SHOPS, SHOP_INFO, SHOP_VISITED_TODAY } from '../../Redux/actions/ShopAction'
 import { Thumbnail, Separator, List, ListItem, } from 'native-base';
 import { connect } from 'react-redux'
-import Database from '../../utility/Database'
+import Database from './../../utility/Database'
 const db = new Database();
 import moment from 'moment';
 import Communications from 'react-native-communications';
@@ -73,11 +73,20 @@ export default class OutletVisitReports extends Component {
                     ]
                 }
             ],
-            month1len: '0', month2len: '0', month3len: '0'
+            month1len: '0', month2len: '0', month3len: '0',
+            formattedMonth:'',
+            final_array:[],
+            body_array:[{ time: '5.30 PM', field: 'Checked In' },
+            { time: '5.30 PM', field: 'New Order Booked' },
+            { time: '5.30 PM', field: 'Data Collected' },
+            { time: '5.30 PM', field: 'Payment Collected' }
+            
+            ],
+            myArray:[]
         };
 
-        formattedMonth:''
-        OrderDate:''
+       
+
     }
     static navigationOptions = {
 
@@ -106,17 +115,19 @@ export default class OutletVisitReports extends Component {
     }
    
     componentDidMount(){
-        db.getDataForActivity().then((data)=>{
-            
-            console.log("data for activity",data);
-            console.log("Current_date_time",data[0].Current_date_time);
-           
-             this.setState({formattedMonth:moment(data[0].Current_date_time).format('MMMM')})
-             this.setState({OrderDate:data})
-        
-            
-        })
+    
+       console.log("data we want",this.props.entity_id);
+db.checkIsOrderIdInDbAct(this.props.entity_id,'0').then((data)=>{
+       this.setState({final_array:data})
+           console.log("this is finalllll",data);
+
+})
+
+     
     }
+
+
+    
     _renderRoute() {
         const beat = []
         for (var i = 0; i < data.length; i++) {
@@ -208,7 +219,7 @@ export default class OutletVisitReports extends Component {
                             fontFamily: 'Proxima Nova',
                             fontSize: 12
                         }} >
-                            {/ {item.Salesperson} /}
+                            {/* {item.Salesperson} */}
                         </Text>
                     </View>
                 </View>
@@ -223,9 +234,15 @@ export default class OutletVisitReports extends Component {
 
         );
     };
-    _body(items) {
-
-        return (
+    _body(item,collection_type) {
+        // return (
+        //     <View style={{ flex: 4 }}>
+        //       <Text>{item.entity_id}</Text>
+        //     </View>
+        //   );
+        if(collection_type==0)
+        {return (
+           
             <View style={styles.collapseHeaderStyle1}>
                 <View style={{ flex: 1 }}>
                     <View style={styles.invDetDashContainerq}>
@@ -237,27 +254,35 @@ export default class OutletVisitReports extends Component {
                 </View>
 
                 <View style={{ flex: 4 }}>
-                    <FlatList
-                        data={items.body}
-                        renderItem={({ item }) => (
+                    
+                        
+                       
                             <ListItem style={{ height: hp('0.5'), height: wp('0.5'), width: hp('100'), width: wp('100'), borderWidth: 0, borderColor: 'transparent' }}>
                                 {/* <View style={styles.ownerRowContainer}>
                                     <View style={styles.ownerContainer}> */}
                                 <Text style={styles.ownerTextStyle}>
-                                    {item.time}
+                                    
+                                    {moment(item.ActivityStart,"YYYY-MM-DD hh:mm a").format('hh:mm A')}
 
                                 </Text>
+                     
+                                {/* <Text style={styles.ownaerNameTextStyle}>
+                                {item.collection_type=0 ? 0:"order booked"}
+                                </Text> */}
+
+                           
+                    
                                 <Text style={styles.ownaerNameTextStyle}>
-                                    {item.field}
+                                order booking
                                 </Text>
-                                {/* </View>
-                                </View> */}
+
+
 
                             </ListItem>
-                        )}
-                    >
+                        
+                 
 
-                    </FlatList>
+                   
 
                 </View>
 
@@ -266,12 +291,279 @@ export default class OutletVisitReports extends Component {
 
             </View>
 
-        );
+        );}
+        else if(collection_type ==1)
+        {
+            return (
+           
+                <View style={styles.collapseHeaderStyle1}>
+                    <View style={{ flex: 1 }}>
+                        <View style={styles.invDetDashContainerq}>
+                            <Dash style={styles.invDetDashStyle}
+                                dashLength={2}
+                                dashColor='#E6DFDF'
+                            />
+                        </View>
+                    </View>
+    
+                    <View style={{ flex: 4 }}>
+                        
+                            
+                           
+                                <ListItem style={{ height: hp('0.5'), height: wp('0.5'), width: hp('100'), width: wp('100'), borderWidth: 0, borderColor: 'transparent' }}>
+                                    {/* <View style={styles.ownerRowContainer}>
+                                        <View style={styles.ownerContainer}> */}
+                                    <Text style={styles.ownerTextStyle}>
+                                    {moment(item.ActivityStart,"YYYY-MM-DD hh:mm a").format('hh:mm A')}
+    
+                                    </Text>
+                         
+                                    {/* <Text style={styles.ownaerNameTextStyle}>
+                                    {item.collection_type=0 ? 0:"order booked"}
+                                    </Text> */}
+    
+                               
+                        
+                                    <Text style={styles.ownaerNameTextStyle}>
+                                   Sales
+                                    </Text>
+    
+    
+    
+                                </ListItem>
+                            
+                     
+    
+                       
+    
+                    </View>
+    
+    
+    
+    
+                </View>
+    
+            );
+        }
+        else if(collection_type==2)
+        {
+            return (
+           
+                <View style={styles.collapseHeaderStyle1}>
+                    <View style={{ flex: 1 }}>
+                        <View style={styles.invDetDashContainerq}>
+                            <Dash style={styles.invDetDashStyle}
+                                dashLength={2}
+                                dashColor='#E6DFDF'
+                            />
+                        </View>
+                    </View>
+    
+                    <View style={{ flex: 4 }}>
+                        
+                            
+                           
+                                <ListItem style={{ height: hp('0.5'), height: wp('0.5'), width: hp('100'), width: wp('100'), borderWidth: 0, borderColor: 'transparent' }}>
+                                    {/* <View style={styles.ownerRowContainer}>
+                                        <View style={styles.ownerContainer}> */}
+                                    <Text style={styles.ownerTextStyle}>
+                                    {moment(item.ActivityStart,"YYYY-MM-DD hh:mm a").format('hh:mm A')}
+    
+                                    </Text>
+                         
+                                    {/* <Text style={styles.ownaerNameTextStyle}>
+                                    {item.collection_type=0 ? 0:"order booked"}
+                                    </Text> */}
+    
+                               
+                        
+                                    <Text style={styles.ownaerNameTextStyle}>
+                                    stock
+                                    </Text>
+    
+    
+    
+                                </ListItem>
+                            
+                     
+    
+                       
+    
+                    </View>
+    
+    
+    
+    
+                </View>
+    
+            );   
+        }
+        else if(collection_type==3)
+        {
+            return (
+           
+                <View style={styles.collapseHeaderStyle1}>
+                    <View style={{ flex: 1 }}>
+                        <View style={styles.invDetDashContainerq}>
+                            <Dash style={styles.invDetDashStyle}
+                                dashLength={2}
+                                dashColor='#E6DFDF'
+                            />
+                        </View>
+                    </View>
+    
+                    <View style={{ flex: 4 }}>
+                        
+                            
+                           
+                                <ListItem style={{ height: hp('0.5'), height: wp('0.5'), width: hp('100'), width: wp('100'), borderWidth: 0, borderColor: 'transparent' }}>
+                                    {/* <View style={styles.ownerRowContainer}>
+                                        <View style={styles.ownerContainer}> */}
+                                    <Text style={styles.ownerTextStyle}>
+                                    {moment(item.ActivityStart,"YYYY-MM-DD hh:mm a").format('hh:mm A')}
+    
+                                    </Text>
+                         
+                                    {/* <Text style={styles.ownaerNameTextStyle}>
+                                    {item.collection_type=0 ? 0:"order booked"}
+                                    </Text> */}
+    
+                               
+                        
+                                    <Text style={styles.ownaerNameTextStyle}>
+                                   visit
+                                    </Text>
+    
+    
+    
+                                </ListItem>
+                            
+                     
+    
+                       
+    
+                    </View>
+    
+    
+    
+    
+                </View>
+    
+            );   
+        }
+        else if(collection_type==4)
+        {
+            return (
+           
+                <View style={styles.collapseHeaderStyle1}>
+                    <View style={{ flex: 1 }}>
+                        <View style={styles.invDetDashContainerq}>
+                            <Dash style={styles.invDetDashStyle}
+                                dashLength={2}
+                                dashColor='#E6DFDF'
+                            />
+                        </View>
+                    </View>
+    
+                    <View style={{ flex: 4 }}>
+                        
+                            
+                           
+                                <ListItem style={{ height: hp('0.5'), height: wp('0.5'), width: hp('100'), width: wp('100'), borderWidth: 0, borderColor: 'transparent' }}>
+                                    {/* <View style={styles.ownerRowContainer}>
+                                        <View style={styles.ownerContainer}> */}
+                                    <Text style={styles.ownerTextStyle}>
+                                    {moment(item.ActivityStart,"YYYY-MM-DD hh:mm a").format('hh:mm A')}
+    
+                                    </Text>
+                         
+                                    {/* <Text style={styles.ownaerNameTextStyle}>
+                                    {item.collection_type=0 ? 0:"order booked"}
+                                    </Text> */}
+    
+                               
+                        
+                                    <Text style={styles.ownaerNameTextStyle}>
+                                    image
+                                    </Text>
+    
+    
+    
+                                </ListItem>
+                            
+                     
+    
+                       
+    
+                    </View>
+    
+    
+    
+    
+                </View>
+    
+            );    
+        }
+        else if(collection_type==5)
+        {
+            return (
+           
+                <View style={styles.collapseHeaderStyle1}>
+                    <View style={{ flex: 1 }}>
+                        <View style={styles.invDetDashContainerq}>
+                            <Dash style={styles.invDetDashStyle}
+                                dashLength={2}
+                                dashColor='#E6DFDF'
+                            />
+                        </View>
+                    </View>
+    
+                    <View style={{ flex: 4 }}>
+                        
+                            
+                           
+                                <ListItem style={{ height: hp('0.5'), height: wp('0.5'), width: hp('100'), width: wp('100'), borderWidth: 0, borderColor: 'transparent' }}>
+                                    {/* <View style={styles.ownerRowContainer}>
+                                        <View style={styles.ownerContainer}> */}
+                                    <Text style={styles.ownerTextStyle}>
+                                    {moment(item.ActivityStart,"YYYY-MM-DD hh:mm a").format('hh:mm A')}
+    
+                                    </Text>
+                         
+                                    {/* <Text style={styles.ownaerNameTextStyle}>
+                                    {item.collection_type=0 ? 0:"order booked"}
+                                    </Text> */}
+    
+                               
+                        
+                                    <Text style={styles.ownaerNameTextStyle}>
+                                    Asset verification
+                                    </Text>
+    
+    
+    
+                                </ListItem>
+                            
+                     
+    
+                       
+    
+                    </View>
+    
+    
+    
+    
+                </View>
+    
+            );    
+        }
     }
+
+  
 
     getList()
     {
-   if(this.state.formattedMonth=month1)
+   if(this.state.formattedMonth=month1 )
    {
     return(
         <Fragment>
@@ -281,7 +573,7 @@ export default class OutletVisitReports extends Component {
     </Text>
 </View>
    <AccordionList
-   list={this.state.OrderDate}
+   list={this.state.final_array}
    header={this._head}
    body={this._body}
    keyExtractor={item => `${item.id}`}
@@ -341,7 +633,7 @@ export default class OutletVisitReports extends Component {
                     <ScrollView
                         showsVerticalScrollIndicator={false}
                     >
-                        {/ Header /}
+                        {/* Header */}
                         <View style={styles.headerMainContainer}>
                             <View style={styles.searchResultContainer1}>
                                 <Text style={{
@@ -363,19 +655,7 @@ export default class OutletVisitReports extends Component {
                             {this._renderRoute()}
                         </View>
                         {this.getList()}
-
-                        
-
-
-                     
-                      
-                             
-
-
-                       
-
-
-                    </ScrollView>
+                         </ScrollView>
                 </ImageBackground>
             </View>
         )

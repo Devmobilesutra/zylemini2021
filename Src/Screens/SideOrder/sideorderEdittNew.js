@@ -156,12 +156,22 @@ export class sideorderEdittNew extends Component {
                         this.state.JoinString = this.state.list2.join('|')
                         console.log('join str : '+this.state.JoinString)
 
-                        db.getBrandSearchData('', this.state.list1, this.state.JoinString).then((data) => {
+                        // db.getBrandSearchData('', this.state.list1, this.state.JoinString).then((data) => {
+                        //     this.state.dataSource = []
+                        //     this.setState({
+                        //         dataSource: data,
+                        //     });
+                        //     console.log("datasousde : "+JSON.stringify(this.state.dataSource))
+                        //     this.searchResultss();
+                        // })
+
+                        db.getBrandSearchDataForChangeBrandColorForEdit('', this.state.list1, this.state.JoinString,this.props.entity_id,this.props.collection_type).then((data) => {
                             this.state.dataSource = []
                             this.setState({
-                                dataSource: data,
+                                dataSource: data.sort(function (a, b) {
+                                    return a.BRAND.localeCompare(b.BRAND); //using String.prototype.localCompare()
+                                  })
                             });
-                            console.log("datasousde : "+JSON.stringify(this.state.dataSource))
                             this.searchResultss();
                         })
 
@@ -183,10 +193,20 @@ export class sideorderEdittNew extends Component {
                         this.state.JoinString = this.state.list2.join('|')
                         console.log('join str : '+this.state.JoinString)
 
-                        db.getBrandSearchData('', this.state.list1, this.state.JoinString).then((data) => {
+                        // db.getBrandSearchData('', this.state.list1, this.state.JoinString).then((data) => {
+                        //     this.state.dataSource = []
+                        //     this.setState({
+                        //         dataSource: data,
+                        //     });
+                        //     this.searchResultss();
+                        // })
+
+                        db.getBrandSearchDataForChangeBrandColorForEdit('', this.state.list1, this.state.JoinString,this.props.entity_id,this.props.collection_type).then((data) => {
                             this.state.dataSource = []
                             this.setState({
-                                dataSource: data,
+                                dataSource: data.sort(function (a, b) {
+                                    return a.BRAND.localeCompare(b.BRAND); //using String.prototype.localCompare()
+                                  })
                             });
                             this.searchResultss();
                         })
@@ -217,13 +237,45 @@ export class sideorderEdittNew extends Component {
             search: text,
         });
 
-        db.getBrandSearchData(text, this.state.list1, this.state.JoinString).then((data) => {
+        // db.getBrandSearchData(text, this.state.list1, this.state.JoinString).then((data) => {
+        //     this.state.dataSource = []
+        //     this.setState({
+        //         dataSource: data,
+        //     });
+        // })
+
+        db.getBrandSearchDataForChangeBrandColorForEdit(text, this.state.list1, this.state.JoinString,this.props.entity_id,this.props.collection_type).then((data) => {
             this.state.dataSource = []
             this.setState({
-                dataSource: data,
+                dataSource: data.sort(function (a, b) {
+                    return a.BRAND.localeCompare(b.BRAND); //using String.prototype.localCompare()
+                  })
             });
         })
 
+    }
+
+    RefreshBrandList(){
+        console.log('RefreshBrandList is called')
+     //   Actions.CreateNewOrderSecond();
+        AsyncStorage.getItem('SearchString').then((keyValue) => {
+            if (JSON.parse(keyValue) != null) {
+                this.state.search = JSON.parse(keyValue)
+                this.setState({ search: JSON.parse(keyValue) })
+                this.setState({ isbrandSelect: 'true' })
+
+                db.getBrandSearchDataForChangeBrandColorForEdit(this.state.search, this.state.list1, this.state.JoinString,this.props.entity_id,this.props.collection_type).then((data) => {
+                    this.state.dataSource = []
+                    this.setState({
+                        dataSource: data.sort(function (a, b) {
+                            return a.BRAND.localeCompare(b.BRAND); //using String.prototype.localCompare()
+                          })
+                    });
+                })
+
+            }
+        })
+        
     }
 
     SchemesArrow() {
@@ -264,7 +316,7 @@ export class sideorderEdittNew extends Component {
 
                                     })}
                                 >
-                                    {
+                                    {/* {
                                         item.orderstatus == 'true' ?
                                             <CollapseHeader style={styles.collapseHeaderStyleedit} >
                                             <View style={styles.nameOfBrandContainer} >
@@ -307,9 +359,33 @@ export class sideorderEdittNew extends Component {
                                             </View>
 
                                         </CollapseHeader>
-                                    }
+                                    } */}
 
-                                        <CollapseHeader style={styles.collapseHeaderStyle} >
+
+                                    {
+                                         item.bottleQty == 'true' ? (
+                                            <CollapseHeader style={styles.collapseHeaderStyleForTrue} >
+                                            <View style={styles.nameOfBrandContainer} >
+                                                <Text key={i} style={styles.nameOfBrandTextStyleForTrue}  >
+                                                    {item.BRAND}
+                                                </Text>
+
+                                            </View>
+                                            <View style={styles.schemesIconContainer}>
+                                                <View style={styles.roundedtext}>
+                                                    <Image style={{ tintColor: "#EAA304" }}
+                                                        source={require('../../assets/Icons/Schemes_drawer.png')} />
+                                                </View>
+
+                                            </View>
+                                            <View style={styles.schemesDownArrowContainer} key={i}>
+
+                                                {this.SchemesArrow()}
+                                            </View>
+
+                                        </CollapseHeader>
+                                          ) :(
+                                            <CollapseHeader style={styles.collapseHeaderStyle} >
                                             <View style={styles.nameOfBrandContainer} >
                                                 <Text key={i} style={styles.nameOfBrandTextStyle}  >
                                                     {item.BRAND}
@@ -329,6 +405,9 @@ export class sideorderEdittNew extends Component {
                                             </View>
 
                                         </CollapseHeader>
+                                    )
+                                    }
+                                       
                                     
                                     <CollapseBody>
                                         <ListItem >
@@ -338,6 +417,7 @@ export class sideorderEdittNew extends Component {
                                                 list1={this.state.list1}
                                                 JoinString={this.state.JoinString}
                                                 outletId={this.props.entity_id} 
+                                                SublistExtendedParent={this.RefreshBrandList.bind(this)}
                                                 order_Id = {this.props.order_Id}/>
                                         </ListItem>
                                     </CollapseBody>
@@ -782,6 +862,19 @@ const styles = StyleSheet.create({
         // marginHorizontal: wp('4'),
     },
 
+    collapseHeaderStyleForTrue: {
+        alignItems: 'center',
+        alignSelf: 'center',
+        flexDirection: 'row',
+        backgroundColor: '#362828',
+        borderColor: '#E6DFDF',
+        borderRadius: wp('2'),
+        height: hp('9'),
+        width: wp('88'),
+        borderWidth: hp('0.2'),
+        // marginHorizontal: wp('4'),
+    },
+
     collapseHeaderStyleedit: {
         alignItems: 'center',
         alignSelf: 'center',
@@ -807,6 +900,15 @@ const styles = StyleSheet.create({
      //   fontSize: RFValue(13),
      fontSize:12,
         color: '#362828'
+    },
+
+    nameOfBrandTextStyleForTrue: {
+        marginLeft: wp('5'),
+      
+        fontFamily: 'Proxima Nova',
+     //   fontSize: RFValue(13),
+     fontSize:12,
+        color: '#FFFFFF'
     },
 
     nameOfBrandTextStyleedit: {

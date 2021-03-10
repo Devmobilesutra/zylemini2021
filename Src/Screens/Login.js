@@ -20,6 +20,7 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import NetInfo from '@react-native-community/netinfo';
 import {Item, Input, Icon, Label} from 'native-base';
+import DeviceInfo from 'react-native-device-info';
 //Screens
 import Logo from '../components/Logo';
 import Loader from '../components/Loader';
@@ -39,11 +40,12 @@ export class Login extends Component {
       isLoading: true,
       loading: false,
       icon: 'eye-off',
+      deviceId : ''
     };
     this.handleBackButtonClick = this.handleBackButtonClick.bind(this);
   }
   doLogin = async () => {
-    let {user, pass} = this.state;
+    let {user, pass,deviceId} = this.state;
     const unsubscribe = NetInfo.addEventListener(state => {
       //console.log("Connection type", state.type);
       //  alert(state.isConnected)
@@ -51,6 +53,8 @@ export class Login extends Component {
       //  this.setState({isInternet:state.isConnected})
       //console.log("Is connected?Out", isInternet);
     });
+    this.state.deviceId = DeviceInfo.getUniqueId();
+    console.log("device id :"+this.state.deviceId + " : "+DeviceInfo.getUniqueId())
 
     if (!isInternet) {
       alert('Please Check Your Internet Connection');
@@ -61,7 +65,7 @@ export class Login extends Component {
           AsyncStorage.setItem('usernamess', JSON.stringify(user));
           AsyncStorage.setItem('username', JSON.stringify(user));
           AsyncStorage.setItem('password', JSON.stringify(pass));
-          this.props.onLogin(user, pass, this.props.navigation);
+          this.props.onLogin(user, pass,this.state.deviceId, this.props.navigation);
         } else {
           // alert('Please Enter Password');
         }
@@ -204,8 +208,8 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => ({
-  onLogin: (username, password, navigation) => {
-    dispatch(login(username, password, navigation));
+  onLogin: (username, password,deviceid, navigation) => {
+    dispatch(login(username, password,deviceid, navigation));
   },
   isLoadingss: () => {
     dispatch(dispatch(loginLoading(false)));

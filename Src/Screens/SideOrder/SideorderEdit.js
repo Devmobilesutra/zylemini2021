@@ -843,7 +843,7 @@ console.log('large : '+this.props.large_Unit +" ; "+this.state.freeBox)
                                                     
                             if (dataId.length == 0 ) {                      
                                 AsyncStorage.setItem('app_order_id', JSON.stringify(app_order_id));  
-                                db.insertTABLE_TEMP_ORDER_DETAILS(app_order_id, this.props.ItemId, itemName, this.state.box, this.state.unit, this.state.freeBox, this.state.freeUnit, currentDateTime, "", this.state.enteredRate, this.state.bpc, this.state.amount, '1', 'true').then((data)=>
+                                db.insertTABLE_TEMP_ORDER_DETAILS(app_order_id, this.props.ItemId, itemName, this.state.box, this.state.unit, this.state.freeBox, this.state.freeUnit, currentDateTime, "", this.state.enteredRate, this.state.bpc, this.state.amount, '1', 'true',this.props.BrandId,entity_id,this.state.Collection_type).then((data)=>
                                 {
                                 totalOrderValue++
                                 this.props.orderValue(totalOrderValue) 
@@ -907,7 +907,7 @@ console.log('large : '+this.props.large_Unit +" ; "+this.state.freeBox)
                                             
                                                 AsyncStorage.setItem('app_order_id', JSON.stringify(app_order_id)); 
                                                                             
-                                                db.insertTABLE_TEMP_ORDER_DETAILS(app_order_id, this.props.ItemId, itemName, this.state.box, this.state.unit, this.state.freeBox, this.state.freeUnit, currentDateTime, "", this.state.enteredRate, this.state.bpc, this.state.amount, '1', 'true')
+                                                db.insertTABLE_TEMP_ORDER_DETAILS(app_order_id, this.props.ItemId, itemName, this.state.box, this.state.unit, this.state.freeBox, this.state.freeUnit, currentDateTime, "", this.state.enteredRate, this.state.bpc, this.state.amount, '1', 'true',this.props.BrandId,entity_id,this.state.Collection_type)
                                                 totalOrderValue++
                                                 this.props.orderValue(totalOrderValue) 
                                                 this.props.SublistExtendedParent(this.props.ItemId);

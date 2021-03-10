@@ -278,7 +278,7 @@ export default class Database {
 
                   db.transaction(tx => {
                     tx.executeSql(
-                      'CREATE TABLE OrderDetails(id INTEGER PRIMARY KEY AUTOINCREMENT,order_id TEXT,item_id TEXT,item_Name TEXT,quantity_one TEXT,quantity_two TEXT,small_Unit   TEXT,large_Unit  TEXT,rate TEXT ,Amount TEXT,selected_flag TEXT,sync_flag TEXT);',
+                      'CREATE TABLE OrderDetails(id INTEGER PRIMARY KEY AUTOINCREMENT,order_id TEXT,item_id TEXT,item_Name TEXT,quantity_one TEXT,quantity_two TEXT,small_Unit   TEXT,large_Unit  TEXT,rate TEXT ,Amount TEXT,selected_flag TEXT,sync_flag TEXT,bottleQty TEXT,BrandId TEXT,entityId TEXT,CollectionType TEXT);',
                     );
                   })
                     .then(() => {})
@@ -307,6 +307,14 @@ export default class Database {
                   })
                     .then(() => {})
                     .catch(error => {});
+
+                    db.transaction(tx => {
+                      tx.executeSql(
+                        'CREATE UNIQUE INDEX UniqueOrder ON TABLE_TEMP_ORDER_DETAILS(order_id,item_id);',
+                      );
+                    })
+                      .then(() => {})
+                      .catch(error => {});
 
                   db.transaction(tx => {
                     tx.executeSql(
@@ -1699,7 +1707,7 @@ export default class Database {
     rate,
     Amount,
     selected_flag,
-    sync_flag,
+    sync_flag,bottleQty,BrandId,entityId,CollectionType
   ) {
     // alert("detail inserted to main")
     return new Promise(resolve => {
@@ -1707,8 +1715,8 @@ export default class Database {
         .transaction(tx => {
           tx.executeSql(
             `insert into  OrderDetails(order_id,item_id,item_Name,quantity_one,quantity_two,small_Unit
-                 ,large_Unit,rate ,Amount,selected_flag,sync_flag  )
-                                                                  VALUES (?,?,?,?,?,?,?,?,?,?,?)`,
+                 ,large_Unit,rate ,Amount,selected_flag,sync_flag,bottleQty,BrandId,entityId,CollectionType  )
+                                                                  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
             [
               order_id,
               item_id,
@@ -1720,7 +1728,7 @@ export default class Database {
               rate,
               Amount,
               selected_flag,
-              sync_flag,
+              sync_flag,bottleQty,BrandId,entityId,CollectionType
             ],
             (tx, results) => {
               // var query = 'select sum(Amount) as TotalAmount from OrderDetails where OrderDetails.order_id = "' + order_id + '"'
@@ -3942,6 +3950,63 @@ export default class Database {
     });
   }
 
+  getBrandSearchDataForChangeBrandColorForEdit(searchkey, list1, joinString,entityId,collectionType) {
+    //// SELECT distinct BRAND , BRANDID FROM PItem where (%@ LIKE '%%%@%%') order by %@,BRAND",joinedString,search_text,search_product
+    var query =
+      'select distinct PItem.BRANDID,BRAND,TABLE_TEMP_ORDER_DETAILS.bottleQty from PItem INNER join TABLE_TEMP_ORDER_DETAILS on TABLE_TEMP_ORDER_DETAILS.BrandId = PItem.BRANDID where BRAND  like  "%' +
+      searchkey +
+      '%" and TABLE_TEMP_ORDER_DETAILS.entityId="' + entityId +'" and TABLE_TEMP_ORDER_DETAILS.CollectionType="'+collectionType +
+      '" UNION select distinct PItem.BRANDID,BRAND,OrderDetails.bottleQty from PItem INNER join OrderDetails on OrderDetails.BrandId = PItem.BRANDID where BRAND  like  "%' +
+      searchkey +
+      '%" and OrderDetails.entityId="' + entityId +'" and OrderDetails.CollectionType="'+collectionType +
+      '" and OrderDetails.BrandId NOT IN (select TABLE_TEMP_ORDER_DETAILS.BrandId from TABLE_TEMP_ORDER_DETAILS) ';
+      
+      
+      
+      // '"  order by "' +
+      // searchkey +
+      // '","' +
+      // list1 +
+      // '",' +
+      // joinString;
+       // var query = 'select distinct BRANDID,BRAND from PItem where BRAND  like %?% order by ?,?,?';
+    console.log('brand query : ' + query);
+    return new Promise(resolve => {
+      // this.initDB().then((db) => {
+      //console.log("in getFilterData 3");
+      db1
+        .transaction(tx => {
+          tx.executeSql(query, [], (tx, results) => {
+            var tempfilter = [];
+            for (let i = 0; i < results.rows.length; i++) {
+              tempfilter.push(results.rows.item(i));
+            }
+            var query1 = ' select distinct PItem.BRANDID,BRAND,CASE WHEN PItem.bottleQut IS NOT NULL THEN "false" ELSE "false" END bottleQty from PItem left join  OrderDetails on OrderDetails.BrandId = PItem.BRANDID  where BRAND  like "%' +
+            searchkey + '%" and PItem.BRANDID not in (select distinct PItem.BRANDID from PItem INNER join TABLE_TEMP_ORDER_DETAILS on TABLE_TEMP_ORDER_DETAILS.BrandId = PItem.BRANDID where BRAND  like "%' +
+            searchkey + '%" and TABLE_TEMP_ORDER_DETAILS.entityId="'+entityId+'" and TABLE_TEMP_ORDER_DETAILS.CollectionType="'+collectionType +
+            '" UNION select distinct PItem.BRANDID from PItem INNER join OrderDetails on OrderDetails.BrandId = PItem.BRANDID where BRAND  like "%' +
+            searchkey + '%" and OrderDetails.entityId="'+entityId+'" and OrderDetails.CollectionType="'+collectionType +
+            '" and OrderDetails.BrandId NOT IN (select TABLE_TEMP_ORDER_DETAILS.BrandId from TABLE_TEMP_ORDER_DETAILS) ) order by "' +
+            searchkey + '","' + list1 + '",' + joinString;
+            db1.transaction(tx => {
+              tx.executeSql(query1 ,[] ,(tx,results1) =>{
+                for (let i = 0; i < results1.rows.length; i++) {
+                  tempfilter.push(results1.rows.item(i));
+                }
+                console.log('te=', tempfilter);
+                resolve(tempfilter);
+              })
+            })
+            
+          });
+        })
+        .then(result => {})
+        .catch(err => {
+          //console.log(err);
+        });
+    });
+  }
+
   //  SELECT distinct ITEMSEQUENCE , ItemId ,PTR , BPC  FROM PItem where BRAND LIKE '%TE%' and BRANDID = '2996' order by "T","DIVISION",DIVISION
 
   getSubBrandSearchData(BrandId, searchkey, list1, joinString, outlet_id) {
@@ -5458,7 +5523,7 @@ export default class Database {
     return new Promise(resolve => {
       const products = [];
       var query =
-        'SELECT id,order_id,item_id,item_Name,quantity_one,quantity_two,small_Unit,large_Unit,from_date,to_date,rate,Amount FROM TABLE_TEMP_ORDER_DETAILS WHERE order_id ="' +
+        'SELECT id,order_id,item_id,item_Name,quantity_one,quantity_two,small_Unit,large_Unit,from_date,to_date,rate,Amount,bottleQty,BrandId,entityId,CollectionType FROM TABLE_TEMP_ORDER_DETAILS WHERE order_id ="' +
         order_id +
         '" ';
 
@@ -9147,6 +9212,38 @@ export default class Database {
         //console.log(err);
       });
   });
+  }
+
+  checkIsOrderIdInDbAct(entity_id, collection_type) {
+    const products = [];
+    var query =
+      'SELECT * FROM OrderMaster where entity_id = "' +
+      entity_id +
+      '" and collection_type="' +
+      collection_type +
+      '"';
+
+    return new Promise(resolve => {
+      db1
+        .transaction(tx => {
+          tx.executeSql(query, [], (tx, results) => {
+            var len = results.rows.length;
+            var checkorder = [];
+            for (let i = 0; i < results.rows.length; i++) {
+              checkorder.push(results.rows.item(i));
+            }
+            // checkorder=results.rows.length
+            //console.log("qcheckorder=", checkorder)
+            resolve(checkorder);
+          });
+        })
+        .then(result => {
+          //
+        })
+        .catch(err => {
+          //console.log(err);
+        });
+    });
   }
 
 }

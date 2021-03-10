@@ -7,6 +7,7 @@ import Dash from 'react-native-dash';
 import moment from 'moment';
 import { connect } from 'react-redux'
 import Database from './../../utility/Database'
+import User from './../../utility/User'
 import { Card, CardTitle, CardContent, CardAction, CardButton, CardImage } from 'react-native-cards';
 import { Item } from 'native-base';
 import axios from 'axios'
@@ -364,12 +365,12 @@ SubmitReport(Meeting_Id,PlannedDate)
     
   console.log("date passing post",datas);
 //  testing
-    const url = 'http://sapltest.com/ZyleminiPlusAPI/api/Data/PostData'
+ //   const url = 'http://sapltest.com/ZyleminiPlusAPI/api/Data/PostData'
 
      //live
-   //  const url = 'https://zyleminiplus.com/ZyleminiPlusCoreAPI/api/Data/PostData'
+  //   const url = 'https://zyleminiplus.com/ZyleminiPlusCoreAPI/api/Data/PostData'
 
-    axios.post(url, datas, {
+    axios.post(User.posturl, datas, {
         headers: headers
     }).then((response) => {
   

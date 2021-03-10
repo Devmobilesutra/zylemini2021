@@ -19,6 +19,7 @@ import {RFPercentage, RFValue} from 'react-native-responsive-fontsize';
 import axios from 'axios';
 import {connect} from 'react-redux';
 import Database from './../utility/Database';
+import User from './../utility/User';
 import Loader from '../components/LoaderSync';
 import {Icon} from 'react-native-elements';
 import RNFS from 'react-native-fs';
@@ -190,12 +191,11 @@ export default class SideMenu extends Component {
                 //   const url = 'http://zylemdemo.com/ZyleminiPlusCoreAPI/api/Data/PostData'
 
                 // testing
-                const url =
-                  'http://sapltest.com/ZyleminiPlusAPI/api/Data/PostData';
+              //  const url =  'http://sapltest.com/ZyleminiPlusAPI/api/Data/PostData';
                 //live
-                //   const url = 'http://zyleminiplus.com/ZyleminiPlusCoreAPI/api/Data/PostData'
+               //    const url = 'https://zyleminiplus.com/ZyleminiPlusCoreAPI/api/Data/PostData'
                 axios
-                  .post(url, this.state.JSONObj, {
+                  .post(User.posturl, this.state.JSONObj, {
                     headers: headers,
                   })
                   .then(response => {
@@ -316,10 +316,10 @@ export default class SideMenu extends Component {
     this.setState({isLoading: true});
     this.setState({messagetext: 'Getting Data from server..'});
     // testing
-    const url1 = 'http://sapltest.com/ZyleminiPlusAPI/api/Data/GetData';
+ //   const url1 = 'http://sapltest.com/ZyleminiPlusAPI/api/Data/GetData';
 
     // live
-    //   const url1 = "http://zyleminiplus.com/ZyleminiPlusCoreAPI/api/Data/GetData";
+    //   const url1 = "https://zyleminiplus.com/ZyleminiPlusCoreAPI/api/Data/GetData";
 
     //console.log("url is===", url1)
     //console.log("aaaaaaa========",response.data.Token)
@@ -327,7 +327,7 @@ export default class SideMenu extends Component {
       authheader: this.state.tokens,
     };
     axios
-      .get(url1, {
+      .get(User.GetUrl, {
         headers: headers1,
       })
       .then(res => {
@@ -542,6 +542,7 @@ export default class SideMenu extends Component {
   NavigateShop = () => {
     AsyncStorage.setItem('routeName', '');
     AsyncStorage.setItem('routeId', '');
+    AsyncStorage.setItem('beatName', '');
     Actions.Shops();
   };
 

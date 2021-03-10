@@ -4,6 +4,7 @@ import { alertActions } from './alertActions';
 
 import Dashboard from './../../Screens/Dashboard/Dashboard'
 import axios from 'axios'
+import User from './../../utility/User'
 
 import { NavigationActions } from 'react-navigation'
 import { ActionSheet } from 'native-base';
@@ -82,7 +83,7 @@ export const loginLoading = () => {
 
 
 
-export const login = (username, password, navigation) => {
+export const login = (username, password,deviceid, navigation) => {
     //console.log(username)
     //console.log(password)
     return (dispatch) => {
@@ -101,33 +102,33 @@ export const login = (username, password, navigation) => {
         // }
 
         //for dilip k
-        const headers = {
-            'LoginId': username,
-            'Password': password,
-            'ClientCode': "XXCPA2020",
-            'DeviceId': "111"
-        }
-
-          //for dinkars 
-        //   const headers = {
+        // const headers = {
         //     'LoginId': username,
         //     'Password': password,
-        //     'ClientCode': "GDWC2020",
+        //     'ClientCode': "XXCPA2020",
         //     'DeviceId': "111"
         // }
+
+          //for dinkars 
+          const headers = {
+            'LoginId': username,
+            'Password': password,
+            'ClientCode': "GDWC2020",
+            'DeviceId': deviceid
+        }
 
 
 
         //  const url2 = "http://zylemdemo.com/ZyleminiPlusCoreAPI/api/Login/Login";
 //testing
-        const url2 = "http://sapltest.com/ZyleminiPlusAPI/api/Login/Login";
+      //  const url2 = "http://sapltest.com/ZyleminiPlusAPI/api/Login/Login";
 
          // live 
-    //   const url2 = "http://zyleminiplus.com/ZyleminiPlusCoreAPI/api/Login/Login";
-        //console.log("url is===", url2)
+     //  const url2 = "https://zyleminiplus.com/ZyleminiPlusCoreAPI/api/Login/Login";
+        console.log("url is===", User.loginUrl)
         axios({
             method: 'post',
-            url: url2,
+            url: User.loginUrl,
             // 'user': 'xgnalla',
             // 'password': 'Beam@123',
             headers: headers
@@ -145,16 +146,16 @@ export const login = (username, password, navigation) => {
             //const url1 = "http://zylemdemo.com/ZyleminiPlusCoreAPI/api/Data/GetData"
 
               //  testing
-            const url1 = "http://sapltest.com/ZyleminiPlusAPI/api/Data/GetData"
+         //   const url1 = "http://sapltest.com/ZyleminiPlusAPI/api/Data/GetData"
 
               // live 
-        //  const url1 = "http://zyleminiplus.com/ZyleminiPlusCoreAPI/api/Data/GetData";
-            //console.log("url is===", url1)
+        //  const url1 = "https://zyleminiplus.com/ZyleminiPlusCoreAPI/api/Data/GetData";
+            console.log("url is===", User.GetUrl)
             //console.log("aaaaaaa========",response.data.Token)
             const headers1 = {
                 'authheader': response.data.Token
             }
-            axios.get(url1, {
+            axios.get(User.GetUrl, {
                 headers: headers1
             }).then(res => {
                 //  //console.log("rajani data1=",JSON.stringify(res))

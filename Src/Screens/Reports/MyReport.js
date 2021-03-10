@@ -119,7 +119,7 @@ export default class MyReport extends React.Component {
               </View>
             </View>
 
-            <View style={styles.pastSurveysCardContainer}>
+            {/* <View style={styles.pastSurveysCardContainer}>
               <View style={styles.pastSurveysCardBG}>
                 <View style={styles.pastSurveyimageContainer}>
                   <ImageBackground
@@ -141,9 +141,7 @@ export default class MyReport extends React.Component {
                     Daily Activity
                   </Text>
                 </View>
-                {/* <View style={styles.cardDashLineMainContainer}>
-                  <Text>View More</Text>
-                </View> */}
+               
                 <View style={styles.cardDashLineMainContainer}>
                   <TouchableOpacity>
                     <View style={styles.viewDetailesLabelContainer}>
@@ -158,7 +156,7 @@ export default class MyReport extends React.Component {
                   </TouchableOpacity>
                 </View>
               </View>
-            </View>
+            </View> */}
             {/* ///////////////////////////////////////////////Second Card////////////////////////////////////// */}
 
             <TouchableOpacity
@@ -249,7 +247,7 @@ export default class MyReport extends React.Component {
               </View>
             </TouchableOpacity>
             {/* //////////////////////////////////Outlet Performance///////////////////////////////////// */}
-            <TouchableOpacity style={styles.pastSurveysCardContainer}>
+            {/* <TouchableOpacity style={styles.pastSurveysCardContainer}>
               <View style={styles.pastSurveysCardBG}>
                 <View style={styles.pastSurveyimageContainer1}>
                   <ImageBackground
@@ -282,7 +280,7 @@ export default class MyReport extends React.Component {
                   </TouchableOpacity>
                 </View>
               </View>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
 
             {/* ///////////////////////////////////////////////TargetVS Achi////////////////////////////////////// */}
 
@@ -428,7 +426,7 @@ export default class MyReport extends React.Component {
                 </View>
                 <View style={styles.pastSurveyContainer1}>
                   <TouchableOpacity
-                    // onPress={() => Actions.OutletVisitReports()}
+                   //  onPress={() => Actions.OutletVisitReports()}
                     >
                     <Text style={styles.pastSurveyNameTextStyle1}>
                       Outlet Visit Report

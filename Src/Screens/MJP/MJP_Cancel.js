@@ -32,6 +32,7 @@ import Dialog, {
   SlideAnimation,
 } from 'react-native-popup-dialog';
 import { BackHandler } from 'react-native';
+import User from '../../utility/User';
 const db = new Database();
 var ID;
 class MJP_Cancel extends React.Component {
@@ -371,12 +372,12 @@ class MJP_Cancel extends React.Component {
       
         console.log("date passing post",datas);
         // testing
-          const url = 'http://sapltest.com/ZyleminiPlusAPI/api/Data/PostData'
+       //   const url = 'http://sapltest.com/ZyleminiPlusAPI/api/Data/PostData'
 
            //live
         //   const url = 'https://zyleminiplus.com/ZyleminiPlusCoreAPI/api/Data/PostData'
 
-          axios.post(url, datas, {
+          axios.post(User.posturl, datas, {
               headers: headers
           }).then((response) => {
         

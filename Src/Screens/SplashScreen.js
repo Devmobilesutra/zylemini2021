@@ -179,8 +179,9 @@ class SplashScreen extends React.Component {
   async componentDidMount() {
     setTimeout(() => {
       try {
-        AsyncStorage.setItem('deviceId', JSON.stringify(devices));
+       
         const devices = DeviceInfo.getUniqueId();
+        AsyncStorage.setItem('deviceId', JSON.stringify(devices));
 
         AsyncStorage.getItem('isLogged').then(
           keyValue => {

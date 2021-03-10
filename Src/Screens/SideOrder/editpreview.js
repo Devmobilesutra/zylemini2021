@@ -184,7 +184,7 @@ export class editpreview extends Component {
                                 item.quantity_one,
                                 item.quantity_two,
                                 item.small_Unit, item.large_Unit, item.rate,
-                                item.Amount, "1", "N")
+                                item.Amount, "1", "N",item.bottleQty,item.BrandId,item.entityId,item.CollectionType)
                         } else {
 
                             db.updateDetailMain(item.quantity_one,
@@ -477,7 +477,7 @@ export class editpreview extends Component {
                             width={wp('90')}
                             dialogTitle={
                               <DialogTitle
-                                title="Meeting Module"
+                                title="Order"
                               
                                 style={{
                                   backgroundColor: '#F7F7F8',

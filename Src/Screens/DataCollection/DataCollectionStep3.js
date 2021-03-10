@@ -172,7 +172,10 @@ export class DataCollectionStep3 extends Component {
                 this.state.orderData[k].rate,
                 this.state.orderData[k].Amount,
                 '1',
-                'N',
+                'N',this.state.orderData[k].bottleQty,
+                this.state.orderData[k].BrandId,
+                this.state.orderData[k].entityId,
+                this.state.orderData[k].CollectionType
               );
             } else {
               db.updateDetailMain(

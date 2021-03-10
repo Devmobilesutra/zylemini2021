@@ -397,6 +397,7 @@ export class Shops extends Component {
     var year = new Date().getFullYear();
     var datess = year + '-' + month + '-' + date;
     AsyncStorage.setItem('routeName', JSON.stringify(value));
+    AsyncStorage.setItem('beatName', JSON.stringify(value));
     db.getRouteId(this.state.selectedRouteName).then(data => {
       const abc = JSON.parse(data);
       let result = abc.map(a => a.RouteID);
@@ -442,8 +443,10 @@ export class Shops extends Component {
     ///////////////////////////////end....../////////////////////////
   };
 
-  navigate = shopid => {
+  navigate = (shopid,party) => {
     AsyncStorage.setItem('shopId', JSON.stringify(shopid));
+    AsyncStorage.setItem('outletName', JSON.stringify(party));
+    AsyncStorage.setItem('outletId', JSON.stringify(shopid));
     Actions.Info({shopId: shopid});
   };
   cardListViewsView = () => {
@@ -457,7 +460,7 @@ export class Shops extends Component {
           data={this.state.ShopsArray}
           renderItem={({item}) => (
             <View style={styles.shopListMainContainer}>
-              <TouchableOpacity  onPress={()=>this.navigate( item.id)}>
+              <TouchableOpacity  onPress={()=>this.navigate( item.id,item.party)}>
               {/* <TouchableOpacity onPress={() => Actions.Info({shopId: item.id})}> */}
                 <View style={styles.shopDetailBackStyle}>
                   <View style={styles.imageContainer}>

@@ -571,9 +571,9 @@ export class Info extends Component {
                                 })
                             }
                             else if (name == "bt_create") {
-                                AsyncStorage.setItem('outletName', "");
-                                AsyncStorage.setItem('outletId', "");
-                                AsyncStorage.setItem('beatName', "");
+                               // AsyncStorage.setItem('outletName', "");
+                              //  AsyncStorage.setItem('outletId', "");
+                               // AsyncStorage.setItem('beatName', "");
                                 AsyncStorage.setItem('beatId', "");
                                 AsyncStorage.setItem('distributorName', "");
                                 AsyncStorage.setItem('SearchString', "");

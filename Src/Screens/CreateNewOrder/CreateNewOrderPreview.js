@@ -205,7 +205,7 @@ export class CreateNewOrderPreview extends Component {
     AsyncStorage.getItem('app_order_id').then(keyValue => {
       var a = JSON.parse(keyValue);
       db.getOrderDataFromTempOrderDetails(a).then(data => {
-        //console.log("data=",data)
+        console.log("data=",data)
         this.setState({orderData: data});
         totalAmounts = 0;
         //
@@ -214,7 +214,7 @@ export class CreateNewOrderPreview extends Component {
         this.state.orderData.map((item, i) => {
           //console.log("sachins1.//////////////////////////////////////////=",k)
           db.checkOrderInOrderDetailsMain1(item.item_id, a).then(item_data => {
-            //console.log("item_data=",item_data)
+            console.log("item_data=",item_data)
             if (item_data.length == 0) {
               // [{"Amount":"700","rate":"2","to_date":"","from_date":"2020-4-15 14:23:54","large_Unit":"0","small_Unit":"0","quantity_two":"0","quantity_one":"35","item_Name":"{0062}DYC SELECT 180 ML X 48 42.8 %","item_id":"81","order_id":"1542020142354","id":1},
               // {"Amount":"60","rate":"3","to_date":"","from_date":"","large_Unit":"0","small_Unit":"0","quantity_two":"0","quantity_one":"2","item_Name":"{0063}DYC SELECT  375 ML X 24 42.8 %","item_id":"82","order_id":"1542020142354","id":11}]
@@ -230,7 +230,7 @@ export class CreateNewOrderPreview extends Component {
                 item.rate,
                 item.Amount,
                 '1',
-                'N',
+                'N',item.bottleQty,item.BrandId,item.entityId,item.CollectionType
               );
             } else {
               db.updateDetailMain(
@@ -249,7 +249,7 @@ export class CreateNewOrderPreview extends Component {
         }); ////end of for loop
 
         this.ordersavePopUp();
-        this.insertIntoOrderMaster();
+      //  this.insertIntoOrderMaster();
 
         // Alert.alert(
         //   'ZyleminiPlus',
@@ -554,7 +554,7 @@ export class CreateNewOrderPreview extends Component {
                         width={wp('90')}
                         dialogTitle={
                           <DialogTitle
-                            title="Meeting Module"
+                            title="Order"
                           
                             style={{
                               backgroundColor: '#F7F7F8',
@@ -574,8 +574,8 @@ export class CreateNewOrderPreview extends Component {
                               style={{backgroundColor: '#46BE50'}}
                               onPress={() => {
                                 this.setState({visiblepopup: false});
+                                this.insertIntoOrderMaster();
                                 Actions.Dashboard();
-                               // this.insertIntoOrderMaster();
                               }}
                             />
                           </DialogFooter>

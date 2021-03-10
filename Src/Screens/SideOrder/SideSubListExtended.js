@@ -208,6 +208,7 @@ console.log("all data for testing",outletId,id,search,JoinString,this.state.appo
       }
   
       this.setState({ list: this.state.list });
+      this.props.SublistExtendedParent();
     })
 
   }
@@ -259,6 +260,7 @@ console.log("all data for testing",outletId,id,search,JoinString,this.state.appo
                     quantity_two ={item.quantity_two}
                     rate ={item.rate}
                     amount={item.amount}
+                    BrandId = {id}
                     AppOrderId = {this.state.apporderid}
                     SublistExtendedParent={this.ComputeBottls.bind(this)}
                     refresh={this.refreshDelete.bind(this)}
