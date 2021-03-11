@@ -74,13 +74,84 @@ constructor(props) {
    
   
 }
+componentDidMount(){
+  
+  BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);  
+ 
+}
 
 componentWillMount() {
-    setTimeout(function(){this.setState({showWarning: true}); }.bind(this), 1000);  
-    BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
-   
+   // setTimeout(function(){this.setState({showWarning: true}); }.bind(this), 1000);  
+  //  BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
+  this._componentFocused()
+    this._sub = this.props.navigation.addListener(
+      'didFocus',
+      this._componentFocused
 
-    var date = new Date().getDate(); //Current Date
+ ); 
+ 
+
+//     var date = new Date().getDate(); //Current Date
+//     var month = new Date().getMonth() + 1; //Current Month
+//     var year = new Date().getFullYear(); //Current Year
+//     var hours = new Date().getHours(); //Current Hours
+//     var min = new Date().getMinutes(); //Current Minutes
+//     var sec = new Date().getSeconds(); //Current Seconds
+    
+
+//      if(month <= 9){
+//         month = '0'+ month;
+//     }
+
+//     if(date <= 9){
+//         date = '0' + date
+//     }
+
+//     if(hours <= 9){
+//         hours = '0' +hours
+//     }
+
+//     if(min <= 9)
+//     {
+//         min = '0' + min
+//     }
+
+//     if(sec <= 9){
+//         sec = '0' +sec
+//     }
+
+
+//  //   app_order_id = date + '/' + month + '/' + year + ' ' + hours + ':' + min + ':' + sec
+//   //  app_order_id = app_order_id.replace(/[|&:$%@"/" "()+,]/g, "");                  
+//     currentDateTime = year + '-' + month + '-' + date + ' ' + hours + ':' + min + ':' + sec
+
+//     this.setState({currentDate:moment().format('DD-MMM-YYYY')})
+//     console.log('currrwt : '+moment().format('DD-MMM-YYYY'))
+//     db.getPlannedDates().then((data)=>{
+//         this.setState({ Planned_dates: data})
+//     console.log("card data planned date",this.state.Planned_dates);
+//     console.log("first date",this.state.Planned_dates[0].PlannedDate);
+//    // this.setState({currentDate:this.state.Planned_dates[0].PlannedDate});
+//         db.GetMJPMasterDetails(this.state.currentDate).then((data)=>{
+//         console.log("shop Card info",data);
+//             this.setState({ Card_data: data })
+        
+//             console.log("card data for meet1",this.state.Card_data);
+        
+//         })
+//     })
+
+//     AsyncStorage.getItem('JWTToken').then((keyValue) => {
+
+//         const tok = JSON.parse((keyValue))
+//         this.setState({ tokens: tok })
+//     })
+
+   
+}
+
+_componentFocused(){
+  var date = new Date().getDate(); //Current Date
     var month = new Date().getMonth() + 1; //Current Month
     var year = new Date().getFullYear(); //Current Year
     var hours = new Date().getHours(); //Current Hours
@@ -135,8 +206,6 @@ componentWillMount() {
         const tok = JSON.parse((keyValue))
         this.setState({ tokens: tok })
     })
-
-   
 }
 
 
@@ -166,12 +235,12 @@ async NextDate(i)
            //   var nextDate = moment(month,"MM").add(-i, 'months').format('DD-MMM-YYYY');
               var new_date = moment(this.state.currentDate, "DD-MMM-YYYY").add(1, 'days');
                         var day = new_date.format('DD');
-          var month = new_date.format('MMM');
-          var year = new_date.format('YYYY');
-       var NextDate = day + '-' + month + '-' + year;
+                        var month = new_date.format('MMM');
+                        var year = new_date.format('YYYY');
+                    var NextDate = day + '-' + month + '-' + year;
         //  alert(day + '-' + month + '-' + year);
-              console.log('next date : '+new_date +" "+month);
-        console.log(this.state.Planned_dates[i].PlannedDate);
+         //     console.log('next date : '+new_date +" "+month);
+      //  console.log(this.state.Planned_dates[i].PlannedDate);
       await  this.setState({currentDate:NextDate})
         db.GetMJPMasterDetails(this.state.currentDate).then((data)=>{
             console.log("shop Card info",data);
@@ -610,10 +679,159 @@ showsVerticalScrollIndicator={false}>
                          dashColor = '#E6DFDF'
                      />
          </View>
-                 
+                 {
+                    (item.sync_flag == 'N' || item.sync_flag == null) ? (
+                   //   (item.sync_flag == null) ? (
+                        (item.Type_sync == 0) ? (
+                          <View style={{flexDirection:'row',justifyContent: 'center',alignContent: 'center'}}>
+                          <TouchableOpacity style={{marginLeft:('4%'),justifyContent: 'center',
+                          alignContent: 'center'}} onPress={() => Actions.MJP_Cancel({PlannedDate:item.PlannedDate,EntityTypeID:item.EntityTypeID,EntityType:item.EntityType,Meeting_Id:item.ID,IsActivityDone:item.IsActivityDone,ActivityTitle : item.ActivityTitle})}>
+                          <Text style={{color:'red',fontSize:wp('3.5%'),}}>
+                          CANCEL
+                          </Text>
+                           </TouchableOpacity> 
+                       <TouchableOpacity style={{justifyContent: 'center',alignContent: 'center'}}>
+                             <Text style={{color:'transparent',marginLeft:wp('8%') ,fontSize:wp('3.5%')}}>
+                             SUBMIT REPORT
+                             </Text>
+     
+                           </TouchableOpacity>
+                           
+                            <TouchableOpacity onPress={() => Actions.MJP_two({PlannedDate:item.PlannedDate,EntityTypeID:item.EntityTypeID,EntityType:item.EntityType,Meeting_Id:item.ID,IsActivityDone:item.IsActivityDone,ActivityTitle : item.ActivityTitle,currentDateTimestart : currentDateTime})}
+                            style={{
+                            width: wp('25%'),
+                            height: 35,
+                            borderRadius: 15,
+                            marginLeft:wp('8%'),
+                            margin:wp('2%'),
+                            backgroundColor: '#2FC36E',
+                            justifyContent: 'center',
+                            alignContent: 'center'
+                            }}
+                    >
+                      <Text style={{
+                        color: 'white',
+                        textAlign : 'center'
+                      }}>START</Text>
+                    </TouchableOpacity>
+                        </View> 
+                        ) :(
+                          <View style={{flexDirection:'row',justifyContent: 'center',alignContent: 'center'}}>
+                        <TouchableOpacity style={{marginLeft:('4%'),justifyContent: 'center',
+                        alignContent: 'center'}} >
+                        <Text style={{color:'transparent',fontSize:wp('3.5%'),}}>
+                        CANCEL
+                        </Text>
+                         </TouchableOpacity> 
+                     <TouchableOpacity style={{justifyContent: 'center',alignContent: 'center'}}
+                     onPress={() => Actions.MJP_two({PlannedDate:item.PlannedDate,EntityTypeID:item.EntityTypeID,EntityType:item.EntityType,Meeting_Id:item.ID,IsActivityDone:item.IsActivityDone,ActivityTitle : item.ActivityTitle,currentDateTimestart : currentDateTime})}>
+                           <Text style={{color:'blue',marginLeft:wp('8%') ,fontSize:wp('3.5%')}}>
+                          ADD NOTES
+                           </Text>
+   
+                         </TouchableOpacity>
+                         
+                          <TouchableOpacity  onPress={() => this.SubmitReport(item.ID,item.PlannedDate)}
+                          style={{
+                          width: wp('25%'),
+                          height: 35,
+                          borderRadius: 15,
+                          marginLeft:wp('9%'),
+                          margin:wp('2%'),
+                          backgroundColor: '#E23333',
+                          justifyContent: 'center',
+                          alignContent: 'center'
+                          }}
+                        >
+                          <Text style={{
+                            color: 'white',
+                            textAlign :'center'
+                          }}>END</Text>
+                        </TouchableOpacity>
+                            </View>
+                        )
+                      
+                    //   ) : (
+                    //     <View style={{flexDirection:'row',justifyContent: 'center',alignContent: 'center'}}>
+                    //     <TouchableOpacity style={{marginLeft:('4%'),justifyContent: 'center',
+                    //     alignContent: 'center'}} >
+                    //     <Text style={{color:'transparent',fontSize:wp('3.5%'),}}>
+                    //     CANCEL
+                    //     </Text>
+                    //      </TouchableOpacity> 
+                    //  <TouchableOpacity style={{justifyContent: 'center',alignContent: 'center'}}
+                    //  onPress={() => Actions.MJP_two({PlannedDate:item.PlannedDate,EntityTypeID:item.EntityTypeID,EntityType:item.EntityType,Meeting_Id:item.ID,IsActivityDone:item.IsActivityDone,ActivityTitle : item.ActivityTitle,currentDateTimestart : currentDateTime})}>
+                    //        <Text style={{color:'blue',marginLeft:wp('8%') ,fontSize:wp('3.5%')}}>
+                    //       ADD NOTES
+                    //        </Text>
+   
+                    //      </TouchableOpacity>
+                         
+                    //       <TouchableOpacity  onPress={() => this.SubmitReport(item.ID,item.PlannedDate)}
+                    //       style={{
+                    //       width: wp('25%'),
+                    //       height: 35,
+                    //       borderRadius: 15,
+                    //       marginLeft:wp('8%'),
+                    //       margin:wp('2%'),
+                    //       backgroundColor: '#2FC36E',
+                    //       justifyContent: 'center',
+                    //       alignContent: 'center'
+                    //       }}
+                    //     >
+                    //       <Text style={{
+                    //         color: 'white',
+                    //         textAlign : 'center'
+                    //       }}>END</Text>
+                    //     </TouchableOpacity>
+                    //         </View>
+                    //         )
 
-                {
-                    (item.sync_flag == 'N' || item.sync_flag == null) ?(
+                          ) : (
+                              <View style={{flexDirection:'row',justifyContent: 'center',alignContent: 'center'}}>
+                                <View style={styles.viewDetailesArrowContainer}>
+                                  <Image  style={styles.viewDetailsArrowStyle}
+                                      source = {require('../../assets/Icons/apply_green.png')}
+                                  />
+                              </View>
+                              <TouchableOpacity style={{marginLeft:('4%'),justifyContent: 'center',
+                          alignContent: 'center'}} >
+                          <Text style={{color:'#2FC36E',fontSize:wp('3.5%'), fontFamily: 'Proxima Nova',}}>
+                          Report Submited
+                          </Text>
+                           </TouchableOpacity>
+                            {/* <TouchableOpacity style={{justifyContent: 'center',alignContent: 'center'}}>
+                            <Text style={{color:'transparent',marginLeft:wp('8%') ,fontSize:wp('3.5%')}}>
+                          Submit report
+                            </Text>
+             
+                          </TouchableOpacity>
+                              
+                              <TouchableOpacity
+                                 style={{
+                                 width: wp('25%'),
+                                 height: 35,
+                                 borderRadius: 15,
+                                 marginLeft:wp('8%'),
+                                 margin:wp('2%'),
+                                 backgroundColor: '#2FC36E',
+                                 justifyContent: 'center',
+                                 alignContent: 'center'
+                                 }}
+                         >
+                           <Text style={{
+                             color: 'white',
+                             marginLeft:wp('6.5%')
+                           }}>View Details</Text>
+                         </TouchableOpacity> */}
+                         </View>
+                          
+                          )
+                          
+                      }
+
+                {/* {
+                    (item.sync_flag == 'N' || item.sync_flag == null) ? (
                         <View style={{flexDirection:'row',justifyContent: 'center',alignContent: 'center'}}>
                         <TouchableOpacity style={{marginLeft:('4%'),justifyContent: 'center',
                         alignContent: 'center'}} onPress={() => Actions.MJP_Cancel({PlannedDate:item.PlannedDate,EntityTypeID:item.EntityTypeID,EntityType:item.EntityType,Meeting_Id:item.ID,IsActivityDone:item.IsActivityDone,ActivityTitle : item.ActivityTitle})}>
@@ -624,9 +842,9 @@ showsVerticalScrollIndicator={false}>
                          {
                             (item.Type_sync == '1') ? (
                           <TouchableOpacity style={{justifyContent: 'center',alignContent: 'center'}}
-                         onPress={() => this.SubmitReport(item.ID,item.PlannedDate)}>
+                          onPress={() => Actions.MJP_two({PlannedDate:item.PlannedDate,EntityTypeID:item.EntityTypeID,EntityType:item.EntityType,Meeting_Id:item.ID,IsActivityDone:item.IsActivityDone,ActivityTitle : item.ActivityTitle,currentDateTimestart : currentDateTime})}>
                         <Text style={{color:'blue',marginLeft:wp('8%') ,fontSize:wp('3.5%')}}>
-                        SUBMIT REPORT
+                        ADD NOTES
                         </Text>
 
                       </TouchableOpacity>
@@ -653,7 +871,7 @@ showsVerticalScrollIndicator={false}>
               <Text style={{
                 color: 'white',
                 marginLeft:wp('6.5%')
-              }}>START</Text>
+              }}>END</Text>
             </TouchableOpacity>
                  </View> 
                   ) :(
@@ -725,7 +943,7 @@ showsVerticalScrollIndicator={false}>
                    </View>
                     )
                     )
-                }
+                } */}
                  {/* <TouchableOpacity style={{marginLeft:('4%'),justifyContent: 'center',
                     alignContent: 'center'}} onPress={() => Actions.MJP_Cancel({PlannedDate:item.PlannedDate,EntityTypeID:item.EntityTypeID,EntityType:item.EntityType,Meeting_Id:item.ID,IsActivityDone:item.IsActivityDone,ActivityTitle : item.ActivityTitle})}>
                     <Text style={{color:'red',fontSize:wp('3.5%'),}}>
@@ -1077,18 +1295,9 @@ const styles = StyleSheet.create({
       marginTop:hp('0.5'),
   },
 
-  viewDetailesArrowContainer:{
-      flexDirection:'column', 
-      alignItems:'flex-end',
-      marginTop:hp('0'),
-      marginRight:wp('4'),
-  },
+ 
 
-  viewDetailsArrowStyle:{
-      tintColor:'#3955CB', 
-      height:hp('3.5'), 
-      width:wp('3.5'),
-  },
+ 
   appliSchemesArrowContainer: {
     flex: 1,
     alignItems: 'flex-end',
@@ -1115,6 +1324,18 @@ const styles = StyleSheet.create({
     fontSize: wp('4'),
     color: '#3955CB',
   },
+  viewDetailesArrowContainer:{
+    flexDirection:'column', 
+    alignItems:'flex-start',
+    marginTop:hp('0'),
+   // marginRight:wp('4'),
+},
+
+viewDetailsArrowStyle:{
+  //  tintColor:'#3955CB', 
+    height:hp('5'), 
+    width:wp('5'),
+},
 
 })
         

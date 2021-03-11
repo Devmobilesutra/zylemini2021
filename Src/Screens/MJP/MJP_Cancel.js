@@ -382,7 +382,7 @@ class MJP_Cancel extends React.Component {
           }).then((response) => {
         
           console.log("response of post=", JSON.stringify(response.data))
-          console.log("url of post=", url)
+        //  console.log("url of post=", url)
           var responss = []
           
           if (response.data.Data.Order) {
@@ -438,7 +438,7 @@ class MJP_Cancel extends React.Component {
       return (
         <SafeAreaView >
           <View>
-          <Loader loading={this.state.isLoading} />
+          <Loader loading={this.state.isLoading} message={'Sending Data to server..'} />
           <View style={{flexDirection:'row'}}>
  <TouchableOpacity  onPress={() => this.props.navigation.navigate('Meeting')} style={{marginLeft:wp('7%'), marginTop:hp('3%')}}>
 <Image
@@ -620,7 +620,8 @@ style={{ width:30,height:30}}/>
                               style={{backgroundColor: '#46BE50'}}
                               onPress={() => {
                                 this.setState({visiblepopup: false});
-                                this.props.navigation.navigate('MJP_one')
+                                Actions.MJP_one();
+                              //  this.props.navigation.navigate('MJP_one')
                                // this.insertIntoOrderMaster();
                               }}
                             />

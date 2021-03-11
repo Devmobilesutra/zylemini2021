@@ -266,7 +266,7 @@ console.log("date passing post",datas);
   }).then((response) => {
 
       console.log("response of post=", JSON.stringify(response.data))
-      console.log("url of post=", url)
+    //  console.log("url of post=", url)
       var responss = []
       
       if (response.data.Data.Order) {
@@ -607,7 +607,8 @@ SaveAsDraftMeeting(e){
                               style={{backgroundColor: '#46BE50'}}
                               onPress={() => {
                                 this.setState({visiblepopup: false});
-                                this.props.navigation.navigate('MJP_one')
+                                Actions.MJP_one();
+                             //   this.props.navigation.navigate('MJP_one')
                                // this.insertIntoOrderMaster();
                               }}
                             />

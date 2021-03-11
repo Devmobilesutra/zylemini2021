@@ -3155,7 +3155,7 @@ export default class Database {
       //   var query = "select distinct CustomerId as id ,Party as Party,Outlet_Info as Outlet_Info from Pcustomer where CustomerId='" + id + "' union select  distinct OrderID as id ,OutletName as Party ,OutletAddress as Outlet_Info from newpartyoutlet where OrderID ='" + id + "' order by Party asc"
       //  var query = "select * from MJPMasterDetails where PlannedDate='" + currentDate + "'"
       var query =
-        "select MJPMasterDetails.*,OrderMaster.id,OrderMaster.sync_flag,OrderMaster.ActivityStatus,MeetReport.Type_sync from MJPMasterDetails left JOIN OrderMaster on MJPMasterDetails.ID = OrderMaster.DefaultDistributorId left join MeetReport on MJPMasterDetails.ID = MeetReport.Meeting_Id where MJPMasterDetails.PlannedDate='" +
+        "select MJPMasterDetails.*,OrderMaster.id,OrderMaster.sync_flag,OrderMaster.ActivityStatus,ifnull(MeetReport.Type_sync,0) as Type_sync from MJPMasterDetails left JOIN OrderMaster on MJPMasterDetails.ID = OrderMaster.DefaultDistributorId left join MeetReport on MJPMasterDetails.ID = MeetReport.Meeting_Id where MJPMasterDetails.PlannedDate='" +
         currentDate +
         "'";
       console.log('getShopCardInfo', query);
@@ -3950,15 +3950,15 @@ export default class Database {
     });
   }
 
-  getBrandSearchDataForChangeBrandColorForEdit(searchkey, list1, joinString,entityId,collectionType) {
+  getBrandSearchDataForChangeBrandColorForEdit(searchkey, list1, joinString,entityId,collectionType,orderId) {
     //// SELECT distinct BRAND , BRANDID FROM PItem where (%@ LIKE '%%%@%%') order by %@,BRAND",joinedString,search_text,search_product
     var query =
       'select distinct PItem.BRANDID,BRAND,TABLE_TEMP_ORDER_DETAILS.bottleQty from PItem INNER join TABLE_TEMP_ORDER_DETAILS on TABLE_TEMP_ORDER_DETAILS.BrandId = PItem.BRANDID where BRAND  like  "%' +
       searchkey +
-      '%" and TABLE_TEMP_ORDER_DETAILS.entityId="' + entityId +'" and TABLE_TEMP_ORDER_DETAILS.CollectionType="'+collectionType +
+      '%" and TABLE_TEMP_ORDER_DETAILS.entityId="' + entityId +'" and TABLE_TEMP_ORDER_DETAILS.CollectionType="'+collectionType + '" and TABLE_TEMP_ORDER_DETAILS.order_id="'+orderId +
       '" UNION select distinct PItem.BRANDID,BRAND,OrderDetails.bottleQty from PItem INNER join OrderDetails on OrderDetails.BrandId = PItem.BRANDID where BRAND  like  "%' +
       searchkey +
-      '%" and OrderDetails.entityId="' + entityId +'" and OrderDetails.CollectionType="'+collectionType +
+      '%" and OrderDetails.entityId="' + entityId +'" and OrderDetails.CollectionType="'+collectionType + '" and OrderDetails.order_id="'+ orderId +
       '" and OrderDetails.BrandId NOT IN (select TABLE_TEMP_ORDER_DETAILS.BrandId from TABLE_TEMP_ORDER_DETAILS) ';
       
       
@@ -3983,9 +3983,9 @@ export default class Database {
             }
             var query1 = ' select distinct PItem.BRANDID,BRAND,CASE WHEN PItem.bottleQut IS NOT NULL THEN "false" ELSE "false" END bottleQty from PItem left join  OrderDetails on OrderDetails.BrandId = PItem.BRANDID  where BRAND  like "%' +
             searchkey + '%" and PItem.BRANDID not in (select distinct PItem.BRANDID from PItem INNER join TABLE_TEMP_ORDER_DETAILS on TABLE_TEMP_ORDER_DETAILS.BrandId = PItem.BRANDID where BRAND  like "%' +
-            searchkey + '%" and TABLE_TEMP_ORDER_DETAILS.entityId="'+entityId+'" and TABLE_TEMP_ORDER_DETAILS.CollectionType="'+collectionType +
+            searchkey + '%" and TABLE_TEMP_ORDER_DETAILS.entityId="'+entityId+'" and TABLE_TEMP_ORDER_DETAILS.CollectionType="'+collectionType + '" and TABLE_TEMP_ORDER_DETAILS.order_id="'+orderId +
             '" UNION select distinct PItem.BRANDID from PItem INNER join OrderDetails on OrderDetails.BrandId = PItem.BRANDID where BRAND  like "%' +
-            searchkey + '%" and OrderDetails.entityId="'+entityId+'" and OrderDetails.CollectionType="'+collectionType +
+            searchkey + '%" and OrderDetails.entityId="'+entityId+'" and OrderDetails.CollectionType="'+collectionType + '" and OrderDetails.order_id="'+ orderId +
             '" and OrderDetails.BrandId NOT IN (select TABLE_TEMP_ORDER_DETAILS.BrandId from TABLE_TEMP_ORDER_DETAILS) ) order by "' +
             searchkey + '","' + list1 + '",' + joinString;
             db1.transaction(tx => {

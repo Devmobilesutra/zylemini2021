@@ -165,7 +165,7 @@ export class sideorderEdittNew extends Component {
                         //     this.searchResultss();
                         // })
 
-                        db.getBrandSearchDataForChangeBrandColorForEdit('', this.state.list1, this.state.JoinString,this.props.entity_id,this.props.collection_type).then((data) => {
+                        db.getBrandSearchDataForChangeBrandColorForEdit('', this.state.list1, this.state.JoinString,this.props.entity_id,this.props.collection_type,this.props.order_Id).then((data) => {
                             this.state.dataSource = []
                             this.setState({
                                 dataSource: data.sort(function (a, b) {
@@ -201,7 +201,7 @@ export class sideorderEdittNew extends Component {
                         //     this.searchResultss();
                         // })
 
-                        db.getBrandSearchDataForChangeBrandColorForEdit('', this.state.list1, this.state.JoinString,this.props.entity_id,this.props.collection_type).then((data) => {
+                        db.getBrandSearchDataForChangeBrandColorForEdit('', this.state.list1, this.state.JoinString,this.props.entity_id,this.props.collection_type,this.props.order_Id).then((data) => {
                             this.state.dataSource = []
                             this.setState({
                                 dataSource: data.sort(function (a, b) {
@@ -244,7 +244,7 @@ export class sideorderEdittNew extends Component {
         //     });
         // })
 
-        db.getBrandSearchDataForChangeBrandColorForEdit(text, this.state.list1, this.state.JoinString,this.props.entity_id,this.props.collection_type).then((data) => {
+        db.getBrandSearchDataForChangeBrandColorForEdit(text, this.state.list1, this.state.JoinString,this.props.entity_id,this.props.collection_type,this.props.order_Id).then((data) => {
             this.state.dataSource = []
             this.setState({
                 dataSource: data.sort(function (a, b) {
@@ -264,7 +264,7 @@ export class sideorderEdittNew extends Component {
                 this.setState({ search: JSON.parse(keyValue) })
                 this.setState({ isbrandSelect: 'true' })
 
-                db.getBrandSearchDataForChangeBrandColorForEdit(this.state.search, this.state.list1, this.state.JoinString,this.props.entity_id,this.props.collection_type).then((data) => {
+                db.getBrandSearchDataForChangeBrandColorForEdit(this.state.search, this.state.list1, this.state.JoinString,this.props.entity_id,this.props.collection_type,this.props.order_Id).then((data) => {
                     this.state.dataSource = []
                     this.setState({
                         dataSource: data.sort(function (a, b) {
