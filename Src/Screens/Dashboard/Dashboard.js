@@ -298,101 +298,103 @@ export class Dashboard extends Component {
 
   render() {
     return (
-      <View style={{flex: 10}}>
-        <ScrollView>
-          {/* Header */}
-          <View style={{flex: 0.3, backgroundColor: '#221818'}}>
-            <Text
-              style={{
-                color: 'white',
-                fontSize: 30,
-                type: 'font-awesome',
-                marginTop: hp('4%'),
-                marginLeft: wp('2%'),
-                marginBottom: hp('3%'),
-              }}>
-              Hello, {this.state.username}
-            </Text>
-          </View>
-          <TodaysRoute />
-          <Today />
-          <Payment />
-          <Schemes />
-          <MyProductivity />
-        </ScrollView>
+      //   <View style={{flex: 10}}>
+      //     <ScrollView>
+      //       {/* Header */}
+      //       <View style={{flex: 0.3, backgroundColor: '#221818'}}>
+      //         <Text
+      //           style={{
+      //             color: 'white',
+      //             fontSize: 30,
+      //             type: 'font-awesome',
+      //             marginTop: hp('4%'),
+      //             marginLeft: wp('2%'),
+      //             marginBottom: hp('3%'),
+      //           }}>
+      //           Hello, {this.state.username}
+      //         </Text>
+      //       </View>
+      //       <TodaysRoute />
+      //       <Today />
+      //       <Payment />
+      //       <Schemes />
+      //       <MyProductivity />
+      //     </ScrollView>
 
-        <FloatingAction
-          open={open}
-          color="#a10d59"
-          actions={actions}
-          buttonSize={hp('9.5')}
-          floatingIcon={
-            this.state.active == false
-              ? require('../../assets/Icons/Floating.png')
-              : require('../../assets/Icons/FAB_Close_Menu.png')
-          }
-          iconWidth={wp(20)}
-          iconHeight={hp(16)}
-          // iconWidth={wp(5)}
-          // iconHeight={hp(3)}
-          shadow="null"
-          overlayColor="#221818"
-          showBackground={true}
-          onPressItem={name => {
-            if (name == 'bt_accessibility') {
-              AsyncStorage.setItem('outletName', '');
-              AsyncStorage.setItem('outletId', '');
-              AsyncStorage.setItem('beatName', '');
-              AsyncStorage.setItem('beatId', '');
-              AsyncStorage.setItem('distributorName', '');
-              AsyncStorage.setItem('SearchString', '');
-              //console.log(`selected button: ${name}`);
-              //  alert(name)
-              Actions.CreateNewOrderFirst();
-              this.setState({
-                active: !this.state.active,
-              });
-            } else if (name == 'collection') {
-              AsyncStorage.setItem('outletNameDC', '');
-              AsyncStorage.setItem('outletIdDC', '');
-              AsyncStorage.setItem('beatNameDC', '');
-              AsyncStorage.setItem('beatIdDC', '');
-              AsyncStorage.setItem('SearchStringDC', '');
-              Actions.DataCollectionStep1();
-              this.setState({
-                active: !this.state.active,
-              });
-            } else if (name == 'add_shop') {
-              //  Actions.AddNewShop();
-              Actions.Shops();
-            }
-          }}
-          onPressMain={() => {
-            if (this.state.active == false) {
-              this.setState({
-                active: !this.state.active,
-              });
-              // BackHandler.addEventListener('hardwareBackPress', () => Actions.drawerMenu());
-            } else {
-              this.setState({
-                active: !this.state.active,
-              });
-            }
-          }}
-          onPressBackdrop={() => {
-            if (this.state.active == false) {
-              this.setState({
-                active: !this.state.active,
-              });
-              //BackHandler.addEventListener('hardwareBackPress', () => Actions.drawerMenu());
-            } else {
-              this.setState({
-                active: !this.state.active,
-              });
-            }
-          }}
-        />
-      </View>
+      //     <FloatingAction
+      //       open={open}
+      //       color="#a10d59"
+      //       actions={actions}
+      //       buttonSize={hp('9.5')}
+      //       floatingIcon={
+      //         this.state.active == false
+      //           ? require('../../assets/Icons/Floating.png')
+      //           : require('../../assets/Icons/FAB_Close_Menu.png')
+      //       }
+      //       iconWidth={wp(20)}
+      //       iconHeight={hp(16)}
+      //       // iconWidth={wp(5)}
+      //       // iconHeight={hp(3)}
+      //       shadow="null"
+      //       overlayColor="#221818"
+      //       showBackground={true}
+      //       onPressItem={name => {
+      //         if (name == 'bt_accessibility') {
+      //           AsyncStorage.setItem('outletName', '');
+      //           AsyncStorage.setItem('outletId', '');
+      //           AsyncStorage.setItem('beatName', '');
+      //           AsyncStorage.setItem('beatId', '');
+      //           AsyncStorage.setItem('distributorName', '');
+      //           AsyncStorage.setItem('SearchString', '');
+      //           //console.log(`selected button: ${name}`);
+      //           //  alert(name)
+      //           Actions.CreateNewOrderFirst();
+      //           this.setState({
+      //             active: !this.state.active,
+      //           });
+      //         } else if (name == 'collection') {
+      //           AsyncStorage.setItem('outletNameDC', '');
+      //           AsyncStorage.setItem('outletIdDC', '');
+      //           AsyncStorage.setItem('beatNameDC', '');
+      //           AsyncStorage.setItem('beatIdDC', '');
+      //           AsyncStorage.setItem('SearchStringDC', '');
+      //           Actions.DataCollectionStep1();
+      //           this.setState({
+      //             active: !this.state.active,
+      //           });
+      //         } else if (name == 'add_shop') {
+      //           //  Actions.AddNewShop();
+      //           Actions.Shops();
+      //         }
+      //       }}
+      //       onPressMain={() => {
+      //         if (this.state.active == false) {
+      //           this.setState({
+      //             active: !this.state.active,
+      //           });
+      //           // BackHandler.addEventListener('hardwareBackPress', () => Actions.drawerMenu());
+      //         } else {
+      //           this.setState({
+      //             active: !this.state.active,
+      //           });
+      //         }
+      //       }}
+      //       onPressBackdrop={() => {
+      //         if (this.state.active == false) {
+      //           this.setState({
+      //             active: !this.state.active,
+      //           });
+      //           //BackHandler.addEventListener('hardwareBackPress', () => Actions.drawerMenu());
+      //         } else {
+      //           this.setState({
+      //             active: !this.state.active,
+      //           });
+      //         }
+      //       }}
+      //     />
+      //   </View>
+      //
+      <View />
     );
   }
 }
