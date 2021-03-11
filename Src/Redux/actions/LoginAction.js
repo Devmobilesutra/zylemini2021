@@ -75,10 +75,59 @@ const changedata = (username, password, data) => {
   };
 };
 export const loginLoading = () => {
+<<<<<<< HEAD
   return dispatch => {
     dispatch(loginIsLoading(false));
   };
 };
+=======
+    return (dispatch) => {
+        dispatch(loginIsLoading(false));
+    }
+}
+
+
+
+export const login = (username, password,deviceid, navigation) => {
+    //console.log(username)
+    //console.log(password)
+    return (dispatch) => {
+        dispatch(loginIsLoading(true));
+        if (!username || !password) {
+            dispatch(loginHasError(true));
+            dispatch(loginIsLoading(false));
+            return;
+        }
+        //for xgNalla
+        // const headers = {
+        //     'LoginId': username,
+        //     'Password': password,
+        //     'ClientCode': "XXCPA2020",
+        //     'Id': "fac0f60a90df40f8"
+        // }
+
+        //for dilip k
+        const headers = {
+            'LoginId': username,
+            'Password': password,
+            'ClientCode': "XXCPA2020",
+            'DeviceId': "111"
+        }
+
+        //for dinkars 
+        //   const headers = {
+        //     'LoginId': username,
+        //     'Password': password,
+        //     'ClientCode': "GDWC2020",
+        //     'DeviceId': deviceid
+        // }
+
+
+
+        //  const url2 = "http://zylemdemo.com/ZyleminiPlusCoreAPI/api/Login/Login";
+//testing
+      //  const url2 = "http://sapltest.com/ZyleminiPlusAPI/api/Login/Login";
+>>>>>>> 2574db5291427c70636687e96fa20b25ab833430
 
 export const login = (username, password, deviceid, navigation) => {
   //console.log(username)
@@ -146,6 +195,7 @@ export const login = (username, password, deviceid, navigation) => {
 
         // live
         //  const url1 = "https://zyleminiplus.com/ZyleminiPlusCoreAPI/api/Data/GetData";
+<<<<<<< HEAD
         console.log('url is===', User.GetUrl);
         //console.log("aaaaaaa========",response.data.Token)
         const headers1 = {
@@ -171,6 +221,42 @@ export const login = (username, password, deviceid, navigation) => {
                 if (results) {
                   dispatch(loginIsLoading(false));
                   Actions.App();
+=======
+            console.log("url is===", User.GetUrl)
+            //console.log("aaaaaaa========",response.data.Token)
+            const headers1 = {
+                'authheader': response.data.Token
+            }
+            axios.get(User.GetUrl, {
+                headers: headers1
+            }).then(res => {
+                //  //console.log("rajani data1=",JSON.stringify(res))
+                if (res.data) {
+
+                    dispatch(loginHasError(false));
+                    dispatch(isLogged("true"));
+                    dispatch(changedata(username, password))
+                    const data = JSON.stringify(res.data)
+                    //console.log("rajani data=",JSON.stringify(data))
+                    // db.insertAllData(data)
+                    //   dispatch(dispatchAll(data))
+                    //  dispatch(insertAllData(data))
+                    db.insertAllData(data).then((results) => {
+                        // alert(results)
+                        if (results) {
+                            dispatch(loginIsLoading(false));
+                            Actions.App()
+                        }
+                     })
+                    dispatch(changedata(username, password, data))
+                    dispatch(alertActions.success('Login successful...........'));
+                    AsyncStorage.setItem('isLogged', "true");
+                    AsyncStorage.setItem('isLogged', "true");
+                }
+                else {
+                    alert("Invalid Credentials")
+                    dispatch(loginIsLoading(false));
+>>>>>>> 2574db5291427c70636687e96fa20b25ab833430
                 }
               });
               dispatch(changedata(username, password, data));
