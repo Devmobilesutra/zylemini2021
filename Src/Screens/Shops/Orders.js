@@ -8,6 +8,7 @@ import { FloatingAction } from "react-native-floating-action";
 import { ORDER_DELEVERED,ORDER_IN_PROCESS,ORDER_TOTAL} from '../../Redux/actions/ShopAction'
 import { connect } from 'react-redux'
 import Database from './../../utility/Database'
+import User from '../../utility/User';
 const db = new Database();
 
 var open
@@ -357,13 +358,13 @@ _renderView(item){
                               })
                     }
                     else if(name == "bt_create"){ 
-                        AsyncStorage.setItem('outletName',"");
-                        AsyncStorage.setItem('outletId',"");
-                        AsyncStorage.setItem('beatName',"");
+                      //  AsyncStorage.setItem('outletName',"");
+                      //  AsyncStorage.setItem('outletId',"");
+                      //  AsyncStorage.setItem('beatName',"");
                         AsyncStorage.setItem('beatId',"");
                         AsyncStorage.setItem('distributorName',"");      
                         AsyncStorage.setItem('SearchString', "");          
-                       
+                       User.FlagForNavigation ='Orders'
                             Actions.CreateNewOrderFirst()
                             this.setState({ 
                                 active: !this.state.active,

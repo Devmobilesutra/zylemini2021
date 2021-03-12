@@ -9,8 +9,10 @@ import Geolocation from 'react-native-geolocation-service';
 import Geocoder from 'react-native-geocoding';
 import { TOTAL_SHOPS, SHOP_INFO, SHOP_VISITED_TODAY } from '../../Redux/actions/ShopAction'
 import { connect } from 'react-redux'
+import RNFS from 'react-native-fs';
 import MapView, { Polyline, Marker } from "react-native-maps";
 import Database from './../../utility/Database'
+import User from './../../utility/User'
 const db = new Database();
 var open
 
@@ -56,6 +58,7 @@ const actions = [
 var outletId = ''
 var InfoString = ''
 var shop = ''
+var NewPartyImageDetails = []; 
 var Latitude, Longitude, RegisterOn, Owner, Contact, ShopType, RegistrationNo, ShopId, ContactPerson, ShopArea, Address
 export class Info extends Component {
     constructor(props) {
@@ -66,7 +69,9 @@ export class Info extends Component {
             userLatitude: 0,
             userLongitude: 0,
             totalVisited: '',
-            active: false
+            active: false,
+            newPartyImagedetails1 :[],
+            newPartyImagedetails :[]
         };
         //  alert(this.props.shopId)  
         this.props.navigation.setParams({
@@ -184,6 +189,7 @@ export class Info extends Component {
     componentWillMount() {
         BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
         //console.log("componentDidMount callee")
+        
         this._componentFocused();
 
         this._sub = this.props.navigation.addListener(
@@ -228,7 +234,8 @@ export class Info extends Component {
         // this.setState({Area:Areas})
         // this.setState({Address:Addresss})
         // this.setState({Contact:Contacts})
-        // })   
+        // })  
+      
         db.getOutletInfo(this.props.shopId).then((data) => {
             //console.log("my data==",JSON.stringify(data))
             for (var i = 0; i < data.length; i++) {
@@ -278,6 +285,32 @@ export class Info extends Component {
                 AsyncStorage.setItem('shopId', JSON.stringify(this.props.shopId));
 
             }
+           // this.state.newPartyImagedetails = [];
+            NewPartyImageDetails = []; 
+            db.getNewPartyImageDetailForInfo(this.props.shopId).then(data => {
+                console.log('new party len : '+data.length)
+                if (data.length > 0) {
+                //  this.setState({newPartyImagedetails1: data});
+                  console.log('new party : '+JSON.stringify(data))
+                 
+                  data.map((item, key) => {
+                    var bytess;
+                    this.state.newPartyImagedetails = [];
+                    console.log('image path : '+item.ImagePath)
+                    RNFS.readFile(item.ImagePath, 'base64').then(res => {
+                      bytess = res;
+                      this.state.newPartyImagedetails.push({
+                        data: bytess,
+                      });
+                      NewPartyImageDetails = this.state.newPartyImagedetails;
+                      console.log('new party Images base 64 : '+JSON.stringify(NewPartyImageDetails))
+                    });
+                  
+                  });
+                
+                  
+                 }
+              });
             // var nameArr = InfoString.split('||');
             // var Areas=InfoString.split('||')[0]
             // var Addresss=InfoString.split('||')[1]
@@ -291,12 +324,38 @@ export class Info extends Component {
             // this.setState({Contact:Contacts})
         })
 
+       
+
 
         var date = new Date().getDate();
         var month = new Date().getMonth() + 1;
         var year = new Date().getFullYear();
         var datess = year + '-' + month + '-' + date
     }
+
+    
+    _renderViewForImages(){
+
+    if(NewPartyImageDetails.length > 0){
+        return NewPartyImageDetails.map((item, i) => {
+        return(
+           
+            <Image style={styles.horiImageStyles}
+            source={{uri: `data:image/jpeg;base64,${item.data}`}}/>
+            
+        )
+            })
+    }
+    // else{
+    //     return(
+            
+    //           <Image style={styles.horiImageStyles}
+    //             source={require('../../assets/ShopInfoImg/Koala.jpg')}
+    //            />
+    //      )
+    // }
+}
+
     render() {
         const {
 
@@ -333,11 +392,13 @@ export class Info extends Component {
                                     showsHorizontalScrollIndicator={false}
                                     showsVerticalScrollIndicator={false}
                                 >
-                                    <Image style={styles.horiImageStyles}
+
+                            {this._renderViewForImages()} 
+
+                                    {/* <Image style={styles.horiImageStyles}
                                         source={require('../../assets/ShopInfoImg/Koala.jpg')}
                                     />
-                                    {/* <Image style={styles.horiImageStyles}
-                                     source={{uri: base64Icon}}/> */}
+                                   
                                     <Image style={styles.horiImageStyles}
                                         source={require('../../assets/ShopInfoImg/Desert.jpg')}
                                     />
@@ -346,7 +407,7 @@ export class Info extends Component {
                                     />
                                     <Image style={styles.horiImageStyles}
                                         source={require('../../assets/ShopInfoImg/Penguins.jpg')}
-                                    />
+                                    /> */}
                                 </ScrollView>
                             </View>
                         </View>
@@ -580,7 +641,8 @@ export class Info extends Component {
                                 AsyncStorage.setItem('beatId', "");
                                 AsyncStorage.setItem('distributorName', "");
                                 AsyncStorage.setItem('SearchString', "");
-
+                                
+                                User.FlagForNavigation ='Info'
                                 Actions.CreateNewOrderFirst()
                                 this.setState({
                                     active: !this.state.active,

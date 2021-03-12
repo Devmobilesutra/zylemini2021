@@ -202,6 +202,7 @@ db.insertRecordInOrderMasterForShopCheckIn(app_order_id,curentDatetime,"1",this.
           pressed=true
          
         }) 
+        this.setState({CheckInText : 'CHECK IN'})
         alert("Checkout Successfully..")
       }
      

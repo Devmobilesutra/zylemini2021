@@ -30,6 +30,8 @@ import Autocomplete from 'react-native-autocomplete-input';
 import {USER_ID} from '../../Redux/actions/DashboardAction';
 import Database from './../../utility/Database';
 import {connect} from 'react-redux';
+import User from '../../utility/User';
+import { Use } from 'react-native-svg';
 const db = new Database();
 
 const entity = [
@@ -98,7 +100,7 @@ export class CreateNewOrderFirst extends Component {
           justifyContent: 'center',
           alignSelf: 'center',
         }}>
-        <TouchableOpacity onPress={() => Actions.Dashboard()}>
+        <TouchableOpacity onPress={() => CreateNewOrderFirst.handleBackPressArraow() }>
           <Image
             style={{marginLeft: wp('4')}}
             source={require('../../assets/Icons/Back_White.png')}
@@ -155,6 +157,16 @@ export class CreateNewOrderFirst extends Component {
   handleBackButtonClick() {
     Actions.drawerMenu();
     return true;
+  }
+  static handleBackPressArraow() {
+  //  console.log('back press : '+User.FlagForNavigation)
+    if(User.FlagForNavigation === "Info"){
+      Actions.Info();
+    }else if(User.FlagForNavigation === "Orders"){
+      Actions.Orders();
+    }else if(User.FlagForNavigation === "Dashboard"){
+      Actions.Dashboard();
+    }
   }
   _componentFocused() {
     db.getAllData().then(data => {});

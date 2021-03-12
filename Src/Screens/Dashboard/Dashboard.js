@@ -32,6 +32,7 @@ const utils = new utilss();
 import {connect} from 'react-redux';
 import Database from './../../utility/Database';
 import {color} from 'react-native-reanimated';
+import User from '../../utility/User';
 const db = new Database();
 const actions = [
   {
@@ -356,6 +357,7 @@ export class Dashboard extends Component {
               AsyncStorage.setItem('SearchString', '');
               //console.log(`selected button: ${name}`);
               //  alert(name)
+              User.FlagForNavigation = 'Dashboard'
               Actions.CreateNewOrderFirst();
               this.setState({
                 active: !this.state.active,

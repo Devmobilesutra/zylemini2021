@@ -10,6 +10,7 @@ import {
   Alert,
 } from 'react-native';
 import moment from 'moment';
+import RNFS from 'react-native-fs';
 import Moment from 'react-moment';
 import {pascalCase} from 'change-case';
 SQLite.DEBUG(true);
@@ -2168,8 +2169,8 @@ export default class Database {
 
   insertOrderMaster(OrderMaster){
     if (OrderMaster.length) {
-      // db1.transaction(tx => {
-      //   tx.executeSql('DELETE FROM OrderMaster  ', []).then(([tx, results]) => {
+       db1.transaction(tx => {
+         tx.executeSql('DELETE FROM OrderMaster where sync_flag= "Y" ', []).then(([tx, results]) => {
           db1.transaction(tx => {
               var len = OrderMaster.length;
               var count = 0;
@@ -2214,8 +2215,8 @@ export default class Database {
             .catch(err => {
               //console.log(err);
             });
-       // });
-    //  });
+       });
+     });
     }
   }
 
@@ -7189,7 +7190,7 @@ export default class Database {
 
   getNewPartyOutletSyncData() {
     var query =
-      "SELECT OrderID as Id,BitID as BeatId,OutletName as outletName,ContactNo as ContactNumber,OwnersName as OwnersName,OutletAddress as OutletAddress,latitude as Latitude,longitude as Longitude,AddedDate as AddedOnDate, ('ShopType:' || ShopType || '||' || 'RegistrationNo:'|| RegistrationNo || '||' || 'ShopId:' || ShopId || '||' || 'ContactPerson:' ||ContactPerson || '||' || 'ShopArea:' || ShopArea) AS Remark from newpartyoutlet where Is_Sync='N';";
+      "SELECT OrderID as Id,BitID as BeatId,OutletName as outletName,ContactNo as ContactNumber,OwnersName as OwnersName,OutletAddress as OutletAddress,latitude as Latitude,longitude as Longitude,AddedDate as AddedOnDate, ('ShopType:' || ShopType || '||' || 'RegistrationNo:'|| RegistrationNo || '||' || 'ContactPerson:' || ContactPerson || '||' || 'ShopArea:' || ShopArea) AS Remark from newpartyoutlet where Is_Sync='N';";
     return new Promise(resolve => {
       db1
         .transaction(tx => {
@@ -7297,6 +7298,43 @@ export default class Database {
         });
     });
   }
+
+
+  getNewPartyImageDetailForInfo(OrderId) {
+    var query =
+      'select ImagePath from newpartyImageoutlet where OrderId = "'+OrderId +'"';
+    //console.log("q---", query)
+    return new Promise(resolve => {
+      db1 .transaction(tx => {
+          tx.executeSql(query, [], (tx, results) => {
+            var ImageDetails = [];
+            var ImageBytes =[];
+            for (let i = 0; i < results.rows.length; i++) {
+              ImageDetails.push(results.rows.item(i));
+            }
+            // ImageDetails.map((item, key) =>  {
+            //   var bytess;
+            // //  console.log('image path : '+results.rows.item(i).ImagePath)
+            //  // ImageDetails.push(results.rows.item(i));
+            //   RNFS.readFile(item.ImagePath, 'base64').then(res => {
+            //     bytess = res;
+            //     ImageBytes.push({
+            //       data: bytess,
+            //     });
+            //     console.log('bytes : '+JSON.stringify(ImageBytes))
+            //   });
+            // })
+             resolve(ImageDetails);
+          });
+         
+        })
+        .then(result => {})
+        .catch(err => {
+          //console.log(err);
+        });
+    });
+  }
+
 
   getAssetDetailData() {
     var query =

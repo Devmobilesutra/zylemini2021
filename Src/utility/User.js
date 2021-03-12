@@ -36,6 +36,7 @@ const User = {
   location: null,
   Remarks: null,
   Meeting_Id: null,
+  FlagForNavigation :'',
   // for testing
   loginUrl: 'http://sapltest.com/ZyleminiPlusAPI/api/Login/Login',
   GetUrl: 'http://sapltest.com/ZyleminiPlusAPI/api/Data/GetData',

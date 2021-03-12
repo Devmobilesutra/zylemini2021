@@ -65,7 +65,7 @@ export class AddNewShopSecond extends Component {
   NextButton = () => {
     var currentDateTimeFilename = '';
    // if (this.state.ShopType) {
-     if (this.state.ShopId) {
+  //   if (this.state.ShopId) {
 //if(this.state.ShopArea){
             if(this.state.ShopRegNo){
     var date = new Date().getDate(); //Current Date
@@ -100,9 +100,10 @@ export class AddNewShopSecond extends Component {
 //      alert("Enter ShopArea")    
 //      }
 // 
- }else{
-     alert("Enter ShopId")
- }
+// }
+//  else{
+//      alert("Enter ShopId")
+//  }
 // Actions.Shops()
 //}
 //  else{
@@ -157,6 +158,7 @@ export class AddNewShopSecond extends Component {
                               <TextInput
                                       placeholder= "Type Here"
                                        keyboardType= "numeric"
+                                       maxLength={10}
                                       style={styles.nameTextBoxSelfContainer}
                                       onChangeText={text => this.setState({contactPersonMob:text})}
                                   />
@@ -195,7 +197,7 @@ export class AddNewShopSecond extends Component {
                       </View>
       
                       {/* Shop Id */}
-                      <View>
+                      {/* <View>
                           <View style={styles.nameMainContainer}>
                               <Text style={styles.nameTextStyle}>
                                   SHOP ID
@@ -209,7 +211,7 @@ export class AddNewShopSecond extends Component {
                                       onChangeText={text => this.setState({ShopId:text})}
                                   />
                           </View>
-                      </View>
+                      </View> */}
       
                       {/* Shop Area */}
                       <View>
