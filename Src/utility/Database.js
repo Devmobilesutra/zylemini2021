@@ -619,6 +619,11 @@ export default class Database {
           this.insertOrderMaster(OrderMaster);
         }
 
+        if (abc.OrderDetails) {
+          let OrderDetails = abc.OrderDetails;
+          this.insertOrderDetailsGetData(OrderDetails);
+        }
+
         // if (abc.CollectionType) {
         //   let CollectionType = (abc.CollectionType)
         //   this.insertCollectionType(CollectionType)
@@ -2220,6 +2225,51 @@ export default class Database {
     }
   }
 
+  insertOrderDetailsGetData(OrderDetails){
+    if (OrderDetails.length) {
+       db1.transaction(tx => {
+         tx.executeSql('DELETE FROM OrderDetails where sync_flag= "Y" ', []).then(([tx, results]) => {
+          db1.transaction(tx => {
+              var len = OrderDetails.length;
+              var count = 0;
+
+              for (var item of OrderDetails) {
+          
+                tx.executeSql(
+                  `insert into OrderDetails(order_id, item_id, item_Name, quantity_one, quantity_two, small_Unit
+                    , large_Unit, rate, Amount, selected_flag, sync_flag) VALUES (?,?,?,?,?,?,?,?,?,?,?)`,
+                  [
+                    item.OrderID,
+                    item.ItemID,
+                    '',
+                    item.LargeUnit,
+                    item.SmallUnit,
+                    item.FreeSmallUnit,
+                    item.FreeLargeUnit,
+                    item.Rate,
+                    item.Amount,
+                    '1',
+                    'Y',
+
+                  ],
+                  (tx, results) => {},
+                  err => {
+                    console.error('error=', err);
+                  },
+                );
+              }
+            })
+            .then(result => {
+              //
+            })
+            .catch(err => {
+              //console.log(err);
+            });
+       });
+     });
+    }
+  }
+
   insertoutletAssetInformation(outletAssetInformationData) {
     if (outletAssetInformationData.length) {
       db1.transaction(tx => {
@@ -2888,6 +2938,33 @@ export default class Database {
             var tempRoute = [];
             tempRoute = JSON.stringify(tempRouteId);
             resolve(tempRoute);
+          });
+        })
+        .then(result => {
+          //
+        })
+        .catch(err => {
+          //console.log(err);
+        });
+    });
+  }
+
+  getItemName(ItemId) {
+    return new Promise(resolve => {
+      const products = [];
+      var query =
+        "select PItem.ITEMSEQUENCE from PItem where PItem.ItemId='" + ItemId + "'";
+      //   this.initDB().then((db) => {
+      db1
+        .transaction(tx => {
+          tx.executeSql(query, [], (tx, results) => {
+            var itemName = '';
+            for (let i = 0; i < results.rows.length; i++) {
+              itemName = results.rows.item(i);
+            }
+           // var tempRoute = [];
+           // tempRoute = JSON.stringify(tempRouteId);
+            resolve(itemName);
           });
         })
         .then(result => {
@@ -6379,7 +6456,8 @@ export default class Database {
 
   getDetailsItem(id) {
     console.log('id in details ' + id);
-    var query = 'select * from OrderDetails where order_id="' + id + '" ';
+  //  var query = 'select * from OrderDetails where order_id="' + id + '" ';
+  var query = 'select OrderDetails.order_id,OrderDetails.item_id,OrderDetails.quantity_one,OrderDetails.quantity_two,OrderDetails.small_Unit,OrderDetails.large_Unit,OrderDetails.rate,OrderDetails.Amount,OrderDetails.selected_flag,OrderDetails.sync_flag,OrderDetails.bottleQty, PItem.ITEMSEQUENCE as item_Name from OrderDetails INNER JOIN PItem on OrderDetails.item_id = PItem.ItemId  where order_id="' + id + '" ';
     //console.log("checkIsOrderIdInDb=", query)
     return new Promise(resolve => {
       //  this.initDB().then((db) => {
