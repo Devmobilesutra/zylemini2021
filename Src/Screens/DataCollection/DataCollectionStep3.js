@@ -24,6 +24,13 @@ import {
   CollapseHeader,
   CollapseBody,
 } from 'accordion-collapse-react-native';
+import Dialog, {
+  DialogContent,
+  DialogFooter,
+  DialogButton,
+  DialogTitle,
+  SlideAnimation
+} from 'react-native-popup-dialog';
 import {Thumbnail, List, ListItem, Separator} from 'native-base';
 import moment from 'moment';
 import EditInlineDataCollection from './EditInlineDataCollection';
@@ -52,6 +59,7 @@ export class DataCollectionStep3 extends Component {
       outletId: '',
       outletName: '',
       visible: '',
+      visiblepopup :'',
       // selectedStartDate: '',
       visiblecal: '',
       visiblecal1: '',
@@ -80,8 +88,6 @@ export class DataCollectionStep3 extends Component {
   }
 
   handleBackButtonClick() {
-    Actions.DataCollectionStep2();
-
     return true;
   }
 
@@ -308,12 +314,98 @@ export class DataCollectionStep3 extends Component {
           AsyncStorage.setItem('distributorNameDC', '');
           AsyncStorage.setItem('SearchStringDC', '');
 
-          Actions.Dashboard();
+         // Actions.Dashboard();
+         this.ordersavePopUp();
         }
       });
     });
     });
   }
+
+
+  ordersavePopUp = () => {
+    const {navigation} = this.props;
+    this.setState({visiblepopup: true});
+  };
+
+  renderPopup(){
+    return(
+
+                  <TouchableOpacity onPress={this.ordersavePopUp.bind(this)}>
+                    <View>
+                      {/* <Button
+                                                title="Show Dialog"
+                                                onPress={() => {
+                                                this.setState({ visible: true });
+                                                }}
+                                            /> */}
+                      <Dialog
+                        visible={this.state.visiblepopup}
+                        dialogAnimation={new SlideAnimation({
+                          slideFrom: 'bottom',
+                        })}
+                        onTouchOutside={() => {
+                          this.setState({visiblepopup: true});
+                        }}
+                        width={wp('90')}
+                        dialogTitle={
+                          <DialogTitle
+                            title="Data Collection"
+                          
+                            style={{
+                              backgroundColor: '#F7F7F8',
+                              height : wp('15'),
+                              alignItems :'center'
+                             
+                            }}
+                            hasTitleBar={false}
+                            align="left"
+                          />
+                        }
+                        footer={
+                          <DialogFooter>
+                            <DialogButton
+                              text="OK"
+                              textStyle={{color: 'white'}}
+                              style={{backgroundColor: '#46BE50'}}
+                              onPress={() => {
+                                this.setState({visiblepopup: false});
+                              //  this.insertIntoOrderMaster();
+                                Actions.Dashboard();
+                              }}
+                            />
+                          </DialogFooter>
+                        }>
+                        <DialogContent>
+                          <View style={styles.appliSchemesMainContainer}>
+                            <View style={styles.appliSchemesRowContainer}>
+                              {/* <View style={styles.roundedtext}>
+                                <Image
+                                  style={{tintColor: '#EAA304'}}
+                                  source={require('../../assets/Icons/Schemes_drawer.png')}
+                                />
+                              </View> */}
+
+                              <Text style={styles.appliSchemeTextStyle}>
+                              Data collected successfully..
+                              </Text>
+                            </View>
+                          </View>
+                         
+                        </DialogContent>
+                      </Dialog>
+                    </View>
+
+                    {/* <Image
+                      style={styles.appliSchemesArrowStyle}
+                      source={require('../../assets/Icons/right_arrow_blue.png')}
+                    /> */}
+                  </TouchableOpacity>
+               
+    )
+}
+
+
   setamount = amount => {
     this.setState({amount: amount});
   };
@@ -597,6 +689,7 @@ export class DataCollectionStep3 extends Component {
                 <Text style={styles.buttonText}> SUBMIT </Text>
               </View>
             </View>
+            {this.renderPopup()}
           </TouchableOpacity>
         </ImageBackground>
       </View>
@@ -848,5 +941,24 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     fontWeight: 'bold',
     fontFamily: 'Proxima Nova',
+  },
+  appliSchemesMainContainer: {
+    flex: 1,
+    marginVertical: wp('10'),
+  },
+
+  appliSchemesRowContainer: {
+    flex: 1,
+    alignItems: 'flex-start',
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+  },
+
+  appliSchemeTextStyle: {
+    marginLeft: wp('2'),
+    fontFamily: 'Proxima Nova',
+    fontSize: wp('4'),
+    color: '#3955CB',
   },
 });

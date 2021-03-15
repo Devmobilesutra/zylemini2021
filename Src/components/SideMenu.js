@@ -559,6 +559,7 @@ export default class SideMenu extends Component {
     AsyncStorage.setItem('beatIdDC', '');
 
     AsyncStorage.setItem('SearchStringDC', '');
+    Actions.drawerToggle();
     Actions.DataCollectionStep1();
   };
 
