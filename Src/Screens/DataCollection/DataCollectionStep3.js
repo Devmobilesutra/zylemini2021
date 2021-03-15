@@ -201,6 +201,9 @@ export class DataCollectionStep3 extends Component {
     //console.log("insert into master main////////////////////////////////")
     AsyncStorage.getItem('app_order_idDC').then(keyValue => {
       var a = JSON.parse(keyValue);
+      AsyncStorage.getItem('ActivityStart').then((keyValue) => {
+        // this.setState({ outletId: JSON.parse(keyValue) })
+        var ActivityStart = JSON.parse(keyValue)
       //console.log("ljhkjk",a)
       db.getOrderDataFromTempOrderMaster(
         a,
@@ -221,6 +224,14 @@ export class DataCollectionStep3 extends Component {
               //var  newDate = moment(datess, 'yyyy-MM-dd').format('yyyy-MMM-dd')
               newDate = moment().format('YYYY-MMM-DD');
 
+          
+              var hours = new Date().getHours(); //Current Hours
+              var min = new Date().getMinutes(); //Current Minutes
+              var sec = new Date().getSeconds(); //Current Seconds
+             
+            var ActivityEnd = year + '-' + month + '-' + date + ' ' + hours + ':' + min + ':' + sec
+             
+
               db.insertOrderMastersss(
                 this.state.MasterorderData[0].id,
                 this.state.MasterorderData[0].Current_date_time,
@@ -228,7 +239,7 @@ export class DataCollectionStep3 extends Component {
                 this.state.MasterorderData[0].entity_id,
                 this.state.MasterorderData[0].latitude,
                 this.state.MasterorderData[0].longitude,
-                this.state.MasterorderData[0].total_amount,
+                '0',
                 this.props.datacollection.fromDate,
                 this.props.datacollection.toDate,
                 this.props.datacollection.collectiontype,
@@ -237,11 +248,11 @@ export class DataCollectionStep3 extends Component {
                 '1',
                 'N',
                 datess,
-                '',
+                '0',
                 newDate,
                 '0',
-                '1',
-                '2',
+                ActivityStart,
+                ActivityEnd,
               );
               // db.deleteTempOrderDetails(this.state.MasterorderData[0].entity_id, "0")
               // db.deleteTempOrderMater(this.state.MasterorderData[0].entity_id, "0")
@@ -253,7 +264,7 @@ export class DataCollectionStep3 extends Component {
                 this.state.MasterorderData[0].entity_id,
                 this.state.MasterorderData[0].latitude,
                 this.state.MasterorderData[0].longitude,
-                this.state.MasterorderData[0].total_amount,
+                '0',
                 this.props.datacollection.fromDate,
                 this.props.datacollection.toDate,
                 this.state.MasterorderData[0].id,
@@ -297,9 +308,10 @@ export class DataCollectionStep3 extends Component {
           AsyncStorage.setItem('distributorNameDC', '');
           AsyncStorage.setItem('SearchStringDC', '');
 
-          Actions.DataCollectionStep1();
+          Actions.Dashboard();
         }
       });
+    });
     });
   }
   setamount = amount => {

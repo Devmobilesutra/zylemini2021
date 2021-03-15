@@ -41,7 +41,7 @@ export  class EditInlineDataCollection extends Component {
         super(props);
         this.state = { 
             box: 0, unit: 0, freeBox: 0, freeUnit: 0, boxRate: '', unitRate: '', grossAmount: '', discountRs: '', discountPer: '', totalAmount: '',
-            applyScemes: '', selectedDiscount: '', selectedRatePer: '', ptr: '', bpc: '', amount: '',
+            applyScemes: '', selectedDiscount: '', selectedRatePer: '', ptr: '', bpc: '', amount: '0.00',
             ratePerArr: [],
             discountArr: [{ "id": "1", "name": "Rate" }, { "id": "2", "name": "Net" },{ "id": "2", "name": "Percent" }],
             entity_type: '1', userid: '52362', editRateFlagDb: '', enteredRate: '', userLatitude: '',
@@ -242,7 +242,7 @@ export  class EditInlineDataCollection extends Component {
     
                         //console.log("app order id=", app_order_id)
                         AsyncStorage.setItem('app_order_idDC', JSON.stringify(app_order_id));
-                        db.insertTABLE_TEMP_OrderMaster(app_order_id, currentDateTime, this.state.entity_type, entity_id, this.state.userLatitude, this.state.userLongitude, this.state.amount,this.props.datacollection.collectiontype, this.props.dashboard.userId, 1)
+                        db.insertTABLE_TEMP_OrderMaster(app_order_id, currentDateTime, this.props.datacollection.entityType, entity_id, this.state.userLatitude, this.state.userLongitude, this.state.amount,this.props.datacollection.collectiontype, this.props.dashboard.userId, 1)
                       
                         AsyncStorage.setItem('app_order_idDC', JSON.stringify(app_order_id));
     

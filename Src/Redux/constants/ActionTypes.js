@@ -50,6 +50,7 @@ export const QR_CODE='QR_CODE'
 export const SERVEY_INFO='SERVEY_INFO'
 
 export const RADIOBUTTONINFO='RADIOBUTTONINFO'
+export const ENTITYTYPEINFO='ENTITYTYPEINFO'
 
 export const TOTAL_DATA_COLLECTED='TOTAL_DATA_COLLECTED'
 export const FromToDate='FromToDate'

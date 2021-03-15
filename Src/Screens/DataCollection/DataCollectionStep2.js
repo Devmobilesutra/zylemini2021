@@ -257,6 +257,9 @@ RefreshBrandList(){
 
 componentWillMount() { 
        
+  console.log('entity type : ' + this.props.datacollection.entityType)
+  console.log('collection type : '+this.props.datacollection.collectiontype)
+  console.log('from date to date : '+this.props.datacollection.fromDate + '  to date : '+this.props.datacollection.toDate)
 
     AsyncStorage.getItem('outletIdDC').then((keyValue) => {
         this.setState({ outletId: JSON.parse(keyValue) })

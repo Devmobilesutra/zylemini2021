@@ -3,7 +3,8 @@ import * as ActionTypes from '../constants/ActionTypes'
 const initialState = {
     radiovalue:0,
     collectiontype:1,
-    dataCollected:0
+    dataCollected:0,
+    entityType :1
 };
 
 
@@ -15,6 +16,11 @@ const DataCollectionReducer = (state=initialState, action) =>
                 return Object.assign({}, state, {                 
                     radiovalue: action.radiovalue,
                     collectiontype:action.collectiontype,                
+                            
+              });
+              case ActionTypes.ENTITYTYPEINFO:
+                return Object.assign({}, state, {                 
+                    entityType:action.entityType,                
                             
               });
               case ActionTypes.TOTAL_DATA_COLLECTED:

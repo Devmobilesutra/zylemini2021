@@ -11,6 +11,16 @@ export const RADIOBUTTONINFO =(radiovalue,collectiontype)=>{
    }
 }
 
+export const ENTITYTYPEINFO =(entityType)=>{  
+    return (dispatch) => {
+        dispatch({
+        type: ActionTypes.ENTITYTYPEINFO,
+        entityType:entityType,
+                
+    }) 
+   }
+}
+
 export const TOTAL_DATA_COLLECTED = (dataCollected) => {
     return (dispatch) => {
     dispatch({

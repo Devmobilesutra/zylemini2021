@@ -59,7 +59,7 @@ class meetings extends React.Component {
              console.log("meetings shop data",this.state.shop_data);
              
             })
-            db.getShopCardInfo("1654").then((data)=>{
+            db.getShopCardInfo(shopId).then((data)=>{
              console.log("shop Card info",data);
             this.setState({ Card_data: data })
              

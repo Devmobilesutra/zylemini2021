@@ -41,6 +41,7 @@ import moment from 'moment';
 import {
   RADIOBUTTONINFO,
   FromToDate,
+  ENTITYTYPEINFO,
 } from './../../Redux/actions/DataCollectionAction';
 
 const API = 'https://swapi.co/api';
@@ -51,8 +52,8 @@ var datess;
 var newDate;
 var newDate2;
 var newDate3;
-var selectedStartDate1;
-var selectedStartDate2;
+var selectedStartDate1 ='';
+var selectedStartDate2 ='';
 var selectedStartDate3;
 var Collection_types;
 
@@ -80,11 +81,15 @@ export class DataCollectionStep1 extends Component {
       visiblecal2: '',
       visiblecal3: '',
       getRouteId: '',
+      DistributorData: [],
+      selectedDist: '',
+      selectedDistId :'',
     };
 
     this.handleBackButtonClick = this.handleBackButtonClick.bind(this);
     AsyncStorage.setItem('radioValueDC', JSON.stringify(0));
     this.props.radioButtonInfo(0, 1);
+    this.props.EntityTypeInfo(1);
     // AsyncStorage.setItem('entityType', '1');
   }
 
@@ -120,19 +125,47 @@ export class DataCollectionStep1 extends Component {
   };
 
   NextButton = () => {
-    if (this.state.query) {
-      if (this.state.radioValue == 0) {
-        //console.log("in if.......")
-        this.props.fromTotos(selectedStartDate1, selectedStartDate2);
-      } else if (this.state.radioValue == 1) {
-        //console.log("in else.......")
-        this.props.fromTotos('', selectedStartDate3);
-      }
+    var date = new Date().getDate(); //Current Date
+    var month = new Date().getMonth() + 1; //Current Month
+    var year = new Date().getFullYear(); //Current Year
+    var hours = new Date().getHours(); //Current Hours
+    var min = new Date().getMinutes(); //Current Minutes
+    var sec = new Date().getSeconds(); //Current Seconds
+    var ActivityStart =
+      year + '-' + month + '-' + date + ' ' + hours + ':' + min + ':' + sec;
 
-      Actions.DataCollectionStep2();
-    } else {
-      alert('Please Select Outlet');
+    AsyncStorage.setItem('ActivityStart', JSON.stringify(ActivityStart));
+
+    if(this.state.shopClick == true){
+      if (this.state.query) {
+        if (this.state.radioValue == 0) {
+          //console.log("in if.......")
+          this.props.fromTotos(selectedStartDate1, selectedStartDate2);
+        } else if (this.state.radioValue == 1) {
+          //console.log("in else.......")
+          this.props.fromTotos('', selectedStartDate3);
+        }
+  
+        Actions.DataCollectionStep2();
+      } else {
+        alert('Please Select Outlet');
+      }
+    }else{
+      if(this.state.selectedDistId){
+        if (this.state.radioValue == 0) {
+          //console.log("in if.......")
+          this.props.fromTotos(selectedStartDate1, selectedStartDate2);
+        } else if (this.state.radioValue == 1) {
+          //console.log("in else.......")
+          this.props.fromTotos('', selectedStartDate3);
+        }
+  
+        Actions.DataCollectionStep2();
+      }else {
+        alert('Please Select Distributor');
+      }
     }
+  
   };
 
   componentWillMount() {
@@ -148,6 +181,13 @@ export class DataCollectionStep1 extends Component {
       this.state.beatData = [];
       this.setState({beatData: data});
     });
+
+    db.getDistributorData().then(data => {
+      //  dist = data
+      this.state.DistributorData = [];
+      this.setState({DistributorData: data});
+    });
+
     //console.log("3333333")
     this._subscribe = this.props.navigation.addListener('didFocus', () => {
       this._componentFocused();
@@ -419,6 +459,7 @@ export class DataCollectionStep1 extends Component {
   ShopClick = () => {
     //console.log("5555")
     if (this.state.shopClick == false) {
+   //   this.props.EntityTypeInfo(1);
       return (
         <View style={styles.SDCardBG}>
           <View style={styles.ITColContainer}>
@@ -431,6 +472,7 @@ export class DataCollectionStep1 extends Component {
         </View>
       );
     } else if (this.state.shopClick == true) {
+      this.props.EntityTypeInfo(1);
       return (
         <View style={styles.SDCardBGClickTrue}>
           <View style={styles.ITColContainer}>
@@ -447,6 +489,7 @@ export class DataCollectionStep1 extends Component {
 
   distributorClick = () => {
     if (this.state.distributorClick == false) {
+     // this.props.EntityTypeInfo(0);
       return (
         <View style={styles.SDCardBG}>
           <View style={styles.ITColContainer}>
@@ -459,6 +502,7 @@ export class DataCollectionStep1 extends Component {
         </View>
       );
     } else if (this.state.distributorClick == true) {
+      this.props.EntityTypeInfo(0);
       return (
         <View style={styles.SDCardBGClickTrue}>
           <View style={styles.ITColContainer}>
@@ -472,6 +516,59 @@ export class DataCollectionStep1 extends Component {
       );
     }
   };
+
+  _renderDistributor() {
+    const beat = [];
+    const BeatId =[];
+    for (var i = 0; i < this.state.DistributorData.length; i++) {
+      beat.push({
+        value: this.state.DistributorData[i].Distributor,
+      });
+      BeatId.push({
+        value: this.state.DistributorData[i].DistributorID
+    })
+    }
+    return (
+      <Dropdown
+        containerStyle={styles.dropDownContainer}
+        animationDuration={0}
+        rippleCentered={true}
+        itemColor="#ADA2A2"
+        inputContainerStyle={{borderBottomColor: 'transparent'}}
+        pickerStyle={{width: wp('87.3')}}
+        rippleOpacity={0}
+        fontSize={12}
+        //  onSelect = {(index,value)=>{this.onClickDropDown(index,value)}}
+        placeholder="Select"
+        dropdownPosition={-5.3}
+        dropdownOffset={{top: 14, left: 18}}
+        value={this.state.selectedDist}
+        itemCount={4}
+        data={beat}
+        onChangeText={(value, index, data) => {
+          this.onChangeHandlerDistributor(BeatId[index].value,value);
+        }}
+        // onChangeText={(value) => { this.setState({ selectedDist: value }) }}
+      />
+    );
+  }
+
+  onChangeHandlerDistributor = (distId,value) => {
+    this.setState({ selectedDist: value })
+    this.setState({ selectedDistId : distId })
+    AsyncStorage.setItem('distributorName', JSON.stringify(value));
+    AsyncStorage.setItem('outletNameDC', JSON.stringify(value));
+    AsyncStorage.setItem('outletIdDC', JSON.stringify(distId));
+    console.log('dist id : '+distId +" value : "+value)
+  //  this.setState({selectedDistName : name})
+}
+
+  // onChangeHandlerDistributor = value => {
+  //   AsyncStorage.setItem('distributorName', JSON.stringify(value));
+
+  //   this.setState({selectedDist: value});
+  // };
+
   onDateChange1(dates) {
     /// var a=date.toString()
     var d = new Date(dates);
@@ -780,6 +877,7 @@ export class DataCollectionStep1 extends Component {
                   <TouchableOpacity
                     onPress={() =>
                       this.setState({shopClick: true, distributorClick: false})
+                      
                     }>
                     {this.ShopClick()}
                   </TouchableOpacity>
@@ -787,25 +885,39 @@ export class DataCollectionStep1 extends Component {
 
                 {/* {/ Distributors Card /} */}
                 <View style={styles.SDCardMainContainer}>
-                  {/* <TouchableOpacity
+                  <TouchableOpacity
                     onPress={() =>
                       this.setState({distributorClick: true, shopClick: false})
                     }>
                     {this.distributorClick()}
-                  </TouchableOpacity> */}
+                  </TouchableOpacity>
                 </View>
               </View>
             </View>
-            {this.BeatView()}
-            {/* {/ Search Box /} */}
-            <View>
-              <View style={styles.OODMainContainer}>
-                <Text style={styles.OODTextStyle}>OUTLET NAME</Text>
-              </View>
-              <View style={styles.searchResultContainer}>
-                {this.searchComponent()}
-              </View>
-            </View>
+            {this.state.shopClick == true ? (
+              <View>
+               
+                 {this.BeatView()}
+                <View>
+                  <View style={styles.OODMainContainer}>
+                    <Text style={styles.OODTextStyle}>OUTLET NAME</Text>
+                  </View>
+                  <View style={styles.searchResultContainer}>
+                    {this.searchComponent()}
+                  </View>
+                </View>
+                </View>
+            ) : (
+                 
+                  <View style={styles.OODMainContainer}>
+                  <Text style={styles.OODTextStyle}>SELECT DISTRIBUTOR</Text>
+                  {this._renderDistributor()}
+                  </View>
+            )
+          }
+           
+
+            
             {/* {/ Data Type /} */}
             <View>
               <View style={styles.OODMainContainer}>
@@ -906,6 +1018,9 @@ const mapDispatchToProps = dispatch => ({
   },
   fromTotos: (from, to) => {
     dispatch(FromToDate(from, to));
+  },
+  EntityTypeInfo: ( Entity_types) => {
+    dispatch(ENTITYTYPEINFO( Entity_types));
   },
 });
 export default connect(
