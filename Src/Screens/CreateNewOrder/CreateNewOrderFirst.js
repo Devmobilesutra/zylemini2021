@@ -167,6 +167,20 @@ export class CreateNewOrderFirst extends Component {
     }else if(User.FlagForNavigation === "Dashboard"){
       Actions.Dashboard();
     }
+    else if(User.FlagForNavigation === "Surveys"){
+      Actions.Surveys();
+    }
+    else if(User.FlagForNavigation === "Assets"){
+      Actions.Assets();
+    }
+    else if(User.FlagForNavigation === "Schemes"){
+      Actions.Schemes();
+    }
+    else if(User.FlagForNavigation === "Payments"){
+      Actions.Payments();
+    }else {
+      Actions.Dashboard();
+    }
   }
   _componentFocused() {
     db.getAllData().then(data => {});

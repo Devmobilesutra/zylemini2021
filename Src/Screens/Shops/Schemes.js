@@ -8,6 +8,7 @@ import { FloatingAction } from "react-native-floating-action";
 import { TOTAL_SHOPS} from '../../Redux/actions/ShopAction'
 import { connect } from 'react-redux'
 import Database from './../../utility/Database'
+import User from '../../utility/User';
 const db = new Database();
 var open
 const actions = [
@@ -185,6 +186,7 @@ render() {
                    onStateChange={this._onStateChange}
                     onPressItem={name => {
                         // if(name = "bt_create"){ 
+                            User.FlagForNavigation ='Schemes'
                                 Actions.CreateNewOrderFirst()
                                 this.setState({ 
                                     active: !this.state.active,

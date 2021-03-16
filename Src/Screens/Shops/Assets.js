@@ -31,6 +31,7 @@ import moment from 'moment';
 import {TOTAL_SHOPS} from '../../Redux/actions/ShopAction';
 import {connect} from 'react-redux';
 import Database from './../../utility/Database';
+import User from '../../utility/User';
 import AuditAssetStep3 from '../Assets/AuditAssetStep3';
 const db = new Database();
 const newArray = [];
@@ -645,13 +646,13 @@ export class Assets extends Component {
                   active: !this.state.active,
                 });
               } else if (name == 'bt_create') {
-                AsyncStorage.setItem('outletName', '');
-                AsyncStorage.setItem('outletId', '');
-                AsyncStorage.setItem('beatName', '');
+              //  AsyncStorage.setItem('outletName', '');
+              //  AsyncStorage.setItem('outletId', '');
+              //  AsyncStorage.setItem('beatName', '');
                 AsyncStorage.setItem('beatId', '');
                 AsyncStorage.setItem('distributorName', '');
                 AsyncStorage.setItem('SearchString', '');
-
+                User.FlagForNavigation ='Assets'
                 Actions.CreateNewOrderFirst();
                 this.setState({
                   active: !this.state.active,
