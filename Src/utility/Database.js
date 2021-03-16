@@ -3201,8 +3201,8 @@ export default class Database {
     return new Promise(resolve => {
       const products = [];
       //   var query = "select distinct CustomerId as id ,Party as Party,Outlet_Info as Outlet_Info from Pcustomer where CustomerId='" + id + "' union select  distinct OrderID as id ,OutletName as Party ,OutletAddress as Outlet_Info from newpartyoutlet where OrderID ='" + id + "' order by Party asc"
-      var query =
-        "select * from MJPMasterDetails where EntityTypeId='" + id + "'";
+    //  var query = "select * from MJPMasterDetails where EntityTypeId='" + id + "'";
+      var query ="select MJPMasterDetails.*,OrderMaster.id,OrderMaster.sync_flag,OrderMaster.ActivityStatus,ifnull(MeetReport.Type_sync,0) as Type_sync from MJPMasterDetails left JOIN OrderMaster on MJPMasterDetails.ID = OrderMaster.DefaultDistributorId left join MeetReport on MJPMasterDetails.ID = MeetReport.Meeting_Id where EntityTypeId='" + id + "'";
       console.log('getShopCardInfo', query);
       //  this.initDB().then((db) => {
       db1

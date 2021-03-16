@@ -855,7 +855,8 @@ export class sideordrDetails extends Component {
                             <View style={styles.expectedDeliveryDateCardStyle}>
                                 <View style={styles.expectedDeliDateSelfContainer}>
                                     <Text style={styles.expectedDeliDateTextStyle}>
-                                        <Text>{this.state.Shop_det[0].ExpectedDeliveryDate}</Text>
+                                        <Text> {moment(this.state.Shop_det[0].ExpectedDeliveryDate).format('DD-MMM-YYYY')}</Text>
+                                       
                                     </Text>
                                 </View>
                                

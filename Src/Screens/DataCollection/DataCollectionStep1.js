@@ -52,9 +52,11 @@ var datess;
 var newDate;
 var newDate2;
 var newDate3;
-var selectedStartDate1 ='';
-var selectedStartDate2 ='';
-var selectedStartDate3;
+var d = new Date();
+var maxDate1 = moment(d).utc().format('DD-MMM-YYYY');
+var selectedStartDate1 =maxDate1;
+var selectedStartDate2 =maxDate1;
+var selectedStartDate3 =maxDate1;
 var Collection_types;
 
 export class DataCollectionStep1 extends Component {
