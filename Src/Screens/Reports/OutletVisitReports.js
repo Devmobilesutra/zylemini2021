@@ -1,3 +1,4 @@
+
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, ImageBackground,FlatList,BackHandler,AsyncStorage} from 'react-native';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
@@ -20,7 +21,7 @@ export default class OutletVisitReports extends Component {
 // @refresh reset
     static navigationOptions = {
 
-        title: 'Outlet Performance',
+        title: 'Outlet Visit Report',
         color: 'white',
         headerStyle: {
             backgroundColor: '#221818'
@@ -65,7 +66,7 @@ export default class OutletVisitReports extends Component {
                       console.log("data for display",this.state.Cust_array)  
            })
         }
-            else if(data[i].entity_type=2)
+            else if(data[i].entity_type=0)
             {
                 
                     db.getdatafromdist(data[i].entity_id).then((data)=>{
@@ -84,8 +85,7 @@ export default class OutletVisitReports extends Component {
     renderParty()
 {
     return(
-      //  this.state.Cust_array.map((item, index) => (
-            this.state.Cust_array.map(item =>
+        this.state.Cust_array.map((item, index) => (
         <TouchableOpacity onPress={() => Actions.Activities({Party:item.Party,entity_id:item.CustomerId})}>
         
         <View style={styles.collapseHeaderStyle}>
@@ -98,14 +98,14 @@ export default class OutletVisitReports extends Component {
                  
                 <Text style={styles.shopNameTextStyle}>
                   {item.Party}
-                </Text >
+                </Text>
                 <Text style={styles.shopAddressTextStyle}>
                 {item.AREA}
                 </Text>
             </View>
           </View>
           </TouchableOpacity>
-            ))
+            )))
     
 }
     render() {
@@ -120,7 +120,7 @@ export default class OutletVisitReports extends Component {
             <ScrollView
                 showsVerticalScrollIndicator={false}
             >
-                {/ Header /}
+                {/* Header */}
                 <View style = {styles.headerMainContainer} >
 
                     <Searchbar

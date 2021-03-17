@@ -9330,6 +9330,31 @@ export default class Database {
   });
   }
 
+  getdatafromdist(entity_id)
+  {
+    var query =
+    'select Distributor as Party,AREA as AREA from PDistributor where DistributorID= "' + entity_id + '"';
+   
+  //console.log("q---", query)
+  return new Promise(resolve => {
+    db1
+      .transaction(tx => {
+        tx.executeSql(query, [], (tx, results) => {
+          var ImageDetails = [];
+          for (let i = 0; i < results.rows.length; i++) {
+            ImageDetails.push(results.rows.item(i));
+          }
+
+          resolve(ImageDetails);
+        });
+      })
+      .then(result => {})
+      .catch(err => {
+        //console.log(err);
+      });
+  });
+  }
+
   checkIsOrderIdInDbAct(entity_id, collection_type) {
     const products = [];
     var query =
@@ -9361,6 +9386,33 @@ export default class Database {
         });
     });
   }
+
+  //resources
+getResources() {
+  const products = [];
+  var query = "select * from Resources";
+  return new Promise(resolve => {
+    // this.initDB().then((db) => {
+    db1
+      .transaction(tx => {
+        tx.executeSql(query, [], (tx, results) => {
+          var tempSearchProdect = '';
+          for (let i = 0; i < results.rows.length; i++) {
+            tempSearchProdect = results.rows.item(i);
+          }
+
+          //console.log("tempSearchProdect=", tempSearchProdect)
+          resolve(tempSearchProdect);
+        });
+      })
+      .then(result => {
+        //
+      })
+      .catch(err => {
+        //console.log(err);
+      });
+  });
+}
 
 }
 

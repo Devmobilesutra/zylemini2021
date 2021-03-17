@@ -101,7 +101,7 @@ export default class OutletVisitReports extends Component {
         },
         headerLeft: (
             <View style={{ flexDirection: "row", alignItems: 'center', justifyContent: 'center', alignSelf: 'center', }}>
-                <TouchableOpacity onPress={() => Actions.TabBarReports()}>
+                <TouchableOpacity onPress={() => Actions.OutletVisitReports()}>
                     <Image style={{ marginLeft: wp('4') }}
                         source={require('../../assets/Icons/Back_White.png')}
                     />
