@@ -231,9 +231,9 @@ export class Datacards extends Component {
                   </View>
                 </View>
                 <View style={styles.salesColContainer}>
-                  <Text style={styles.salesLabelStyle}>Sales / Stock </Text>
+                  <Text style={styles.salesLabelStyle}>Sales </Text>
                   {/* {this.renderName(item.user_id)} */}
-                  <Text>Date As ON / To From </Text>
+                  <Text>To From </Text>
                   <Text style={styles.salesNameStyle}>{item.check_date}</Text>
                 </View>
                 <View style={styles.salesColContainer1}>
@@ -584,11 +584,11 @@ export class Datacards extends Component {
           </View>
           {/* //////////////////////listview */}
           {this._renderViewForFlatlist()}
-          <Text>222</Text>
+          {/* <Text>222</Text> */}
           {this._renderViewForFlatlist1()}
-          <Text>333</Text>
+          {/* <Text>333</Text> */}
           {this._renderViewForFlatlist2()}
-          <Text>443</Text>
+          {/* <Text>443</Text> */}
           {this._renderViewForFlatlist3()}
           <View style={{marginBottom: hp('3')}} />
         </ScrollView>
