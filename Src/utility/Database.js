@@ -3221,8 +3221,11 @@ export default class Database {
     return new Promise(resolve => {
       const products = [];
       //   var query = "select distinct CustomerId as id ,Party as Party,Outlet_Info as Outlet_Info from Pcustomer where CustomerId='" + id + "' union select  distinct OrderID as id ,OutletName as Party ,OutletAddress as Outlet_Info from newpartyoutlet where OrderID ='" + id + "' order by Party asc"
-    //  var query = "select * from MJPMasterDetails where EntityTypeId='" + id + "'";
-      var query ="select MJPMasterDetails.*,OrderMaster.id,OrderMaster.sync_flag,OrderMaster.ActivityStatus,ifnull(MeetReport.Type_sync,0) as Type_sync from MJPMasterDetails left JOIN OrderMaster on MJPMasterDetails.ID = OrderMaster.DefaultDistributorId left join MeetReport on MJPMasterDetails.ID = MeetReport.Meeting_Id where EntityTypeId='" + id + "'";
+      //  var query = "select * from MJPMasterDetails where EntityTypeId='" + id + "'";
+      var query =
+        "select MJPMasterDetails.*,OrderMaster.id,OrderMaster.sync_flag,OrderMaster.ActivityStatus,ifnull(MeetReport.Type_sync,0) as Type_sync from MJPMasterDetails left JOIN OrderMaster on MJPMasterDetails.ID = OrderMaster.DefaultDistributorId left join MeetReport on MJPMasterDetails.ID = MeetReport.Meeting_Id where EntityTypeId='" +
+        id +
+        "'";
       console.log('getShopCardInfo', query);
       //  this.initDB().then((db) => {
       db1
@@ -9478,29 +9481,30 @@ export default class Database {
     });
   }
 
-  getdatafromdist(entity_id)
-  {
+  getdatafromdist(entity_id) {
     var query =
-    'select Distributor as Party,AREA as AREA from PDistributor where DistributorID= "' + entity_id + '"';
-   
-  //console.log("q---", query)
-  return new Promise(resolve => {
-    db1
-      .transaction(tx => {
-        tx.executeSql(query, [], (tx, results) => {
-          var ImageDetails = [];
-          for (let i = 0; i < results.rows.length; i++) {
-            ImageDetails.push(results.rows.item(i));
-          }
+      'select Distributor as Party,AREA as AREA from PDistributor where DistributorID= "' +
+      entity_id +
+      '"';
 
-          resolve(ImageDetails);
+    //console.log("q---", query)
+    return new Promise(resolve => {
+      db1
+        .transaction(tx => {
+          tx.executeSql(query, [], (tx, results) => {
+            var ImageDetails = [];
+            for (let i = 0; i < results.rows.length; i++) {
+              ImageDetails.push(results.rows.item(i));
+            }
+
+            resolve(ImageDetails);
+          });
+        })
+        .then(result => {})
+        .catch(err => {
+          //console.log(err);
         });
-      })
-      .then(result => {})
-      .catch(err => {
-        //console.log(err);
-      });
-  });
+    });
   }
 
   checkIsOrderIdInDbAct(entity_id, collection_type) {
@@ -9534,37 +9538,33 @@ export default class Database {
         });
     });
   }
-<<<<<<< HEAD
-=======
 
   //resources
-getResources() {
-  const products = [];
-  var query = "select * from Resources";
-  return new Promise(resolve => {
-    // this.initDB().then((db) => {
-    db1
-      .transaction(tx => {
-        tx.executeSql(query, [], (tx, results) => {
-          var tempSearchProdect = '';
-          for (let i = 0; i < results.rows.length; i++) {
-            tempSearchProdect = results.rows.item(i);
-          }
+  getResources() {
+    const products = [];
+    var query = 'select * from Resources';
+    return new Promise(resolve => {
+      // this.initDB().then((db) => {
+      db1
+        .transaction(tx => {
+          tx.executeSql(query, [], (tx, results) => {
+            var tempSearchProdect = '';
+            for (let i = 0; i < results.rows.length; i++) {
+              tempSearchProdect = results.rows.item(i);
+            }
 
-          //console.log("tempSearchProdect=", tempSearchProdect)
-          resolve(tempSearchProdect);
+            //console.log("tempSearchProdect=", tempSearchProdect)
+            resolve(tempSearchProdect);
+          });
+        })
+        .then(result => {
+          //
+        })
+        .catch(err => {
+          //console.log(err);
         });
-      })
-      .then(result => {
-        //
-      })
-      .catch(err => {
-        //console.log(err);
-      });
-  });
-}
-
->>>>>>> 22a3df5e9a30254fe8b6d8412fe28e9f307b1b7a
+    });
+  }
 }
 
 //SELECT * FROM SchemeDetails WHERE LIKE( '%' || SchemeID || '%', '100,300' )
