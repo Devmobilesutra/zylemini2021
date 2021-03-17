@@ -52,11 +52,13 @@ var datess;
 var newDate;
 var newDate2;
 var newDate3;
-var selectedStartDate1 ='';
-var selectedStartDate2 ='';
-var selectedStartDate3;
-var Collection_types;
-
+var d = new Date();
+var maxDate1 = moment(d)
+  .utc()
+  .format('DD-MMM-YYYY');
+var selectedStartDate1 = maxDate1;
+var selectedStartDate2 = maxDate1;
+var selectedStartDate3 = maxDate1;
 export class DataCollectionStep1 extends Component {
   constructor(props) {
     super(props);
@@ -83,7 +85,7 @@ export class DataCollectionStep1 extends Component {
       getRouteId: '',
       DistributorData: [],
       selectedDist: '',
-      selectedDistId :'',
+      selectedDistId: '',
     };
 
     this.handleBackButtonClick = this.handleBackButtonClick.bind(this);
@@ -136,7 +138,7 @@ export class DataCollectionStep1 extends Component {
 
     AsyncStorage.setItem('ActivityStart', JSON.stringify(ActivityStart));
 
-    if(this.state.shopClick == true){
+    if (this.state.shopClick == true) {
       if (this.state.query) {
         if (this.state.radioValue == 0) {
           //console.log("in if.......")
@@ -145,13 +147,13 @@ export class DataCollectionStep1 extends Component {
           //console.log("in else.......")
           this.props.fromTotos('', selectedStartDate3);
         }
-  
+
         Actions.DataCollectionStep2();
       } else {
         alert('Please Select Outlet');
       }
-    }else{
-      if(this.state.selectedDistId){
+    } else {
+      if (this.state.selectedDistId) {
         if (this.state.radioValue == 0) {
           //console.log("in if.......")
           this.props.fromTotos(selectedStartDate1, selectedStartDate2);
@@ -159,13 +161,12 @@ export class DataCollectionStep1 extends Component {
           //console.log("in else.......")
           this.props.fromTotos('', selectedStartDate3);
         }
-  
+
         Actions.DataCollectionStep2();
-      }else {
+      } else {
         alert('Please Select Distributor');
       }
     }
-  
   };
 
   componentWillMount() {
@@ -202,7 +203,7 @@ export class DataCollectionStep1 extends Component {
     );
   }
   handleBackButtonClick() {
-  //  Actions.drawerMenu();
+    //  Actions.drawerMenu();
     return true;
   }
 
@@ -459,7 +460,7 @@ export class DataCollectionStep1 extends Component {
   ShopClick = () => {
     //console.log("5555")
     if (this.state.shopClick == false) {
-   //   this.props.EntityTypeInfo(1);
+      //   this.props.EntityTypeInfo(1);
       return (
         <View style={styles.SDCardBG}>
           <View style={styles.ITColContainer}>
@@ -489,7 +490,7 @@ export class DataCollectionStep1 extends Component {
 
   distributorClick = () => {
     if (this.state.distributorClick == false) {
-     // this.props.EntityTypeInfo(0);
+      // this.props.EntityTypeInfo(0);
       return (
         <View style={styles.SDCardBG}>
           <View style={styles.ITColContainer}>
@@ -519,14 +520,14 @@ export class DataCollectionStep1 extends Component {
 
   _renderDistributor() {
     const beat = [];
-    const BeatId =[];
+    const BeatId = [];
     for (var i = 0; i < this.state.DistributorData.length; i++) {
       beat.push({
         value: this.state.DistributorData[i].Distributor,
       });
       BeatId.push({
-        value: this.state.DistributorData[i].DistributorID
-    })
+        value: this.state.DistributorData[i].DistributorID,
+      });
     }
     return (
       <Dropdown
@@ -546,22 +547,22 @@ export class DataCollectionStep1 extends Component {
         itemCount={4}
         data={beat}
         onChangeText={(value, index, data) => {
-          this.onChangeHandlerDistributor(BeatId[index].value,value);
+          this.onChangeHandlerDistributor(BeatId[index].value, value);
         }}
         // onChangeText={(value) => { this.setState({ selectedDist: value }) }}
       />
     );
   }
 
-  onChangeHandlerDistributor = (distId,value) => {
-    this.setState({ selectedDist: value })
-    this.setState({ selectedDistId : distId })
+  onChangeHandlerDistributor = (distId, value) => {
+    this.setState({selectedDist: value});
+    this.setState({selectedDistId: distId});
     AsyncStorage.setItem('distributorName', JSON.stringify(value));
     AsyncStorage.setItem('outletNameDC', JSON.stringify(value));
     AsyncStorage.setItem('outletIdDC', JSON.stringify(distId));
-    console.log('dist id : '+distId +" value : "+value)
-  //  this.setState({selectedDistName : name})
-}
+    console.log('dist id : ' + distId + ' value : ' + value);
+    //  this.setState({selectedDistName : name})
+  };
 
   // onChangeHandlerDistributor = value => {
   //   AsyncStorage.setItem('distributorName', JSON.stringify(value));
@@ -877,7 +878,6 @@ export class DataCollectionStep1 extends Component {
                   <TouchableOpacity
                     onPress={() =>
                       this.setState({shopClick: true, distributorClick: false})
-                      
                     }>
                     {this.ShopClick()}
                   </TouchableOpacity>
@@ -896,8 +896,7 @@ export class DataCollectionStep1 extends Component {
             </View>
             {this.state.shopClick == true ? (
               <View>
-               
-                 {this.BeatView()}
+                {this.BeatView()}
                 <View>
                   <View style={styles.OODMainContainer}>
                     <Text style={styles.OODTextStyle}>OUTLET NAME</Text>
@@ -906,18 +905,14 @@ export class DataCollectionStep1 extends Component {
                     {this.searchComponent()}
                   </View>
                 </View>
-                </View>
+              </View>
             ) : (
-                 
-                  <View style={styles.OODMainContainer}>
-                  <Text style={styles.OODTextStyle}>SELECT DISTRIBUTOR</Text>
-                  {this._renderDistributor()}
-                  </View>
-            )
-          }
-           
+              <View style={styles.OODMainContainer}>
+                <Text style={styles.OODTextStyle}>SELECT DISTRIBUTOR</Text>
+                {this._renderDistributor()}
+              </View>
+            )}
 
-            
             {/* {/ Data Type /} */}
             <View>
               <View style={styles.OODMainContainer}>
@@ -1019,8 +1014,8 @@ const mapDispatchToProps = dispatch => ({
   fromTotos: (from, to) => {
     dispatch(FromToDate(from, to));
   },
-  EntityTypeInfo: ( Entity_types) => {
-    dispatch(ENTITYTYPEINFO( Entity_types));
+  EntityTypeInfo: Entity_types => {
+    dispatch(ENTITYTYPEINFO(Entity_types));
   },
 });
 export default connect(

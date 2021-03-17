@@ -86,6 +86,7 @@ export class TodaysRoute extends Component {
       entity_idArr: [],
       totalVisitedArray: [],
       active: false,
+      new_len: '',
       // cardView: false ,
     };
     this.handleBackButtonClick = this.handleBackButtonClick.bind(this);
@@ -257,6 +258,7 @@ export class TodaysRoute extends Component {
     var month = new Date().getMonth() + 1;
     var year = new Date().getFullYear();
     var datess = year + '-' + month + '-' + date;
+
     AsyncStorage.getItem('routeName').then(keyValue => {
       // this.state.selectedRouteName=  JSON.parse(keyValue)
       this.setState({selectedRouteName: JSON.parse(keyValue)});
@@ -312,7 +314,10 @@ export class TodaysRoute extends Component {
     );
   }
 
-  componentWillMount() {
+  async componentWillMount() {
+    var d = await AsyncStorage.getItem('totallenght');
+    this.setState({new_len: d});
+
     this.setState({routeData: []});
     db.getRouteData().then(data => {
       //  beatdata = data
@@ -547,7 +552,7 @@ export class TodaysRoute extends Component {
                         fontSize: 18,
                       }}>
                       {' '}
-                      00
+                      {this.state.new_len}
                     </Text>
                   </View>
                 </View>

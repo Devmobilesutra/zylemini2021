@@ -1,5 +1,13 @@
 import React, {Component} from 'react';
-import {View, Text, StyleSheet, Select, ScrollView, Image} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Select,
+  ScrollView,
+  Image,
+  AsyncStorage,
+} from 'react-native';
 import {Icon} from 'react-native-elements';
 import {
   widthPercentageToDP as wp,
@@ -9,9 +17,17 @@ import {
 } from 'react-native-responsive-screen';
 
 class Payment extends Component {
-  state = {};
+  constructor(props) {
+    super(props);
+    this.state = {
+      new_len: '',
+      // cardView: false ,
+    };
+  }
 
-  componentDidMount() {
+  async componentDidMount() {
+    var d = await AsyncStorage.getItem('totalmeets');
+    this.setState({new_len: d});
     lor(this);
   }
 
@@ -59,7 +75,7 @@ class Payment extends Component {
                   fontSize: 18,
                 }}>
                 {' '}
-                00
+                {this.state.new_len}
               </Text>
             </View>
           </View>
