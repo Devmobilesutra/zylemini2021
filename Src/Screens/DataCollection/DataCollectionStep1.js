@@ -59,6 +59,8 @@ var maxDate1 = moment(d)
 var selectedStartDate1 = maxDate1;
 var selectedStartDate2 = maxDate1;
 var selectedStartDate3 = maxDate1;
+var Collection_types;
+
 export class DataCollectionStep1 extends Component {
   constructor(props) {
     super(props);

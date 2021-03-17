@@ -46,6 +46,8 @@ import Payments from './Src/Screens/Shops/Payments';
 import Assets from './Src/Screens/Shops/Assets';
 import Surveys from './Src/Screens/Shops/Surveys';
 import meetings from './Src/Screens/Shops/meetings';
+import MJP_Start from './Src/Screens/Shops/MJP_Start';
+import MJP_CancelShop from './Src/Screens/Shops/MJP_CancelShop';
 import Schemes from './Src/Screens/Dashboard/Schemes';
 import AddNewShop from './Src/Screens/Shops/AddNewShop';
 import AddNewShopSecond from './Src/Screens/Shops/AddNewShopSecond';
@@ -167,6 +169,18 @@ export default class RouterComponent extends Component {
             title="MJP_Cancel"
             hideNavBar={true}
           />
+            <Scene
+                key="MJP_Start"
+                component={MJP_Start}
+                title="MJP_Start"
+                hideNavBar={true}
+              />
+               <Scene
+                key="MJP_CancelShop"
+                component={MJP_CancelShop}
+                title="MJP_CancelShop"
+                hideNavBar={true}
+              />
           <Scene
             key="ViewDrafts"
             component={ViewDrafts}
@@ -376,6 +390,8 @@ export default class RouterComponent extends Component {
                 title="meetings"
                 hideNavBar={true}
               />
+           
+          
             </Scene>
 
             {/* Tab Bar for Audit Asset */}

@@ -171,9 +171,8 @@ searchResult(){
 
 
 handleBackButtonClick() {
-    Actions.DataCollectionStep1();
-
-    return true;
+   Actions.DataCollectionStep1();
+      return true;
 }
 
 NextButton = () => {

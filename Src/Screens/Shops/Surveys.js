@@ -9,6 +9,7 @@ import { FloatingAction } from "react-native-floating-action";
 import { SERVEY_INFO} from '../../Redux/actions/ServeyAction'
 import { connect } from 'react-redux'
 import Database from './../../utility/Database'
+import User from '../../utility/User';
 const db = new Database();
 var open
 const actions = [
@@ -264,13 +265,13 @@ render() {
                           })
                 }
                 else if(name == "bt_create"){ 
-                    AsyncStorage.setItem('outletName',"");
-                    AsyncStorage.setItem('outletId',"");
-                    AsyncStorage.setItem('beatName',"");
+                  //  AsyncStorage.setItem('outletName',"");
+                 //   AsyncStorage.setItem('outletId',"");
+                  //  AsyncStorage.setItem('beatName',"");
                     AsyncStorage.setItem('beatId',"");
                     AsyncStorage.setItem('distributorName',"");      
                     AsyncStorage.setItem('SearchString', "");          
-                   
+                    User.FlagForNavigation ='Surveys';
                         Actions.CreateNewOrderFirst()
                         this.setState({ 
                             active: !this.state.active,
