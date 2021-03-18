@@ -25,6 +25,7 @@ import Schemes from './Schemes';
 import MyProductivity from './MyProductivity';
 import Sales from './Sales';
 import Repo from './Repo';
+import SideMenu from '../../components/SideMenu';
 
 import {USER_ID} from '../../Redux/actions/DashboardAction';
 import utilss from '../../utility/usableFunctions';
@@ -34,6 +35,8 @@ import Database from './../../utility/Database';
 import {color} from 'react-native-reanimated';
 import User from '../../utility/User';
 const db = new Database();
+const sm = new SideMenu();
+
 const actions = [
   {
     text: 'Accept Payment',
@@ -133,11 +136,12 @@ export class Dashboard extends Component {
             // onPress={() => navigation.toggleDrawer()}
           />
         </TouchableOpacity>
-        <TouchableOpacity style={{marginLeft: wp('52%')}}>
+        <TouchableOpacity style={{marginLeft: wp('52%')}} onPress={sm.SyncNow}>
           <Image
             style={{height: hp('4.2'), width: wp('7.5'), marginTop: 2}}
             source={require('../../assets/Icons/synck.png')}
             // color="white"
+
             // onPress={() => navigation.openDrawer() }
             // onPress={() => navigation.toggleDrawer()}
           />
@@ -175,6 +179,7 @@ export class Dashboard extends Component {
     //   db.getUserData().then((data) => {
     //     //console.log("getUserData=",JSON.stringify(data))
     // })
+    // sm.SyncNow();
     BackHandler.addEventListener(
       'hardwareBackPress',
       this.handleBackButtonClick,
@@ -320,14 +325,14 @@ export class Dashboard extends Component {
           <TodaysRoute />
           {/* <Today /> */}
           <Payment />
-          <Image
+          {/* <Image
             style={{height: hp('40'), width: wp('100')}}
             source={require('../../assets/Icons/graph.png')}
-          />
-          <Sales />
+          /> */}
+          {/* <Sales />
           <Repo />
           <Schemes />
-          <MyProductivity />
+          <MyProductivity /> */}
         </ScrollView>
 
         <FloatingAction
@@ -357,7 +362,7 @@ export class Dashboard extends Component {
               AsyncStorage.setItem('SearchString', '');
               //console.log(`selected button: ${name}`);
               //  alert(name)
-              User.FlagForNavigation = 'Dashboard'
+              User.FlagForNavigation = 'Dashboard';
               Actions.CreateNewOrderFirst();
               this.setState({
                 active: !this.state.active,

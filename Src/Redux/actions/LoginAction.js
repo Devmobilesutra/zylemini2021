@@ -99,20 +99,20 @@ export const login = (username, password, deviceid, navigation) => {
     // }
 
     //for dilipk
+    // const headers = {
+    //   LoginId: username,
+    //   Password: password,
+    //   ClientCode: 'XXCPA2020',
+    //   DeviceId: '111',
+    // };
+
+    //for dinkars
     const headers = {
       LoginId: username,
       Password: password,
-      ClientCode: 'XXCPA2020',
-      DeviceId: '111',
+      ClientCode: 'GDWC2020',
+      DeviceId: deviceid,
     };
-
-    //for dinkars
-    //   const headers = {
-    //     'LoginId': username,
-    //     'Password': password,
-    //     'ClientCode': "GDWC2020",
-    //     'DeviceId': deviceid
-    // }
 
     //  const url2 = "http://zylemdemo.com/ZyleminiPlusCoreAPI/api/Login/Login";
     //testing
@@ -145,7 +145,8 @@ export const login = (username, password, deviceid, navigation) => {
         //   const url1 = "http://sapltest.com/ZyleminiPlusAPI/api/Data/GetData"
 
         // live
-        //  const url1 = "https://zyleminiplus.com/ZyleminiPlusCoreAPI/api/Data/GetData";
+        // const url1 =
+        //   'https://zyleminiplus.com/ZyleminiPlusCoreAPI/api/Data/GetData';
         console.log('url is===', User.GetUrl);
         //console.log("aaaaaaa========",response.data.Token)
         const headers1 = {

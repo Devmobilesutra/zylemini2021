@@ -36,16 +36,16 @@ const User = {
   location: null,
   Remarks: null,
   Meeting_Id: null,
-  FlagForNavigation :'',
+  FlagForNavigation: '',
   // for testing
-  loginUrl: 'http://sapltest.com/ZyleminiPlusAPI/api/Login/Login',
-  GetUrl: 'http://sapltest.com/ZyleminiPlusAPI/api/Data/GetData',
-  posturl: 'http://sapltest.com/ZyleminiPlusAPI/api/Data/PostData',
+  // loginUrl: 'http://sapltest.com/ZyleminiPlusAPI/api/Login/Login',
+  // GetUrl: 'http://sapltest.com/ZyleminiPlusAPI/api/Data/GetData',
+  // posturl: 'http://sapltest.com/ZyleminiPlusAPI/api/Data/PostData',
 
   // for live
-  //  loginUrl : "https://zyleminiplus.com/ZyleminiPlusCoreAPI/api/Login/Login",
-  //  GetUrl : "https://zyleminiplus.com/ZyleminiPlusCoreAPI/api/Data/GetData",
-  //  posturl : 'https://zyleminiplus.com/ZyleminiPlusCoreAPI/api/Data/PostData',
+  loginUrl: 'https://zyleminiplus.com/ZyleminiPlusCoreAPI/api/Login/Login',
+  GetUrl: 'https://zyleminiplus.com/ZyleminiPlusCoreAPI/api/Data/GetData',
+  posturl: 'https://zyleminiplus.com/ZyleminiPlusCoreAPI/api/Data/PostData',
 };
 
 export default User;

@@ -63,6 +63,7 @@ export default class SideMenu extends Component {
 
   //////////////////////////////////////////
   syncNowFunction() {
+    console.log('I am sync now');
     var OrderMaster = [];
     var OrderDetails = [];
     var Discount = [];
@@ -168,7 +169,7 @@ export default class SideMenu extends Component {
               //console.log("rjjjjjjjjjjjjjjj..........", this.state.JSONObj)
               var count;
               count = Object.keys(this.state.JSONObj).length;
-              // alert(count)
+              // alert(count);
 
               if (count > 0) {
                 //console.log("ssdds=========", this.state.tokens)
@@ -191,9 +192,10 @@ export default class SideMenu extends Component {
                 //   const url = 'http://zylemdemo.com/ZyleminiPlusCoreAPI/api/Data/PostData'
 
                 // testing
-              //  const url =  'http://sapltest.com/ZyleminiPlusAPI/api/Data/PostData';
+                //  const url =  'http://sapltest.com/ZyleminiPlusAPI/api/Data/PostData';
                 //live
-               //    const url = 'https://zyleminiplus.com/ZyleminiPlusCoreAPI/api/Data/PostData'
+                //    const url = 'https://zyleminiplus.com/ZyleminiPlusCoreAPI/api/Data/PostData'
+                // alert('User is ', User.posturl);
                 axios
                   .post(User.posturl, this.state.JSONObj, {
                     headers: headers,
@@ -312,25 +314,34 @@ export default class SideMenu extends Component {
     });
   }
 
-  GetNewData() {
+  async GetNewData() {
     this.setState({isLoading: true});
     this.setState({messagetext: 'Getting Data from server..'});
     // testing
- //   const url1 = 'http://sapltest.com/ZyleminiPlusAPI/api/Data/GetData';
+    //   const url1 = 'http://sapltest.com/ZyleminiPlusAPI/api/Data/GetData';
 
     // live
     //   const url1 = "https://zyleminiplus.com/ZyleminiPlusCoreAPI/api/Data/GetData";
 
     //console.log("url is===", url1)
     //console.log("aaaaaaa========",response.data.Token)
+
+    let keyValue = await AsyncStorage.getItem('JWTToken');
+    const tok = JSON.parse(keyValue);
+    this.setState({tokens: tok});
+
+    // alert(tok);
     const headers1 = {
-      authheader: this.state.tokens,
+      authheader: tok,
     };
+    // alert(User.GetUrl);
+    console.log(User.GetUrl);
     axios
       .get(User.GetUrl, {
         headers: headers1,
       })
       .then(res => {
+        // alert(res.data);
         //  //console.log("rajani data1=",JSON.stringify(res))
         if (res.data) {
           const data = JSON.stringify(res.data);
@@ -521,7 +532,9 @@ export default class SideMenu extends Component {
     AsyncStorage.setItem('isLogged', '');
     Actions.login();
   };
+
   SyncNow = () => {
+    console.log('in sync herererer');
     Alert.alert(
       'Sync Now',
       'Do you want to sync data to Server?',
@@ -739,7 +752,7 @@ export default class SideMenu extends Component {
               </View>
             </TouchableOpacity>
 
-            <TouchableOpacity>
+            {/* <TouchableOpacity>
               <View style={styles.drawerNmaeImgContainer2}>
                 <Image
                   style={styles.drawerLabelImgStyle2}
@@ -747,9 +760,9 @@ export default class SideMenu extends Component {
                 />
                 <Text style={styles.drawerLabelStyle2}>Schemes</Text>
               </View>
-            </TouchableOpacity>
-            {/* 
-            <TouchableOpacity>
+            </TouchableOpacity> */}
+
+            {/* <TouchableOpacity onPress={() => Actions.}>
               <View style={styles.drawerNmaeImgContainer2}>
                 <Image
                   style={styles.drawerLabelImgStyle2}
