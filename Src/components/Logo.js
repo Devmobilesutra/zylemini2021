@@ -10,7 +10,7 @@ export default class Logo extends Component {
     return (
       <View style={styles.container}>
         <Image
-          style={{width: hp('16'), height: hp('19')}}
+          style={{width: hp('16.2'), height: hp('19.5')}}
           source={require('../assets/Icons/zylemini_logo.png')}
         />
       </View>
@@ -20,6 +20,7 @@ export default class Logo extends Component {
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
+
     justifyContent: 'flex-start',
     alignItems: 'center',
     marginTop: hp('8'),

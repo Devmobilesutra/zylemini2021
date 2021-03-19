@@ -209,23 +209,52 @@ export class Datacards extends Component {
                   {/*                     
                     {item.SlabNo} - {item.SchemeBenefits} .... */}
                   {/* </Text> */}
-                  <View>
-                    <Text style={styles.amtTextStyle}>
-                      Collection Date : {item.check_date}
+                  <View style={{flexDirection: 'row'}}>
+                    <Text style={styles.salesLabelStyle}>
+                      Collection Date :
+                    </Text>
+                    <Text
+                      style={{
+                        fontWeight: 'bold',
+                        fontFamily: 'Proxima Nova',
+                        fontSize: 14,
+                      }}>
+                      {item.check_date}
                     </Text>
                   </View>
-                  <View>
+                  <View style={{flexDirection: 'row'}}>
                     {/* {this._renderForFlatlist(item.SchemeID)} */}
-                    <Text style={styles.amtTextStyle}>
-                      Collection Id : {item.id}
+                    <Text style={styles.salesLabelStyle}>Collection Id :</Text>
+                    <Text
+                      style={{
+                        fontWeight: 'bold',
+                        fontFamily: 'Proxima Nova',
+                        fontSize: 14,
+                      }}>
+                      {' '}
+                      {item.id}
                     </Text>
                   </View>
                   <View>
-                    <Text>Product : {item.item_Name}</Text>
-                    <View style={{marginTop: 5}}>
-                      <Text>
-                        Case : {item.quantity_one}
-                        and Bottle : {item.quantity_two}
+                    <Text style={styles.salesLabelStyle}>Product : </Text>
+                    <Text
+                      style={{
+                        fontWeight: 'bold',
+                        fontFamily: 'Proxima Nova',
+                        fontSize: 14,
+                      }}>
+                      {item.item_Name}
+                    </Text>
+                    <View style={{}}>
+                      <Text style={styles.salesLabelStyle}>Quantity </Text>
+                      <Text
+                        style={{
+                          fontWeight: 'bold',
+                          fontFamily: 'Proxima Nova',
+                          fontSize: 14,
+                        }}>
+                        Case : {item.quantity_one} and Bottle :{' '}
+                        {item.quantity_two}
                       </Text>
                     </View>
                   </View>
@@ -233,8 +262,15 @@ export class Datacards extends Component {
                 <View style={styles.salesColContainer}>
                   <Text style={styles.salesLabelStyle}>Sales </Text>
                   {/* {this.renderName(item.user_id)} */}
-                  <Text>To From </Text>
-                  <Text style={styles.salesNameStyle}>{item.check_date}</Text>
+                  <Text
+                    style={{
+                      fontWeight: 'bold',
+                      fontFamily: 'Proxima Nova',
+                      fontSize: 14,
+                    }}>
+                    From {item.from_date} To {item.to_date}{' '}
+                  </Text>
+                  {/* <Text style={styles.salesNameStyle}>{item.check_date}</Text> */}
                 </View>
                 <View style={styles.salesColContainer1}>
                   {/* {this.renderName(item.user_id)} */}
@@ -816,11 +852,11 @@ const styles = StyleSheet.create({
   },
 
   salesColContainer: {
-    marginTop: hp('2'),
+    // marginTop: hp('2'),
     // flex: 2,
     flexDirection: 'column',
     alignItems: 'flex-start',
-    marginLeft: wp('2'),
+    marginLeft: wp('4'),
   },
   salesColContainer1: {
     flex: 2,

@@ -7752,7 +7752,7 @@ export default class Database {
 
   getDatacards() {
     var query =
-      'select  Pcustomer.Party, OrderMaster.check_date, OrderMaster.id, OrderDetails.item_Name, OrderDetails.quantity_one, OrderDetails.quantity_two from OrderDetails,OrderMaster,Pcustomer where OrderDetails.order_id == OrderMaster.id and Pcustomer.CustomerId == OrderMaster.entity_id and OrderMaster.collection_type=1 and OrderMaster.entity_type=1';
+      'select  Pcustomer.Party, OrderMaster.check_date, OrderMaster.id,OrderMaster.from_date,OrderMaster.to_date, OrderDetails.item_Name, OrderDetails.quantity_one, OrderDetails.quantity_two from OrderDetails,OrderMaster,Pcustomer where OrderDetails.order_id == OrderMaster.id and Pcustomer.CustomerId == OrderMaster.entity_id and OrderMaster.collection_type=1 and OrderMaster.entity_type=1';
     //console.log("q---", query)
     return new Promise(resolve => {
       db1
@@ -7818,7 +7818,7 @@ export default class Database {
   }
   getDatacards3() {
     var query =
-      'select  PDistributor.Distributor, OrderMaster.check_date, OrderMaster.id, OrderDetails.item_Name, OrderDetails.quantity_one, OrderDetails.quantity_two from OrderDetails,OrderMaster,PDistributor where OrderDetails.order_id == OrderMaster.id and PDistributor.DistributorID == OrderMaster.entity_id and OrderMaster.collection_type=1 and OrderMaster.entity_type=0';
+      'select  PDistributor.Distributor, OrderMaster.check_date, OrderMaster.id,OrderMaster.from_date,OrderMaster.to_date, OrderDetails.item_Name, OrderDetails.quantity_one, OrderDetails.quantity_two from OrderDetails,OrderMaster,PDistributor where OrderDetails.order_id == OrderMaster.id and PDistributor.DistributorID == OrderMaster.entity_id and OrderMaster.collection_type=1 and OrderMaster.entity_type=0';
     //console.log("q---", query)
     return new Promise(resolve => {
       db1

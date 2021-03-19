@@ -76,20 +76,30 @@ export default class AboutUs extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
-        <ScrollView showsVerticalScrollIndicator={false}>
-          <Logo />
-          <Text style={styles.versionTextStyle}>Version 1.2.8</Text>
-          {/* <Text style={styles.TCTextStyle}>Terms & Conditions</Text> */}
-          <Text
-            style={styles.TCTextStyle}
-            onPress={() =>
-              Linking.openURL('https://sapl.net/privacy-disclaimer/')
-            }>
-            Terms & Conditions
-          </Text>
-        </ScrollView>
-      </View>
+      <ImageBackground
+        source={require('../../assets/Icons/splashBottom.png')}
+        style={{
+          // flex: 1,
+          height: hp('90%'),
+          width: wp('100%'),
+          // resizeMode: 'cover',
+          // justifyContent: 'center',
+        }}>
+        <View style={styles.container}>
+          <ScrollView showsVerticalScrollIndicator={false}>
+            <Logo />
+            <Text style={styles.versionTextStyle}>Version 1.2.8</Text>
+            {/* <Text style={styles.TCTextStyle}>Terms & Conditions</Text> */}
+            <Text
+              style={styles.TCTextStyle}
+              onPress={() =>
+                Linking.openURL('https://sapl.net/privacy-disclaimer/')
+              }>
+              Terms & Conditions
+            </Text>
+          </ScrollView>
+        </View>
+      </ImageBackground>
     );
   }
 }
