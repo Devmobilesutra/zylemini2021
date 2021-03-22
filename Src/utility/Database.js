@@ -422,7 +422,32 @@ export default class Database {
                   })
                     .then(() => {})
                     .catch(error => {});
+
+                  //Aftab table:- 19-03-2020//
+                  db.transaction(tx => {
+                    tx.executeSql(
+                      'CREATE TABLE Receipt(id INTEGER PRIMARY KEY AUTOINCREMENT, Date TEXT,PaymentMode TEXT,ChqueNo TEXT,ChqueDate TEXT,BankName TEXT,Amount TEXT,PartyCode TEXT,Narration TEXT,SalemanCode TEXT,SyncFlag TEXT,dateupload TEXT,datetime TEXT);',
+                    );
+                  })
+                    .then(() => {})
+                    .catch(error => {});
+
+                  db.transaction(tx => {
+                    tx.executeSql(
+                      'CREATE TABLE CollectionId(id INTEGER PRIMARY KEY AUTOINCREMENT, ID TEXT,COllectionID TEXT,Amount TEXT,DiscountType TEXT,SyncFlag TEXT);',
+                    );
+                  })
+                    .then(() => {})
+                    .catch(error => {});
                 });
+              // db.transaction(tx => {
+              //   tx.executeSql(
+              //     'CREATE TABLE Receipt(id INTEGER PRIMARY KEY AUTOINCREMENT, Date TEXT,PaymentMode TEXT,ChqueNo TEXT,ChqueDate TEXT,BankName TEXT,Amount TEXT,PartyCode TEXT,Narration TEXT,SalemanCode TEXT,SyncFlag TEXT,dateupload TEXT,datetime TEXT);',
+              //   );
+              // })
+              //   .then(() => {})
+              //   .catch(error => {});
+
               resolve(db);
             })
             .catch(error => {});
@@ -7272,6 +7297,55 @@ export default class Database {
       .catch(err => {
         //console.log(err);
       });
+  }
+
+  //Aftab change
+  insertValueIntoReceipt(
+    Date,
+    PaymentMode,
+    ChqueNo,
+    ChqueDate,
+    BankName,
+    Amount,
+    PartyCode,
+    Narration,
+    SalemanCode,
+    SyncFlag,
+    dateupload,
+    datetime,
+  ) {
+    return new Promise(resolve => {
+      db1
+        .transaction(tx => {
+          tx.executeSql(
+            `insert into  ( Date, PaymentMode, ChqueNo, ChqueDate,
+                        BankName, Amount, PartyCode, Narration,
+                        SalemanCode, SyncFlag, dateupload, datetime) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)`,
+            [
+              Date,
+              PaymentMode,
+              ChqueNo,
+              ChqueDate,
+              BankName,
+              Amount,
+              PartyCode,
+              Narration,
+              SalemanCode,
+              SyncFlag,
+              dateupload,
+              datetime,
+            ],
+          ).then(([tx, results]) => {
+            resolve(results);
+          });
+        })
+        .then(result => {
+          //
+        })
+        .catch(err => {
+          ////console.log(err);
+        });
+    });
   }
 
   /////////////////////////////////////////sync Function Data////////////////////////////

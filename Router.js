@@ -120,6 +120,12 @@ import MJP_two from './Src/Screens/MJP/MJP_two';
 import MJP_Cancel from './Src/Screens/MJP/MJP_Cancel';
 import ViewDrafts from './Src/Screens/MJP/ViewDrafts';
 
+//Payment module
+import Payments1 from './Src/Screens/PaymentModule/Payments1';
+import AcceptPayment from './Src/Screens/PaymentModule/AcceptPayment';
+import AcceptPayment2 from './Src/Screens/PaymentModule/AcceptPayment2';
+import AcceptPayment3 from './Src/Screens/PaymentModule/AcceptPayment3';
+
 var curr = moment()
   .month(new Date().getMonth())
   .format('MMM');
@@ -169,18 +175,18 @@ export default class RouterComponent extends Component {
             title="MJP_Cancel"
             hideNavBar={true}
           />
-            <Scene
-                key="MJP_Start"
-                component={MJP_Start}
-                title="MJP_Start"
-                hideNavBar={true}
-              />
-               <Scene
-                key="MJP_CancelShop"
-                component={MJP_CancelShop}
-                title="MJP_CancelShop"
-                hideNavBar={true}
-              />
+          <Scene
+            key="MJP_Start"
+            component={MJP_Start}
+            title="MJP_Start"
+            hideNavBar={true}
+          />
+          <Scene
+            key="MJP_CancelShop"
+            component={MJP_CancelShop}
+            title="MJP_CancelShop"
+            hideNavBar={true}
+          />
           <Scene
             key="ViewDrafts"
             component={ViewDrafts}
@@ -390,8 +396,6 @@ export default class RouterComponent extends Component {
                 title="meetings"
                 hideNavBar={true}
               />
-           
-          
             </Scene>
 
             {/* Tab Bar for Audit Asset */}
@@ -678,11 +682,7 @@ export default class RouterComponent extends Component {
               component={editpreview}
               title="editpreview"
             />
-             <Scene
-              key="Activities"
-              component={Activities}
-              title="Activities"
-            />
+            <Scene key="Activities" component={Activities} title="Activities" />
 
             {/* <Scene
               key="sideorder"
@@ -823,6 +823,23 @@ export default class RouterComponent extends Component {
               />
             </Scene>
           </Scene>
+
+          <Scene key="Payments1" component={Payments1} hideNavBar={true} />
+          <Scene
+            key="AcceptPayment"
+            component={AcceptPayment}
+            hideNavBar={true}
+          />
+          <Scene
+            key="AcceptPayment2"
+            component={AcceptPayment2}
+            hideNavBar={true}
+          />
+          <Scene
+            key="AcceptPayment3"
+            component={AcceptPayment3}
+            hideNavBar={true}
+          />
         </Stack>
       </Router>
     );
