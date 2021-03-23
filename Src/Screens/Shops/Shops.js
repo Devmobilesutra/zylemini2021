@@ -403,7 +403,7 @@ export class Shops extends Component {
       let result = abc.map(a => a.RouteID);
       var getRouteId = '';
       getRouteId = result;
-    //  alert(getRouteId)
+      //  alert(getRouteId)
       this.setState({getRouteId: result});
       AsyncStorage.setItem('routeId', JSON.stringify(getRouteId));
       this.state.selectedBeatId = getRouteId;
@@ -443,7 +443,7 @@ export class Shops extends Component {
     ///////////////////////////////end....../////////////////////////
   };
 
-  navigate = (shopid,party) => {
+  navigate = (shopid, party) => {
     AsyncStorage.setItem('shopId', JSON.stringify(shopid));
     AsyncStorage.setItem('outletName', JSON.stringify(party));
     AsyncStorage.setItem('outletId', JSON.stringify(shopid));
@@ -460,8 +460,9 @@ export class Shops extends Component {
           data={this.state.ShopsArray}
           renderItem={({item}) => (
             <View style={styles.shopListMainContainer}>
-              <TouchableOpacity  onPress={()=>this.navigate( item.id,item.party)}>
-              {/* <TouchableOpacity onPress={() => Actions.Info({shopId: item.id})}> */}
+              <TouchableOpacity
+                onPress={() => this.navigate(item.id, item.party)}>
+                {/* <TouchableOpacity onPress={() => Actions.Info({shopId: item.id})}> */}
                 <View style={styles.shopDetailBackStyle}>
                   <View style={styles.imageContainer}>
                     <Image
@@ -515,7 +516,7 @@ export class Shops extends Component {
                   </View>
                   <View style={styles.shopNameAddContainerCard}>
                     <Text style={styles.shopDistanceTextStyleCard}>
-                      {item.Outlet_Info.split('||')[0]} 
+                      {item.Outlet_Info.split('||')[0]}
                       {/* 1Km Away ETA 5 mins */}
                     </Text>
                   </View>
@@ -680,6 +681,45 @@ export class Shops extends Component {
             }}
           />
         </ImageBackground>
+        <View
+          style={{
+            borderRadius: 40,
+            alignSelf: 'center',
+            margin: hp('77%'),
+            position: 'absolute',
+            zIndex: 99,
+            backgroundColor: 'white',
+            // backgroundColor: 'red',
+            // marginBottom: hp('5%'),
+          }}>
+          <TouchableOpacity
+            style={{
+              flexDirection: 'row',
+              borderRadius: 40,
+              color: 'red',
+              height: 60,
+              width: 180,
+              borderColor: '#CDCDCD',
+              borderWidth: 1,
+            }}>
+            <Image
+              style={{
+                marginLeft: 10,
+                marginRight: 10,
+                height: hp('4.2'),
+                width: wp('7.5'),
+                alignSelf: 'center',
+              }}
+              source={require('../../assets/Icons/location_check.png')}
+              color="white"
+              // onPress={() => navigation.openDrawer() }
+              // onPress={() => navigation.toggleDrawer()}
+            />
+            <Text style={{alignSelf: 'center', alignContent: 'center'}}>
+              Warje,Pune
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
     );
   }
