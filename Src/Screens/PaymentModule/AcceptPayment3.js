@@ -16,15 +16,16 @@ import Dimen from './utils/Dimen';
 import BottomGreenbar from './PaymentModuleCommonComponent/BottomGreenbar';
 import CashPaymentContainer from './AcceptpaymentComponent/CashPaymentContainer';
 import ChequePaymentConatiner from './AcceptpaymentComponent/ChequePaymentConatiner';
+import { Alert } from 'react-native';
 
 export default class AcceptPayment3 extends Component {
     isShow = true;
     constructor(props) {
         super(props);
         let _modesArray = props.Mode;
-
+        //console.log("PRINTING POROPS", props.Obj.item)
         this.state = {
-            _amount: '00,000.00',
+            _amount: props.Obj.amt,
             _showSteps: false,
             _modes: _modesArray,
             _receiptPhoto: [],
@@ -32,6 +33,8 @@ export default class AcceptPayment3 extends Component {
 
             _showCashmodule: false,
             _showCheqModule: false,
+
+
         };
 
     }
@@ -195,7 +198,9 @@ export default class AcceptPayment3 extends Component {
                         DataToBePass={'DATA'}
                         Amount={this.state._amount}
                         Navigation={this.props.navigation}
-                        OnNextClick={() => { }}
+                        OnNextClick={() => {
+                            Alert.alert("Transection Successfull...")
+                        }}
                     />
                 </View>
             </Root>

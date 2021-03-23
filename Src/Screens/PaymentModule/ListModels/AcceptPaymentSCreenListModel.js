@@ -15,11 +15,7 @@ export default function AcceptPaymentSCreenListModel(props) {
 
 
 
-    let x = 0;
-    const game = add => {
-        x = x + add;
-        props.GetAmount(x);
-    };
+
 
     const togle = () => {
         if (props.Amount === 0) {
@@ -89,9 +85,9 @@ export default function AcceptPaymentSCreenListModel(props) {
                             }}
                             keyboardType="numeric"
                             onChangeText={value => {
-                                game(value);
                                 togle();
-                                props.GetItemDetail(item)
+
+                                props.GetItemDetail(item, value)
                             }}
                         />
                     </View>
