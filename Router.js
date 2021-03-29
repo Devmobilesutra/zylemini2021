@@ -119,7 +119,7 @@ import MJP_one from './Src/Screens/MJP/MJP_one';
 import MJP_two from './Src/Screens/MJP/MJP_two';
 import MJP_Cancel from './Src/Screens/MJP/MJP_Cancel';
 import ViewDrafts from './Src/Screens/MJP/ViewDrafts';
-
+import ResourceLanding from './Src/Screens/Resources/ResourceLanding';
 //Payment module
 import Payments1 from './Src/Screens/PaymentModule/Payments1';
 import AcceptPayment from './Src/Screens/PaymentModule/AcceptPayment';
@@ -187,6 +187,12 @@ export default class RouterComponent extends Component {
             title="MJP_CancelShop"
             hideNavBar={true}
           />
+           <Scene
+                key="ResourceLanding"
+                component={ResourceLanding}
+                title="ResourceLanding"
+                hideNavBar={true}
+              />
           <Scene
             key="ViewDrafts"
             component={ViewDrafts}

@@ -440,13 +440,13 @@ export default class Database {
                     .then(() => {})
                     .catch(error => {});
                 });
-              // db.transaction(tx => {
-              //   tx.executeSql(
-              //     'CREATE TABLE Receipt(id INTEGER PRIMARY KEY AUTOINCREMENT, Date TEXT,PaymentMode TEXT,ChqueNo TEXT,ChqueDate TEXT,BankName TEXT,Amount TEXT,PartyCode TEXT,Narration TEXT,SalemanCode TEXT,SyncFlag TEXT,dateupload TEXT,datetime TEXT);',
-              //   );
-              // })
-              //   .then(() => {})
-              //   .catch(error => {});
+              db.transaction(tx => {
+                tx.executeSql(
+                  'CREATE TABLE OnlineParentArea(AreaId INTEGER , Area TEXT);',
+                );
+              })
+                .then(() => {})
+                .catch(error => {});
 
               resolve(db);
             })
@@ -647,6 +647,16 @@ export default class Database {
         if (abc.OrderDetails) {
           let OrderDetails = abc.OrderDetails;
           this.insertOrderDetailsGetData(OrderDetails);
+        }
+
+        if (abc.Resources) {
+          let Resources = abc.Resources;
+          this.insertResources(Resources);
+        }
+
+        if (abc.OnlineParentArea) {
+          let OnlineParentArea = abc.OnlineParentArea;
+          this.insertOnlineParentArea(OnlineParentArea);
         }
 
         // if (abc.CollectionType) {
@@ -2313,6 +2323,90 @@ export default class Database {
     }
   }
 
+  insertResources(Resources){
+    if (Resources.length) {
+      db1.transaction(tx => {
+        tx.executeSql(
+          'DELETE FROM Resources ',
+          [],
+        ).then(([tx, results]) => {
+          db1
+            .transaction(tx => {
+              var len = Resources.length;
+              var count = 0;
+
+              for (var item of Resources) {
+                tx.executeSql(
+                  `insert into Resources(ID ,ResourceName , ParentResourceID ,URL , Descreption ,FileName , SequenceNo ,IsDownloadable , ResourceType ,CreatedDate ,LastUpdatedDate) VALUES (?,?,?,?,?,?,?,?,?,?,?)`,
+                  [
+                    item.ID,
+                    item.ResourceName,
+                    item.ParentResourceID,
+                    item.URL,
+                    item.Descreption,
+                    item.FileName,
+                    item.SequenceNo,
+                    item.IsDownloadable,
+                    item.ResourceType,
+                    item.CreatedDate,
+                    item.LastUpdatedDate,
+                  ],
+                  (tx, results) => {},
+                  err => {
+                    console.error('error=', err);
+                  },
+                );
+              }
+            })
+            .then(result => {
+              //
+            })
+            .catch(err => {
+              //console.log(err);
+            });
+        });
+      });
+    }
+  }
+
+  insertOnlineParentArea(OnlineParentArea){
+    if (OnlineParentArea.length) {
+      db1.transaction(tx => {
+        tx.executeSql(
+          'DELETE FROM OnlineParentArea ',
+          [],
+        ).then(([tx, results]) => {
+          db1
+            .transaction(tx => {
+              var len = OnlineParentArea.length;
+              var count = 0;
+
+              for (var item of OnlineParentArea) {
+                tx.executeSql(
+                  `insert into OnlineParentArea(AreaId , Area ) VALUES (?,?)`,
+                  [
+                    item.AreaId,
+                    item.Area,
+                  
+                  ],
+                  (tx, results) => {},
+                  err => {
+                    console.error('error=', err);
+                  },
+                );
+              }
+            })
+            .then(result => {
+              //
+            })
+            .catch(err => {
+              //console.log(err);
+            });
+        });
+      });
+    }
+  }
+
   insertoutletAssetInformation(outletAssetInformationData) {
     if (outletAssetInformationData.length) {
       db1.transaction(tx => {
@@ -2437,48 +2531,7 @@ export default class Database {
       });
     }
   }
-  //insertresources
-
-  insertresources(Resources) {
-    if (Resources.length > 0) {
-      //this.initDB().then((db) => {
-      db1
-        .transaction(tx => {
-          var len = Resources.length;
-          var count = 0;
-
-          for (var item of Resources) {
-            tx.executeSql(
-              `insert into  Resources( ID ,ResourceName , ParentResourceID ,URL ,Descreption ,FileName , SequenceNo ,IsDownloadable , ResourceType ,CreatedDate ,LastUpdatedDate )
-                                                                VALUES (?,?,?,?,?,?,?,?,?,?,?)`,
-              [
-                item.ID,
-                item.ResourceName,
-                item.ParentResourceID,
-                item.URL,
-                item.Descreption,
-                item.FileName,
-                item.SequenceNo,
-                item.IsDownloadable,
-                item.ResourceType,
-                item.CreatedDate,
-                item.LastUpdatedDate,
-              ],
-              (tx, results) => {},
-              err => {
-                console.error('error=', err);
-              },
-            );
-          }
-        })
-        .then(result => {
-          //
-        })
-        .catch(err => {
-          //console.log(err);
-        });
-    }
-  }
+ 
 
   insertUsersCustomers(UsersCustomers) {
     if (UsersCustomers.length > 0) {
@@ -2943,6 +2996,33 @@ export default class Database {
       const products = [];
       var query =
         'Select distinct DistributorID,Distributor from PDistributor Order by Distributor asc';
+
+      // this.initDB().then((db) => {
+      db1
+        .transaction(tx => {
+          tx.executeSql(query, [], (tx, results) => {
+            var tempDistributor = [];
+            for (let i = 0; i < results.rows.length; i++) {
+              tempDistributor.push(results.rows.item(i));
+            }
+
+            resolve(tempDistributor);
+          });
+        })
+        .then(result => {
+          //
+        })
+        .catch(err => {
+          //console.log(err);
+        });
+    });
+  }
+
+  getOnlineParentAreaData() {
+    return new Promise(resolve => {
+      const products = [];
+      var query =
+        'Select AreaId, Area  from OnlineParentArea Order by Area asc';
 
       // this.initDB().then((db) => {
       db1
@@ -5086,7 +5166,7 @@ export default class Database {
             ],
           ).then(([tx, results]) => {
             resolve(results.length);
-            alert('order updated');
+            alert('Order Updated');
           });
         })
         .then(result => {
@@ -5102,7 +5182,7 @@ export default class Database {
   }
   deleteOrder(id) {
     return new Promise(resolve => {
-      alert('order Deleted');
+      alert('Order Deleted');
       //  this.initDB().then((db) => {
       db1
         .transaction(tx => {
@@ -7618,6 +7698,19 @@ export default class Database {
     // });
   }
 
+  deleteOrderMaster() {
+    db1.transaction(tx => {
+      tx.executeSql(
+        'DELETE FROM OrderMaster ',
+        [],
+        (tx, results) => {
+          //console.log('Results', results.rowsAffected);
+        },
+      );
+    });
+   
+  }
+
   updateMeetingMasterSyncFlag(order_id) {
     db1.transaction(tx => {
       tx.executeSql(
@@ -7664,6 +7757,19 @@ export default class Database {
     // });
   }
 
+  deletenewpartyoutlet() {
+    db1.transaction(tx => {
+      tx.executeSql(
+        'DELETE FROM newpartyoutlet ',
+        [],
+        (tx, results) => {
+          //console.log('Results', results.rowsAffected);
+        },
+      );
+    });
+   
+  }
+
   updateOrderDetailSyncFlag(order_id) {
     // return new Promise((resolve) => {
     db1.transaction(tx => {
@@ -7676,6 +7782,20 @@ export default class Database {
       );
     });
   }
+
+  deleteOrderDetails() {
+    db1.transaction(tx => {
+      tx.executeSql(
+        'DELETE FROM OrderDetails ',
+        [],
+        (tx, results) => {
+          //console.log('Results', results.rowsAffected);
+        },
+      );
+    });
+   
+  }
+
 
   deleteMeetReportMeeting(id) {
     return new Promise(resolve => {
@@ -7709,6 +7829,19 @@ export default class Database {
         },
       );
     });
+  }
+
+  deletenewpartyImageoutlet() {
+    db1.transaction(tx => {
+      tx.executeSql(
+        'DELETE FROM newpartyImageoutlet ',
+        [],
+        (tx, results) => {
+          //console.log('Results', results.rowsAffected);
+        },
+      );
+    });
+   
   }
 
   // db1.transaction((tx) => {
@@ -7751,6 +7884,19 @@ export default class Database {
     });
   }
 
+  deleteTABLE_DISCOUNT() {
+    db1.transaction(tx => {
+      tx.executeSql(
+        'DELETE FROM TABLE_DISCOUNT ',
+        [],
+        (tx, results) => {
+          //console.log('Results', results.rowsAffected);
+        },
+      );
+    });
+   
+  }
+
   updateimageDetailSyncFlag(order_id) {
     // return new Promise((resolve) => {
     //   db1.transaction((tx) => {
@@ -7773,6 +7919,19 @@ export default class Database {
         },
       );
     });
+  }
+
+  deleteImagesDetails() {
+    db1.transaction(tx => {
+      tx.executeSql(
+        'DELETE FROM ImagesDetails ',
+        [],
+        (tx, results) => {
+          //console.log('Results', results.rowsAffected);
+        },
+      );
+    });
+   
   }
 
   // deleteNewpartyImages(order_id) {
@@ -7961,7 +8120,7 @@ export default class Database {
     entityId,
     CollectionType,
   ) {
-    alert('Data inserted');
+    alert('Data Collected');
     return new Promise(resolve => {
       db1
         .transaction(tx => {
@@ -8015,7 +8174,7 @@ export default class Database {
     order_id,
     item_id,
   ) {
-    alert('Data updated');
+    alert('Order Updated');
     return new Promise(resolve => {
       // this.initDB().then((db) => {
       // if(isOpen == 'false'){
@@ -8068,7 +8227,7 @@ export default class Database {
     order_id,
     item_id,
   ) {
-    alert('Data updated');
+    alert('Data Updated');
     return new Promise(resolve => {
       // this.initDB().then((db) => {
       // if(isOpen == 'false'){

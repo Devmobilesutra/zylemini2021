@@ -765,7 +765,7 @@ export default class SideMenu extends Component {
               </View>
             </TouchableOpacity> */}
 
-            {/* <TouchableOpacity onPress={() => Actions.}>
+            <TouchableOpacity onPress={() => Actions.ResourceLanding()}>
               <View style={styles.drawerNmaeImgContainer2}>
                 <Image
                   style={styles.drawerLabelImgStyle2}
@@ -773,7 +773,7 @@ export default class SideMenu extends Component {
                 />
                 <Text style={styles.drawerLabelStyle2}>Resources</Text>
               </View>
-            </TouchableOpacity> */}
+            </TouchableOpacity>
 
             <TouchableOpacity onPress={() => Actions.TabBarReports()}>
               <View style={styles.drawerNmaeImgContainer2}>

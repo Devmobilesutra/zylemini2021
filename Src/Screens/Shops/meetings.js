@@ -10,6 +10,7 @@ import Dash from 'react-native-dash';
 import moment from 'moment';
 import { connect } from 'react-redux'
 import Database from './../../utility/Database'
+import User from './../../utility/User'
 import Loader from './../../components/LoaderSync';
 import Communications from 'react-native-communications';
 import Dialog, {

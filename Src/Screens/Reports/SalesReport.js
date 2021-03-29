@@ -328,7 +328,7 @@ console.log('selected prodcut : '+value)
             db.getDefaultUOM().then((data) => {
                 this.setState({ defaultUOM: data.Value })
                 User.DefaultUOM= data.Value
-                   alert(this.state.defaultUOM)
+                //   alert(this.state.defaultUOM)
                 db.ConversionUOMFormula(pascalCase(this.state.defaultUOM)).then((data) => {
                     ConversionFormula = data.ConversionUomFormula
                     if (ConversionFormula == "VALUE" || ConversionFormula == "9LCASE" || ConversionFormula == "VOLUME" || ConversionFormula == "POINTS" || ConversionFormula == "KG") {
@@ -754,7 +754,7 @@ console.log('selected prodcut : '+value)
         }
         else if (this.state.selectedDist == "ALL") {
             db.getDataforytd2(brandId, month, ConversionFormula2).then((datas) => {
-                alert(ytds)
+              //  alert(ytds)
                 if (data[0].qty == 'null') {
                     ytds = '0.00'
                 } else {
@@ -774,7 +774,7 @@ console.log('selected prodcut : '+value)
         else {
             //brandId,ConversionFormula,month,selectedbrand,selecteddist) 
             db.getDataforytd3(brandId, ConversionFormula2, month, this.state.selectedProduct, this.state.selectedDist).then((datas) => {
-               alert(ytds)
+             //  alert(ytds)
                 if (data[0].qty == 'null') {
                     ytds = '0.00'
                 } else {

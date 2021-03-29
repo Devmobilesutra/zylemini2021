@@ -180,10 +180,7 @@ export class Dashboard extends Component {
     //     //console.log("getUserData=",JSON.stringify(data))
     // })
     // sm.SyncNow();
-    BackHandler.addEventListener(
-      'hardwareBackPress',
-      this.handleBackButtonClick,
-    );
+   // BackHandler.addEventListener('hardwareBackPress',this.handleBackButtonClick,);
     AsyncStorage.getItem('userIds').then(keyValue => {
       this.props.userid(JSON.parse(keyValue));
     });
@@ -217,11 +214,12 @@ export class Dashboard extends Component {
   }
 
   componentDidMount() {
-    this._componentFocused();
-    this._sub = this.props.navigation.addListener(
-      'didFocus',
-      this._componentFocused,
-    );
+    BackHandler.addEventListener('hardwareBackPress',this.handleBackButtonClick,);
+    // this._componentFocused();
+    // this._sub = this.props.navigation.addListener(
+    //   'didFocus',
+    //   this._componentFocused,
+    // );
   }
 
   _componentFocused() {
