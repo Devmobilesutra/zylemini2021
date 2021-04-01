@@ -206,6 +206,7 @@ export class AddNewShop extends Component {
       content: image.data,
     };
     newDataImg.push(item);
+    console.log('item in image : '+JSON.stringify(item))
     this.setState({fileList: newDataImg});
   };
 

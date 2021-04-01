@@ -80,6 +80,8 @@ export class AddNewShopSecond extends Component {
     currentDateTimeFilename = curentDatetime + '.jpg';
     //console.log(app_order_id)
   //  alert(app_order_id)
+
+  
   db.insertNewShopnewpartyoutlet(app_order_id,this.props.BeatID,this.props.outletNAme,this.state.contactPersonMob,this.props.OwnerName,this.props.address,"",
  this.props.userLatitude,this.props.userLongitude,"N",curentDatetime,this.state.ShopType,this.state.ShopRegNo,this.state.ShopId ,this.state.contactPersonName ,this.state.ShopArea)
  
@@ -87,6 +89,7 @@ export class AddNewShopSecond extends Component {
 //  alert(this.state.fileList.length)
  for(let i=0;i<this.props.fileList.length;i++){
     counts++    
+    console.log('file name uri : '+this.props.fileList[i].url.uri)
     db.insertNewPartyImages(app_order_id,"N",currentDateTimeFilename,this.props.fileList[i].url.uri)
    //  Actions.Shops()
  } 

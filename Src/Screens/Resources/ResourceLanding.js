@@ -7,303 +7,377 @@ import { connect } from 'react-redux'
 import Database from './../../utility/Database'
 import moment from 'moment';
 const db = new Database();
+import Video from 'react-native-video';
  import { Thumbnail } from 'react-native-thumbnail-video';
 // import { Thumbnail } from 'native-base';
-
 let Image_Http_URL ={ uri: 'https://reactnativecode.com/wp-content/uploads/2017/05/react_thumb_install.png'};
 export  class ResourceLanding extends Component {
     constructor(props) {
         super(props);
         this.state = {
-           
-           
-            resourcesArray : [
-              {
-                  "ID": 1,
-                  "ResourceName": "Gallery",
-                  "ParentResourceID": null,
-                  "URL": "http://xyz.com/ResourceAPI/Gallery",
-                  "Descreption": "",
-                  "FileName": "",
-                  "SequenceNo": 1,
-                  "IsDownloadable": null,
-                  "ResourceType": null,
-                  "CreatedDate": "2018-04-01T00:00:00",
-                  "LastUpdatedDate": "2018-04-01T00:00:00"
-              },
-              {
-                  "ID": 2,
-                  "ResourceName": "Video",
-                  "ParentResourceID": null,
-                  "URL": "http://xyz.com/ResourceAPI/Video",
-                  "Descreption": "",
-                  "FileName": "",
-                  "SequenceNo": 2,
-                  "IsDownloadable": null,
-                  "ResourceType": null,
-                  "CreatedDate": "2018-04-01T00:00:00",
-                  "LastUpdatedDate": "2018-04-01T00:00:00"
-              },
-              {
-                  "ID": 3,
-                  "ResourceName": "Downloads",
-                  "ParentResourceID": null,
-                  "URL": "http://xyz.com/ResourceAPI/Downloads",
-                  "Descreption": "",
-                  "FileName": "",
-                  "SequenceNo": 3,
-                  "IsDownloadable": null,
-                  "ResourceType": null,
-                  "CreatedDate": "2018-04-01T00:00:00",
-                  "LastUpdatedDate": "2018-04-01T00:00:00"
-              },
-              {
-                  "ID": 4,
-                  "ResourceName": "Year 2017-2018",
-                  "ParentResourceID": 1,
-                  "URL": "",
-                  "Descreption": "",
-                  "FileName": "",
-                  "SequenceNo": 1,
-                  "IsDownloadable": null,
-                  "ResourceType": null,
-                  "CreatedDate": "2018-04-01T00:00:00",
-                  "LastUpdatedDate": "2018-04-01T00:00:00"
-              },
-              {
-                  "ID": 5,
-                  "ResourceName": "Review Meeting QTR 1",
-                  "ParentResourceID": 4,
-                  "URL": "https://flutter.io",
-                  "Descreption": "Review Meeting Apr-Jun 2017",
-                  "FileName": "",
-                  "SequenceNo": 1,
-                  "IsDownloadable": null,
-                  "ResourceType": null,
-                  "CreatedDate": "2018-04-01T00:00:00",
-                  "LastUpdatedDate": "2018-04-01T00:00:00"
-              },
-              {
-                  "ID": 6,
-                  "ResourceName": "Review Meeting QTR 2",
-                  "ParentResourceID": 4,
-                  "URL": "",
-                  "Descreption": "Review Meeting Jul-Sep 2017",
-                  "FileName": "",
-                  "SequenceNo": 2,
-                  "IsDownloadable": null,
-                  "ResourceType": null,
-                  "CreatedDate": "2018-04-01T00:00:00",
-                  "LastUpdatedDate": "2018-04-01T00:00:00"
-              },
-              {
-                  "ID": 7,
-                  "ResourceName": "Review Meeting QTR 3",
-                  "ParentResourceID": 4,
-                  "URL": "",
-                  "Descreption": "Review Meeting Oct-Dec 2017",
-                  "FileName": "",
-                  "SequenceNo": 3,
-                  "IsDownloadable": null,
-                  "ResourceType": null,
-                  "CreatedDate": "2018-04-01T00:00:00",
-                  "LastUpdatedDate": "2018-04-01T00:00:00"
-              },
-              {
-                  "ID": 8,
-                  "ResourceName": "Review Meeting QTR 4",
-                  "ParentResourceID": 4,
-                  "URL": "",
-                  "Descreption": "Review Meeting Jan-Mar 2018",
-                  "FileName": "",
-                  "SequenceNo": 4,
-                  "IsDownloadable": null,
-                  "ResourceType": null,
-                  "CreatedDate": "2018-04-01T00:00:00",
-                  "LastUpdatedDate": "2018-04-01T00:00:00"
-              },
-              {
-                  "ID": 9,
-                  "ResourceName": "Welcome Speech",
-                  "ParentResourceID": 5,
-                  "URL": "http://zylemdemo.com/UATZYLEMINI/UploadImages/190919125115_2019Sep19000000_47567_3_4.jpg",
-                  "Descreption": "Welcome Speech by Sir",
-                  "FileName": "Image1.jpg",
-                  "SequenceNo": 1,
-                  "IsDownloadable": true,
-                  "ResourceType": 1,
-                  "CreatedDate": "2018-04-01T00:00:00",
-                  "LastUpdatedDate": "2018-04-01T00:00:00"
-              },
-              {
-                  "ID": 10,
-                  "ResourceName": "Company Performance",
-                  "ParentResourceID": 5,
-                  "URL": "http://zylemdemo.com/UATZYLEMINI/UploadImages/190814153937_2019Aug14154636_1_2_1.jpg",
-                  "Descreption": "Company Performance",
-                  "FileName": "Image2.jpg",
-                  "SequenceNo": 2,
-                  "IsDownloadable": true,
-                  "ResourceType": 1,
-                  "CreatedDate": "2018-04-01T00:00:00",
-                  "LastUpdatedDate": "2018-04-01T00:00:00"
-              },
-              {
-                  "ID": 11,
-                  "ResourceName": "Marketing Presentation",
-                  "ParentResourceID": 5,
-                  "URL": "http://zylemdemo.com/UATZYLEMINI/UploadImages/190814155115_2019Aug14155135_1_1_1.jpg",
-                  "Descreption": "Presentation By A Sir",
-                  "FileName": "Image3.jpg",
-                  "SequenceNo": 3,
-                  "IsDownloadable": true,
-                  "ResourceType": 1,
-                  "CreatedDate": "2018-04-01T00:00:00",
-                  "LastUpdatedDate": "2018-04-01T00:00:00"
-              },
-              {
-                  "ID": 12,
-                  "ResourceName": "Pre-Sales Presentation",
-                  "ParentResourceID": 5,
-                  "URL": "http://zylemdemo.com/UATZYLEMINI/UploadImages/190918145512_2019Sep18000000_1_2_1.jpg",
-                  "Descreption": "Presentation By B Sir",
-                  "FileName": "Image4.jpg",
-                  "SequenceNo": 4,
-                  "IsDownloadable": true,
-                  "ResourceType": 1,
-                  "CreatedDate": "2018-04-01T00:00:00",
-                  "LastUpdatedDate": "2018-04-01T00:00:00"
-              },
-              {
-                  "ID": 13,
-                  "ResourceName": "Development",
-                  "ParentResourceID": 5,
-                  "URL": "http://zylemdemo.com/UATZYLEMINI/UploadImages/190816102456_2019Aug16000000_20190816102512.jpg",
-                  "Descreption": "Presentation By C Sir",
-                  "FileName": "Image5.jpg",
-                  "SequenceNo": 5,
-                  "IsDownloadable": true,
-                  "ResourceType": 1,
-                  "CreatedDate": "2018-04-01T00:00:00",
-                  "LastUpdatedDate": "2018-04-01T00:00:00"
-              },
-              {
-                  "ID": 14,
-                  "ResourceName": "Operation",
-                  "ParentResourceID": 5,
-                  "URL": "http://zylemdemo.com/UATZYLEMINI/UploadImages/190919125115_2019Sep19000000_47567_3_4.jpg",
-                  "Descreption": "Presentation by D Sir",
-                  "FileName": "Image6.jpg",
-                  "SequenceNo": 6,
-                  "IsDownloadable": true,
-                  "ResourceType": 1,
-                  "CreatedDate": "2018-04-01T00:00:00",
-                  "LastUpdatedDate": "2018-04-01T00:00:00"
-              },
-              {
-                  "ID": 15,
-                  "ResourceName": "Group Photo",
-                  "ParentResourceID": 5,
-                  "URL": "http://zylemdemo.com/UATZYLEMINI/UploadImages/190724111331_2019Jul24000000_IMG_20190724111331.jpg",
-                  "Descreption": "Group Photo",
-                  "FileName": "Image7.jpg",
-                  "SequenceNo": 7,
-                  "IsDownloadable": true,
-                  "ResourceType": 1,
-                  "CreatedDate": "2018-04-01T00:00:00",
-                  "LastUpdatedDate": "2018-04-01T00:00:00"
-              },
-              {
-                  "ID": 16,
-                  "ResourceName": "Welcome Speech Video",
-                  "ParentResourceID": 5,
-                  "URL": "https://www.youtube.com/watch?v=yJuCqERv6TM",
-                  "Descreption": "Welcome Speech by E Sir",
-                  "FileName": "Video1.mp4",
-                  "SequenceNo": 8,
-                  "IsDownloadable": false,
-                  "ResourceType": 2,
-                  "CreatedDate": "2018-04-01T00:00:00",
-                  "LastUpdatedDate": "2018-04-01T00:00:00"
-              }]
+            resourcesArray : [],
+            textLenth: null, 
+           // numberOfLines: 3,
+            textShown: -1,
          
         };
       }
 
+      componentDidMount() {
+      
+        // setTimeout(function(){this.setState({showWarning: true}); }.bind(this), 1000);
+         BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
+     }
+     componentWillUnmount() {
+         BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
+     }
+     shouldComponentUpdate() {
+         return true;
+       }
+     handleBackButtonClick() {
+         return true;
+     }
+  
+     componentWillMount() {
+    
+        db.getResources().then((data)=>{
+          console.log("Distributor Meeting",data);
+              this.setState({ resourcesArray: data })
+              console.log("resourcesArray : ",JSON.stringify(this.state.resourcesArray));
+         })
+
+        
+      
+   }
+
+     
+      handleSeeMore = () => {
+        this.state.textLenth
+          ? this.setState({numberOfLines: 0})
+          : this.setState({numberOfLines: 3});
+        };
+
+        seeMoreFunc = () => {
+         return(
+          
+
+            (this.state.textLenth) ? (
+            
+              <Text onPress={() => this.setState({numberOfLines: 3})}
+               style={{
+               color :'red' }}
+               >
+                see less
+              </Text>
+             
+            ) : (
+             
+              <Text onPress={() => this.setState({numberOfLines: 3})}
+               style={{
+               color :'blue' }}
+               >
+                see less
+              </Text>
+              
+            )
+          
+         )
+          };
+
+          toggleNumberOfLines = (index) => {
+            var d = "Zylem POP For Recording Promotions of Products by the Company";
+            console.log('index : '+index + " len : "+d.length)
+            this.setState({
+              textShown: this.state.textShown === index ? -1 : index,
+            });
+          };
+       
+        cardListViewsView = () => {
+         
+            return (
+              <View style={styles.shopListMainContainer}>
+                    <TouchableOpacity  onPress={()=>this.navigate( item.id,item.party)}>
+                    {/* <TouchableOpacity onPress={() => Actions.Info({shopId: item.id})}> */}
+                      <View style={styles.shopDetailBackStyle}>
+                        <View style={styles.imageContainer}>
+                          <Image
+                            style={styles.imageStyles}
+                            source={require('../../assets/Icons/shopImg.png')}
+                          />
+                        </View>
+                        <View style={styles.shopDetailsContainer}>
+                          <Text style={styles.shopNameTextStyle}>{item.party}</Text>
+                          <Text style={styles.shopAddressTextStyle}>
+                            {item.Outlet_Info.split('||')[0]}
+                          </Text>
+                          {/* <Text style={styles.shopDistanceTextStyle}>
+                            1 Km Away ETA 5Mins
+                          </Text> */}
+                        </View>
+                        <View style={styles.callContainer}>
+                          <TouchableOpacity
+                            style={{
+                              justifyContent: 'center',
+                              backgroundColor: '#e6ebe7',
+                              borderRadius: 20,
+                              width: 28,
+                              height: 26,
+                            }}
+                            onPress={() =>
+                              Communications.phonecall('0123456789', true)
+                            }>
+                            <Text style={styles.callTextStyle}> Call</Text>
+                          </TouchableOpacity>
+                        </View>
+                      </View>
+                    </TouchableOpacity>
+                  </View>
+              
+                //  keyExtractor={item => item.id}
+              
+            );
+         
+        };
       
 render(){
+  if(this.state.resourcesArray){
     return(
+
+      <View>
+        {/* <View  style={{
+          width: wp('80'),
+        justifyContent: 'flex-start',
+          }}>
+      <Text
+            numberOfLines={this.state.numberOfLines}
+            onPress={() => this.handleSeeMore()}
+            ellipsizeMode="middle"
+            onTextLayout={({nativeEvent: {lines}}) =>{
+              console.log('in textlayout '+lines.length)
+              this.setState({textLenth: lines.length === 5})
+            } }>
+           Unfortunately these pitfalls do not always lead to errors. Sometimes they work. I guess this depends on which of all those many tools/libraries/components you use and their versions in your app
+              {this.seeMoreFunc()}
+           
+          </Text>
+          </View>  */}
       <FlatList
       data={this.state.resourcesArray}
-      renderItem={({item}) => (
-        (item.ResourceType != null) ? (
-          <View style={styles.shopListMainContainerCard}>
-          <TouchableOpacity >
-            <View style={styles.shopListBackContainerCard}>
-              <View style={styles.shopNameAddContainerCard}>
-                <Text style={styles.shopNameTextStyleCard}>
-                  {item.Descreption}
-                </Text>
-              </View>
-              <View style={styles.shopNameAddContainerCard}>
-                <Text style={styles.shopDistanceTextStyleCard}>
-                Published On { moment(item.CreatedDate).format('DD-MMM-YYYY')}
-                  {/* 1Km Away ETA 5 mins */}
-                </Text>
-              </View>
-              <View style={styles.imgBackContainerCard}>
-                {/* <Image
-                  style={styles.imageStylesCard}
+      renderItem={({item ,index}) => {
+        if(item.ResourceType == 3){
+          return(
+            <View style={styles.shopListMainContainer}>
+          <TouchableOpacity  onPress={()=>Actions.ResourceWebView({URL: item.URL})}>
+          {/* <TouchableOpacity onPress={() => Actions.Info({shopId: item.id})}> */}
+            <View style={styles.shopDetailBackStyle}>
+              <View style={styles.imageContainer}>
+                <Image
+                  style={styles.imageStyles}
                   source={require('../../assets/Icons/shopImg.png')}
-                  // source={require('../../assets/Icons/Shop_card_watermark.png')}
-                /> */}
-                {
-                  (item.ResourceType == 2) ? (
-                    <Thumbnail style={styles.imgBackContainerCard}  url="https://www.youtube.com/watch?v=yJuCqERv6TM" />
-                  ) : (
-                   
-                      <Image
-                      style={styles.imgBackContainerCard}
-                      source={{ uri: item.URL }}
-                    />
-                   
-                   
-                  )
-                }
-  
-               
+                />
               </View>
-              {/* <View style={styles.NCMContainerCard}>
-                <View style={styles.navContainerCard}>
-                  <TouchableOpacity>
-                    <Text style={styles.navTextStyleCard}>Navigate</Text>
-                  </TouchableOpacity>
-                </View>
-                <View style={styles.callContainerCard}>
-                  <TouchableOpacity
-                    // style={{backgroundColor: 'red'}}
-                  >
-                    <Text style={styles.callTextStyleCard}>Call</Text>
-                  </TouchableOpacity>
-                </View>
-                <View style={styles.msgContainerCard}>
-                  <TouchableOpacity
-                    >
-                    <Text style={styles.msgTextStyleCard}>Message</Text>
-                  </TouchableOpacity>
-                </View>
+              <View style={styles.shopDetailsContainer}>
+                <Text style={styles.shopNameTextStyle}>{item.ResourceName}</Text>
+                {/* <Text style={styles.shopAddressTextStyle}>
+                {item.Descreption}
+                </Text> */}
+
+
+                <Text
+                numberOfLines={this.state.textShown === index ? undefined : 2}
+                style={styles.shopAddressTextStyle}>
+                {item.Descreption}
+              </Text>
+              {
+                (item.Descreption && item.Descreption.length > 45) ? (
+                <Text
+                onPress={() => this.toggleNumberOfLines(index)}
+                style={{ color: '#3955CB' }}>
+                {this.state.textShown === index ? 'read less' : 'read more'}
+              </Text>
+                ) : (
+                  <Text></Text>
+                )
+              }
+             
+              </View>
+              {/* <View style={styles.callContainer}>
+                <TouchableOpacity
+                  style={{
+                    justifyContent: 'center',
+                    backgroundColor: '#e6ebe7',
+                    borderRadius: 20,
+                    width: 28,
+                    height: 26,
+                  }}
+                  onPress={() =>
+                    Communications.phonecall('0123456789', true)
+                  }>
+                  <Text style={styles.callTextStyle}> Call</Text>
+                </TouchableOpacity>
               </View> */}
             </View>
           </TouchableOpacity>
         </View>
-        ) :(
-          <View></View>
-        )
-      
-      )}
+          )
+          
+        }else if(item.ResourceType == 1){
+          return(
+            <View style={styles.shopListMainContainerCard}>
+            <TouchableOpacity 
+            onPress={() => Actions.ResourceWebView({URL: item.URL})}>
+              <View style={styles.shopListBackContainerCard}>
+              <View style={styles.shopDetaildownload}>
+
+                  <View style={styles.shopDetailsdownload}>
+                <View style={styles.shopNameAddContainerCard}>
+                  <Text style={styles.shopNameTextStyleCard}>
+                    {item.ResourceName}
+                  </Text>
+                </View>
+                <View style={styles.shopNameAddContainerCard}>
+                  <Text style={styles.shopDistanceTextStyleCard}>
+                  Published On { moment(item.CreatedDate).format('DD-MMM-YYYY')}
+                    {/* 1Km Away ETA 5 mins */}
+                  </Text>
+                </View>
+                </View>
+
+                {/* <Image style={styles.mapIconStyle}
+                   source = {require('../../assets/Icons/Data_Upload.png')}/> */}
+
+        </View>
+                
+                {/* <View style={styles.imgBackContainerCard}> */}
+                <Image
+                        style={styles.imgBackContainerCard}
+                        source={{ uri: item.URL }}
+                      />
+                 {/* </View> */}
+                <View style={styles.NCMContainerCard}>
+                  <View style={styles.navContainerCard}>
+                   
+                      {/* <Text style={styles.navTextStyleCard}>
+                      {item.Descreption}
+                      </Text> */}
+
+              <Text
+                numberOfLines={this.state.textShown === index ? undefined : 2}
+                style={styles.shopAddressTextStyle}>
+                {item.Descreption}
+                </Text>
+                {
+                (item.Descreption && item.Descreption.length > 45) ? (
+                <Text
+                onPress={() => this.toggleNumberOfLines(index)}
+                style={{ color: '#3955CB' }}>
+                {this.state.textShown === index ? 'read less' : 'read more'}
+              </Text>
+                ) : (
+                  <Text></Text>
+                )
+               }
+         </View>
+                
+                 
+                </View>
+              </View>
+            </TouchableOpacity>
+          </View>
+          )
+         
+        }else if(item.ResourceType == 2){
+          return(
+            <View style={styles.shopListMainContainerCard}>
+            <TouchableOpacity 
+            onPress={() => Actions.ResourceWebView({URL: 'http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4'})}>
+              <View style={styles.shopListBackContainerCard}>
+                <View style={styles.shopNameAddContainerCard}>
+                  <Text style={styles.shopNameTextStyleCard}>
+                    {item.ResourceName}
+                  </Text>
+                </View>
+                <View style={styles.shopNameAddContainerCard}>
+                  <Text style={styles.shopDistanceTextStyleCard}>
+                  Published On { moment(item.CreatedDate).format('DD-MMM-YYYY')}
+                    {/* 1Km Away ETA 5 mins */}
+                  </Text>
+                </View> 
+                {/* <View style={styles.imgBackContainerCard}> */}
+                {/* <Image
+                        style={styles.imgBackContainerCard}
+                        source={{ uri: item.URL }}
+                      /> */}
+          <Video
+                  source={{ uri: 'http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4' }}
+                  style={styles.imgBackContainerCard}
+                  controls={false}
+                //  paused ={true}
+              //  playWhenInactive ={false}
+                muted={true}
+                  resizeMode="cover"
+                  pictureInPicture={true}
+                 // onBuffer={this.videoBuffer}
+                  ref={(ref) => {
+                  this.player = ref
+                  }} />
+                      
+               
+                {/* <Thumbnail style={styles.imgBackContainerCard}  url="https://www.youtube.com/watch?v=yJuCqERv6TM" /> */}
+                  {/* {
+                    (item.ResourceType == 2) ? (
+                      <Thumbnail style={styles.imgBackContainerCard}  url="https://www.youtube.com/watch?v=yJuCqERv6TM" />
+                    ) : (
+                     
+                        <Image
+                        style={styles.imgBackContainerCard}
+                        source={{ uri: item.URL }}
+                      />
+                     
+                     
+                    )
+                  } */}
+    
+                 
+                {/* </View> */}
+                <View style={styles.NCMContainerCard}>
+                  <View style={styles.navContainerCard}>
+                   
+                      {/* <Text style={styles.navTextStyleCard}>
+                      {item.Descreption}
+                      </Text> */}
+                        <Text
+                numberOfLines={this.state.textShown === index ? undefined : 2}
+                style={styles.shopAddressTextStyle}>
+                {item.Descreption}
+                </Text>
+                {
+                (item.Descreption && item.Descreption.length > 45) ? (
+                <Text
+                onPress={() => this.toggleNumberOfLines(index)}
+                style={{ color: '#3955CB' }}>
+                {this.state.textShown === index ? 'read less' : 'read more'}
+              </Text>
+                ) : (
+                  <Text></Text>
+                )
+               }
+                </View>
+                  </View>
+              </View>
+            </TouchableOpacity>
+          </View>
+          )
+         
+        }
+      }
+      }
       />
-    )
-  }      
+      </View>
+     ) 
+  } }  
+  
+
 
 //   render() {
 //     return (
@@ -438,34 +512,34 @@ render(){
                 color: '#fff', fontSize: 18, fontWeight: 'bold', marginLeft: hp('3'),
 
             },
-            headerRight: (
-                <View style={{ flexDirection: "row", alignItems: 'center', justifyContent: 'center', alignSelf: 'center', }}>
+            // headerRight: (
+            //     <View style={{ flexDirection: "row", alignItems: 'center', justifyContent: 'center', alignSelf: 'center', }}>
 
-                    <TouchableOpacity onPress={state.params.handleFilterPress}>
-                        <View>
-                            <Image style={{ marginRight: hp('4'), height: hp('3'), width: wp('4') }}
-                                source={require('../../assets/Icons/Sort_by.png')}
-                            />
-                        </View>
-                    </TouchableOpacity>
+            //         <TouchableOpacity onPress={state.params.handleFilterPress}>
+            //             <View>
+            //                 <Image style={{ marginRight: hp('4'), height: hp('3'), width: wp('4') }}
+            //                     source={require('../../assets/Icons/Sort_by.png')}
+            //                 />
+            //             </View>
+            //         </TouchableOpacity>
 
-                    <Image style={{ marginRight: hp('2'), marginBottom: hp('0.5'), height: hp('4'), width: wp('6.1'), }}
-                        source={require('../../assets/Icons/SearchHeader.png')}
-                    />
+            //         <Image style={{ marginRight: hp('2'), marginBottom: hp('0.5'), height: hp('4'), width: wp('6.1'), }}
+            //             source={require('../../assets/Icons/SearchHeader.png')}
+            //         />
 
-                </View>
-            ),
+            //     </View>
+            // ),
 
             headerLeft: (
                 <View style={{ flexDirection: "row", alignItems: 'center', justifyContent: 'center', alignSelf: 'center', }}>
                     <TouchableOpacity onPress={() => Actions.Dashboard()}>
-                        <Image style={{ marginLeft: wp('4'), }}
+                        <Image style={{ marginLeft: wp('2'), }}
                             source={require('../../assets/Icons/Back_White.png')}
                         />
                     </TouchableOpacity>
-                    <Image style={{ marginLeft: wp('2'), }}
+                    {/* <Image style={{ marginLeft: wp('2'), }}
                         source={require('../../assets/Icons/Data_Upload1.png')}
-                    />
+                    /> */}
                 </View>
             ),
         }
@@ -473,15 +547,15 @@ render(){
     }
 
 
-    componentDidMount() {
-        db.getResources().then((data) => {
-            console.log("resources data==", data)
+    // componentDidMount() {
+    //     db.getResources().then((data) => {
+    //         console.log("resources data==", data)
 
             
 
         
-    })
-      }
+    // })
+    //   }
     }
 
     
@@ -1200,7 +1274,12 @@ const mapStateToProps = (state) => {
       borderWidth: hp('0.3'),
       marginHorizontal: wp('4'),
     },
-  
+    shopDetaildownload : {
+      
+      flexDirection: 'row',
+      backgroundColor: '#FFFFFF',
+    //  width: wp('90'),
+    },
     imageContainer: {
       flex: 1,
       alignItems: 'flex-start',
@@ -1218,6 +1297,11 @@ const mapStateToProps = (state) => {
       alignItems: 'flex-start',
       marginTop: hp('-3'),
       marginLeft: wp('15'),
+    },
+    shopDetailsdownload :{
+      //flex: 3,
+      flexDirection: 'column',
+      alignItems: 'flex-start',
     },
   
     shopNameTextStyle: {
@@ -1263,7 +1347,7 @@ const mapStateToProps = (state) => {
       backgroundColor: '#FFFFFF',
       borderColor: '#E6DFDF',
       borderRadius: wp('2'),
-      height: hp('42'),
+      height: hp('48'),
       width: wp('90'),
       borderWidth: hp('0.3'),
       marginHorizontal: wp('4'),
@@ -1272,6 +1356,15 @@ const mapStateToProps = (state) => {
     shopNameAddContainerCard: {
       alignItems: 'flex-start',
       flexDirection: 'row',
+      marginLeft: wp('6'),
+    },
+    downloadContainerCard: {
+      flexDirection: 'row',
+      width: wp('90'),
+    },
+    downlodimageContainerCard: {
+      alignItems: 'flex-end',
+    //  flexDirection: 'row',
       marginLeft: wp('6'),
     },
   
@@ -1309,19 +1402,21 @@ const mapStateToProps = (state) => {
     NCMContainerCard: {
       flex: 1,
       flexDirection: 'row',
+      marginTop : hp('3'),
     },
   
     navContainerCard: {
-      flex: 0.5,
+      flex: 1,
       flexDirection: 'column',
       alignItems: 'flex-start',
-      justifyContent: 'center',
+      justifyContent: 'flex-start',
+      marginLeft: wp('6'),
     },
   
     navTextStyleCard: {
-      color: '#3955CB',
+      color: '#362828',
       fontSize: 12,
-      fontWeight: 'bold',
+     // fontWeight: 'bold',
       marginLeft: wp('6'),
       fontFamily: 'Proxima Nova',
     },
@@ -1354,5 +1449,12 @@ const mapStateToProps = (state) => {
       fontWeight: 'bold',
       marginRight: wp('6'),
       fontFamily: 'Proxima Nova',
+    },
+    mapIconStyle:{
+      alignSelf:'flex-end',
+      height: hp('4'),
+      width: wp('6'),
+      // width:  wp('25'),
+      // height: hp('12'),
     },
   });

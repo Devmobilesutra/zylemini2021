@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Text, ImageBackground, TouchableOpacity, ScrollView, Image, AsyncStorage, PermissionsAndroid, BackHandler } from 'react-native';
+import { StyleSheet, View, Text, ImageBackground, TouchableOpacity, ScrollView, Image, AsyncStorage, PermissionsAndroid, BackHandler,FlatList } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
 import { Actions } from 'react-native-router-flux';
@@ -7,14 +7,17 @@ import { FAB, Portal, Provider } from 'react-native-paper';
 import { FloatingAction } from "react-native-floating-action";
 import Geolocation from 'react-native-geolocation-service';
 import Geocoder from 'react-native-geocoding';
+import {ActionSheet, Root} from 'native-base';
 import { TOTAL_SHOPS, SHOP_INFO, SHOP_VISITED_TODAY } from '../../Redux/actions/ShopAction'
 import { connect } from 'react-redux'
 import RNFS from 'react-native-fs';
+import ImagePicker from 'react-native-image-crop-picker';
 import MapView, { Polyline, Marker } from "react-native-maps";
 import Database from './../../utility/Database'
 import User from './../../utility/User'
 const db = new Database();
-var open
+var open;
+var curentDatetime;
 
 const actions = [
     {
@@ -71,7 +74,8 @@ export class Info extends Component {
             totalVisited: '',
             active: false,
             newPartyImagedetails1 :[],
-            newPartyImagedetails :[]
+            newPartyImagedetails :[],
+            fileList: [],
         };
         //  alert(this.props.shopId)  
         this.props.navigation.setParams({
@@ -333,10 +337,104 @@ export class Info extends Component {
         var datess = year + '-' + month + '-' + date
     }
 
+    onClickAddImage = () => {
+        const BUTTONS = ['Take photo', 'Choose', 'cancel'];
+        ActionSheet.show(
+          {options: BUTTONS, cancelButtonIndex: 2, title: 'select photo'},
+          buttonIndex => {
+            switch (buttonIndex) {
+              case 0:
+                this.takePhotoFromCamera();
+                break;
+    
+              case 1:
+                this.takePhotoFromLibrary();
+                break;
+              default:
+                break;
+            }
+          },
+        );
+      };
+    
+      takePhotoFromCamera = () => {
+        ImagePicker.openCamera({
+          // width: 300,
+          // height: 400,
+          // cropping: true,
+          compressImageQuality: 0.5,
+        }).then(image => {
+          this.onSelectedImage(image);
+          //console.log(image);
+        });
+      };
+    
+      takePhotoFromLibrary = () => {
+        ImagePicker.openPicker({
+          // width: 300,
+          // height: 400,
+          // cropping: true
+          //  includeBase64 : true
+          compressImageQuality: 0.5,
+        }).then(image => {
+          this.onSelectedImage(image);
+          //console.log(image);
+        });
+      };
+    
+      onSelectedImage = image => {
+        let newDataImg = this.state.fileList;
+        const source = {uri: image.path};
+        let item = {
+          id: Date.now(),
+          url: source,
+          content: image.data,
+        };
+        newDataImg.push(item);
+        var date = new Date().getDate(); //Current Date
+        var month = new Date().getMonth() + 1; //Current Month
+        var year = new Date().getFullYear(); //Current Year
+        var hours = new Date().getHours(); //Current Hours
+        var min = new Date().getMinutes(); //Current Minutes
+        var sec = new Date().getSeconds(); //Current Seconds
+     
+        curentDatetime=year + '-' + month + '-' + date + ' ' + hours + ':' + min + ':' + sec
+      var currentDateTimeFilename = curentDatetime + '.jpg';
+        db.insertNewPartyImages(this.props.shopId,"N",currentDateTimeFilename,item.url.uri)
+        this.setState({fileList: newDataImg});
+      };
+    
+      renderItem = ({item, indx}) => {
+        //console.log("urlopf images=",JSON.stringify(this.state.fileList))
+        return (
+          <View>
+            <Image style={styles.imagesFrompHOTO} source={item.url} />
+          </View>
+        );
+      };
+    
+      showPhoto() {
+        let {content} = styles;
+        let {fileList} = this.state;
+        return (
+          <Root>
+            <View>
+              <FlatList
+                horizontal={true}
+                data={fileList}
+                renderItem={this.renderItem}
+                keyExtractor={(item, index) => index.toString()}
+                extraData={this.state}
+              />
+            </View>
+          </Root>
+        );
+      }
+
     
     _renderViewForImages(){
 
-    if(NewPartyImageDetails.length > 0){
+   // if(NewPartyImageDetails.length > 0){
         return NewPartyImageDetails.map((item, i) => {
         return(
            
@@ -345,15 +443,8 @@ export class Info extends Component {
             
         )
             })
-    }
-    // else{
-    //     return(
-            
-    //           <Image style={styles.horiImageStyles}
-    //             source={require('../../assets/ShopInfoImg/Koala.jpg')}
-    //            />
-    //      )
-    // }
+    
+   
 }
 
     render() {
@@ -386,30 +477,49 @@ export class Info extends Component {
                     >
                         {/* Horizontal Images */}
                         <View>
-                            <View style={styles.horiImagesMainContainer}>
+                            {
+                                (NewPartyImageDetails.length > 0) ? (
+                                    <View style={styles.horiImagesMainContainer}>
                                 <ScrollView
                                     horizontal={true}
                                     showsHorizontalScrollIndicator={false}
                                     showsVerticalScrollIndicator={false}
                                 >
 
-                            {this._renderViewForImages()} 
+                             {this._renderViewForImages()}  
 
-                                    {/* <Image style={styles.horiImageStyles}
-                                        source={require('../../assets/ShopInfoImg/Koala.jpg')}
-                                    />
-                                   
-                                    <Image style={styles.horiImageStyles}
-                                        source={require('../../assets/ShopInfoImg/Desert.jpg')}
-                                    />
-                                    <Image style={styles.horiImageStyles}
-                                        source={require('../../assets/ShopInfoImg/Hydrangeas.jpg')}
-                                    />
-                                    <Image style={styles.horiImageStyles}
-                                        source={require('../../assets/ShopInfoImg/Penguins.jpg')}
-                                    /> */}
-                                </ScrollView>
+                          </ScrollView>
                             </View>
+
+                                ) :   ( <View
+                                    style={{
+                                    flexDirection: 'row',
+                                    marginTop: hp('2'),
+                                    marginLeft: wp('4'),
+                                    }}>
+                                    <ScrollView
+                                    horizontal={true}
+                                    showsHorizontalScrollIndicator={false}
+                                    showsVerticalScrollIndicator={false}>
+                                    <View
+                                        style={{
+                                        flexDirection: 'column',
+                                        marginTop: hp('7'),
+                                        }}>
+                                        <TouchableOpacity onPress={this.onClickAddImage}>
+                                        <Image
+                                            style={{height: hp('7'), width: wp('12')}}
+                                            source={require('../../assets/Icons/Add_Images.png')}
+                                        />
+                                        </TouchableOpacity>
+                                    </View>
+                                    <View style={{flexDirection: 'column'}}>
+                                        {this.showPhoto()}
+                                    </View>
+                                    </ScrollView>
+                                </View> )
+                            }
+                            
                         </View>
 
                         {/* Address */}
@@ -1075,4 +1185,13 @@ const styles = StyleSheet.create({
         marginTop: hp('1'),
         marginLeft: wp('6%'),
     },
+    imagesFrompHOTO: {
+        height: hp('18'),
+        width: wp('40'),
+        borderRadius: wp('2'),
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginLeft: wp('2'),
+        marginTop: hp('1'),
+      },
 })

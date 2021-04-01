@@ -72,6 +72,7 @@
     "react-native-svg-charts": "^5.4.0",
     "react-native-thumbnail-video": "^0.1.2",
     "react-native-vector-icons": "^6.6.0",
+    "react-native-video": "^5.1.1",
     "react-native-webview": "^9.4.0",
     "react-navigation": "^4.2.2",
     "react-navigation-drawer": "^2.4.2",

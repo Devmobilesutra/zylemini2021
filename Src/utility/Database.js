@@ -9775,15 +9775,15 @@ export default class Database {
   //resources
   getResources() {
     const products = [];
-    var query = 'select * from Resources';
+    var query = "select * from Resources where ResourceType != 'null'";
     return new Promise(resolve => {
       // this.initDB().then((db) => {
       db1
         .transaction(tx => {
           tx.executeSql(query, [], (tx, results) => {
-            var tempSearchProdect = '';
+            var tempSearchProdect = [];
             for (let i = 0; i < results.rows.length; i++) {
-              tempSearchProdect = results.rows.item(i);
+              tempSearchProdect.push(results.rows.item(i));
             }
 
             //console.log("tempSearchProdect=", tempSearchProdect)
