@@ -75,14 +75,6 @@ export default class PrivacyPolicy extends Component {
     return (
       <ScrollView>
         <View style={{}}>
-          <Image
-            style={{
-              alignItems: 'center',
-              justifyContent: 'center',
-              alignSelf: 'center',
-            }}
-            source={require('../../assets/Icons/sapl.png')}
-          />
           {/* <Text style={{fontWeight: 'bold', color: 'grey', fontSize: 12}}>
           Privacy policy
         </Text>
@@ -97,8 +89,8 @@ export default class PrivacyPolicy extends Component {
           <View>
             <Text
               style={{
-                color: 'grey',
-                fontSize: 11,
+                color: 'black',
+                fontSize: 13,
                 alignContent: 'center',
                 justifyContent: 'center',
                 marginLeft: 5,
@@ -276,6 +268,14 @@ export default class PrivacyPolicy extends Component {
               personal information.{'\n'}
               {'\n'}
             </Text>
+            <Image
+              style={{
+                alignItems: 'center',
+                justifyContent: 'center',
+                alignSelf: 'center',
+              }}
+              source={require('../../assets/Icons/sapl.png')}
+            />
           </View>
         </View>
       </ScrollView>

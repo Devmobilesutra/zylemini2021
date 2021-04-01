@@ -76,30 +76,35 @@ export default class AboutUs extends Component {
 
   render() {
     return (
-      <ImageBackground
-        source={require('../../assets/Icons/splashBottom.png')}
-        style={{
-          // flex: 1,
-          height: hp('90%'),
-          width: wp('100%'),
-          // resizeMode: 'cover',
-          // justifyContent: 'center',
-        }}>
-        <View style={styles.container}>
-          <ScrollView showsVerticalScrollIndicator={false}>
-            <Logo />
-            <Text style={styles.versionTextStyle}>Version 1.2.8</Text>
-            {/* <Text style={styles.TCTextStyle}>Terms & Conditions</Text> */}
-            <Text
-              style={styles.TCTextStyle}
-              onPress={() =>
-                Linking.openURL('https://sapl.net/privacy-disclaimer/')
-              }>
-              Terms & Conditions
-            </Text>
-          </ScrollView>
-        </View>
-      </ImageBackground>
+      // <ImageBackground
+      //   source={require('../../assets/Icons/splashBottom.png')}
+      //   style={{
+      //     // flex: 1,
+      //     height: hp('90%'),
+      //     width: wp('100%'),
+      //     // resizeMode: 'cover',
+      //     // justifyContent: 'center',
+      //   }}>
+      <View style={styles.container}>
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <Logo />
+          <Text style={styles.versionTextStyle}>Updated March 19, 2021</Text>
+          <Text style={styles.versionTextStyle}>Current Version 1.7</Text>
+          <Text style={styles.versionTextStyle}>
+            Offered By Smile Automation Pvt. Ltd.
+          </Text>
+          <Text style={styles.versionTextStyle}>Version 1.2.8</Text>
+          {/* <Text style={styles.TCTextStyle}>Terms & Conditions</Text> */}
+          <Text
+            style={styles.TCTextStyle}
+            onPress={() =>
+              Linking.openURL('https://sapl.net/privacy-disclaimer/')
+            }>
+            Terms & Conditions
+          </Text>
+        </ScrollView>
+      </View>
+      // </ImageBackground>
     );
   }
 }

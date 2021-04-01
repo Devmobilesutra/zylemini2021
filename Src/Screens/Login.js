@@ -40,12 +40,12 @@ export class Login extends Component {
       isLoading: true,
       loading: false,
       icon: 'eye-off',
-      deviceId : ''
+      deviceId: '',
     };
     this.handleBackButtonClick = this.handleBackButtonClick.bind(this);
   }
   doLogin = async () => {
-    let {user, pass,deviceId} = this.state;
+    let {user, pass, deviceId} = this.state;
     const unsubscribe = NetInfo.addEventListener(state => {
       //console.log("Connection type", state.type);
       //  alert(state.isConnected)
@@ -54,7 +54,9 @@ export class Login extends Component {
       //console.log("Is connected?Out", isInternet);
     });
     this.state.deviceId = DeviceInfo.getUniqueId();
-    console.log("device id :"+this.state.deviceId + " : "+DeviceInfo.getUniqueId())
+    console.log(
+      'device id :' + this.state.deviceId + ' : ' + DeviceInfo.getUniqueId(),
+    );
 
     if (!isInternet) {
       alert('Please Check Your Internet Connection');
@@ -65,7 +67,12 @@ export class Login extends Component {
           AsyncStorage.setItem('usernamess', JSON.stringify(user));
           AsyncStorage.setItem('username', JSON.stringify(user));
           AsyncStorage.setItem('password', JSON.stringify(pass));
-          this.props.onLogin(user, pass,this.state.deviceId, this.props.navigation);
+          this.props.onLogin(
+            user,
+            pass,
+            this.state.deviceId,
+            this.props.navigation,
+          );
         } else {
           // alert('Please Enter Password');
         }
@@ -208,8 +215,8 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => ({
-  onLogin: (username, password,deviceid, navigation) => {
-    dispatch(login(username, password,deviceid, navigation));
+  onLogin: (username, password, deviceid, navigation) => {
+    dispatch(login(username, password, deviceid, navigation));
   },
   isLoadingss: () => {
     dispatch(dispatch(loginLoading(false)));
