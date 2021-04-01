@@ -95,121 +95,20 @@ const mapStateToProps = (state) => {
   )
   export default connect(mapStateToProps, mapDispatchToProps)(ResourceWebView)
 const styles = StyleSheet.create({
-    container : {
-        flex:5, 
-        flexDirection:'row',
-        backgroundColor: '#210305'
-    },
-
-    companyBrandContainer: {
-        flex:0.5, 
-        flexDirection:'column', 
-        alignItems: 'flex-start',
-        marginLeft: wp('6')
-    },
-
-    companyBrandTextStyle: {
-        color: '#796A6A', 
-        fontSize:RFValue(12),
-        fontWeight: 'bold',
-        marginTop: hp('3%'), 
-        fontFamily: 'Proxima Nova', 
-        marginLeft: wp('5%'),
-    },
-  
-    publishDateStyle: {
-        color: '#796A6A', 
-        fontSize:RFValue(12), 
-        marginTop: hp('1%'), 
-        marginLeft: wp('5%'),
-        fontFamily: 'Proxima Nova', 
-        marginBottom:hp('2')
-    },
-
-
-    timeRequiredRowContainer: {
-        flex:0.5, 
-        flexDirection:'row', 
-        alignItems: 'flex-end',
-        marginLeft: wp('4'),
-    },
-
-    timeRequiredTextStyle: {
-        color: '#796A6A', 
-        fontSize:RFValue(12),
-        marginTop: hp('1%'), 
-        marginRight: wp('5%'), 
-        fontFamily: 'Proxima Nova', 
-        marginBottom:hp('2') ,
-    },
-
-    blueCardMainContainer:{
-        marginTop:hp('2'), 
-        alignItems:'center',
-    },
-
-    blueCardInnerContainer:{ 
-        height:hp('100'), 
-        width:wp('100'), 
-        
-        borderRadius:wp('2'), 
-    },
-
-    surveyImgContainer:{
-        alignItems:'center',
-    },
-
-    surveyImgStyle:{
-        height:hp('12'), 
-        width:wp('15'), 
-        marginTop:hp('10'), 
-    },
-
-    questionLableContainer:{
-        marginTop:hp('1'), 
-        marginLeft:wp('4'), 
-        marginRight: wp('2'),
-    },
-
-    questionLableStyle:{
-        color: 'white', 
-        fontSize:RFValue(15), 
-        fontFamily: 'Proxima Nova',  
-    },
-
-    questionContainer:{
-        marginTop:hp('1'), 
-        marginLeft:wp('4'), 
-        marginRight: wp('2'),
-    },
-
-    questionStyle:{
-        color: 'white', 
-        fontSize:RFValue(20), 
-        fontWeight:'bold',
-        fontFamily: 'Proxima Nova', 
-    },
-
-    middleLineStyle:{
-        width:wp('70'),    
-        borderBottomColor: 'black',
-        borderBottomWidth: wp('0.1'),
-        alignSelf:'center',
-        marginTop: hp('2.5')
-    },
-    stylOld: {
+ 
+      WebViewStyle: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        flex: 1,
+        marginTop: 0.5,
+      },
+      stylOld: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
       },
       styleNew: {
         flex: 1,
-      },
-      WebViewStyle: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        flex: 1,
-        marginTop: 0.5,
       },
       ActivityIndicatorStyle: {
         flex: 1,

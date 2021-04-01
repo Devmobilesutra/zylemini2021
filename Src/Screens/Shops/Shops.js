@@ -97,6 +97,7 @@ export class Shops extends Component {
       selectedAreaName : 'Select Area',
       isLoading: false,
       messagetext: '',
+      tokens: '',
       // cardView: false ,
     };
     this.handleBackButtonClick = this.handleBackButtonClick.bind(this);
@@ -274,6 +275,11 @@ export class Shops extends Component {
           ParentAreaArray: data
       })
   })
+
+  AsyncStorage.getItem('JWTToken').then(keyValue => {
+    const tok = JSON.parse(keyValue);
+    this.setState({tokens: tok});
+  });
 
     AsyncStorage.getItem('routeName').then(keyValue => {
       // this.state.selectedRouteName=  JSON.parse(keyValue)
@@ -680,6 +686,7 @@ syncNowFunction() {
                         console.log(
                           'orders :' + response.data.Data.Order.Orders.length,
                         );
+                        this.GetNewData();
                         // for (
                         //   let i = 0;
                         //   i < response.data.Data.Order.Orders.length;
@@ -718,24 +725,25 @@ syncNowFunction() {
                         db.deleteImagesDetails();
                         db.deleteTABLE_DISCOUNT();
                         //  alert('Data Sync Successfull');
-                        Alert.alert(
-                          'ZyleminiPlus',
-                          response.data.Data.Order.Status,
-                          [
-                            // {
-                            //   text: "Cancel",
-                            //   onPress: () => console.log("Cancel Pressed"),
-                            //   style: "cancel"onPress={() => this.props.navigation.navigate('MJP_one')}
-                            // },
-                            {text: 'OK', onPress: () => this.GetNewData()},
-                          ],
-                          {cancelable: false},
-                        );
+                        // Alert.alert(
+                        //   'ZyleminiPlus',
+                        //   response.data.Data.Order.Status,
+                        //   [
+                        //     // {
+                        //     //   text: "Cancel",
+                        //     //   onPress: () => console.log("Cancel Pressed"),
+                        //     //   style: "cancel"onPress={() => this.props.navigation.navigate('MJP_one')}
+                        //     // },
+                        //     {text: 'OK', onPress: () => this.GetNewData()},
+                        //   ],
+                        //   {cancelable: false},
+                        // );
                       }
                     } catch (error) {}
 
                     //  alert(response.data.Data.Order.Status);
                   } else {
+                    this.GetNewData();
                     //console.log("count is..........", count)
                     //  alert("in else")
                     // if(count>0){
@@ -800,6 +808,7 @@ async GetNewData() {
       if (res.data) {
         const data = JSON.stringify(res.data);
         console.log('rajani data=', JSON.stringify(data));
+       
         // db.insertAllData(data)
         //   dispatch(dispatchAll(data))
         //  dispatch(insertAllData(data))
@@ -809,6 +818,7 @@ async GetNewData() {
             // dispatch(loginIsLoading(false));
             // Actions.App()
             this.setState({isLoading: false});
+            Actions.drawerMenu();
           }
         });
       } else {

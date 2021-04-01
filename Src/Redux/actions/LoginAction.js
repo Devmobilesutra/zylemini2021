@@ -106,7 +106,7 @@ export const login = (username, password, deviceid, navigation) => {
       DeviceId: '111',
     };
 
-    //for dinkars
+   //for dinkars
     // const headers = {
     //   LoginId: username,
     //   Password: password,
