@@ -5,11 +5,15 @@ import {
     View,
     AsyncStorage,
     BackHandler,
+    Text,
+    Image
 } from 'react-native';
 import {
     widthPercentageToDP as wp,
     heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
+import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
+import Dialog, { DialogContent, DialogFooter, DialogButton, DialogTitle, SlideAnimation } from 'react-native-popup-dialog';
 import { Actions } from 'react-native-router-flux';
 import Dash from 'react-native-dash';
 import Header from './PaymentModuleCommonComponent/Header';
@@ -21,6 +25,7 @@ import PaymentScreenPrviousOrderListModel from './ListModels/PaymentScreenPrviou
 import { FloatingAction } from 'react-native-floating-action';
 
 import Database from '../../utility/Database';
+import DilogFilter from './PaymentScreenComponents/DilogFilter';
 const db = new Database();
 
 var open;
@@ -102,6 +107,7 @@ export default class Payments1 extends React.Component {
             _h_totle: 0,
             name: '',
             active: false,
+            _showDilog: false
         };
     }
 
@@ -131,10 +137,26 @@ export default class Payments1 extends React.Component {
 
     getHistoryOrderFromDB() {
         db.getAllOrders('Y').then(data => {
-            console.log("HISTORYORDER::", data)
+            console.log(data)
             this.setState({ _historyOrder: data });
         });
     }
+
+    /////////////////Array Listing Logic/////////////////////
+
+    HightoLowListItem(list) {
+        return list.sort(function (a, b) { return b.total_amount - a.total_amount });
+    }
+
+    LowtoHighListItem(list) {
+        return list.sort(function (a, b) { return a.total_amount - b.total_amount });
+    }
+
+
+
+
+
+    ////////////////////////////////////////
 
     render() {
         const _orderCondition = this.state._isOutStanding === true;
@@ -170,12 +192,41 @@ export default class Payments1 extends React.Component {
                                 this.state._outstandingOrder.length,
                             )}
                             TotalOutStandingAmount={this.state.initalAmount}
+                            VisibleDilog={() => {
+                                this.setState({ _showDilog: true })
+                            }}
                         />
                     ) : (
-                        <HistryorderFilter Amount={this.state._historyOrder.length} />
+                        <HistryorderFilter Amount={this.state._historyOrder.length}
+                            VisibleDilog={() => {
+                                this.setState({ _showDilog: true })
+                            }} />
                     )}
 
+
                     <Dash dashLength={2} dashColor="#ADA2A2" />
+
+                    <DilogFilter
+                        ShowDilog={this.state._showDilog}
+                        HideDilog={() => {
+                            this.setState({ _showDilog: false })
+                        }}
+                        HighToLow={() => {
+                            if (_orderCondition) {
+                                this.setState({ _outstandingOrder: this.HightoLowListItem(this.state._outstandingOrder) })
+                            } else {
+                                this.setState({ _historyOrder: this.HightoLowListItem(this.state._historyOrder) })
+                            }
+
+                        }}
+                        LowToHigh={() => {
+                            if (_orderCondition) {
+                                this.setState({ _outstandingOrder: this.LowtoHighListItem(this.state._outstandingOrder) })
+                            } else {
+                                this.setState({ _historyOrder: this.LowtoHighListItem(this.state._historyOrder) })
+                            }
+                        }} />
+
                     <View style={{ flex: 1 }}>
                         <FlatList
                             style={styles.FlatListStyle}
@@ -191,7 +242,10 @@ export default class Payments1 extends React.Component {
                                     <PaymentScreenOutStandingListModel
                                         item={item}
                                         OnPressViewDetail={() => {
-                                            this.props.navigation.navigate('AcceptPayment');
+                                            console.log("PRINTING ID:: ", item.id)
+                                            this.props.navigation.navigate('AcceptPayment2', {
+                                                id: item.id
+                                            });
                                         }}
                                     />
                                 ) : (
@@ -201,10 +255,9 @@ export default class Payments1 extends React.Component {
                                         GetAddition={x => { }}
                                         OnPressViewDetail={(item) => {
                                             //Actions.AcceptPayment();
-                                            console.log("PRINTING ID:: ", item.id)
-                                            this.props.navigation.navigate('AcceptPayment', {
-                                                id: item.id
 
+                                            this.props.navigation.navigate('AcceptPayment2', {
+                                                id: item.id
                                             })
                                         }}
                                     />

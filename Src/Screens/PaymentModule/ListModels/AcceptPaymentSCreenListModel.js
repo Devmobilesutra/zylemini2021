@@ -7,15 +7,16 @@ import Colors from '../utils/Colors';
 import moment from 'moment';
 
 
+let array = [];
+let data = [];
+
+
 
 export default function AcceptPaymentSCreenListModel(props) {
     let item = props.item.item;
+
     const [text, setText] = React.useState('');
     const [id, setId] = React.useState(null);
-
-
-
-
 
     const togle = () => {
         if (props.Amount === 0) {
@@ -24,6 +25,18 @@ export default function AcceptPaymentSCreenListModel(props) {
             props.ShowSteps(true);
         }
     };
+
+    function sumArray(array) {
+        for (
+            var
+            index = 0,              // The iterator
+            length = array.length,  // Cache the array length
+            sum = 0;                // The total amount
+            index < length;         // The "for"-loop condition
+            sum += array[index++]   // Add number on each iteration
+        );
+        return sum;
+    }
 
 
     return (
@@ -86,10 +99,19 @@ export default function AcceptPaymentSCreenListModel(props) {
                             keyboardType="numeric"
                             onChangeText={value => {
                                 togle();
-
-                                props.GetItemDetail(item, value)
+                                if (value === "") {
+                                    array.splice(props.item.index, 1, 0);
+                                } else {
+                                    array.splice(props.item.index, 1, parseInt(value));
+                                }
+                                data.splice(props.item.index, 1, item);
+                                if (value === "") {
+                                    data = data.filter(v => v !== item);
+                                }
+                                props.GetItemDetail(data, sumArray(array))
                             }}
                         />
+
                     </View>
                 </View>
             </View>
