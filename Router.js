@@ -59,6 +59,7 @@ import OrderViewDetails from './Src/Screens/Shops/OrderViewDetails';
 
 import PrivacyPolicy from './Src/Screens/DrawerInfo/PrivacyPolicy';
 import AboutUs from './Src/Screens/DrawerInfo/AboutUs';
+import Security from './Src/Screens/DrawerInfo/Security';
 
 import AssetUpdate from './Src/Screens/Assets/AssetUpdate';
 import ScanQRCode from './Src/Screens/Assets/ScanQRCode';
@@ -188,18 +189,18 @@ export default class RouterComponent extends Component {
             title="MJP_CancelShop"
             hideNavBar={true}
           />
-           <Scene
-                key="ResourceLanding"
-                component={ResourceLanding}
-                title="ResourceLanding"
-                hideNavBar={true}
-              />
-               <Scene
-                key="ResourceWebView"
-                component={ResourceWebView}
-                title="ResourceWebView"
-                hideNavBar={true}
-              />
+          <Scene
+            key="ResourceLanding"
+            component={ResourceLanding}
+            title="ResourceLanding"
+            hideNavBar={true}
+          />
+          <Scene
+            key="ResourceWebView"
+            component={ResourceWebView}
+            title="ResourceWebView"
+            hideNavBar={true}
+          />
           <Scene
             key="ViewDrafts"
             component={ViewDrafts}
@@ -336,6 +337,7 @@ export default class RouterComponent extends Component {
               title="PrivacyPolicy"
             />
 
+            <Scene key="Security" component={Security} title="Security" />
             <Scene
               key="Manual1"
               component={Manual1}

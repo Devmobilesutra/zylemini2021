@@ -841,13 +841,21 @@ export default class SideMenu extends Component {
             }}>
             <Image
               style={{
-                width: hp('6'),
+                width: hp('5.9'),
                 height: hp('7'),
-                marginRight: hp('4'),
+                marginRight: hp('3'),
               }}
               source={require('../assets/Icons/Logo1.png')}
             />
-            <Text style={styles.zylememiniTextStyle}> ZYLEMINI+</Text>
+            <Image
+              style={{
+                width: wp('35'),
+                height: hp('5'),
+                marginLeft: hp('6'),
+              }}
+              source={require('../assets/Icons/pluss.png')}
+            />
+            {/* <Text style={styles.zylememiniTextStyle}> +</Text> */}
           </View>
 
           <View
@@ -882,7 +890,8 @@ export default class SideMenu extends Component {
                 alignItems: 'flex-start',
                 justifyContent: 'flex-start',
                 marginHorizontal: hp('1'),
-              }}>
+              }}
+              onPress={() => Actions.Security()}>
               <Text style={styles.SNTextStyle}>Security Notice</Text>
             </TouchableOpacity>
             <View
@@ -1034,9 +1043,10 @@ const styles = StyleSheet.create({
   },
 
   zylememiniTextStyle: {
-    fontSize: wp('8'),
+    fontSize: wp('6'),
     fontWeight: 'bold',
     color: 'brown',
+    marginTop: 1,
   },
 
   middleLineTextContainer: {
