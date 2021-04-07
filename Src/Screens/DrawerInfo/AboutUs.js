@@ -88,8 +88,15 @@ export default class AboutUs extends Component {
       <View style={styles.container}>
         <ScrollView showsVerticalScrollIndicator={false}>
           <Logo />
+          <Text style={styles.versionTextStyle}>Version 1.2.8</Text>
 
-          <Text style={{fontSize: 13, marginLeft: 5, marginRight: 5}}>
+          <Text
+            style={{
+              fontSize: 13,
+              marginLeft: 15,
+              marginRight: 15,
+              color: '#696969',
+            }}>
             {'\n'}
             Zylemini+ is a mobile app for the Sales Team in the field and in
             office. It generally works off-line and hence not dependent on
@@ -103,7 +110,7 @@ export default class AboutUs extends Component {
             there is a provision for Advanced reports which are more complex.
             These can be delivered from the cloud.
           </Text>
-          <Text style={styles.versionTextStyle}>Version 1.2.8</Text>
+
           {/* <Text style={styles.TCTextStyle}>Terms & Conditions</Text> */}
           <Text
             style={styles.TCTextStyle}
@@ -128,19 +135,19 @@ const styles = StyleSheet.create({
 
   versionTextStyle: {
     // color: 'white',
-    fontSize: 15,
+    fontSize: 13,
     fontFamily: 'Proxima Nova',
     alignSelf: 'center',
     fontWeight: 'bold',
-    marginTop: hp('5'),
+    marginTop: hp('3'),
   },
 
   TCTextStyle: {
     color: 'blue',
-    fontSize: 15,
+    fontSize: 12,
     fontFamily: 'Proxima Nova',
     alignSelf: 'center',
     fontWeight: 'bold',
-    marginTop: hp('5'),
+    marginTop: hp('3'),
   },
 });

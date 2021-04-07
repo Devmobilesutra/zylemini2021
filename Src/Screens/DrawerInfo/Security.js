@@ -86,25 +86,20 @@ export default class Security extends Component {
           Privacy policy
         </Text> */}
 
-          <View>
+          <View style={{marginRight: 20, marginLeft: 20}}>
             <Text
               style={{
-                color: 'black',
+                color: '#696969',
                 fontSize: 13,
-                alignContent: 'center',
-                justifyContent: 'center',
-                marginLeft: 5,
-                marginRight: 5,
+                lineHeight: 20,
+                fontFamily: 'Proxima Nova',
+                alignSelf: 'center',
               }}>
-              <Text style={{fontWeight: 'bold'}}>SECURITY NOTICE</Text>
               {'\n'}
               {'\n'}
-              <Text style={{fontWeight: 'bold'}}>
-                Smile Automation Pvt Ltd
-              </Text>{' '}
-              has implemented the most advanced technologies. The purpose of
-              this statement is to assure you that your data is protected in the
-              best way possible. Also, we would like to establish transparency
+              We implemented the most advanced technologies. The purpose of this
+              statement is to assure you that your data is protected in the best
+              way possible. Also, we would like to establish transparency
               regarding our security infrastructure and practices. SAPL provides
               the highest level system security thank to its hosting and
               technical infrastructure. Network, data and physical security

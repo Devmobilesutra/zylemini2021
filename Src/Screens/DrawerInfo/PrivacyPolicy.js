@@ -86,20 +86,24 @@ export default class PrivacyPolicy extends Component {
           Privacy policy
         </Text> */}
 
-          <View>
+          <View
+            style={{
+              marginLeft: 20,
+              marginRight: 20,
+              // justifyContent: 'center',
+              // alignItems: 'center',
+              // alignContent: 'center',
+              alignSelf: 'center',
+            }}>
             <Text
               style={{
-                color: 'black',
+                color: '#696969',
                 fontSize: 13,
-                alignContent: 'center',
-                justifyContent: 'center',
-                marginLeft: 5,
-                marginRight: 5,
+                lineHeight: 20,
+                fontFamily: 'Proxima Nova',
+                alignSelf: 'center',
               }}>
-              <Text style={{fontSize: 15, fontWeight: 'bold'}}>
-                Privacy Policy
-              </Text>
-              {'\n'}
+              <Text style={{fontSize: 15, fontWeight: 'bold'}} />
               {'\n'}
               We value the trust you place in us and recognize the importance of
               secure transactions and information privacy. This Privacy Policy
@@ -129,6 +133,7 @@ export default class PrivacyPolicy extends Component {
               <Text style={{fontWeight: 'bold'}}>
                 1. Collection of Your Information
               </Text>{' '}
+              {'\n'}
               {'\n'}When you use our Platform, we collect and store your
               information which is provided by you from time to time. In
               general, you can browse the Platform without telling us who you
@@ -195,6 +200,7 @@ export default class PrivacyPolicy extends Component {
                 2. Use of Demographic / Profile Data / Your Information{' '}
               </Text>
               {'\n'}
+              {'\n'}
               We use your personal information to provide the product and
               services you request.{'\n'} To the extent we use your personal
               information to market to you, we will provide you the ability to
@@ -242,6 +248,7 @@ export default class PrivacyPolicy extends Component {
               <Text style={{fontWeight: 'bold'}}>
                 3. Sharing of personal information
               </Text>
+              {'\n'}
               {'\n'} We may share personal information with our other corporate
               entities and affiliates for purposes of providing products and
               services offered by them.These entities and affiliates may share
