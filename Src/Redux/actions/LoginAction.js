@@ -151,6 +151,7 @@ export const login = (username, password, deviceid, navigation) => {
         //console.log("aaaaaaa========",response.data.Token)
         const headers1 = {
           authheader: response.data.Token,
+          AreaId : 0
         };
         axios
           .get(User.GetUrl, {

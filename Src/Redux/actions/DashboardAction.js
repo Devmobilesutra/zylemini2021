@@ -24,5 +24,25 @@ export const USER_ID = (visited) => {
     type: ActionTypes.USER_ID,
     userId: visited
     
-})
+        })
     }}
+
+    export const PARENT_LOGIN = (plogin) => {
+        return (dispatch) => {
+    
+        dispatch({
+        type: ActionTypes.PARENT_LOGIN,
+        parentlogin: plogin
+        
+            })
+        }}
+
+        export const SELECT_AREA = (s_area) => {
+            return (dispatch) => {
+        
+            dispatch({
+            type: ActionTypes.SELECT_AREA,
+            selectarea: s_area
+            
+                })
+            }}     

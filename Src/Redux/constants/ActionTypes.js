@@ -19,6 +19,10 @@ export const TOTAL_ORDER_VALUE='TOTAL_ORDER_VALUE'
 
 export const USER_ID='USER_ID'
 
+export const PARENT_LOGIN='PARENT_LOGIN'
+
+export const SELECT_AREA='SELECT_AREA'
+
 export const SHOP_INFO='SHOP_INFO'
 
 export const TOTAL_SHOPS='TOTAL_SHOPS'

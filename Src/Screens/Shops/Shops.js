@@ -1118,7 +1118,7 @@ ButtonClickCheckFunction = () => {
             <View style={{marginBottom: 30}} />
           </ScrollView>
 
-          <TouchableOpacity
+          {/* <TouchableOpacity
                         style={styles.SubmitButtonStyle}
 
                          onPress={this.ButtonClickCheckFunction}
@@ -1141,7 +1141,7 @@ ButtonClickCheckFunction = () => {
                         </View>
                         <Text style={styles.TextStyle}> {this.state.selectedAreaName} </Text>
 
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
 
           <FloatingAction
             open={open}

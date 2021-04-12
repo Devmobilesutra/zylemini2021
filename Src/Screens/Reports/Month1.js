@@ -64,6 +64,7 @@ const actions = [
 ];
 let countvisited = 0
 var month = new Date().getMonth() + 1;
+var monthnew = moment(month,"MM");
 var year = new Date().getFullYear();
 export class Month1 extends Component {
     constructor(props) {
@@ -258,6 +259,7 @@ export class Month1 extends Component {
     getdata() {
         //  alert("aaa")
         console.log('month in 1 : '+month )
+        console.log('new mont : '+monthnew);
         var curr = moment().month(new Date().getMonth()).format("MMM");
         var prev1 = moment().month(new Date().getMonth() - 1).format("MMM");
         var prev2 = moment().month(new Date().getMonth() - 2).format("MMM");

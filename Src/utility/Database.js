@@ -706,18 +706,18 @@ export default class Database {
           this.insertAdvanceReports(advancereports);
         }
 
-        if (abc.PCustomer) {
+       // if (abc.PCustomer) {
           let pcustomerData = abc.PCustomer;
           this.insertPcustomer(pcustomerData);
-        }
+       // }
         if (abc.PDistributor) {
           let pdistributorData = abc.PDistributor;
           this.insertPDistributor(pdistributorData);
         }
-        if (abc.PItem) {
+       // if (abc.PItem) {
           let pitemData = abc.PItem;
           this.insertPItem(pitemData);
-        }
+       // }
 
         if (abc.UsersItems) {
           let UsersItems = abc.UsersItems;
@@ -960,9 +960,9 @@ export default class Database {
       tx.executeSql('DELETE FROM Pcustomer', []).then(([tx, results]) => {
         db1
           .transaction(tx => {
-            var len = PcustomerData.length;
+          //  var len = PcustomerData.length;
             var count = 0;
-
+            if(PcustomerData){
             for (var item of PcustomerData) {
               tx.executeSql(
                 `insert into Pcustomer(CustomerId ,Party ,LicenceNo ,IsActive ,ERPCode ,RouteID ,RouteName ,AREAID ,AREA 
@@ -1006,6 +1006,7 @@ export default class Database {
                 },
               );
             }
+          }
           })
           .then(result => {
             //
@@ -1172,6 +1173,7 @@ export default class Database {
   }
 
   insertReportControlMaster(ReportControlMasterData) {
+    console.log('report contrl : '+JSON.stringify(ReportControlMasterData))
     if (ReportControlMasterData.length) {
       db1.transaction(tx => {
         tx.executeSql('DELETE FROM ReportControlMaster', []).then(
@@ -1269,14 +1271,14 @@ export default class Database {
   }
 
   insertPItem(PItemData) {
-    if (PItemData.length) {
+   // if (PItemData.length) {
       db1.transaction(tx => {
         tx.executeSql('DELETE FROM PItem', []).then(([tx, results]) => {
           db1
             .transaction(tx => {
-              var len = PItemData.length;
+           //   var len = PItemData.length;
               var count = 0;
-
+              if(PItemData){
               for (var item of PItemData) {
                 tx.executeSql(
                   `insert into PItem(ItemId , Item , ItemAlias , BPC , BPC1 , BPC2 ,ErpCode , Volume , ReportingQuantity , 
@@ -1341,7 +1343,8 @@ export default class Database {
                     console.error('error=', err);
                   },
                 );
-              }
+              } 
+            }
             })
             .then(result => {
               //
@@ -1351,7 +1354,7 @@ export default class Database {
             });
         });
       });
-    }
+   // }
   }
 
   insertSIPREPORT(SIPREPORTData) {
@@ -8379,8 +8382,9 @@ export default class Database {
 
   getControlId(key) {
     return new Promise(resolve => {
+      console.log('in db control id : '+key)
       var query =
-        '  Select ControlId from ReportControlMaster where ReferenceColumn = "' +
+        'Select ControlId from ReportControlMaster where ReferenceColumn = "' +
         key +
         '" ';
       db1
@@ -8389,6 +8393,7 @@ export default class Database {
             var tempDistributor = '';
             for (let i = 0; i < results.rows.length; i++) {
               tempDistributor = results.rows.item(i);
+              console.log('in db control id : '+tempDistributor)
             }
 
             resolve(tempDistributor);
@@ -9798,6 +9803,60 @@ export default class Database {
         });
     });
   }
+
+  getParentLoginData(userId) {
+    const products = [];
+    var query = "select Value from Settings where Key='zyleminiparentID' and Value like '%" +userId+"%'";
+    return new Promise(resolve => {
+      // this.initDB().then((db) => {
+      db1
+        .transaction(tx => {
+          tx.executeSql(query, [], (tx, results) => {
+            var tempSearchProdect = [];
+            for (let i = 0; i < results.rows.length; i++) {
+              tempSearchProdect.push(results.rows.item(i));
+            }
+            //  alert(tempSearchProdect)
+            //console.log("tempSearchProdect=", tempSearchProdect)
+            resolve(tempSearchProdect);
+          });
+        })
+        .then(result => {
+          //
+        })
+        .catch(err => {
+          //console.log(err);
+        });
+    });
+  }
+
+  getPItemForParentLogin() {
+    const products = [];
+    var query = "select * from PItem ";
+    return new Promise(resolve => {
+      // this.initDB().then((db) => {
+      db1
+        .transaction(tx => {
+          tx.executeSql(query, [], (tx, results) => {
+            var tempSearchProdect = [];
+            for (let i = 0; i < results.rows.length; i++) {
+              tempSearchProdect.push(results.rows.item(i));
+            }
+            //  alert(tempSearchProdect)
+            //console.log("tempSearchProdect=", tempSearchProdect)
+            resolve(tempSearchProdect);
+          });
+        })
+        .then(result => {
+          //
+        })
+        .catch(err => {
+          //console.log(err);
+        });
+    });
+  }
+
+
 }
 
 //SELECT * FROM SchemeDetails WHERE LIKE( '%' || SchemeID || '%', '100,300' )

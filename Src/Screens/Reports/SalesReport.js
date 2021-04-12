@@ -349,7 +349,7 @@ console.log('selected prodcut : '+value)
 
         })
         db.getControlId(this.props.comboclassifiction).then((data) => {
-            this.setState({ controllId: data.ControlId })      
+            this.setState({ controllId: data.ControlId })
             db.getAllBrandList(this.state.controllId).then((data) => {
                 this.setState({ BransListArray12: [] })
                 this.state.films1 =[];

@@ -37,7 +37,7 @@ const data1 = {
     labels: ["January", "February", "March", "April", "May", "June"],
     datasets: [
         {
-            data: [20000, 45000, 28000, 80000, 99000, 43000],
+            data: [20000, 45000, 28000, 60000, 30000, 43000],
             color: (opacity = 0) => `rgba(255, 255, 255, ${opacity})`,
             strokeWidth: 2 // optional
         }
