@@ -88,12 +88,29 @@ export default class AboutUs extends Component {
       <View style={styles.container}>
         <ScrollView showsVerticalScrollIndicator={false}>
           <Logo />
-          <Text style={styles.versionTextStyle}>Updated March 19, 2021</Text>
-          <Text style={styles.versionTextStyle}>Current Version 1.7</Text>
-          <Text style={styles.versionTextStyle}>
-            Offered By Smile Automation Pvt. Ltd.
-          </Text>
           <Text style={styles.versionTextStyle}>Version 1.2.8</Text>
+
+          <Text
+            style={{
+              fontSize: 13,
+              marginLeft: 15,
+              marginRight: 15,
+              color: '#696969',
+            }}>
+            {'\n'}
+            Zylemini+ is a mobile app for the Sales Team in the field and in
+            office. It generally works off-line and hence not dependent on
+            Internet Connection always. The App synchronizes data with Cloud
+            periodically and the frequency can be set. It delivers the Sales
+            reports of Zylem on mobile so that Sales team is updated on-the-go.
+            The reports cover Shop-wise Sales, Product-wise Sales, Target vs
+            Achievement report and the status of data collection. It also
+            enables collection of data in the field such as Sales, Stock, Photos
+            of the place and location of the user. For a more demanding user,
+            there is a provision for Advanced reports which are more complex.
+            These can be delivered from the cloud.
+          </Text>
+
           {/* <Text style={styles.TCTextStyle}>Terms & Conditions</Text> */}
           <Text
             style={styles.TCTextStyle}
@@ -118,19 +135,19 @@ const styles = StyleSheet.create({
 
   versionTextStyle: {
     // color: 'white',
-    fontSize: RFValue(18),
+    fontSize: 13,
     fontFamily: 'Proxima Nova',
     alignSelf: 'center',
     fontWeight: 'bold',
-    marginTop: hp('5'),
+    marginTop: hp('3'),
   },
 
   TCTextStyle: {
     color: 'blue',
-    fontSize: RFValue(18),
+    fontSize: 12,
     fontFamily: 'Proxima Nova',
     alignSelf: 'center',
     fontWeight: 'bold',
-    marginTop: hp('5'),
+    marginTop: hp('3'),
   },
 });

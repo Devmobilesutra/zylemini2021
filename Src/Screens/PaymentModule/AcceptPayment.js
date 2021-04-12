@@ -24,7 +24,7 @@ import { Alert } from 'react-native';
 const db = new Database();
 
 let TotleAmount = 0;
-let ITEM;
+let ITEM = [];
 export default class AcceptPayment extends Component {
     constructor(props) {
         super(props);
@@ -34,16 +34,25 @@ export default class AcceptPayment extends Component {
             _invoiceList: [],
             _initalAmount: 0,
             _id: props.id,
+            _MODE: props.Mode
         };
     }
 
     componentDidMount() {
         this.getHistoryOrderFromDB();
+        TotleAmount = 0;
+        console.log("COMPONENT DID MAIUNT:: ")
     }
+
+    componentWillUnmount() {
+        TotleAmount = 0;
+        console.log("COMPONENT WILL UNMOUNT:: ")
+    }
+
+
 
     getHistoryOrderFromDB() {
         db.getTotalOrderDetails(this.state._id).then(data => {
-
             let addition = 0;
             data.find(obj => {
                 addition = addition + parseInt(obj.Amount);
@@ -52,8 +61,6 @@ export default class AcceptPayment extends Component {
                 _invoiceList: data,
                 _initalAmount: addition,
             });
-
-
         });
     }
 
@@ -97,6 +104,7 @@ export default class AcceptPayment extends Component {
                                 GetItemDetail={(detail, amount) => {
                                     ITEM = detail;
                                     TotleAmount = amount
+                                    console.log("PRINTING:: ", TotleAmount)
                                 }}
 
                             />
@@ -130,8 +138,9 @@ export default class AcceptPayment extends Component {
                                     amt: TotleAmount,
                                     item: ITEM
                                 }
-                                this.props.navigation.navigate('AcceptPayment2', {
-                                    Obj: Obj
+                                this.props.navigation.navigate('AcceptPayment3', {
+                                    Obj: Obj,
+                                    Mode: this.props.Mode
                                 });
                             } else {
                                 Alert.alert("Please fill some amount ")

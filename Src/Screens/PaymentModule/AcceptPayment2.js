@@ -20,12 +20,14 @@ export default class AcceptPayment2 extends Component {
 
     constructor(props) {
         super(props);
-        //console.log("PRINTING POROPS", props.Obj.amt)
+        //console.log("PRINTING POROPS", props.Obj)
         this.state = {
-            _amount: props.Obj.amt,
+            //_amount: props.Obj.amt,
+            _amount: "",
             _showSteps: false,
             _showList: false,
             _modes: [],
+            _id: props.id,
 
         };
     }
@@ -173,9 +175,11 @@ export default class AcceptPayment2 extends Component {
                     Navigation={this.props.navigation}
                     OnNextClick={() => {
                         if (arry.length !== 0) {
-                            this.props.navigation.navigate('AcceptPayment3', {
+                            //this.props.navigation.navigate('AcceptPayment3', {
+                            this.props.navigation.navigate('AcceptPayment', {
                                 Mode: arry,
-                                Obj: this.props.Obj
+                                id: this.state._id
+                                //Obj: this.props.Obj
                             });
                         } else {
                             Alert.alert('Please select Payment Mode');

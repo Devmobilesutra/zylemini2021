@@ -6,6 +6,7 @@ import {
     Image,
     ScrollView,
     TextInput,
+    TouchableOpacity
 } from 'react-native';
 
 import ImagePicker from 'react-native-image-crop-picker';
@@ -17,13 +18,16 @@ import BottomGreenbar from './PaymentModuleCommonComponent/BottomGreenbar';
 import CashPaymentContainer from './AcceptpaymentComponent/CashPaymentContainer';
 import ChequePaymentConatiner from './AcceptpaymentComponent/ChequePaymentConatiner';
 import { Alert } from 'react-native';
+import { Modal } from 'react-native';
+
 
 export default class AcceptPayment3 extends Component {
     isShow = true;
     constructor(props) {
         super(props);
         let _modesArray = props.Mode;
-        //console.log("PRINTING POROPS", props.Obj.item)
+
+        console.log("PRINTING POROPS", props.Obj.item)
         this.state = {
             _amount: props.Obj.amt,
             _showSteps: false,
@@ -33,6 +37,8 @@ export default class AcceptPayment3 extends Component {
 
             _showCashmodule: false,
             _showCheqModule: false,
+            _modelVisible: false
+
 
 
         };
@@ -114,6 +120,73 @@ export default class AcceptPayment3 extends Component {
     //FUNCTION FOR CALANDEER PICKER
 
     render() {
+
+
+        const ModelImplement = (props) => {
+            return (<Modal
+                visible={props.visible}
+                transparent={true}>
+                <View style={{
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flex: 1,
+                    backgroundColor: 'black',
+                    opacity: 0.9
+                }}>
+                    <View style={{
+                        height: 150,
+                        width: 300,
+                        backgroundColor: '#fff',
+                        alignSelf: 'center',
+                        borderRadius: 10,
+                        overflow: 'hidden'
+
+                    }}>
+                        <View style={{
+                            height: 100,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            backgroundColor: 'white'
+                        }}>
+                            <Text style={{ color: 'balck' }}>Are you sure to submit the payment ?</Text>
+                        </View>
+                        <View style={{ backgroundColor: 'white', flex: 1, flexDirection: 'row' }}>
+                            <View style={{
+                                flex: 1,
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                borderTopWidth: 1,
+                                borderRightWidth: 1
+
+                            }}>
+                                <TouchableOpacity onPress={() => {
+                                    Alert.alert("Payment Successfull.....")
+                                }}>
+                                    <Text style={{ color: 'balck', fontWeight: 'bold' }}>Yes</Text>
+                                </TouchableOpacity>
+
+                            </View>
+
+                            <View style={{
+                                flex: 1,
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                borderTopWidth: 1,
+                            }}>
+                                <TouchableOpacity onPress={() => {
+                                    this.setState({ _modelVisible: false })
+                                }}>
+                                    <Text style={{ color: 'balck', fontWeight: 'bold' }}>No</Text>
+                                </TouchableOpacity>
+
+                            </View>
+                        </View>
+                    </View>
+
+                </View>
+            </Modal>)
+        }
+
         return (
             <Root>
                 <View style={{ flex: 1 }}>
@@ -126,6 +199,8 @@ export default class AcceptPayment3 extends Component {
                         }}>
                         Accepts Payments
                     </Header2>
+
+                    <ModelImplement visible={this.state._modelVisible} />
                     <View style={{ flex: 1 }}>
                         <ScrollView>
                             <View style={styles.SubHeadingConatiner}>
@@ -199,7 +274,7 @@ export default class AcceptPayment3 extends Component {
                         Amount={this.state._amount}
                         Navigation={this.props.navigation}
                         OnNextClick={() => {
-                            Alert.alert("Transection Successfull...")
+                            this.setState({ _modelVisible: true })
                         }}
                     />
                 </View>
