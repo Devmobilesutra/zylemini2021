@@ -538,6 +538,7 @@ export  class SideMenu extends Component {
     //  await AsyncStorage.clear();
     AsyncStorage.setItem('isLogged', '');
     AsyncStorage.setItem('AreaSelected', '');
+    this.props.dashboard.selectarea = 0
     Actions.login();
   };
 

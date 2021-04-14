@@ -116,12 +116,13 @@ export class Dashboard extends Component {
       active: false,
       modalVisible: false,
       ParentAreaArray: [],
-      selectedArea: 'Select Area',
+      selectedArea: 0,
       selectedAreaName : 'Select Area',
       isLoading: false,
       messagetext: '',
       tokens: '',
-      ParentCheckflag :''
+      ParentCheckflag :'',
+     
     };
 
     //  this.getUserData = this.getUserData.bind(this);
@@ -263,11 +264,42 @@ export class Dashboard extends Component {
 }
 SyncNowPress = () => {
   console.log('in select SyncNowPress ' +this.props.dashboard.parentlogin)
-  this.syncNowFunction();
+
+  // if(this.props.dashboard.selectarea == 0)
+  // {
+  //   alert('Please Select Area')
+  // }else{
+  //   this.syncNowFunction();
+  // }
+
+
+
+  AsyncStorage.getItem('userIds').then(keyValue => {
+    var userid = JSON.parse(keyValue);
+    this.props.userid(JSON.parse(keyValue));
+    db.getParentLoginData(userid).then(data => {
+      console.log('parent data : '+JSON.stringify(data))
+      if(data.length > 0){
+        if(this.props.dashboard.selectarea == 0)
+          {
+            alert('Please Select Area')
+          }else{
+            this.syncNowFunction();
+          }
+       
+      }else{
+        console.log('in else')
+        this.syncNowFunction();
+      }
+    
+    })
+  });
+
+ 
      
 }
 checkAreaSelected(){
-  if(this.state.selectedArea == 'Select Area'){
+  if(this.state.selectedArea == 0){
     alert('Please Select Area')
   }else{
     this.setModalVisible(false)
@@ -505,7 +537,7 @@ async GetNewData() {
   // alert(tok);
   const headers1 = {
     authheader: tok,
-    AreaId : this.state.selectedArea
+    AreaId : this.props.dashboard.selectarea
   };
   // alert(User.GetUrl);
   console.log(User.GetUrl);
@@ -531,7 +563,7 @@ async GetNewData() {
             // Actions.App()
             this.props.parentLogin(false)
             this.setState({isLoading: false});
-            Actions.App()
+            Actions.App();
           }
         });
       } else {
@@ -846,12 +878,12 @@ onChangeHandlerArea = (areaId,value) => {
               <ScrollView>
               {/* Header */}
              
-              <View >
+              <View  style={{opacity : 0.5}}>
               
               <TodaysRoute />
               {/* <Today /> */}
               <Payment />
-              <BlurView
+              {/* <BlurView
               style={{ position: "absolute",
               top: 0,
               left: 0,
@@ -860,7 +892,7 @@ onChangeHandlerArea = (areaId,value) => {
               blurType="light"
               blurAmount={1}
               reducedTransparencyFallbackColor="white"
-            />
+            /> */}
               </View>
               {/* <Image
                 style={{height: hp('40'), width: wp('100')}}
