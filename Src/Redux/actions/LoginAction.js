@@ -98,21 +98,21 @@ export const login = (username, password, deviceid, navigation) => {
     //     'Id': "fac0f60a90df40f8"
     // }
 
-    //for dilipk
-    const headers = {
-      LoginId: username,
-      Password: password,
-      ClientCode: 'XXCPA2020',
-      DeviceId: '111',
-    };
-
-   //for dinkars
+    // //for dilipk
     // const headers = {
     //   LoginId: username,
     //   Password: password,
-    //   ClientCode: 'GDWC2020',
-    //   DeviceId: deviceid,
+    //   ClientCode: 'XXCPA2020',
+    //   DeviceId: '111',
     // };
+
+    //for dinkars
+    const headers = {
+      LoginId: username,
+      Password: password,
+      ClientCode: 'GDWC2020',
+      DeviceId: deviceid,
+    };
 
     //  const url2 = "http://zylemdemo.com/ZyleminiPlusCoreAPI/api/Login/Login";
     //testing
@@ -151,7 +151,7 @@ export const login = (username, password, deviceid, navigation) => {
         //console.log("aaaaaaa========",response.data.Token)
         const headers1 = {
           authheader: response.data.Token,
-          AreaId : 0
+          AreaId: 0,
         };
         axios
           .get(User.GetUrl, {
