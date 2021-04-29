@@ -80,9 +80,10 @@ export const loginLoading = () => {
   };
 };
 
-export const login = (username, password, deviceid, navigation) => {
-  //console.log(username)
-  //console.log(password)
+export const login = (username, password, keyword, deviceid, navigation) => {
+  console.log('sdasdasdasdasd', username);
+  console.log(password);
+  console.log(keyword);
   return dispatch => {
     dispatch(loginIsLoading(true));
     if (!username || !password) {
@@ -99,20 +100,24 @@ export const login = (username, password, deviceid, navigation) => {
     // }
 
     // //for dilipk
-    // const headers = {
-    //   LoginId: username,
-    //   Password: password,
-    //   ClientCode: 'XXCPA2020',
-    //   DeviceId: '111',
-    // };
-
-    //for dinkars
     const headers = {
       LoginId: username,
       Password: password,
-      ClientCode: 'GDWC2020',
-      DeviceId: deviceid,
+      // ClientCode: 'XXCPA2020',
+      ClientCode: keyword,
+      DeviceId: '111',
     };
+
+    // for dinkars
+
+    // const headers = {
+    //   LoginId: username,
+    //   Password: password,
+    //   // ClientCode: 'GDWC2020',
+    //   ClientCode: keyword,
+
+    //   DeviceId: deviceid,
+    // };
 
     //  const url2 = "http://zylemdemo.com/ZyleminiPlusCoreAPI/api/Login/Login";
     //testing

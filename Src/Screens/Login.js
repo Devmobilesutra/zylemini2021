@@ -35,6 +35,7 @@ export class Login extends Component {
 
     this.state = {
       showPassword: true,
+      key: null,
       user: null,
       pass: null,
       isLoading: true,
@@ -45,7 +46,7 @@ export class Login extends Component {
     this.handleBackButtonClick = this.handleBackButtonClick.bind(this);
   }
   doLogin = async () => {
-    let {user, pass, deviceId} = this.state;
+    let {user, pass, key, deviceId} = this.state;
     const unsubscribe = NetInfo.addEventListener(state => {
       //console.log("Connection type", state.type);
       //  alert(state.isConnected)
@@ -67,9 +68,11 @@ export class Login extends Component {
           AsyncStorage.setItem('usernamess', JSON.stringify(user));
           AsyncStorage.setItem('username', JSON.stringify(user));
           AsyncStorage.setItem('password', JSON.stringify(pass));
+          AsyncStorage.setItem('keyword', JSON.stringify(key));
           this.props.onLogin(
             user,
             pass,
+            key,
             this.state.deviceId,
             this.props.navigation,
           );
@@ -157,6 +160,7 @@ export class Login extends Component {
                   keyboardType="default"
                   onChangeText={pass => this.setState({pass})}
                 />
+
                 {/* <Switch
           onValueChange={this.toggleSwitch}
           value={!this.state.showPassword}
@@ -174,6 +178,16 @@ export class Login extends Component {
                     onPress={() => this.toggleSwitch()}
                   />
                 </View>
+              </View>
+              <View style={styles.inputBox1}>
+                <TextInput
+                  style={{flex: 10, fontSize: 10, color: 'black'}}
+                  placeholder="Security code"
+                  placeholderTextColor="grey"
+                  selectionColor="black"
+                  keyboardType="default"
+                  onChangeText={key => this.setState({key})}
+                />
               </View>
 
               {/* <Text>Show</Text> */}
@@ -215,8 +229,8 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => ({
-  onLogin: (username, password, deviceid, navigation) => {
-    dispatch(login(username, password, deviceid, navigation));
+  onLogin: (username, password, keyword, deviceid, navigation) => {
+    dispatch(login(username, password, keyword, deviceid, navigation));
   },
   isLoadingss: () => {
     dispatch(dispatch(loginLoading(false)));
