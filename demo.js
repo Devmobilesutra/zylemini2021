@@ -1,5 +1,4 @@
-
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 //import react in our project
 import {
   Switch,
@@ -36,13 +35,14 @@ const CONTENT = [
       'Our Return & Refund Policy template lets you get started with a Return and Refund Policy agreement. This template is free to download and use.According to TrueShip study, over 60% of customers review a Return/Refund Policy before they make a purchasing decision.',
   },
 ];
+///gsdfsdfsdf
 
 //To make the selector (Something like tabs)
 const SELECTORS = [
-  { title: 'T&C', value: 0 },
-  { title: 'Privacy Policy', value: 1 },
-  { title: 'Return Policy', value: 2 },
-  { title: 'Reset all' },
+  {title: 'T&C', value: 0},
+  {title: 'Privacy Policy', value: 1},
+  {title: 'Return Policy', value: 2},
+  {title: 'Reset all'},
 ];
 
 export default class App extends Component {
@@ -59,10 +59,10 @@ export default class App extends Component {
 
   toggleExpanded = () => {
     //Toggling the state of single Collapsible
-    this.setState({ collapsed: !this.state.collapsed });
+    this.setState({collapsed: !this.state.collapsed});
   };
 
-  setSections = sections => {
+  setSections = (sections) => {
     //setting up a active section state
     this.setState({
       activeSections: sections.includes(undefined) ? [] : sections,
@@ -90,7 +90,7 @@ export default class App extends Component {
         transition="backgroundColor">
         <Animatable.Text
           animation={isActive ? 'bounceIn' : undefined}
-          style={{ textAlign: 'center' }}>
+          style={{textAlign: 'center'}}>
           {section.content}
         </Animatable.Text>
       </Animatable.View>
@@ -98,10 +98,10 @@ export default class App extends Component {
   }
 
   render() {
-    const { multipleSelect, activeSections } = this.state;
+    const {multipleSelect, activeSections} = this.state;
     return (
       <View style={styles.container}>
-        <ScrollView contentContainerStyle={{ paddingTop: 30 }}>
+        <ScrollView contentContainerStyle={{paddingTop: 30}}>
           <Text style={styles.title}>Collapsible/Accordion Example</Text>
 
           {/*Code for Single Collapsible Start*/}
@@ -114,22 +114,22 @@ export default class App extends Component {
           {/*Content of Single Collapsible*/}
           <Collapsible collapsed={this.state.collapsed} align="center">
             <View style={styles.content}>
-              <Text style={{ textAlign: 'center' }}>
+              <Text style={{textAlign: 'center'}}>
                 This is a dummy text of Single Collapsible View
               </Text>
             </View>
           </Collapsible>
           {/*Code for Single Collapsible Ends*/}
 
-          <View style={{ backgroundColor: '#000', height: 1, marginTop: 10 }} />
+          <View style={{backgroundColor: '#000', height: 1, marginTop: 10}} />
           <View style={styles.multipleToggle}>
             <Text style={styles.multipleToggle__title}>
               Multiple Expand Allowed?
             </Text>
             <Switch
               value={multipleSelect}
-              onValueChange={multipleSelect =>
-                this.setState({ multipleSelect })
+              onValueChange={(multipleSelect) =>
+                this.setState({multipleSelect})
               }
             />
           </View>
@@ -139,7 +139,7 @@ export default class App extends Component {
 
           {/*Code for Selector starts here*/}
           <View style={styles.selectors}>
-            {SELECTORS.map(selector => (
+            {SELECTORS.map((selector) => (
               <TouchableOpacity
                 key={selector.title}
                 onPress={() => this.setSections([selector.value])}
