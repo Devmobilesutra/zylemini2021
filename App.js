@@ -9,6 +9,8 @@ import RouterComponent from './Router';
 import {bindActionCreators} from 'redux';
 
 //new comment
+//sdfsdf
+
 import {connect} from 'react-redux';
 
 class App extends Component {
