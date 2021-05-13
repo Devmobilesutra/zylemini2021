@@ -38,9 +38,9 @@ const User = {
   Meeting_Id: null,
   FlagForNavigation: '',
   // for testing
-  loginUrl: 'http://sapltest.com/ZyleminiPlusAPI/api/Login/Login',
-  GetUrl: 'http://sapltest.com/ZyleminiPlusAPI/api/Data/GetData',
-  posturl: 'http://sapltest.com/ZyleminiPlusAPI/api/Data/PostData',
+  loginUrl: 'http://sapluat.com/ZyleminiPlusAPI/api/Login/Login',
+  GetUrl: 'http://sapluat.com/ZyleminiPlusAPI/api/Data/GetData',
+  posturl: 'http://sapluat.com/ZyleminiPlusAPI/api/Data/PostData',
 
   // for live
   // loginUrl: 'https://zyleminiplus.com/ZyleminiPlusCoreAPI/api/Login/Login',

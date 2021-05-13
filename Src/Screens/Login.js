@@ -34,6 +34,7 @@ export class Login extends Component {
     super(props);
 
     this.state = {
+      auth: null,
       showPassword: true,
       key: null,
       user: null,
@@ -77,10 +78,11 @@ export class Login extends Component {
             this.props.navigation,
           );
         } else {
-          // alert('Please Enter Password');
+          this.setState({auth: 1});
         }
       } else {
         // alert('Please Enter UserName');
+        this.setState({auth: 1});
       }
     }
   };
@@ -189,8 +191,14 @@ export class Login extends Component {
                   onChangeText={key => this.setState({key})}
                 />
               </View>
+              <View>
+                {this.state.auth == 1 ? (
+                  <Text style={{color: 'red'}}>
+                    Invalid Username or Password
+                  </Text>
+                ) : null}
+              </View>
 
-              {/* <Text>Show</Text> */}
               <TouchableOpacity
                 style={styles.button}
                 onPress={() => {

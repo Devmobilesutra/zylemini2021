@@ -194,7 +194,7 @@ export const login = (username, password, keyword, deviceid, navigation) => {
             dispatch(loginIsLoading(false));
             //console.log('error ' + error);
             alert(error);
-            dispatch(loginHasError(true));
+            // dispatch(loginHasError(true));
             dispatch(alertActions.error(error.toString()));
           });
       })

@@ -31,7 +31,7 @@ import Dialog, {
   DialogFooter,
   DialogButton,
   DialogTitle,
-  SlideAnimation
+  SlideAnimation,
 } from 'react-native-popup-dialog';
 import {connect} from 'react-redux';
 import ModalDropdown from 'react-native-modal-dropdown';
@@ -44,6 +44,7 @@ import EditInlineOnOrderPreview from './EditInlineOnOrderPreview';
 import {DrawerActions} from 'react-navigation-drawer';
 import {TOTAL_ORDER_VALUE} from '../../Redux/actions/CreateOrderAction';
 import CalendarPicker from 'react-native-calendar-picker';
+import User from '../../utility/User';
 //PREVIOUSDAYORDERDAYS
 var datess;
 var newDate;
@@ -59,7 +60,7 @@ export class CreateNewOrderPreview extends Component {
       outletId: '',
       outletName: '',
       visible: '',
-      visiblepopup :'',
+      visiblepopup: '',
       remark: '',
       // selectedStartDate: '',
       visiblecal: '',
@@ -85,24 +86,28 @@ export class CreateNewOrderPreview extends Component {
   //   this.forceUpdate();
   // }
   componentDidMount() {
-      
     // setTimeout(function(){this.setState({showWarning: true}); }.bind(this), 1000);
-     BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
- }
- componentWillUnmount() {
-  console.log('in back press')
-//  this.setState({visiblepopup : false})
-     BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
- }
- shouldComponentUpdate() {
-     return true;
-   }
-   
- handleBackButtonClick() {
-   
-  // this.setState({visiblepopup : false})
-     return true;
- }
+    BackHandler.addEventListener(
+      'hardwareBackPress',
+      this.handleBackButtonClick,
+    );
+  }
+  componentWillUnmount() {
+    console.log('in back press');
+    //  this.setState({visiblepopup : false})
+    BackHandler.removeEventListener(
+      'hardwareBackPress',
+      this.handleBackButtonClick,
+    );
+  }
+  shouldComponentUpdate() {
+    return true;
+  }
+
+  handleBackButtonClick() {
+    // this.setState({visiblepopup : false})
+    return true;
+  }
   WhatsAppShare = () => {
     // [{"user_id":"52362","collection_type":"0","total_amount":"1100","longitude":"73.8100302","latitude":"18.4942158","entity_id":"47853","entity_type":"1","Current_date_time":"2020-6-14 17:47:52","id":"1462020174752"}]
     //console.log("MasterorderData+++++",JSON.stringify(this.state.MasterorderData))
@@ -165,7 +170,6 @@ export class CreateNewOrderPreview extends Component {
           justifyContent: 'center',
           alignSelf: 'center',
         }}>
-      
         <TouchableOpacity onPress={() => Actions.CreateNewOrderSecond()}>
           <Image
             style={{marginLeft: wp('4')}}
@@ -198,14 +202,12 @@ export class CreateNewOrderPreview extends Component {
     // this.props.refresh(orderId, this.props.ItemId)
   }
 
- 
-
   saveClickHandler(e) {
     //////////insert into main Detail Table
     AsyncStorage.getItem('app_order_id').then(keyValue => {
       var a = JSON.parse(keyValue);
       db.getOrderDataFromTempOrderDetails(a).then(data => {
-        console.log("data=",data)
+        console.log('data=', data);
         this.setState({orderData: data});
         totalAmounts = 0;
         //
@@ -214,7 +216,7 @@ export class CreateNewOrderPreview extends Component {
         this.state.orderData.map((item, i) => {
           //console.log("sachins1.//////////////////////////////////////////=",k)
           db.checkOrderInOrderDetailsMain1(item.item_id, a).then(item_data => {
-            console.log("item_data=",item_data)
+            console.log('item_data=', item_data);
             if (item_data.length == 0) {
               // [{"Amount":"700","rate":"2","to_date":"","from_date":"2020-4-15 14:23:54","large_Unit":"0","small_Unit":"0","quantity_two":"0","quantity_one":"35","item_Name":"{0062}DYC SELECT 180 ML X 48 42.8 %","item_id":"81","order_id":"1542020142354","id":1},
               // {"Amount":"60","rate":"3","to_date":"","from_date":"","large_Unit":"0","small_Unit":"0","quantity_two":"0","quantity_one":"2","item_Name":"{0063}DYC SELECT  375 ML X 24 42.8 %","item_id":"82","order_id":"1542020142354","id":11}]
@@ -230,7 +232,11 @@ export class CreateNewOrderPreview extends Component {
                 item.rate,
                 item.Amount,
                 '1',
-                'N',item.bottleQty,item.BrandId,item.entityId,item.CollectionType
+                'N',
+                item.bottleQty,
+                item.BrandId,
+                item.entityId,
+                item.CollectionType,
               );
             } else {
               db.updateDetailMain(
@@ -249,7 +255,7 @@ export class CreateNewOrderPreview extends Component {
         }); ////end of for loop
 
         this.ordersavePopUp();
-      //  this.insertIntoOrderMaster();
+        //  this.insertIntoOrderMaster();
 
         // Alert.alert(
         //   'ZyleminiPlus',
@@ -342,105 +348,136 @@ export class CreateNewOrderPreview extends Component {
       });
     });
 
-   //  delete from TABLE_TEMP_ORDER_DETAILS where order_id IN (select id from TABLE_TEMP_OrderMaster where entity_id = '%@' and collection_type = '%@')",entity_id,collection_type
+    //  delete from TABLE_TEMP_ORDER_DETAILS where order_id IN (select id from TABLE_TEMP_OrderMaster where entity_id = '%@' and collection_type = '%@')",entity_id,collection_type
   }
 
   insertIntoOrderMaster() {
-    AsyncStorage.getItem('app_order_id').then((keyValue) => {
-        var a = JSON.parse(keyValue)
-        AsyncStorage.getItem('ActivityStart').then((keyValue) => {
-            // this.setState({ outletId: JSON.parse(keyValue) })
-            var ActivityStart = JSON.parse(keyValue)
-            db.getTotalamountOfOrder(a).then((data1) => {
-                db.getOrderDataFromTempOrderMaster(a, "0").then((data) => {
+    AsyncStorage.getItem('app_order_id').then(keyValue => {
+      var a = JSON.parse(keyValue);
+      AsyncStorage.getItem('ActivityStart').then(keyValue => {
+        // this.setState({ outletId: JSON.parse(keyValue) })
+        var ActivityStart = JSON.parse(keyValue);
+        db.getTotalamountOfOrder(a).then(data1 => {
+          db.getOrderDataFromTempOrderMaster(a, '0').then(data => {
+            this.setState({MasterorderData: data});
 
-                    this.setState({ MasterorderData: data })
-    
-                    for (let i = 0; i < this.state.MasterorderData.length; i++) {
-    
-                        db.checkOrderInTempOrderMasterMain(this.state.MasterorderData[i].id, "0").then((item_data) => {
-                            var date = new Date().getDate();
-                            var month = new Date().getMonth() + 1;
-                            var year = new Date().getFullYear();
-                            datess = year + '-' + month + '-' + date
-                            var hours = new Date().getHours(); //Current Hours
-                            var min = new Date().getMinutes(); //Current Minutes
-                            var sec = new Date().getSeconds(); //Current Seconds
-                           
-                          var ActivityEnd = year + '-' + month + '-' + date + ' ' + hours + ':' + min + ':' + sec
-                             
-                            //var  newDate = moment(datess, 'yyyy-MM-dd').format('yyyy-MMM-dd')
-                            newDate = moment().format('YYYY-MMM-DD')
-                            if (item_data.length === 0) {
-    
-                                db.insertOrderMastersss(this.state.MasterorderData[0].id, this.state.MasterorderData[0].Current_date_time, this.state.MasterorderData[0].entity_type, this.state.MasterorderData[0].entity_id,
-                                    this.state.MasterorderData[0].latitude, this.state.MasterorderData[0].longitude, data1[0].TotalAmount, this.state.from_date, this.state.from_date,
-                                    "0", this.state.MasterorderData[0].user_id, this.state.remark, "1", "N", datess, "", selectedStartDate,"0",ActivityStart,ActivityEnd)
-    
-                            } else {
-    
-                                // Current_date_time,entity_type,entity_id,latitude,longitude,total_amount,from_date,to_date,order_id,collection_type
-                                db.updateMasterMain(this.state.MasterorderData[0].Current_date_time,
-                                    this.state.MasterorderData[0].entity_type, this.state.MasterorderData[0].entity_id,
-                                    this.state.MasterorderData[0].latitude,
-                                    this.state.MasterorderData[0].longitude,
-                                    data1[0].TotalAmount, this.state.from_date, this.state.from_date, this.state.MasterorderData[0].id, "0",selectedStartDate,datess,ActivityEnd)
-    
-    
-                            }
-                        })
-    
-                        db.deleteTempOrderDetails(this.state.MasterorderData[0].entity_id, "0").then((data) => {
-                            AsyncStorage.setItem('outletName', "");
-                            AsyncStorage.setItem('outletId', "");
-                            AsyncStorage.setItem('beatName', "");
-                            AsyncStorage.setItem('beatId', "");
-                            AsyncStorage.setItem('distributorName', "");
-                            AsyncStorage.setItem('SearchString', "");
-    
-                            db.getInsertedsTempOrder(a).then((getdata) => {
-    
-                                this.setState({ BrandList: getdata })
-    
-                            })
-                            AsyncStorage.setItem('outletName', "");
-                            AsyncStorage.setItem('outletId', "");
-                            AsyncStorage.setItem('beatName', "");
-                            AsyncStorage.setItem('beatId', "");
-                            AsyncStorage.setItem('distributorName', "");
-                            AsyncStorage.setItem('SearchString', "");
-    
-    
-    
-                        })
-                        db.deleteTempOrderMater(this.state.MasterorderData[0].entity_id, "0").then((getdata) => {
-    
-                        })
-                        AsyncStorage.setItem('outletName', "");
-                        AsyncStorage.setItem('outletId', "");
-                        AsyncStorage.setItem('beatName', "");
-                        AsyncStorage.setItem('beatId', "");
-                        AsyncStorage.setItem('distributorName', "");
-                        AsyncStorage.setItem('SearchString', "");
-    
-    
-                      //  Actions.CreateNewOrderFirst();
-                    }
-    
-                })
-            })
-           })
-      
-       
-    })
-}
+            for (let i = 0; i < this.state.MasterorderData.length; i++) {
+              db.checkOrderInTempOrderMasterMain(
+                this.state.MasterorderData[i].id,
+                '0',
+              ).then(item_data => {
+                var date = new Date().getDate();
+                var month = new Date().getMonth() + 1;
+                var year = new Date().getFullYear();
+                datess = year + '-' + month + '-' + date;
+                var hours = new Date().getHours(); //Current Hours
+                var min = new Date().getMinutes(); //Current Minutes
+                var sec = new Date().getSeconds(); //Current Seconds
+
+                var ActivityEnd =
+                  year +
+                  '-' +
+                  month +
+                  '-' +
+                  date +
+                  ' ' +
+                  hours +
+                  ':' +
+                  min +
+                  ':' +
+                  sec;
+
+                //var  newDate = moment(datess, 'yyyy-MM-dd').format('yyyy-MMM-dd')
+                newDate = moment().format('YYYY-MMM-DD');
+                if (item_data.length === 0) {
+                  db.insertOrderMastersss(
+                    this.state.MasterorderData[0].id,
+                    this.state.MasterorderData[0].Current_date_time,
+                    this.state.MasterorderData[0].entity_type,
+                    this.state.MasterorderData[0].entity_id,
+                    this.state.MasterorderData[0].latitude,
+                    this.state.MasterorderData[0].longitude,
+                    data1[0].TotalAmount,
+                    this.state.from_date,
+                    this.state.from_date,
+                    '0',
+                    this.state.MasterorderData[0].user_id,
+                    this.state.remark,
+                    '1',
+                    'N',
+                    datess,
+                    '',
+                    selectedStartDate,
+                    '0',
+                    ActivityStart,
+                    ActivityEnd,
+                  );
+                } else {
+                  // Current_date_time,entity_type,entity_id,latitude,longitude,total_amount,from_date,to_date,order_id,collection_type
+                  db.updateMasterMain(
+                    this.state.MasterorderData[0].Current_date_time,
+                    this.state.MasterorderData[0].entity_type,
+                    this.state.MasterorderData[0].entity_id,
+                    this.state.MasterorderData[0].latitude,
+                    this.state.MasterorderData[0].longitude,
+                    data1[0].TotalAmount,
+                    this.state.from_date,
+                    this.state.from_date,
+                    this.state.MasterorderData[0].id,
+                    '0',
+                    selectedStartDate,
+                    datess,
+                    ActivityEnd,
+                  );
+                }
+              });
+
+              db.deleteTempOrderDetails(
+                this.state.MasterorderData[0].entity_id,
+                '0',
+              ).then(data => {
+                AsyncStorage.setItem('outletName', '');
+                AsyncStorage.setItem('outletId', '');
+                AsyncStorage.setItem('beatName', '');
+                AsyncStorage.setItem('beatId', '');
+                AsyncStorage.setItem('distributorName', '');
+                AsyncStorage.setItem('SearchString', '');
+
+                db.getInsertedsTempOrder(a).then(getdata => {
+                  this.setState({BrandList: getdata});
+                });
+                AsyncStorage.setItem('outletName', '');
+                AsyncStorage.setItem('outletId', '');
+                AsyncStorage.setItem('beatName', '');
+                AsyncStorage.setItem('beatId', '');
+                AsyncStorage.setItem('distributorName', '');
+                AsyncStorage.setItem('SearchString', '');
+              });
+              db.deleteTempOrderMater(
+                this.state.MasterorderData[0].entity_id,
+                '0',
+              ).then(getdata => {});
+              AsyncStorage.setItem('outletName', '');
+              AsyncStorage.setItem('outletId', '');
+              AsyncStorage.setItem('beatName', '');
+              AsyncStorage.setItem('beatId', '');
+              AsyncStorage.setItem('distributorName', '');
+              AsyncStorage.setItem('SearchString', '');
+
+              //  Actions.CreateNewOrderFirst();
+            }
+          });
+        });
+      });
+    });
+  }
   changeAmount(value) {
     //  alert("in change amount")
     this.setState({amount: value});
   }
 
   componentWillMount() {
-  //  this._componentFocused();
+    //  this._componentFocused();
 
     this._sub = this.props.navigation.addListener(
       'didFocus',
@@ -532,82 +569,96 @@ export class CreateNewOrderPreview extends Component {
     this.setState({visiblepopup: true});
   };
 
-  renderPopup(){
-    return(
-
-                  <TouchableOpacity onPress={this.ordersavePopUp.bind(this)}>
-                    <View>
-                      {/* <Button
+  renderPopup() {
+    return (
+      <TouchableOpacity onPress={this.ordersavePopUp.bind(this)}>
+        <View>
+          {/* <Button
                                                 title="Show Dialog"
                                                 onPress={() => {
                                                 this.setState({ visible: true });
                                                 }}
                                             /> */}
-                      <Dialog
-                        visible={this.state.visiblepopup}
-                        dialogAnimation={new SlideAnimation({
-                          slideFrom: 'bottom',
-                        })}
-                        onTouchOutside={() => {
-                          this.setState({visiblepopup: true});
-                        }}
-                        width={wp('90')}
-                        dialogTitle={
-                          <DialogTitle
-                            title="Order"
-                          
-                            style={{
-                              backgroundColor: '#F7F7F8',
-                              height : wp('15'),
-                              alignItems :'center'
-                             
-                            }}
-                            hasTitleBar={false}
-                            align="left"
-                          />
-                        }
-                        footer={
-                          <DialogFooter>
-                            <DialogButton
-                              text="OK"
-                              textStyle={{color: 'white'}}
-                              style={{backgroundColor: '#46BE50'}}
-                              onPress={() => {
-                                this.setState({visiblepopup: false});
-                                this.insertIntoOrderMaster();
-                                Actions.Dashboard();
-                              }}
-                            />
-                          </DialogFooter>
-                        }>
-                        <DialogContent>
-                          <View style={styles.appliSchemesMainContainer}>
-                            <View style={styles.appliSchemesRowContainer}>
-                              {/* <View style={styles.roundedtext}>
+          <Dialog
+            visible={this.state.visiblepopup}
+            dialogAnimation={
+              new SlideAnimation({
+                slideFrom: 'bottom',
+              })
+            }
+            onTouchOutside={() => {
+              this.setState({visiblepopup: true});
+            }}
+            width={wp('90')}
+            dialogTitle={
+              <DialogTitle
+                title="Order"
+                style={{
+                  backgroundColor: '#F7F7F8',
+                  height: wp('15'),
+                  alignItems: 'center',
+                }}
+                hasTitleBar={false}
+                align="left"
+              />
+            }
+            footer={
+              <DialogFooter>
+                <DialogButton
+                  text="OK"
+                  textStyle={{color: 'white'}}
+                  style={{backgroundColor: '#46BE50'}}
+                  onPress={() => {
+                    this.setState({visiblepopup: false});
+                    this.insertIntoOrderMaster();
+                    // Actions.Info();
+                    if (User.FlagForNavigation === 'Info') {
+                      Actions.Info();
+                    } else if (User.FlagForNavigation === 'Orders') {
+                      Actions.Orders();
+                    } else if (User.FlagForNavigation === 'Dashboard') {
+                      Actions.Dashboard();
+                    } else if (User.FlagForNavigation === 'Surveys') {
+                      Actions.Surveys();
+                    } else if (User.FlagForNavigation === 'Assets') {
+                      Actions.Assets();
+                    } else if (User.FlagForNavigation === 'Schemes') {
+                      Actions.Schemes();
+                    } else if (User.FlagForNavigation === 'Payments') {
+                      Actions.Payments();
+                    } else {
+                      Actions.Dashboard();
+                    }
+                  }}
+                />
+              </DialogFooter>
+            }>
+            <DialogContent>
+              <View style={styles.appliSchemesMainContainer}>
+                <View style={styles.appliSchemesRowContainer}>
+                  {/* <View style={styles.roundedtext}>
                                 <Image
                                   style={{tintColor: '#EAA304'}}
                                   source={require('../../assets/Icons/Schemes_drawer.png')}
                                 />
                               </View> */}
 
-                              <Text style={styles.appliSchemeTextStyle}>
-                              Order Saved Successfully..
-                              </Text>
-                            </View>
-                          </View>
-                         
-                        </DialogContent>
-                      </Dialog>
-                    </View>
+                  <Text style={styles.appliSchemeTextStyle}>
+                    Order Saved Successfully..
+                  </Text>
+                </View>
+              </View>
+            </DialogContent>
+          </Dialog>
+        </View>
 
-                    {/* <Image
+        {/* <Image
                       style={styles.appliSchemesArrowStyle}
                       source={require('../../assets/Icons/right_arrow_blue.png')}
                     /> */}
-                  </TouchableOpacity>
-               
-    )
-}
+      </TouchableOpacity>
+    );
+  }
 
   SchemesArrow() {
     if (this.state.collapsed == false) {
@@ -938,9 +989,8 @@ export class CreateNewOrderPreview extends Component {
                   </TouchableOpacity>
                 </View>
               </View>
-            
             </View>
-          
+
             {/* Dash Line Below Applicable Schemes*/}
             <View style={styles.dashLineContainerBelowApplicableSchemes}>
               <Dash
@@ -1042,7 +1092,6 @@ export class CreateNewOrderPreview extends Component {
                 </View> */}
 
           <View style={{flexDirection: 'row'}}>
-          
             <TouchableOpacity
               style={styles.buttonContainer}
               onPress={e => this.saveClickHandler(e)}>
@@ -1051,8 +1100,7 @@ export class CreateNewOrderPreview extends Component {
               </View>
               {this.renderPopup()}
             </TouchableOpacity>
-           
-           
+
             <TouchableOpacity
               style={styles.buttonContainer}
               onPress={e => this.discardClickHandler(e)}>
@@ -1060,10 +1108,7 @@ export class CreateNewOrderPreview extends Component {
                 <Text style={styles.buttonText}>DISCARD</Text>
               </View>
             </TouchableOpacity>
-          
           </View>
-
-        
         </ImageBackground>
       </View>
     );

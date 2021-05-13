@@ -118,7 +118,14 @@ export class DataCollectionStep1 extends Component {
           justifyContent: 'center',
           alignSelf: 'center',
         }}>
-        <TouchableOpacity onPress={() => Actions.drawerMenu()}>
+        <TouchableOpacity
+          onPress={() => {
+            if (User.FlagForNavigation === 'Info') {
+              Actions.Info();
+            } else {
+              Actions.Dashboard();
+            }
+          }}>
           <Image
             style={{marginLeft: wp('4')}}
             source={require('../../assets/Icons/Back_White.png')}

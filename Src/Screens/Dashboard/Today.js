@@ -71,7 +71,7 @@ class Today extends Component {
                   <Text
                     style={{fontWeight: 'bold', color: 'grey', fontSize: 12}}>
                     {' '}
-                    order booked
+                    Order booked
                   </Text>
                   <Text
                     style={{

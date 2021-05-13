@@ -56,6 +56,7 @@ import Shops from './Src/Screens/Shops/Shops';
 import ShopDetail from './Src/Screens/Shops/ShopDetail';
 import Schemess from './Src/Screens/Shops/Schemes';
 import OrderViewDetails from './Src/Screens/Shops/OrderViewDetails';
+import Dcards from './Src/Screens/Shops/Dcards';
 
 import PrivacyPolicy from './Src/Screens/DrawerInfo/PrivacyPolicy';
 import AboutUs from './Src/Screens/DrawerInfo/AboutUs';
@@ -322,6 +323,7 @@ export default class RouterComponent extends Component {
               component={AddNewAssetStep2}
               title="Add Asset : Step 3/3"
             />
+            <Scene key="Dcards" component={Dcards} title="Dcards" />
 
             <Scene
               key="DetailViewSurveyBrowser"
@@ -409,6 +411,12 @@ export default class RouterComponent extends Component {
                 key="meetings"
                 component={meetings}
                 title="meetings"
+                hideNavBar={true}
+              />
+              <Scene
+                key="Dcards"
+                component={Dcards}
+                title="Dcards"
                 hideNavBar={true}
               />
             </Scene>

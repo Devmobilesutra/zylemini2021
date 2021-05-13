@@ -29,7 +29,7 @@ import Dialog, {
   DialogFooter,
   DialogButton,
   DialogTitle,
-  SlideAnimation
+  SlideAnimation,
 } from 'react-native-popup-dialog';
 import {Thumbnail, List, ListItem, Separator} from 'native-base';
 import moment from 'moment';
@@ -38,6 +38,7 @@ import EditInLineDataCollectionPreview from './EditInLineDataCollectionPreview';
 import {TOTAL_DATA_COLLECTED} from '../../Redux/actions/DataCollectionAction';
 import Database from './../../utility/Database';
 import {connect} from 'react-redux';
+import User from '../../utility/User';
 const db = new Database();
 
 const data = [
@@ -59,7 +60,7 @@ export class DataCollectionStep3 extends Component {
       outletId: '',
       outletName: '',
       visible: '',
-      visiblepopup :'',
+      visiblepopup: '',
       // selectedStartDate: '',
       visiblecal: '',
       visiblecal1: '',
@@ -178,10 +179,11 @@ export class DataCollectionStep3 extends Component {
                 this.state.orderData[k].rate,
                 this.state.orderData[k].Amount,
                 '1',
-                'N',this.state.orderData[k].bottleQty,
+                'N',
+                this.state.orderData[k].bottleQty,
                 this.state.orderData[k].BrandId,
                 this.state.orderData[k].entityId,
-                this.state.orderData[k].CollectionType
+                this.state.orderData[k].CollectionType,
               );
             } else {
               db.updateDetailMain(
@@ -207,204 +209,212 @@ export class DataCollectionStep3 extends Component {
     //console.log("insert into master main////////////////////////////////")
     AsyncStorage.getItem('app_order_idDC').then(keyValue => {
       var a = JSON.parse(keyValue);
-      AsyncStorage.getItem('ActivityStart').then((keyValue) => {
+      AsyncStorage.getItem('ActivityStart').then(keyValue => {
         // this.setState({ outletId: JSON.parse(keyValue) })
-        var ActivityStart = JSON.parse(keyValue)
-      //console.log("ljhkjk",a)
-      db.getOrderDataFromTempOrderMaster(
-        a,
-        this.props.datacollection.collectiontype,
-      ).then(data => {
-        this.setState({MasterorderData: data});
+        var ActivityStart = JSON.parse(keyValue);
+        //console.log("ljhkjk",a)
+        db.getOrderDataFromTempOrderMaster(
+          a,
+          this.props.datacollection.collectiontype,
+        ).then(data => {
+          this.setState({MasterorderData: data});
 
-        for (let i = 0; i < this.state.MasterorderData.length; i++) {
-          db.checkOrderInTempOrderMasterMain(
-            this.state.MasterorderData[i].id,
-            this.props.datacollection.collectiontype,
-          ).then(item_data => {
-            if (item_data.length === 0) {
-              var date = new Date().getDate();
-              var month = new Date().getMonth() + 1;
-              var year = new Date().getFullYear();
-              datess = year + '-' + month + '-' + date;
-              //var  newDate = moment(datess, 'yyyy-MM-dd').format('yyyy-MMM-dd')
-              newDate = moment().format('YYYY-MMM-DD');
+          for (let i = 0; i < this.state.MasterorderData.length; i++) {
+            db.checkOrderInTempOrderMasterMain(
+              this.state.MasterorderData[i].id,
+              this.props.datacollection.collectiontype,
+            ).then(item_data => {
+              if (item_data.length === 0) {
+                var date = new Date().getDate();
+                var month = new Date().getMonth() + 1;
+                var year = new Date().getFullYear();
+                datess = year + '-' + month + '-' + date;
+                //var  newDate = moment(datess, 'yyyy-MM-dd').format('yyyy-MMM-dd')
+                newDate = moment().format('YYYY-MMM-DD');
 
-          
-              var hours = new Date().getHours(); //Current Hours
-              var min = new Date().getMinutes(); //Current Minutes
-              var sec = new Date().getSeconds(); //Current Seconds
-             
-            var ActivityEnd = year + '-' + month + '-' + date + ' ' + hours + ':' + min + ':' + sec
-             
+                var hours = new Date().getHours(); //Current Hours
+                var min = new Date().getMinutes(); //Current Minutes
+                var sec = new Date().getSeconds(); //Current Seconds
 
-              db.insertOrderMastersss(
-                this.state.MasterorderData[0].id,
-                this.state.MasterorderData[0].Current_date_time,
-                this.state.MasterorderData[0].entity_type,
-                this.state.MasterorderData[0].entity_id,
-                this.state.MasterorderData[0].latitude,
-                this.state.MasterorderData[0].longitude,
-                '0',
-                this.props.datacollection.fromDate,
-                this.props.datacollection.toDate,
-                this.props.datacollection.collectiontype,
-                this.state.MasterorderData[0].user_id,
-                this.state.remark,
-                '1',
-                'N',
-                datess,
-                '0',
-                newDate,
-                '0',
-                ActivityStart,
-                ActivityEnd,
-              );
-              // db.deleteTempOrderDetails(this.state.MasterorderData[0].entity_id, "0")
-              // db.deleteTempOrderMater(this.state.MasterorderData[0].entity_id, "0")
-            } else {
-              // Current_date_time,entity_type,entity_id,latitude,longitude,total_amount,from_date,to_date,order_id,collection_type
-              db.updateMasterMain(
-                this.state.MasterorderData[0].Current_date_time,
-                this.state.MasterorderData[0].entity_type,
-                this.state.MasterorderData[0].entity_id,
-                this.state.MasterorderData[0].latitude,
-                this.state.MasterorderData[0].longitude,
-                '0',
-                this.props.datacollection.fromDate,
-                this.props.datacollection.toDate,
-                this.state.MasterorderData[0].id,
-                this.props.datacollection.collectiontype,
-              );
+                var ActivityEnd =
+                  year +
+                  '-' +
+                  month +
+                  '-' +
+                  date +
+                  ' ' +
+                  hours +
+                  ':' +
+                  min +
+                  ':' +
+                  sec;
 
-              // db.deleteTempOrderDetails(this.state.MasterorderData[0].entity_id, "0")
-              // db.deleteTempOrderMater(this.state.MasterorderData[0].entity_id, "0")
-            }
-          });
+                db.insertOrderMastersss(
+                  this.state.MasterorderData[0].id,
+                  this.state.MasterorderData[0].Current_date_time,
+                  this.state.MasterorderData[0].entity_type,
+                  this.state.MasterorderData[0].entity_id,
+                  this.state.MasterorderData[0].latitude,
+                  this.state.MasterorderData[0].longitude,
+                  '0',
+                  this.props.datacollection.fromDate,
+                  this.props.datacollection.toDate,
+                  this.props.datacollection.collectiontype,
+                  this.state.MasterorderData[0].user_id,
+                  this.state.remark,
+                  '1',
+                  'N',
+                  datess,
+                  '0',
+                  newDate,
+                  '0',
+                  ActivityStart,
+                  ActivityEnd,
+                );
+                // db.deleteTempOrderDetails(this.state.MasterorderData[0].entity_id, "0")
+                // db.deleteTempOrderMater(this.state.MasterorderData[0].entity_id, "0")
+              } else {
+                // Current_date_time,entity_type,entity_id,latitude,longitude,total_amount,from_date,to_date,order_id,collection_type
+                db.updateMasterMain(
+                  this.state.MasterorderData[0].Current_date_time,
+                  this.state.MasterorderData[0].entity_type,
+                  this.state.MasterorderData[0].entity_id,
+                  this.state.MasterorderData[0].latitude,
+                  this.state.MasterorderData[0].longitude,
+                  '0',
+                  this.props.datacollection.fromDate,
+                  this.props.datacollection.toDate,
+                  this.state.MasterorderData[0].id,
+                  this.props.datacollection.collectiontype,
+                );
 
-          db.deleteTempOrderDetails(
-            this.state.MasterorderData[0].entity_id,
-            this.props.datacollection.collectiontype,
-          ).then(data => {
-            AsyncStorage.setItem('outletNameDC', '');
-            AsyncStorage.setItem('outletIdDC', '');
-            AsyncStorage.setItem('beatNameDC', '');
-            AsyncStorage.setItem('beatIdDC', '');
-            AsyncStorage.setItem('distributorNameDC', '');
-            AsyncStorage.setItem('SearchStringDCDC', '');
-
-            db.getInsertedsTempOrder(a).then(getdata => {
-              this.setState({BrandList: getdata});
+                // db.deleteTempOrderDetails(this.state.MasterorderData[0].entity_id, "0")
+                // db.deleteTempOrderMater(this.state.MasterorderData[0].entity_id, "0")
+              }
             });
+
+            db.deleteTempOrderDetails(
+              this.state.MasterorderData[0].entity_id,
+              this.props.datacollection.collectiontype,
+            ).then(data => {
+              AsyncStorage.setItem('outletNameDC', '');
+              AsyncStorage.setItem('outletIdDC', '');
+              AsyncStorage.setItem('beatNameDC', '');
+              AsyncStorage.setItem('beatIdDC', '');
+              AsyncStorage.setItem('distributorNameDC', '');
+              AsyncStorage.setItem('SearchStringDCDC', '');
+
+              db.getInsertedsTempOrder(a).then(getdata => {
+                this.setState({BrandList: getdata});
+              });
+              AsyncStorage.setItem('outletNameDC', '');
+              AsyncStorage.setItem('outletIdDC', '');
+              AsyncStorage.setItem('beatNameDC', '');
+              AsyncStorage.setItem('beatIdDC', '');
+              AsyncStorage.setItem('distributorNameDC', '');
+              AsyncStorage.setItem('SearchStringDC', '');
+            });
+            db.deleteTempOrderMater(
+              this.state.MasterorderData[0].entity_id,
+              this.props.datacollection.collectiontype,
+            ).then(getdata => {});
             AsyncStorage.setItem('outletNameDC', '');
             AsyncStorage.setItem('outletIdDC', '');
             AsyncStorage.setItem('beatNameDC', '');
             AsyncStorage.setItem('beatIdDC', '');
             AsyncStorage.setItem('distributorNameDC', '');
             AsyncStorage.setItem('SearchStringDC', '');
-          });
-          db.deleteTempOrderMater(
-            this.state.MasterorderData[0].entity_id,
-            this.props.datacollection.collectiontype,
-          ).then(getdata => {});
-          AsyncStorage.setItem('outletNameDC', '');
-          AsyncStorage.setItem('outletIdDC', '');
-          AsyncStorage.setItem('beatNameDC', '');
-          AsyncStorage.setItem('beatIdDC', '');
-          AsyncStorage.setItem('distributorNameDC', '');
-          AsyncStorage.setItem('SearchStringDC', '');
 
-         // Actions.Dashboard();
-         this.ordersavePopUp();
-        }
+            // Actions.Dashboard();
+            this.ordersavePopUp();
+          }
+        });
       });
     });
-    });
   }
-
 
   ordersavePopUp = () => {
     const {navigation} = this.props;
     this.setState({visiblepopup: true});
   };
 
-  renderPopup(){
-    return(
-
-                  <TouchableOpacity onPress={this.ordersavePopUp.bind(this)}>
-                    <View>
-                      {/* <Button
+  renderPopup() {
+    return (
+      <TouchableOpacity onPress={this.ordersavePopUp.bind(this)}>
+        <View>
+          {/* <Button
                                                 title="Show Dialog"
                                                 onPress={() => {
                                                 this.setState({ visible: true });
                                                 }}
                                             /> */}
-                      <Dialog
-                        visible={this.state.visiblepopup}
-                        dialogAnimation={new SlideAnimation({
-                          slideFrom: 'bottom',
-                        })}
-                        onTouchOutside={() => {
-                          this.setState({visiblepopup: true});
-                        }}
-                        width={wp('90')}
-                        dialogTitle={
-                          <DialogTitle
-                            title="Data Collection"
-                          
-                            style={{
-                              backgroundColor: '#F7F7F8',
-                              height : wp('15'),
-                              alignItems :'center'
-                             
-                            }}
-                            hasTitleBar={false}
-                            align="left"
-                          />
-                        }
-                        footer={
-                          <DialogFooter>
-                            <DialogButton
-                              text="OK"
-                              textStyle={{color: 'white'}}
-                              style={{backgroundColor: '#46BE50'}}
-                              onPress={() => {
-                                this.setState({visiblepopup: false});
-                              //  this.insertIntoOrderMaster();
-                                Actions.Dashboard();
-                              }}
-                            />
-                          </DialogFooter>
-                        }>
-                        <DialogContent>
-                          <View style={styles.appliSchemesMainContainer}>
-                            <View style={styles.appliSchemesRowContainer}>
-                              {/* <View style={styles.roundedtext}>
+          <Dialog
+            visible={this.state.visiblepopup}
+            dialogAnimation={
+              new SlideAnimation({
+                slideFrom: 'bottom',
+              })
+            }
+            onTouchOutside={() => {
+              this.setState({visiblepopup: true});
+            }}
+            width={wp('90')}
+            dialogTitle={
+              <DialogTitle
+                title="Data Collection"
+                style={{
+                  backgroundColor: '#F7F7F8',
+                  height: wp('15'),
+                  alignItems: 'center',
+                }}
+                hasTitleBar={false}
+                align="left"
+              />
+            }
+            footer={
+              <DialogFooter>
+                <DialogButton
+                  text="OK"
+                  textStyle={{color: 'white'}}
+                  style={{backgroundColor: '#46BE50'}}
+                  onPress={() => {
+                    this.setState({visiblepopup: false});
+                    //  this.insertIntoOrderMaster();
+                    if (User.FlagForNavigation === 'Info') {
+                      Actions.Info();
+                    } else {
+                      Actions.Dashboard();
+                    }
+                  }}
+                />
+              </DialogFooter>
+            }>
+            <DialogContent>
+              <View style={styles.appliSchemesMainContainer}>
+                <View style={styles.appliSchemesRowContainer}>
+                  {/* <View style={styles.roundedtext}>
                                 <Image
                                   style={{tintColor: '#EAA304'}}
                                   source={require('../../assets/Icons/Schemes_drawer.png')}
                                 />
                               </View> */}
 
-                              <Text style={styles.appliSchemeTextStyle}>
-                              Data collected successfully..
-                              </Text>
-                            </View>
-                          </View>
-                         
-                        </DialogContent>
-                      </Dialog>
-                    </View>
+                  <Text style={styles.appliSchemeTextStyle}>
+                    Data collected successfully..
+                  </Text>
+                </View>
+              </View>
+            </DialogContent>
+          </Dialog>
+        </View>
 
-                    {/* <Image
+        {/* <Image
                       style={styles.appliSchemesArrowStyle}
                       source={require('../../assets/Icons/right_arrow_blue.png')}
                     /> */}
-                  </TouchableOpacity>
-               
-    )
-}
-
+      </TouchableOpacity>
+    );
+  }
 
   setamount = amount => {
     this.setState({amount: amount});
@@ -562,7 +572,7 @@ export class DataCollectionStep3 extends Component {
             <CollapseHeader style={styles.collapseHeaderStyle}>
               <View style={styles.brandNameContainer}>
                 <Text style={styles.brandNameTextContainer}>
-                {item.item_Name.substr(6)}
+                  {item.item_Name.substr(6)}
                 </Text>
               </View>
               <View style={styles.sublistExtendIconAmountContainer}>

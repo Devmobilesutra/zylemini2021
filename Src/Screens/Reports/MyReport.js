@@ -28,6 +28,7 @@ export default class MyReport extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      auth: 0,
       report1_isActive: '',
       report2_isActive: '',
       report3_isActive: '',
@@ -161,7 +162,11 @@ export default class MyReport extends React.Component {
 
             <TouchableOpacity
               style={styles.SalesDetaileWhiteBG}
-              onPress={() => this.navigate1()}>
+              onPress={() => {
+                this.state.auth == 1
+                  ? alert('This feature is not available for you')
+                  : this.navigate1();
+              }}>
               <View style={styles.SalesDateRowContainer}>
                 <View style={{flex: 5}}>
                   <View style={styles.pastSurveyimageContainer1}>
@@ -426,8 +431,7 @@ export default class MyReport extends React.Component {
                 </View>
                 <View style={styles.pastSurveyContainer1}>
                   <TouchableOpacity
-                     onPress={() => Actions.OutletVisitReports()}
-                    >
+                    onPress={() => Actions.OutletVisitReports()}>
                     <Text style={styles.pastSurveyNameTextStyle1}>
                       Outlet Visit Report
                     </Text>
@@ -436,8 +440,7 @@ export default class MyReport extends React.Component {
 
                 <View style={styles.cardDashLineMainContainer1}>
                   <TouchableOpacity
-                     onPress={() => Actions.OutletVisitReports()}
-                    >
+                    onPress={() => Actions.OutletVisitReports()}>
                     <View style={styles.viewDetailesLabelContainer}>
                       <Text style={styles.viewDetaileTextStyle}>View More</Text>
                     </View>

@@ -107,7 +107,7 @@ export class Assets extends Component {
     );
   }
   handleBackButtonClick() {
-    Actions.Shops();
+    // Actions.Shops();
     return true;
   }
   //BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
@@ -646,13 +646,13 @@ export class Assets extends Component {
                   active: !this.state.active,
                 });
               } else if (name == 'bt_create') {
-              //  AsyncStorage.setItem('outletName', '');
-              //  AsyncStorage.setItem('outletId', '');
-              //  AsyncStorage.setItem('beatName', '');
+                //  AsyncStorage.setItem('outletName', '');
+                //  AsyncStorage.setItem('outletId', '');
+                //  AsyncStorage.setItem('beatName', '');
                 AsyncStorage.setItem('beatId', '');
                 AsyncStorage.setItem('distributorName', '');
                 AsyncStorage.setItem('SearchString', '');
-                User.FlagForNavigation ='Assets'
+                User.FlagForNavigation = 'Assets';
                 Actions.CreateNewOrderFirst();
                 this.setState({
                   active: !this.state.active,

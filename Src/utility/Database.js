@@ -706,18 +706,18 @@ export default class Database {
           this.insertAdvanceReports(advancereports);
         }
 
-       // if (abc.PCustomer) {
-          let pcustomerData = abc.PCustomer;
-          this.insertPcustomer(pcustomerData);
-       // }
+        // if (abc.PCustomer) {
+        let pcustomerData = abc.PCustomer;
+        this.insertPcustomer(pcustomerData);
+        // }
         if (abc.PDistributor) {
           let pdistributorData = abc.PDistributor;
           this.insertPDistributor(pdistributorData);
         }
-       // if (abc.PItem) {
-          let pitemData = abc.PItem;
-          this.insertPItem(pitemData);
-       // }
+        // if (abc.PItem) {
+        let pitemData = abc.PItem;
+        this.insertPItem(pitemData);
+        // }
 
         if (abc.UsersItems) {
           let UsersItems = abc.UsersItems;
@@ -781,12 +781,12 @@ export default class Database {
             `insert into user(UserID , UserName , Password , IMEINO ,AreaID ,LoginID )
               VALUES (?,?,?,?,?,?)`,
             [
-              userDAta[i].UserID,
-              userDAta[i].Name,
-              userDAta[i].Password,
-              userDAta[i].DeviceID,
-              userDAta[i].AreaID,
-              userDAta[i].LoginID,
+              String(userDAta[i].UserID),
+              String(userDAta[i].Name),
+              String(userDAta[i].Password),
+              String(userDAta[i].DeviceID),
+              String(userDAta[i].AreaID),
+              String(userDAta[i].LoginID),
             ],
             (tx, results) => {
               AsyncStorage.setItem(
@@ -818,7 +818,7 @@ export default class Database {
                 tx.executeSql(
                   `insert into Settings( Key , Value )
                             VALUES (?,?)`,
-                  [item.Key, item.Value],
+                  [String(item.Key), String(item.Value)],
                   (tx, results) => {
                     // AsyncStorage.setItem('userIds', JSON.stringify('52362'));
                     // AsyncStorage.setItem('username', JSON.stringify(userDAta[0].Name));
@@ -855,16 +855,16 @@ export default class Database {
                   DISTRIBUTORGROUP ,IsSelectedDistributor )
                                         VALUES (?,?,?,?,?,?,?,?,?,?,?)`,
                 [
-                  item.DistributorId,
-                  item.Distributor,
-                  item.DistributorAlias,
-                  item.ERPCode,
-                  item.AREAID,
-                  item.AREA,
-                  item.BRANCHID,
-                  item.BRANCH,
-                  item.DISTRIBUTORGROUPID,
-                  item.DISTRIBUTORGROUP,
+                  String(item.DistributorId),
+                  String(item.Distributor),
+                  String(item.DistributorAlias),
+                  String(item.ERPCode),
+                  String(item.AREAID),
+                  String(item.AREA),
+                  String(item.BRANCHID),
+                  String(item.BRANCH),
+                  String(item.DISTRIBUTORGROUPID),
+                  String(item.DISTRIBUTORGROUP),
                   '',
                 ],
                 (tx, results) => {},
@@ -897,13 +897,13 @@ export default class Database {
                   `insert into Sales(UserID ,DistributorID ,CustomerID ,Month ,ItemID ,Quantity ,Value  )
                                                 VALUES (?,?,?,?,?,?,?)`,
                   [
-                    item.UserID,
-                    item.DistributorID,
-                    item.CustomerID,
-                    item.Month,
-                    item.ItemID,
-                    item.Quantity,
-                    item.Value,
+                    String(item.UserID),
+                    String(item.DistributorID),
+                    String(item.CustomerID),
+                    String(item.Month),
+                    String(item.ItemID),
+                    String(item.Quantity),
+                    String(item.Value),
                   ],
                   (tx, results) => {},
                   err => {
@@ -935,10 +935,10 @@ export default class Database {
                 `insert into Target(UserID ,TDate ,ClassificationID ,ClassificationName ,Target  )
                                                           VALUES (?,?,?,?,?)`,
                 [
-                  item.UserID,
-                  item.TDate,
-                  item.ClassificationID,
-                  item.ClassificationName,
+                  String(item.UserID),
+                  String(item.TDate),
+                  String(item.ClassificationID),
+                  String(item.ClassificationName),
                   parseFloat(item.Target),
                 ],
                 (tx, results) => {},
@@ -960,53 +960,53 @@ export default class Database {
       tx.executeSql('DELETE FROM Pcustomer', []).then(([tx, results]) => {
         db1
           .transaction(tx => {
-          //  var len = PcustomerData.length;
+            //  var len = PcustomerData.length;
             var count = 0;
-            if(PcustomerData){
-            for (var item of PcustomerData) {
-              tx.executeSql(
-                `insert into Pcustomer(CustomerId ,Party ,LicenceNo ,IsActive ,ERPCode ,RouteID ,RouteName ,AREAID ,AREA 
+            if (PcustomerData) {
+              for (var item of PcustomerData) {
+                tx.executeSql(
+                  `insert into Pcustomer(CustomerId ,Party ,LicenceNo ,IsActive ,ERPCode ,RouteID ,RouteName ,AREAID ,AREA 
                   ,BRANCHID ,BRANCH ,CUSTOMERCLASSID ,CUSTOMERCLASS ,CUSTOMERCLASS2ID ,CUSTOMERCLASS2 ,CUSTOMERGROUPID ,
                   CUSTOMERGROUP ,CUSTOMERSEGMENTID ,CUSTOMERSEGMENT ,CUSTOMERSUBSEGMENTID , CUSTOMERSUBSEGMENT ,
                   LICENCETYPEID ,LICENCETYPE ,OCTROIZONEID ,OCTROIZONE,Outlet_Info,DefaultDistributorId,SchemeID)
                                                                       VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
-                [
-                  item.CustomerId,
-                  item.Party,
-                  item.LicenceNo,
-                  item.IsActive,
-                  item.ERPCode,
-                  item.RouteID,
-                  item.RouteName,
-                  item.AREAID,
-                  item.AREA,
-                  item.BRANCHID,
-                  item.BRANCH,
-                  item.CUSTOMERCLASSID,
-                  item.CUSTOMERCLASS,
-                  item.CUSTOMERCLASS2ID,
-                  item.CUSTOMERCLASS2,
-                  item.CUSTOMERGROUPID,
-                  item.CUSTOMERGROUP,
-                  item.CUSTOMERSEGMENTID,
-                  item.CUSTOMERSEGMENT,
-                  item.CUSTOMERSUBSEGMENTID,
-                  item.CUSTOMERSUBSEGMENT,
-                  item.LICENCETYPEID,
-                  item.LICENCETYPE,
-                  item.OCTROIZONEID,
-                  item.OCTROIZONE,
-                  item.OUTLETINFO,
-                  item.DefaultDistributorId,
-                  item.SchemeID,
-                ],
-                (tx, results) => {},
-                err => {
-                  console.error('error=', err);
-                },
-              );
+                  [
+                    String(item.CustomerId),
+                    String(item.Party),
+                    String(item.LicenceNo),
+                    String(item.IsActive),
+                    String(item.ERPCode),
+                    String(item.RouteID),
+                    String(item.RouteName),
+                    String(item.AREAID),
+                    String(item.AREA),
+                    String(item.BRANCHID),
+                    String(item.BRANCH),
+                    String(item.CUSTOMERCLASSID),
+                    String(item.CUSTOMERCLASS),
+                    String(item.CUSTOMERCLASS2ID),
+                    String(item.CUSTOMERCLASS2),
+                    String(item.CUSTOMERGROUPID),
+                    String(item.CUSTOMERGROUP),
+                    String(item.CUSTOMERSEGMENTID),
+                    String(item.CUSTOMERSEGMENT),
+                    String(item.CUSTOMERSUBSEGMENTID),
+                    String(item.CUSTOMERSUBSEGMENT),
+                    String(item.LICENCETYPEID),
+                    String(item.LICENCETYPE),
+                    String(item.OCTROIZONEID),
+                    String(item.OCTROIZONE),
+                    String(item.OUTLETINFO),
+                    String(item.DefaultDistributorId),
+                    String(item.SchemeID),
+                  ],
+                  (tx, results) => {},
+                  err => {
+                    console.error('error=', err);
+                  },
+                );
+              }
             }
-          }
           })
           .then(result => {
             //
@@ -1034,10 +1034,10 @@ export default class Database {
             `insert into DistributorContacts(DistributorID ,SequenceNo ,Contacatperson ,ContactNumber )
                                                                   VALUES (?,?,?,?)`,
             [
-              item.DistributorID,
-              item.SequenceNo,
-              item.Contacatperson,
-              item.ContactNumber,
+              String(item.DistributorID),
+              String(item.SequenceNo),
+              String(item.Contacatperson),
+              String(item.ContactNumber),
             ],
             (tx, results) => {},
             err => {
@@ -1066,18 +1066,18 @@ export default class Database {
                   `insert into DistributorDataStatus(Branch , DistributorID , Area , Day7 , Day6 ,Day5 , Day4 , Day3 , Day2 , Day1 , LastUploadDate , LastInvoiceDate )
                                                                       VALUES (?,?,?,?,?,?,?,?,?,?,?,?)`,
                   [
-                    item.Branch,
-                    item.DistributorID,
-                    item.Area,
-                    item.Day7,
-                    item.Day6,
-                    item.Day5,
-                    item.Day4,
-                    item.Day3,
-                    item.Day2,
-                    item.Day1,
-                    item.LastUploadDate,
-                    item.LastInvoiceDate,
+                    String(item.Branch),
+                    String(item.DistributorID),
+                    String(item.Area),
+                    String(item.Day7),
+                    String(item.Day6),
+                    String(item.Day5),
+                    String(item.Day4),
+                    String(item.Day3),
+                    String(item.Day2),
+                    String(item.Day1),
+                    String(item.LastUploadDate),
+                    String(item.LastInvoiceDate),
                   ],
                   (tx, results) => {},
                   err => {
@@ -1121,12 +1121,12 @@ export default class Database {
                     // "Quantity": 12.00,
                     // "Value": 1.00
 
-                    item.UserID,
-                    item.DistributorID,
-                    item.CustomerID,
-                    item.ItemID,
-                    item.Quantity,
-                    item.Value,
+                    String(item.UserID),
+                    String(item.DistributorID),
+                    String(item.CustomerID),
+                    String(item.ItemID),
+                    String(item.Quantity),
+                    String(item.Value),
                   ],
                   (tx, results) => {},
                   err => {
@@ -1157,7 +1157,11 @@ export default class Database {
             tx.executeSql(
               `insert into UserCustomerItem(UserID , CustomerID , ItemID  )
                                                                   VALUES (?,?,?)`,
-              [item.UserID, item.CustomerID, item.ItemID],
+              [
+                String(item.UserID),
+                String(item.CustomerID),
+                String(item.ItemID),
+              ],
               (tx, results) => {},
               err => {
                 console.error('error=', err);
@@ -1173,7 +1177,7 @@ export default class Database {
   }
 
   insertReportControlMaster(ReportControlMasterData) {
-    console.log('report contrl : '+JSON.stringify(ReportControlMasterData))
+    console.log('report contrl : ' + JSON.stringify(ReportControlMasterData));
     if (ReportControlMasterData.length) {
       db1.transaction(tx => {
         tx.executeSql('DELETE FROM ReportControlMaster', []).then(
@@ -1187,7 +1191,11 @@ export default class Database {
                   tx.executeSql(
                     `insert into ReportControlMaster(ControlName , ControlId , ReferenceColumn )
                                                                     VALUES (?,?,?)`,
-                    [item.ControlName, item.ControlId, item.ReferenceColumn],
+                    [
+                      String(item.ControlName),
+                      String(item.ControlId),
+                      String(item.ReferenceColumn),
+                    ],
                     (tx, results) => {},
                     err => {
                       console.error('error=', err);
@@ -1221,11 +1229,11 @@ export default class Database {
                   `insert into Report(MenuKey , Classification , ComboClassification ,LabelName ,IsActive)
                                                                     VALUES (?,?,?,?,?)`,
                   [
-                    item.MenuKey,
-                    item.Classification,
-                    item.ComboClassification,
-                    item.LabelName,
-                    item.IsActive,
+                    String(item.MenuKey),
+                    String(item.Classification),
+                    String(item.ComboClassification),
+                    String(item.LabelName),
+                    String(item.IsActive),
                   ],
                   (tx, results) => {},
                   err => {
@@ -1255,7 +1263,11 @@ export default class Database {
             tx.executeSql(
               `insert into AreaParentList(Areaid , Area ,AreaParentId )
                                                                   VALUES (?,?,?)`,
-              [item.Areaid, item.Area, item.AreaParentId],
+              [
+                String(item.Areaid),
+                String(item.Area),
+                String(item.AreaParentId),
+              ],
               (tx, results) => {},
               err => {
                 console.error('error=', err);
@@ -1271,14 +1283,14 @@ export default class Database {
   }
 
   insertPItem(PItemData) {
-   // if (PItemData.length) {
-      db1.transaction(tx => {
-        tx.executeSql('DELETE FROM PItem', []).then(([tx, results]) => {
-          db1
-            .transaction(tx => {
-           //   var len = PItemData.length;
-              var count = 0;
-              if(PItemData){
+    // if (PItemData.length) {
+    db1.transaction(tx => {
+      tx.executeSql('DELETE FROM PItem', []).then(([tx, results]) => {
+        db1
+          .transaction(tx => {
+            //   var len = PItemData.length;
+            var count = 0;
+            if (PItemData) {
               for (var item of PItemData) {
                 tx.executeSql(
                   `insert into PItem(ItemId , Item , ItemAlias , BPC , BPC1 , BPC2 ,ErpCode , Volume , ReportingQuantity , 
@@ -1290,71 +1302,71 @@ export default class Database {
                 , BRANDSEQUENCE , BRANDALIASSEQUENCE ,Focus ,IsSelectedBrand ,IsSelectedBrandProduct,bottleQut,SchemeID )
                                                                     VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
                   [
-                    item.ItemId,
-                    item.Item,
-                    item.ItemAlias,
-                    item.BPC,
-                    item.BPC1,
-                    item.BPC2,
-                    item.ErpCode,
-                    item.Volume,
-                    item.ReportingQuantity,
-                    item.MRP,
-                    item.PTR,
-                    item.BRANDID,
-                    item.BRAND,
-                    item.BRANDALIAS,
-                    item.DIVISIONID,
-                    item.DIVISION,
-                    item.DIVISIONALIAS,
-                    item.FLAVOURID,
-                    item.FLAVOUR,
-                    item.FLAVOURALIAS,
-                    item.ITEMCLASSID,
-                    item.ITEMCLASS,
-                    item.ITEMCLASSALIAS,
-                    item.ITEMGROUPID,
-                    item.ITEMGROUP,
-                    item.ITEMGROUPALIAS,
-                    item.ITEMSIZEID,
-                    item.ITEMSIZE,
-                    item.ITEMSIZEALIAS,
-                    item.ITEMSUBGROUPID,
-                    item.ITEMSUBGROUP,
-                    item.ITEMSUBGROUPALIAS,
-                    item.ITEMTYPEID,
-                    item.ITEMTYPE,
-                    item.ITEMTYPEALIAS,
-                    item.SIZESEQUENCE,
-                    item.ITEMSIZESEQUENCE,
-                    item.ITEMSIZEALIASSEQUENCE,
-                    item.ITEMSEQUENCE,
-                    item.ITEMALIASSEQUENCE,
-                    item.BRANDSEQUENCE,
-                    item.BRANDALIASSEQUENCE,
-                    item.ISFOCUS,
+                    String(item.ItemId),
+                    String(item.Item),
+                    String(item.ItemAlias),
+                    String(item.BPC),
+                    String(item.BPC1),
+                    String(item.BPC2),
+                    String(item.ErpCode),
+                    String(item.Volume),
+                    String(item.ReportingQuantity),
+                    String(item.MRP),
+                    String(item.PTR),
+                    String(item.BRANDID),
+                    String(item.BRAND),
+                    String(item.BRANDALIAS),
+                    String(item.DIVISIONID),
+                    String(item.DIVISION),
+                    String(item.DIVISIONALIAS),
+                    String(item.FLAVOURID),
+                    String(item.FLAVOUR),
+                    String(item.FLAVOURALIAS),
+                    String(item.ITEMCLASSID),
+                    String(item.ITEMCLASS),
+                    String(item.ITEMCLASSALIAS),
+                    String(item.ITEMGROUPID),
+                    String(item.ITEMGROUP),
+                    String(item.ITEMGROUPALIAS),
+                    String(item.ITEMSIZEID),
+                    String(item.ITEMSIZE),
+                    String(item.ITEMSIZEALIAS),
+                    String(item.ITEMSUBGROUPID),
+                    String(item.ITEMSUBGROUP),
+                    String(item.ITEMSUBGROUPALIAS),
+                    String(item.ITEMTYPEID),
+                    String(item.ITEMTYPE),
+                    String(item.ITEMTYPEALIAS),
+                    String(item.SIZESEQUENCE),
+                    String(item.ITEMSIZESEQUENCE),
+                    String(item.ITEMSIZEALIASSEQUENCE),
+                    String(item.ITEMSEQUENCE),
+                    String(item.ITEMALIASSEQUENCE),
+                    String(item.BRANDSEQUENCE),
+                    String(item.BRANDALIASSEQUENCE),
+                    String(item.ISFOCUS),
                     '',
                     '',
                     '0',
-                    item.SchemeID,
+                    String(item.SchemeID),
                   ],
                   (tx, results) => {},
                   err => {
                     console.error('error=', err);
                   },
                 );
-              } 
+              }
             }
-            })
-            .then(result => {
-              //
-            })
-            .catch(err => {
-              //console.log(err);
-            });
-        });
+          })
+          .then(result => {
+            //
+          })
+          .catch(err => {
+            //console.log(err);
+          });
       });
-   // }
+    });
+    // }
   }
 
   insertSIPREPORT(SIPREPORTData) {
@@ -1371,24 +1383,24 @@ export default class Database {
               IsManager ,Percentage ,Bucket   )
                                                                   VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
               [
-                item.UserId,
-                item.ReportMonth,
-                item.SrNo,
-                item.AEID,
-                item.AMID,
-                item.AM,
-                item.Executive,
-                item.FromDate,
-                item.ToDate,
-                item.TargetPoints,
-                item.TotalPoints,
-                item.TargetAcheived,
-                item.TeamAcheived,
-                item.TeamAcheivementQuantity,
-                item.TeamTargetQuantity,
-                item.IsManager,
-                item.Percentage,
-                item.Bucket,
+                String(item.UserId),
+                String(item.ReportMonth),
+                String(item.SrNo),
+                String(item.AEID),
+                String(item.AMID),
+                String(item.AM),
+                String(item.Executive),
+                String(item.FromDate),
+                String(item.ToDate),
+                String(item.TargetPoints),
+                String(item.TotalPoints),
+                String(item.TargetAcheived),
+                String(item.TeamAcheived),
+                String(item.TeamAcheivementQuantity),
+                String(item.TeamTargetQuantity),
+                String(item.IsManager),
+                String(item.Percentage),
+                String(item.Bucket),
               ],
               (tx, results) => {},
               err => {
@@ -1418,11 +1430,11 @@ export default class Database {
                     `insert into AdvanceReports(AID ,ReportTitle,ReportType ,ReferenceType ,IsActive )
                                                                     VALUES (?,?,?,?,?)`,
                     [
-                      item.ID,
-                      item.ReportTitle,
-                      item.ReportType,
-                      item.ReferenceType,
-                      item.IsActive,
+                      String(item.ID),
+                      String(item.ReportTitle),
+                      String(item.ReportType),
+                      String(item.ReferenceType),
+                      String(item.IsActive),
                     ],
                     (tx, results) => {},
                     err => {
@@ -1463,16 +1475,16 @@ export default class Database {
               longitude ,total_amount ,collection_type ,user_id,selected_flag   )
                                                                   VALUES (?,?,?,?,?,?,?,?,?,?)`,
             [
-              id,
-              Current_date_time,
-              entity_type,
-              entity_id,
-              latitude,
-              longitude,
-              total_amount,
-              collection_type,
-              user_id,
-              selected_flag,
+              String(id),
+              String(Current_date_time),
+              String(entity_type),
+              String(entity_id),
+              String(latitude),
+              String(longitude),
+              String(total_amount),
+              String(collection_type),
+              String(user_id),
+              String(selected_flag),
             ],
             (tx, results) => {
               resolve(results);
@@ -1517,20 +1529,20 @@ export default class Database {
               RNP ,OnAmount ,OnAmountSmallUnit ,Rate ,BookCode ,OrderedItemID ,BrandCode ,ItemCode,syncFlag   )
                                                                   VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
             [
-              OrderID,
-              DiscountType,
-              DiscountAmount,
-              discountadd,
-              discountless,
-              RNP,
-              OnAmount,
-              OnAmountSmallUnit,
-              Rate,
-              BookCode,
-              OrderedItemID,
-              BrandCode,
-              ItemCode,
-              syncFlag,
+              String(OrderID),
+              String(DiscountType),
+              String(DiscountAmount),
+              String(discountadd),
+              String(discountless),
+              String(RNP),
+              String(OnAmount),
+              String(OnAmountSmallUnit),
+              String(Rate),
+              String(BookCode),
+              String(OrderedItemID),
+              String(BrandCode),
+              String(ItemCode),
+              String(syncFlag),
             ],
             (tx, results) => {
               resolve(results);
@@ -1573,19 +1585,19 @@ export default class Database {
           tx.executeSql(
             'UPDATE TABLE_DISCOUNT SET  DiscountType = ?,DiscountAmount = ? ,discountadd = ?,discountless = ?,RNP = ?,OnAmount = ?, OnAmountSmallUnit=?,Rate =?,BookCode=? ,BrandCode=? ,ItemCode= ? where OrderID = ? and OrderedItemID = ? ',
             [
-              DiscountType,
-              DiscountAmount,
-              discountadd,
-              discountless,
-              RNP,
-              OnAmount,
-              OnAmountSmallUnit,
-              Rate,
-              BookCode,
-              BrandCode,
-              ItemCode,
-              OrderID,
-              OrderedItemID,
+              String(DiscountType),
+              String(DiscountAmount),
+              String(discountadd),
+              String(discountless),
+              String(RNP),
+              String(OnAmount),
+              String(OnAmountSmallUnit),
+              String(Rate),
+              String(BookCode),
+              String(BrandCode),
+              String(ItemCode),
+              String(OrderID),
+              String(OrderedItemID),
             ],
           ).then(([tx, results]) => {
             resolve(results.length);
@@ -1614,12 +1626,12 @@ export default class Database {
             `insert into  TABLE_TEMP_ImagesDetails(outlet_id ,latitude ,longitude ,image_date_time ,image_name ,user_id )
                                                                   VALUES (?,?,?,?,?,?)`,
             [
-              item.outlet_id,
-              item.latitude,
-              item.longitude,
-              item.image_date_time,
-              item.image_name,
-              item.user_id,
+              String(item.outlet_id),
+              String(item.latitude),
+              String(item.longitude),
+              String(item.image_date_time),
+              String(item.image_name),
+              String(item.user_id),
             ],
             (tx, results) => {},
             err => {
@@ -1658,19 +1670,19 @@ export default class Database {
           tx.executeSql(
             'UPDATE OrderMaster SET  Current_date_time = ?,entity_type = ? ,entity_id = ?,latitude = ?,longitude = ?,total_amount = ?, from_date=?,to_date = ?,ExpectedDeliveryDate=?,check_date=?,ActivityEnd=? where id = ? and collection_type = ? ',
             [
-              Current_date_time,
-              entity_type,
-              entity_id,
-              latitude,
-              longitude,
-              total_amount,
-              from_date,
-              to_date,
-              ExpectedDeliveryDate,
-              check_date,
-              ActivityEnd,
-              order_id,
-              collection_type,
+              String(Current_date_time),
+              String(entity_type),
+              String(entity_id),
+              String(latitude),
+              String(longitude),
+              String(total_amount),
+              String(from_date),
+              String(to_date),
+              String(ExpectedDeliveryDate),
+              String(check_date),
+              String(ActivityEnd),
+              String(order_id),
+              String(collection_type),
             ],
           ).then(([tx, results]) => {
             resolve(results.length);
@@ -1710,18 +1722,18 @@ export default class Database {
           tx.executeSql(
             'UPDATE OrderMaster SET  Current_date_time = ?,entity_type = ? ,entity_id = ?,latitude = ?,longitude = ?,total_amount = ?, from_date=?,to_date = ?,ExpectedDeliveryDate=?,check_date=? where id = ? and collection_type = ? ',
             [
-              Current_date_time,
-              entity_type,
-              entity_id,
-              latitude,
-              longitude,
-              total_amount,
-              from_date,
-              to_date,
-              ExpectedDeliveryDate,
-              check_date,
-              order_id,
-              collection_type,
+              String(Current_date_time),
+              String(entity_type),
+              String(entity_id),
+              String(latitude),
+              String(longitude),
+              String(total_amount),
+              String(from_date),
+              String(to_date),
+              String(ExpectedDeliveryDate),
+              String(check_date),
+              String(order_id),
+              String(collection_type),
             ],
           ).then(([tx, results]) => {
             resolve(results.length);
@@ -1766,21 +1778,21 @@ export default class Database {
                  ,large_Unit,rate ,Amount,selected_flag,sync_flag,bottleQty,BrandId,entityId,CollectionType  )
                                                                   VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
             [
-              order_id,
-              item_id,
-              item_Name,
-              quantity_one,
-              quantity_two,
-              small_Unit,
-              large_Unit,
-              rate,
-              Amount,
-              selected_flag,
-              sync_flag,
-              bottleQty,
-              BrandId,
-              entityId,
-              CollectionType,
+              String(order_id),
+              String(item_id),
+              String(item_Name),
+              String(quantity_one),
+              String(quantity_two),
+              String(small_Unit),
+              String(large_Unit),
+              String(rate),
+              String(Amount),
+              String(selected_flag),
+              String(sync_flag),
+              String(bottleQty),
+              String(BrandId),
+              String(entityId),
+              String(CollectionType),
             ],
             (tx, results) => {
               // var query = 'select sum(Amount) as TotalAmount from OrderDetails where OrderDetails.order_id = "' + order_id + '"'
@@ -1841,17 +1853,17 @@ export default class Database {
                  ,large_Unit,rate ,Amount,selected_flag,sync_flag  )
                                                                   VALUES (?,?,?,?,?,?,?,?,?,?,?)`,
             [
-              order_id,
-              item_id,
-              item_Name,
-              quantity_one,
-              quantity_two,
-              small_Unit,
-              large_Unit,
-              rate,
-              Amount,
-              selected_flag,
-              sync_flag,
+              String(order_id),
+              String(item_id),
+              String(item_Name),
+              String(quantity_one),
+              String(quantity_two),
+              String(small_Unit),
+              String(large_Unit),
+              String(rate),
+              String(Amount),
+              String(selected_flag),
+              String(sync_flag),
             ],
             (tx, results) => {
               var query =
@@ -1913,14 +1925,14 @@ export default class Database {
           tx.executeSql(
             'UPDATE OrderDetails SET quantity_one = ?, quantity_two = ?, small_Unit = ?, large_Unit = ?,rate = ?, Amount = ? WHERE order_id = ? and item_id = ? ',
             [
-              quantity_one,
-              quantity_two,
-              small_Unit,
-              large_Unit,
-              rate,
-              Amount,
-              order_id,
-              item_id,
+              String(quantity_one),
+              String(quantity_two),
+              String(small_Unit),
+              String(large_Unit),
+              String(rate),
+              String(Amount),
+              String(order_id),
+              String(item_id),
             ],
           ).then(([tx, results]) => {
             // var query = 'select sum(Amount) as TotalAmount from OrderDetails where OrderDetails.order_id = "' + order_id + '"'
@@ -1968,14 +1980,14 @@ export default class Database {
           tx.executeSql(
             'UPDATE OrderDetails SET quantity_one = ?, quantity_two = ?, small_Unit = ?, large_Unit = ?,rate = ?, Amount = ? WHERE order_id = ? and item_id = ? ',
             [
-              quantity_one,
-              quantity_two,
-              small_Unit,
-              large_Unit,
-              rate,
-              Amount,
-              order_id,
-              item_id,
+              String(quantity_one),
+              String(quantity_two),
+              String(small_Unit),
+              String(large_Unit),
+              String(rate),
+              String(Amount),
+              String(order_id),
+              String(item_id),
             ],
           ).then(([tx, results]) => {
             var query =
@@ -2023,7 +2035,11 @@ export default class Database {
           tx.executeSql(
             `insert into  uses_log(menu_keys,uses_datetime ,is_sync  )
                                                                   VALUES (?,?,?)`,
-            [item.menu_keys, item.uses_datetime, item.is_sync],
+            [
+              String(item.menu_keys),
+              String(item.uses_datetime),
+              String(item.is_sync),
+            ],
             (tx, results) => {},
             err => {
               console.error('error=', err);
@@ -2046,7 +2062,12 @@ export default class Database {
         tx.executeSql(
           `insert into  ImagesDetails(order_id ,image_date_time ,image_name,Path,is_sync )
                                                                   VALUES (?,?,?,?,?)`,
-          [order_id, image_date_time, image_name, Path, is_sync],
+          [
+            String(order_id),
+            String(image_date_time),
+            String(image_name, Path),
+            String(is_sync),
+          ],
           (tx, results) => {},
           err => {
             console.error('error=', err);
@@ -2091,23 +2112,23 @@ export default class Database {
               to_date ,rate  ,bpc  ,Amount ,selected_flag,bottleQty,BrandId,entityId,CollectionType)
                 VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
             [
-              order_id,
-              item_id,
-              item_Name,
-              quantity_one,
-              quantity_two,
-              small_Unit,
-              large_Unit,
-              from_date,
-              to_date,
-              rate,
-              bpc,
-              Amount,
-              selected_flag,
-              bottleQty,
-              BrandId,
-              entityId,
-              CollectionType,
+              String(order_id),
+              String(item_id),
+              String(item_Name),
+              String(quantity_one),
+              String(quantity_two),
+              String(small_Unit),
+              String(large_Unit),
+              String(from_date),
+              String(to_date),
+              String(rate),
+              String(bpc),
+              String(Amount),
+              String(selected_flag),
+              String(bottleQty),
+              String(BrandId),
+              String(entityId),
+              String(CollectionType),
             ],
           ).then(([tx, results]) => {
             resolve(results);
@@ -2134,16 +2155,16 @@ export default class Database {
             `insert into  newpartyoutlet( OrderID,BitID,OutletName,ContactNo,OwnersName,OutletAddress,Remark,Latitude,Longitude,AddedDate)
                                                                   VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)`,
             [
-              item.id,
-              item.bitid,
-              item.outletName,
-              item.contactNumber,
-              item.ownersName,
-              item.outletAddress,
-              item.remark,
-              item.Latitude,
-              item.Longitude,
-              item.addedon,
+              String(item.id),
+              String(item.bitid),
+              String(item.outletName),
+              String(item.contactNumber),
+              String(item.ownersName),
+              String(item.outletAddress),
+              String(item.remark),
+              String(item.Latitude),
+              String(item.Longitude),
+              String(item.addedon),
             ],
             (tx, results) => {},
             err => {
@@ -2170,7 +2191,11 @@ export default class Database {
           tx.executeSql(
             `insert into  newpartyImageoutlet(OrderID,Is_Sync,ImageName  )
                                                                   VALUES (?,?,?)`,
-            [item.OrderID, item.Is_Sync, item.ImageName],
+            [
+              String(item.OrderID),
+              String(item.Is_Sync),
+              String(item.ImageName),
+            ],
             (tx, results) => {},
             err => {
               console.error('error=', err);
@@ -2198,13 +2223,13 @@ export default class Database {
                 ConversionFormula ,ConversionUomFormula  )
                 VALUES (?,?,?,?,?,?,?)`,
                   [
-                    item.UOMDescription,
-                    item.ConvToBase,
-                    item.Formula,
-                    item.UOMKey,
-                    item.IsQuantity,
-                    item.ConversionFormula,
-                    item.ConversionUomFormula,
+                    String(item.UOMDescription),
+                    String(item.ConvToBase),
+                    String(item.Formula),
+                    String(item.UOMKey),
+                    String(item.IsQuantity),
+                    String(item.ConversionFormula),
+                    String(item.ConversionUomFormula),
                   ],
                   (tx, results) => {},
                   err => {
@@ -2239,26 +2264,26 @@ export default class Database {
                     `insert into OrderMaster(id,Current_date_time ,entity_type,entity_id ,latitude ,longitude ,total_amount ,from_date ,to_date ,collection_type ,user_id ,remark,selected_flag ,sync_flag ,check_date,DefaultDistributorId,ExpectedDeliveryDate,ActivityStatus,ActivityStart,ActivityEnd)
                   VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
                     [
-                      item.MobileGenPrimaryKey,
-                      item.OrderTakenDatetime,
-                      item.EntityType,
-                      item.EntityID,
-                      item.Latitude,
-                      item.Longitude,
-                      item.TotalAmount,
-                      item.FromDate,
-                      item.ToDate,
-                      item.CollectionType,
-                      item.ExecutiveID,
-                      item.Remarks,
+                      String(item.MobileGenPrimaryKey),
+                      String(item.OrderTakenDatetime),
+                      String(item.EntityType),
+                      String(item.EntityID),
+                      String(item.Latitude),
+                      String(item.Longitude),
+                      String(item.TotalAmount),
+                      String(item.FromDate),
+                      String(item.ToDate),
+                      String(item.CollectionType),
+                      String(item.ExecutiveID),
+                      String(item.Remarks),
                       '',
                       'Y',
                       '',
-                      item.DefaultDistributorID,
-                      item.ExpectedDeliveryDate,
-                      item.ActivityStatus,
-                      item.ActivityStartTime,
-                      item.ActivityEndTime,
+                      String(item.DefaultDistributorID),
+                      String(item.ExpectedDeliveryDate),
+                      String(item.ActivityStatus),
+                      String(item.ActivityStartTime),
+                      String(item.ActivityEndTime),
                     ],
                     (tx, results) => {},
                     err => {
@@ -2296,15 +2321,15 @@ export default class Database {
                   `insert into OrderDetails(order_id, item_id, item_Name, quantity_one, quantity_two, small_Unit
                     , large_Unit, rate, Amount, selected_flag, sync_flag) VALUES (?,?,?,?,?,?,?,?,?,?,?)`,
                   [
-                    item.OrderID,
-                    item.ItemID,
+                    String(item.OrderID),
+                    String(item.ItemID),
                     '',
-                    item.LargeUnit,
-                    item.SmallUnit,
-                    item.FreeSmallUnit,
-                    item.FreeLargeUnit,
-                    item.Rate,
-                    item.Amount,
+                    String(item.LargeUnit),
+                    String(item.SmallUnit),
+                    String(item.FreeSmallUnit),
+                    String(item.FreeLargeUnit),
+                    String(item.Rate),
+                    String(item.Amount),
                     '1',
                     'Y',
                   ],
@@ -2326,13 +2351,10 @@ export default class Database {
     }
   }
 
-  insertResources(Resources){
+  insertResources(Resources) {
     if (Resources.length) {
       db1.transaction(tx => {
-        tx.executeSql(
-          'DELETE FROM Resources ',
-          [],
-        ).then(([tx, results]) => {
+        tx.executeSql('DELETE FROM Resources ', []).then(([tx, results]) => {
           db1
             .transaction(tx => {
               var len = Resources.length;
@@ -2342,17 +2364,17 @@ export default class Database {
                 tx.executeSql(
                   `insert into Resources(ID ,ResourceName , ParentResourceID ,URL , Descreption ,FileName , SequenceNo ,IsDownloadable , ResourceType ,CreatedDate ,LastUpdatedDate) VALUES (?,?,?,?,?,?,?,?,?,?,?)`,
                   [
-                    item.ID,
-                    item.ResourceName,
-                    item.ParentResourceID,
-                    item.URL,
-                    item.Descreption,
-                    item.FileName,
-                    item.SequenceNo,
-                    item.IsDownloadable,
-                    item.ResourceType,
-                    item.CreatedDate,
-                    item.LastUpdatedDate,
+                    String(item.ID),
+                    String(item.ResourceName),
+                    String(item.ParentResourceID),
+                    String(item.URL),
+                    String(item.Descreption),
+                    String(item.FileName),
+                    String(item.SequenceNo),
+                    String(item.IsDownloadable),
+                    String(item.ResourceType),
+                    String(item.CreatedDate),
+                    String(item.LastUpdatedDate),
                   ],
                   (tx, results) => {},
                   err => {
@@ -2372,40 +2394,35 @@ export default class Database {
     }
   }
 
-  insertOnlineParentArea(OnlineParentArea){
+  insertOnlineParentArea(OnlineParentArea) {
     if (OnlineParentArea.length) {
       db1.transaction(tx => {
-        tx.executeSql(
-          'DELETE FROM OnlineParentArea ',
-          [],
-        ).then(([tx, results]) => {
-          db1
-            .transaction(tx => {
-              var len = OnlineParentArea.length;
-              var count = 0;
+        tx.executeSql('DELETE FROM OnlineParentArea ', []).then(
+          ([tx, results]) => {
+            db1
+              .transaction(tx => {
+                var len = OnlineParentArea.length;
+                var count = 0;
 
-              for (var item of OnlineParentArea) {
-                tx.executeSql(
-                  `insert into OnlineParentArea(AreaId , Area ) VALUES (?,?)`,
-                  [
-                    item.AreaId,
-                    item.Area,
-                  
-                  ],
-                  (tx, results) => {},
-                  err => {
-                    console.error('error=', err);
-                  },
-                );
-              }
-            })
-            .then(result => {
-              //
-            })
-            .catch(err => {
-              //console.log(err);
-            });
-        });
+                for (var item of OnlineParentArea) {
+                  tx.executeSql(
+                    `insert into OnlineParentArea(AreaId , Area ) VALUES (?,?)`,
+                    [String(item.AreaId), String(item.Area)],
+                    (tx, results) => {},
+                    err => {
+                      console.error('error=', err);
+                    },
+                  );
+                }
+              })
+              .then(result => {
+                //
+              })
+              .catch(err => {
+                //console.log(err);
+              });
+          },
+        );
       });
     }
   }
@@ -2425,10 +2442,10 @@ export default class Database {
                     `insert into outletAssetInformation( CustomerID , AssetID , AssetQRcode ,AssetInformation,ScanFlag)
                                                                       VALUES (?,?,?,?,?)`,
                     [
-                      item.CustomerID,
-                      item.AssetID,
-                      item.AssetQRcode,
-                      item.AssetInformation,
+                      String(item.CustomerID),
+                      String(item.AssetID),
+                      String(item.AssetQRcode),
+                      String(item.AssetInformation),
                       '',
                     ],
                     (tx, results) => {},
@@ -2472,14 +2489,14 @@ export default class Database {
                   `insert into SurveyMaster( ID,SurveyName,CompanyName,CustomerID,PublishedDate,TimeRequired,SurveyURL,SurveyDoneDate)
                                                                        VALUES (?,?,?,?,?,?,?,?)`,
                   [
-                    item.ID,
-                    item.SurveyName,
-                    item.CompanyName,
-                    item.CustomerID,
-                    item.PublishedDate,
-                    item.TimeRequired,
-                    item.SurveyURL,
-                    item.SurveyDoneDate,
+                    String(item.ID),
+                    String(item.SurveyName),
+                    String(item.CompanyName),
+                    String(item.CustomerID),
+                    String(item.PublishedDate),
+                    String(item.TimeRequired),
+                    String(item.SurveyURL),
+                    String(item.SurveyDoneDate),
                   ],
                   (tx, results) => {},
                   err => {
@@ -2513,7 +2530,11 @@ export default class Database {
                   tx.executeSql(
                     `insert into  assetTypeClassificationList( AssetTypeID , AssetName , ClassificationList)
                                                                     VALUES (?,?,?)`,
-                    [item.AssetTypeID, item.AssetName, item.ClassificationList],
+                    [
+                      String(item.AssetTypeID),
+                      String(item.AssetName),
+                      String(item.ClassificationList),
+                    ],
                     (tx, results) => {
                       ////console.log("rjlen1",results.rows.length)
                     },
@@ -2534,7 +2555,6 @@ export default class Database {
       });
     }
   }
- 
 
   insertUsersCustomers(UsersCustomers) {
     if (UsersCustomers.length > 0) {
@@ -2554,8 +2574,8 @@ export default class Database {
                     [
                       // "UserID": 52362,
                       // "CustomerID": 26754
-                      item.UserID,
-                      item.CustomerID,
+                      String(item.UserID),
+                      String(item.CustomerID),
                     ],
                     (tx, results) => {},
                     err => {
@@ -2592,7 +2612,7 @@ export default class Database {
             tx.executeSql(
               `insert into CollectionTypes(Id,Type )
                                                                 VALUES (?,?)`,
-              [item.Id, item.Type],
+              [String(item.Id), String(item.Type)],
               (tx, results) => {
                 // //console.log("rjlen",results.length)
               },
@@ -2640,20 +2660,20 @@ export default class Database {
               // "BrandCode": "Brand1",
               // "ItemCode": "Item1"
 
-              item.ID,
-              item.OrderID,
-              item.DiscountType,
-              item.DiscountAmount,
-              item.DiscountAdd,
-              item.DiscountLess,
-              item.RNP,
-              item.OnAmount,
-              item.OnAmountSmallUnit,
-              item.Rate,
-              item.BookCode,
-              item.OrderedItemID,
-              item.BrandCode,
-              item.ItemCode,
+              String(item.ID),
+              String(item.OrderID),
+              String(item.DiscountType),
+              String(item.DiscountAmount),
+              String(item.DiscountAdd),
+              String(item.DiscountLess),
+              String(item.RNP),
+              String(item.OnAmount),
+              String(item.OnAmountSmallUnit),
+              String(item.Rate),
+              String(item.BookCode),
+              String(item.OrderedItemID),
+              String(item.BrandCode),
+              String(item.ItemCode),
             ],
             (tx, results) => {
               ////console.log("rjlen",results.length)
@@ -2686,8 +2706,8 @@ export default class Database {
                   [
                     // "UserID": 52362,
                     // "ItemID": 464
-                    item.UserID,
-                    item.ItemID,
+                    String(item.UserID),
+                    String(item.ItemID),
                   ],
                   (tx, results) => {
                     // //console.log("rjlen",results.length)
@@ -2732,9 +2752,9 @@ export default class Database {
                   [
                     // "UserID": 52362,
                     // "ItemID": 464
-                    item.ID,
-                    item.ExecutiveId,
-                    item.MonthYear,
+                    String(item.ID),
+                    String(item.ExecutiveId),
+                    String(item.MonthYear),
                   ],
                   (tx, results) => {
                     // //console.log("rjlen",results.length)
@@ -2778,13 +2798,13 @@ export default class Database {
                     [
                       // "UserID": 52362,
                       // "ItemID": 464
-                      item.Id,
-                      item.MJPMasterID,
-                      item.PlannedDate,
-                      item.EntityType,
-                      item.EntityTypeID,
-                      item.ActivityTitle,
-                      item.IsActivityDone,
+                      String(item.Id),
+                      String(item.MJPMasterID),
+                      String(item.PlannedDate),
+                      String(item.EntityType),
+                      String(item.EntityTypeID),
+                      String(item.ActivityTitle),
+                      String(item.IsActivityDone),
                     ],
                     (tx, results) => {
                       // //console.log("rjlen",results.length)
@@ -2832,9 +2852,9 @@ export default class Database {
                     [
                       // "UserID": 52362,
                       // "ItemID": 464
-                      item.Id,
-                      item.GroupId,
-                      item.Name,
+                      String(item.Id),
+                      String(item.GroupId),
+                      String(item.Name),
                     ],
                     (tx, results) => {
                       // //console.log("rjlen",results.length)
@@ -2880,14 +2900,14 @@ export default class Database {
                     [
                       // "UserID": 52362,
                       // "ItemID": 464
-                      item.ID,
-                      item.SchemeID,
-                      item.SchemeName,
-                      item.FromDate,
-                      item.ToDate,
-                      item.SlabNo,
-                      item.SchemeBenefits,
-                      item.Remarks,
+                      String(item.ID),
+                      String(item.SchemeID),
+                      String(item.SchemeName),
+                      String(item.FromDate),
+                      String(item.ToDate),
+                      String(item.SlabNo),
+                      String(item.SchemeBenefits),
+                      String(item.Remarks),
                     ],
                     (tx, results) => {
                       // //console.log("rjlen",results.length)
@@ -3509,16 +3529,16 @@ export default class Database {
           tx.executeSql(
             'UPDATE OrderMaster SET Current_date_time =?, latitude = ?, longitude = ?, remark = ?, sync_flag = ?, ActivityStatus = ?,collection_type = ?,ActivityStart=?,ActivityEnd=? WHERE DefaultDistributorId = ?',
             [
-              Current_date_time,
-              latitude,
-              longitude,
-              remark,
-              sync_flag,
-              ActivityStatus,
-              collection_type,
-              ActivityStart,
-              ActivityEnd,
-              DefaultDistributorId,
+              String(Current_date_time),
+              String(latitude),
+              String(longitude),
+              String(remark),
+              String(sync_flag),
+              String(ActivityStatus),
+              String(collection_type),
+              String(ActivityStart),
+              String(ActivityEnd),
+              String(DefaultDistributorId),
             ],
             (tx, results) => {
               resolve(results);
@@ -3568,26 +3588,26 @@ export default class Database {
             `insert into OrderMaster(id,Current_date_time ,entity_type,entity_id ,latitude ,longitude ,total_amount ,from_date ,to_date ,collection_type ,user_id ,remark,selected_flag ,sync_flag ,check_date,DefaultDistributorId,ExpectedDeliveryDate,ActivityStatus,ActivityStart,ActivityEnd)
                                                                   VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
             [
-              id,
-              Current_date_time,
-              entity_type,
-              entity_id,
-              latitude,
-              longitude,
-              total_amount,
-              from_date,
-              to_date,
-              collection_type,
-              user_id,
-              remark,
-              selected_flag,
-              sync_flag,
-              check_date,
-              DefaultDistributorId,
-              ExpectedDeliveryDate,
-              ActivityStatus,
-              ActivityStart,
-              ActivityEnd,
+              String(id),
+              String(Current_date_time),
+              String(entity_type),
+              String(entity_id),
+              String(latitude),
+              String(longitude),
+              String(total_amount),
+              String(from_date),
+              String(to_date),
+              String(collection_type),
+              String(user_id),
+              String(remark),
+              String(selected_flag),
+              String(sync_flag),
+              String(check_date),
+              String(DefaultDistributorId),
+              String(ExpectedDeliveryDate),
+              String(ActivityStatus),
+              String(ActivityStart),
+              String(ActivityEnd),
             ],
             (tx, results) => {
               resolve(results);
@@ -3784,26 +3804,26 @@ export default class Database {
             `insert into  MeetReport(ID,Meeting_Id,Shop_Id,Shop_name,PlannedDate,Time,location,Remarks,IsActivityDone,Type_sync,collection_type,latitude,longitude,TotalAmount,UserID,CurrentDatetime,DefaultDistributorId,ExpectedDeliveryDate,FromDate,ToDate)
           VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
             [
-              ID,
-              Meeting_Id,
-              Shop_Id,
-              Shop_name,
-              PlannedDate,
-              Time,
-              location,
-              Remarks,
-              IsActivityDone,
-              Type_sync,
-              collection_type,
-              latitude,
-              longitude,
-              TotalAmount,
-              UserID,
-              CurrentDatetime,
-              DefaultDistributorId,
-              ExpectedDeliveryDate,
-              fromdate,
-              todate,
+              String(ID),
+              String(Meeting_Id),
+              String(Shop_Id),
+              String(Shop_name),
+              String(PlannedDate),
+              String(Time),
+              String(location),
+              String(Remarks),
+              String(IsActivityDone),
+              String(Type_sync),
+              String(collection_type),
+              String(latitude),
+              String(longitude),
+              String(TotalAmount),
+              String(UserID),
+              String(CurrentDatetime),
+              String(DefaultDistributorId),
+              String(ExpectedDeliveryDate),
+              String(fromdate),
+              String(todate),
             ],
             (tx, results) => {
               resolve(results);
@@ -3851,7 +3871,7 @@ export default class Database {
         .transaction(tx => {
           tx.executeSql(
             'UPDATE MeetReport SET  Remarks = ? where Meeting_Id = ? ',
-            [Remarks, Meeting_Id],
+            [String(Remarks), String(Meeting_Id)],
           ).then(([tx, results]) => {
             resolve(results.length);
           });
@@ -3897,7 +3917,7 @@ export default class Database {
     db1.transaction(tx => {
       tx.executeSql(
         'UPDATE MeetReport  SET IsActivityDone = ? WHERE Meeting_Id = ?',
-        ['1', Meeting_id],
+        ['1', String(Meeting_id)],
         (tx, results) => {
           //console.log('Results', results.rowsAffected);
         },
@@ -5155,17 +5175,17 @@ export default class Database {
           tx.executeSql(
             'UPDATE TABLE_TEMP_ORDER_DETAILS SET quantity_one = ?, quantity_two = ?, small_Unit = ?, large_Unit = ?, from_date = ?, to_date = ?, Amount = ?, rate = ? ,bottleQty = ? WHERE order_id = ? and item_id = ? ',
             [
-              qty_1,
-              qty_2,
-              small_Unit,
-              large_Unit,
-              from_date,
-              to_date,
-              amt,
-              rate,
-              bottleQty,
-              order_id,
-              item_id,
+              String(qty_1),
+              String(qty_2),
+              String(small_Unit),
+              String(large_Unit),
+              String(from_date),
+              String(to_date),
+              String(amt),
+              String(rate),
+              String(bottleQty),
+              String(order_id),
+              String(item_id),
             ],
           ).then(([tx, results]) => {
             resolve(results.length);
@@ -5314,7 +5334,7 @@ export default class Database {
           //              update TABLE_TEMP_ORDER_DETAILS set quantity_one = '%@',quantity_two = '%@',,from_date = '%@',to_date = '%@', Amount = '%@',rate = '%@' where order_id = '%@' and item_id = '%@'"
           tx.executeSql(
             'UPDATE TABLE_TEMP_OrderMaster  SET total_amount = ? WHERE id = ? ',
-            [Total_amount, order_id],
+            [String(Total_amount), String(order_id)],
           ).then(([tx, results]) => {
             resolve(results);
           });
@@ -5457,11 +5477,11 @@ export default class Database {
     return new Promise(resolve => {
       var query =
         'UPDATE PItem SET IsSelectedBrand ="' +
-        Brand +
+        String(Brand) +
         '" , IsSelectedBrandProduct = "' +
-        Subbrand +
+        String(Subbrand) +
         '" WHERE ItemId="' +
-        item_id +
+        String(item_id) +
         '"';
 
       db1
@@ -5484,9 +5504,9 @@ export default class Database {
     return new Promise(resolve => {
       var query =
         'UPDATE PItem SET bottleQut ="' +
-        bottleQty +
+        String(bottleQty) +
         '"  WHERE ItemId="' +
-        item_id +
+        String(item_id) +
         '"';
       //  this.initDB().then((db) => {
       db1
@@ -6048,26 +6068,26 @@ export default class Database {
           `insert into OrderMaster(id,Current_date_time ,entity_type,entity_id ,latitude ,longitude ,total_amount ,from_date ,to_date ,collection_type ,user_id ,remark,selected_flag ,sync_flag ,check_date,DefaultDistributorId,ExpectedDeliveryDate,ActivityStatus,ActivityStart,ActivityEnd )
                                                                     VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
           [
-            id,
-            Current_date_time,
-            entity_type,
-            entity_id,
-            latitude,
-            longitude,
-            total_amount,
-            from_date,
-            to_date,
-            collection_type,
-            user_id,
-            remark,
-            selected_flag,
-            sync_flag,
-            check_date,
-            DefaultDistributorId,
-            ExpectedDeliveryDate,
-            ActivityStatus,
-            ActivityStart,
-            ActivityEnd,
+            String(id),
+            String(Current_date_time),
+            String(entity_type),
+            String(entity_id),
+            String(latitude),
+            String(longitude),
+            String(total_amount),
+            String(from_date),
+            String(to_date),
+            String(collection_type),
+            String(user_id),
+            String(remark),
+            String(selected_flag),
+            String(sync_flag),
+            String(check_date),
+            String(DefaultDistributorId),
+            String(ExpectedDeliveryDate),
+            String(ActivityStatus),
+            String(ActivityStart),
+            String(ActivityEnd),
           ],
           (tx, results) => {},
           err => {
@@ -6339,26 +6359,26 @@ export default class Database {
             longitude ,total_amount ,from_date,to_date,collection_type ,user_id,selected_flag,sync_flag,remark,check_date,DefaultDistributorId,ExpectedDeliveryDate,ActivityStatus,ActivityStart,ActivityEnd   )
                                                                 VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
             [
-              id,
-              Current_date_time,
-              entity_type,
-              entity_id,
-              latitude,
-              longitude,
-              total_amount,
-              from_date,
-              to_date,
-              collection_type,
-              user_id,
-              selected_flag,
-              sync_flag,
-              remark,
-              check_date,
-              DefaultDistributorId,
-              ExpectedDeliveryDate,
-              Activitystatus,
-              activityStart,
-              activityend,
+              String(id),
+              String(Current_date_time),
+              String(entity_type),
+              String(entity_id),
+              String(latitude),
+              String(longitude),
+              String(total_amount),
+              String(from_date),
+              String(to_date),
+              String(collection_type),
+              String(user_id),
+              String(selected_flag),
+              String(sync_flag),
+              String(remark),
+              String(check_date),
+              String(DefaultDistributorId),
+              String(ExpectedDeliveryDate),
+              String(Activitystatus),
+              String(activityStart),
+              String(activityend),
             ],
             (tx, results) => {
               resolve(results);
@@ -6392,13 +6412,13 @@ export default class Database {
       db1.transaction(tx => {
         tx.executeSql(
           'UPDATE OrderMaster SET ActivityEnd=?,latitude=?,longitude=? where entity_id = "' +
-            shopId +
+            String(shopId) +
             '" and collection_type  = "' +
-            collectiontype +
+            String(collectiontype) +
             '" and check_date = "' +
-            checkDate +
+            String(checkDate) +
             '"',
-          [checkoutDatetime, latitude, longitude],
+          [String(checkoutDatetime), String(latitude), String(longitude)],
           (tx, results) => {
             console.log('Results', results.rowsAffected);
             resolve(results);
@@ -6759,14 +6779,14 @@ export default class Database {
       tx.executeSql(
         'UPDATE OrderDetails  SET quantity_one = ?,quantity_two=?,small_Unit=?,large_Unit=?,rate=?,Amount=? WHERE item_id = ? and order_id = ?',
         [
-          quantity_one,
-          quantity_two,
-          small_Unit,
-          large_Unit,
-          rate,
-          Amount,
-          id,
-          order_id,
+          String(quantity_one),
+          String(quantity_two),
+          String(small_Unit),
+          String(large_Unit),
+          String(rate),
+          String(Amount),
+          String(id),
+          String(order_id),
         ],
         (tx, results) => {
           console.log('Results', results.rowsAffected);
@@ -6831,7 +6851,7 @@ export default class Database {
     db1.transaction(tx => {
       tx.executeSql(
         'UPDATE OrderMaster SET total_amount=? WHERE id = ?',
-        [amount, id],
+        [String(amount), String(id)],
         (tx, results) => {
           console.log('Results', results.rowsAffected);
         },
@@ -6912,17 +6932,17 @@ export default class Database {
             `insert into OrderDetails(order_id, item_id, item_Name, quantity_one, quantity_two, small_Unit
             , large_Unit, rate, Amount, selected_flag, sync_flag) VALUES (?,?,?,?,?,?,?,?,?,?,?)`,
             [
-              orderidvar,
-              id,
-              item_Name,
-              qty_1,
-              qty_2,
-              unit_small,
-              unit_large,
-              rate,
-              amount,
-              selected_flag,
-              sync_flag,
+              String(orderidvar),
+              String(id),
+              String(item_Name),
+              String(qty_1),
+              String(qty_2),
+              String(unit_small),
+              String(unit_large),
+              String(rate),
+              String(amount),
+              String(selected_flag),
+              String(sync_flag),
             ],
             (tx, results) => {
               resolve(results);
@@ -7064,7 +7084,12 @@ export default class Database {
         .transaction(tx => {
           tx.executeSql(
             `insert into newpartyImageoutlet(OrderID,Is_Sync,ImageName,ImagePath) VALUES (?,?,?,?)`,
-            [app_order_id, Is_Sync, imageName, ImagePath],
+            [
+              String(app_order_id),
+              String(Is_Sync),
+              String(imageName),
+              String(ImagePath),
+            ],
             (tx, results) => {
               resolve(results);
               //console.log("images inserted Successfully!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
@@ -7297,14 +7322,14 @@ export default class Database {
           tx.executeSql(
             `insert into AssetPlacementVerification(OrderID,AssetID,QRCode,ScanStatus,AssetInformation,Remark,Condition,AuditDate) VALUES (?,?,?,?,?,?,?,?)`,
             [
-              OrderID,
-              AssetID,
-              QRCode,
-              ScanStatus,
-              AssetInformation,
-              Remark,
-              Condition,
-              AuditDate,
+              String(OrderID),
+              String(AssetID),
+              String(QRCode),
+              String(ScanStatus),
+              String(AssetInformation),
+              String(Remark),
+              String(Condition),
+              String(AuditDate),
             ],
             (tx, results) => {
               resolve(results);
@@ -7352,23 +7377,23 @@ export default class Database {
           `insert into OrderMaster(id,Current_date_time ,entity_type,entity_id ,latitude ,longitude ,total_amount ,from_date ,to_date ,collection_type ,user_id ,remark,selected_flag ,sync_flag ,check_date,DefaultDistributorId,ExpectedDeliveryDate )
                                                                   VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
           [
-            id,
-            Current_date_time,
-            entity_type,
-            entity_id,
-            latitude,
-            longitude,
-            total_amount,
-            from_date,
-            to_date,
-            collection_type,
-            user_id,
-            remark,
-            selected_flag,
-            sync_flag,
-            check_date,
-            DefaultDistributorId,
-            ExpectedDeliveryDate,
+            String(id),
+            String(Current_date_time),
+            String(entity_type),
+            String(entity_id),
+            String(latitude),
+            String(longitude),
+            String(total_amount),
+            String(from_date),
+            String(to_date),
+            String(collection_type),
+            String(user_id),
+            String(remark),
+            String(selected_flag),
+            String(sync_flag),
+            String(check_date),
+            String(DefaultDistributorId),
+            String(ExpectedDeliveryDate),
           ],
           (tx, results) => {},
           err => {
@@ -7405,18 +7430,18 @@ export default class Database {
                         BankName, Amount, PartyCode, Narration,
                         SalemanCode, SyncFlag, dateupload, datetime) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)`,
             [
-              Date,
-              PaymentMode,
-              ChqueNo,
-              ChqueDate,
-              BankName,
-              Amount,
-              PartyCode,
-              Narration,
-              SalemanCode,
-              SyncFlag,
-              dateupload,
-              datetime,
+              String(Date),
+              String(PaymentMode),
+              String(ChqueNo),
+              String(ChqueDate),
+              String(BankName),
+              String(Amount),
+              String(PartyCode),
+              String(Narration),
+              String(SalemanCode),
+              String(SyncFlag),
+              String(dateupload),
+              String(datetime),
             ],
           ).then(([tx, results]) => {
             resolve(results);
@@ -7682,7 +7707,7 @@ export default class Database {
     db1.transaction(tx => {
       tx.executeSql(
         'UPDATE OrderMaster  SET sync_flag = ? WHERE id = ?',
-        ['Y', order_id],
+        ['Y', String(order_id)],
         (tx, results) => {
           //console.log('Results', results.rowsAffected);
         },
@@ -7703,22 +7728,17 @@ export default class Database {
 
   deleteOrderMaster() {
     db1.transaction(tx => {
-      tx.executeSql(
-        'DELETE FROM OrderMaster ',
-        [],
-        (tx, results) => {
-          //console.log('Results', results.rowsAffected);
-        },
-      );
+      tx.executeSql('DELETE FROM OrderMaster ', [], (tx, results) => {
+        //console.log('Results', results.rowsAffected);
+      });
     });
-   
   }
 
   updateMeetingMasterSyncFlag(order_id) {
     db1.transaction(tx => {
       tx.executeSql(
         'UPDATE MJPMasterDetails  SET IsActivityDone = ? WHERE Id = ?',
-        ['1', order_id],
+        ['1', String(order_id)],
         (tx, results) => {
           //console.log('Results', results.rowsAffected);
         },
@@ -7762,15 +7782,10 @@ export default class Database {
 
   deletenewpartyoutlet() {
     db1.transaction(tx => {
-      tx.executeSql(
-        'DELETE FROM newpartyoutlet ',
-        [],
-        (tx, results) => {
-          //console.log('Results', results.rowsAffected);
-        },
-      );
+      tx.executeSql('DELETE FROM newpartyoutlet ', [], (tx, results) => {
+        //console.log('Results', results.rowsAffected);
+      });
     });
-   
   }
 
   updateOrderDetailSyncFlag(order_id) {
@@ -7778,7 +7793,7 @@ export default class Database {
     db1.transaction(tx => {
       tx.executeSql(
         'UPDATE OrderDetails  SET sync_flag = ? WHERE order_id = ?',
-        ['Y', order_id],
+        ['Y', String(order_id)],
         (tx, results) => {
           //console.log('Results', results.rowsAffected);
         },
@@ -7788,17 +7803,11 @@ export default class Database {
 
   deleteOrderDetails() {
     db1.transaction(tx => {
-      tx.executeSql(
-        'DELETE FROM OrderDetails ',
-        [],
-        (tx, results) => {
-          //console.log('Results', results.rowsAffected);
-        },
-      );
+      tx.executeSql('DELETE FROM OrderDetails ', [], (tx, results) => {
+        //console.log('Results', results.rowsAffected);
+      });
     });
-   
   }
-
 
   deleteMeetReportMeeting(id) {
     return new Promise(resolve => {
@@ -7836,15 +7845,10 @@ export default class Database {
 
   deletenewpartyImageoutlet() {
     db1.transaction(tx => {
-      tx.executeSql(
-        'DELETE FROM newpartyImageoutlet ',
-        [],
-        (tx, results) => {
-          //console.log('Results', results.rowsAffected);
-        },
-      );
+      tx.executeSql('DELETE FROM newpartyImageoutlet ', [], (tx, results) => {
+        //console.log('Results', results.rowsAffected);
+      });
     });
-   
   }
 
   // db1.transaction((tx) => {
@@ -7879,7 +7883,7 @@ export default class Database {
     db1.transaction(tx => {
       tx.executeSql(
         'UPDATE TABLE_DISCOUNT SET syncFlag = ? WHERE OrderID = ?',
-        ['Y', order_id],
+        ['Y', String(order_id)],
         (tx, results) => {
           //console.log('Results', results.rowsAffected);
         },
@@ -7889,15 +7893,10 @@ export default class Database {
 
   deleteTABLE_DISCOUNT() {
     db1.transaction(tx => {
-      tx.executeSql(
-        'DELETE FROM TABLE_DISCOUNT ',
-        [],
-        (tx, results) => {
-          //console.log('Results', results.rowsAffected);
-        },
-      );
+      tx.executeSql('DELETE FROM TABLE_DISCOUNT ', [], (tx, results) => {
+        //console.log('Results', results.rowsAffected);
+      });
     });
-   
   }
 
   updateimageDetailSyncFlag(order_id) {
@@ -7916,7 +7915,7 @@ export default class Database {
     db1.transaction(tx => {
       tx.executeSql(
         'UPDATE ImagesDetails  SET is_sync = ? WHERE order_id = ?',
-        ['Y', order_id],
+        ['Y', String(order_id)],
         (tx, results) => {
           //console.log('Results', results.rowsAffected);
         },
@@ -7926,15 +7925,10 @@ export default class Database {
 
   deleteImagesDetails() {
     db1.transaction(tx => {
-      tx.executeSql(
-        'DELETE FROM ImagesDetails ',
-        [],
-        (tx, results) => {
-          //console.log('Results', results.rowsAffected);
-        },
-      );
+      tx.executeSql('DELETE FROM ImagesDetails ', [], (tx, results) => {
+        //console.log('Results', results.rowsAffected);
+      });
     });
-   
   }
 
   // deleteNewpartyImages(order_id) {
@@ -8133,23 +8127,23 @@ export default class Database {
               to_date ,rate  ,bpc  ,Amount ,selected_flag,bottleQty,BrandId,entityId,CollectionType )
                 VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
             [
-              order_id,
-              item_id,
-              item_Name,
-              quantity_one,
-              quantity_two,
-              small_Unit,
-              large_Unit,
-              from_date,
-              to_date,
-              rate,
-              bpc,
-              Amount,
-              selected_flag,
-              bottleQty,
-              BrandId,
-              entityId,
-              CollectionType,
+              String(order_id),
+              String(item_id),
+              String(item_Name),
+              String(quantity_one),
+              String(quantity_two),
+              String(small_Unit),
+              String(large_Unit),
+              String(from_date),
+              String(to_date),
+              String(rate),
+              String(bpc),
+              String(Amount),
+              String(selected_flag),
+              String(bottleQty),
+              String(BrandId),
+              String(entityId),
+              String(CollectionType),
             ],
           ).then(([tx, results]) => {
             resolve(results);
@@ -8189,17 +8183,17 @@ export default class Database {
           tx.executeSql(
             'UPDATE TABLE_TEMP_ORDER_DETAILS SET quantity_one = ?, quantity_two = ?, small_Unit = ?, large_Unit = ?, from_date = ?, to_date = ?, Amount = ?, rate = ? ,bottleQty = ? WHERE order_id = ? and item_id = ? ',
             [
-              qty_1,
-              qty_2,
-              small_Unit,
-              large_Unit,
-              from_date,
-              to_date,
-              amt,
-              rate,
-              bottleQty,
-              order_id,
-              item_id,
+              String(qty_1),
+              String(qty_2),
+              String(small_Unit),
+              String(large_Unit),
+              String(from_date),
+              String(to_date),
+              String(amt),
+              String(rate),
+              String(bottleQty),
+              String(order_id),
+              String(item_id),
             ],
           ).then(([tx, results]) => {
             resolve(results.length);
@@ -8242,17 +8236,17 @@ export default class Database {
           tx.executeSql(
             'UPDATE TABLE_TEMP_ORDER_DETAILS SET quantity_one = ?, quantity_two = ?, small_Unit = ?, large_Unit = ?, from_date = ?, to_date = ?, Amount = ?, rate = ? ,bottleQty = ? WHERE order_id = ? and item_id = ? ',
             [
-              qty_1,
-              qty_2,
-              small_Unit,
-              large_Unit,
-              from_date,
-              to_date,
-              amt,
-              rate,
-              bottleQty,
-              order_id,
-              item_id,
+              String(qty_1),
+              String(qty_2),
+              String(small_Unit),
+              String(large_Unit),
+              String(from_date),
+              String(to_date),
+              String(amt),
+              String(rate),
+              String(bottleQty),
+              String(order_id),
+              String(item_id),
             ],
           ).then(([tx, results]) => {
             resolve(results.length);
@@ -8382,7 +8376,7 @@ export default class Database {
 
   getControlId(key) {
     return new Promise(resolve => {
-      console.log('in db control id : '+key)
+      console.log('in db control id : ' + key);
       var query =
         'Select ControlId from ReportControlMaster where ReferenceColumn = "' +
         key +
@@ -8393,7 +8387,7 @@ export default class Database {
             var tempDistributor = '';
             for (let i = 0; i < results.rows.length; i++) {
               tempDistributor = results.rows.item(i);
-              console.log('in db control id : '+tempDistributor)
+              console.log('in db control id : ' + tempDistributor);
             }
 
             resolve(tempDistributor);
@@ -9806,7 +9800,10 @@ export default class Database {
 
   getParentLoginData(userId) {
     const products = [];
-    var query = "select Value from Settings where Key='zyleminiparentID' and Value like '%" +userId+"%'";
+    var query =
+      "select Value from Settings where Key='zyleminiparentID' and Value like '%" +
+      userId +
+      "%'";
     return new Promise(resolve => {
       // this.initDB().then((db) => {
       db1
@@ -9832,7 +9829,7 @@ export default class Database {
 
   getPItemForParentLogin() {
     const products = [];
-    var query = "select * from PItem ";
+    var query = 'select * from PItem ';
     return new Promise(resolve => {
       // this.initDB().then((db) => {
       db1
@@ -9855,8 +9852,6 @@ export default class Database {
         });
     });
   }
-
-
 }
 
 //SELECT * FROM SchemeDetails WHERE LIKE( '%' || SchemeID || '%', '100,300' )

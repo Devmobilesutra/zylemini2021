@@ -85,7 +85,7 @@ export class Payments extends Component {
     );
   }
   handleBackButtonClick() {
-    Actions.Shops();
+    // Actions.Shops();
     return true;
   }
   //BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
