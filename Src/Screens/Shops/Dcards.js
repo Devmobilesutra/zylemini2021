@@ -32,6 +32,8 @@ export class Dcards extends Component {
     super(props);
     this.state = {
       Brand_Name: '',
+      tokk: '',
+      ssname: '',
       reopen: true,
       schemedata: [],
       schemedata1: [],
@@ -78,7 +80,15 @@ export class Dcards extends Component {
     headerStyle: {backgroundColor: '#796A6A'},
     headerTintColor: '#ffffff',
   };
-  componentWillMount() {
+  componentDidMount() {
+    this.state.tokk = this.props.shopID;
+    // console.log('geleleleleleleleleeeeeeeeelooooooacasdasdad', tokk);
+    // this.setState({ssname: tokk});
+    // this.state.ssname = this.props.shops.shopname;
+    console.log(
+      '\n\n\n\n\nnaaaalalalalalalalalalalalalalalalalal\n\n\n\n\n ',
+      this.state.tokk,
+    );
     // this.setState({reopen:false});
     // BackHandler.addEventListener(
     //   'hardwareBackPress',
@@ -120,22 +130,14 @@ export class Dcards extends Component {
       console.log('getSchemesfromdb', JSON.stringify(data));
       this.setState({schemedata: data});
       console.log('Totalschemesss', this.state.schemedata);
+      console.log('tokkkkvalue\n\n\n\n\n\n', this.state.tokk);
     });
     db.getDatacards1().then(data => {
       console.log('getSchemesfromdb1111', JSON.stringify(data));
       this.setState({schemedata1: data});
       console.log('Totalschemesss1111', this.state.schemedata1);
     });
-    db.getDatacards2().then(data => {
-      console.log('getSchemesfromdb1111', JSON.stringify(data));
-      this.setState({schemedata2: data});
-      console.log('Totalschemesss1111', this.state.schemedata2);
-    });
-    db.getDatacards3().then(data => {
-      console.log('getSchemesfromdb1111', JSON.stringify(data));
-      this.setState({schemedata3: data});
-      console.log('Totalschemesss1111', this.state.schemedata3);
-    });
+
     // db.getSlabData(itemid1).then(data => {
     //   console.log('getTotalOrderFromDB', JSON.stringify(data));
     //   this.setState({slabdata: data});
@@ -183,98 +185,101 @@ export class Dcards extends Component {
     console.log('here in flatlist');
     if (this.state.schemedata.length > 0) {
       return this.state.schemedata.map((item, i) => {
-        return (
-          <View style={styles.orderDetailsMainContainer}>
-            {/* Header Background */}
+        if (this.state.tokk == item.Party) {
+          return (
+            <View style={styles.orderDetailsMainContainer}>
+              {/* Header Background */}
 
-            <View style={styles.orderHeaderBGContainer}>
-              <View style={styles.ordHeaderRowContainer}>
-                <View style={styles.orderLabelContainer}>
-                  <Text style={styles.orderLabelTextStyle}>
-                    Shop Name - {item.Party}
-                  </Text>
-                </View>
-                {/* <View style={styles.amtContainer}>
+              <View style={styles.orderHeaderBGContainer}>
+                <View style={styles.ordHeaderRowContainer}>
+                  <View style={styles.orderLabelContainer}>
+                    <Text style={styles.orderLabelTextStyle}>
+                      Shop Name - {item.Party}
+                    </Text>
+                  </View>
+                  {/* <View style={styles.amtContainer}>
                   <Text style={styles.amtTextStyle}> {item.id}</Text>
                 </View> */}
+                </View>
               </View>
-            </View>
-            {/* Below Header White Background */}
-            <View style={styles.oredrDetaileWhiteBG}>
-              <View style={styles.orderDateRowContainer}>
-                <View style={styles.orderDateColContainer}>
-                  {/* <Text style={styles.ordDateLabelStyle}>Slab no</Text> */}
-                  {/* <Text style={styles.orderDateDateStyle}> */}
-                  {/* {moment(item.Current_date_time).format('DD-MMM-YYYY')} */}
-                  {/*                     
+              {/* Below Header White Background */}
+              <View style={styles.oredrDetaileWhiteBG}>
+                <View style={styles.orderDateRowContainer}>
+                  <View style={styles.orderDateColContainer}>
+                    {/* <Text style={styles.ordDateLabelStyle}>Slab no</Text> */}
+                    {/* <Text style={styles.orderDateDateStyle}> */}
+                    {/* {moment(item.Current_date_time).format('DD-MMM-YYYY')} */}
+                    {/*                     
                     {item.SlabNo} - {item.SchemeBenefits} .... */}
-                  {/* </Text> */}
-                  <View style={{flexDirection: 'row'}}>
-                    <Text style={styles.salesLabelStyle}>
-                      Collection Date :
-                    </Text>
-                    <Text
-                      style={{
-                        fontWeight: 'bold',
-                        fontFamily: 'Proxima Nova',
-                        fontSize: 14,
-                      }}>
-                      {item.check_date}
-                    </Text>
-                  </View>
-                  <View style={{flexDirection: 'row'}}>
-                    {/* {this._renderForFlatlist(item.SchemeID)} */}
-                    <Text style={styles.salesLabelStyle}>Collection Id :</Text>
-                    <Text
-                      style={{
-                        fontWeight: 'bold',
-                        fontFamily: 'Proxima Nova',
-                        fontSize: 14,
-                      }}>
-                      {' '}
-                      {item.id}
-                    </Text>
-                  </View>
-                  <View>
-                    <Text style={styles.salesLabelStyle}>Product : </Text>
-                    <Text
-                      style={{
-                        fontWeight: 'bold',
-                        fontFamily: 'Proxima Nova',
-                        fontSize: 14,
-                      }}>
-                      {item.item_Name}
-                    </Text>
-                    <View style={{}}>
-                      <Text style={styles.salesLabelStyle}>Quantity </Text>
+                    {/* </Text> */}
+                    <View style={{flexDirection: 'row'}}>
+                      <Text style={styles.salesLabelStyle}>
+                        Collection Date :
+                      </Text>
                       <Text
                         style={{
                           fontWeight: 'bold',
                           fontFamily: 'Proxima Nova',
                           fontSize: 14,
                         }}>
-                        Case : {item.quantity_one} and Bottle :{' '}
-                        {item.quantity_two}
+                        {item.check_date}
                       </Text>
                     </View>
+                    <View style={{flexDirection: 'row'}}>
+                      {/* {this._renderForFlatlist(item.SchemeID)} */}
+                      <Text style={styles.salesLabelStyle}>
+                        Collection Id :
+                      </Text>
+                      <Text
+                        style={{
+                          fontWeight: 'bold',
+                          fontFamily: 'Proxima Nova',
+                          fontSize: 14,
+                        }}>
+                        {' '}
+                        {item.id}
+                      </Text>
+                    </View>
+                    <View>
+                      <Text style={styles.salesLabelStyle}>Product : </Text>
+                      <Text
+                        style={{
+                          fontWeight: 'bold',
+                          fontFamily: 'Proxima Nova',
+                          fontSize: 14,
+                        }}>
+                        {item.item_Name}
+                      </Text>
+                      <View style={{}}>
+                        <Text style={styles.salesLabelStyle}>Quantity </Text>
+                        <Text
+                          style={{
+                            fontWeight: 'bold',
+                            fontFamily: 'Proxima Nova',
+                            fontSize: 14,
+                          }}>
+                          Case : {item.quantity_one} and Bottle :{' '}
+                          {item.quantity_two}
+                        </Text>
+                      </View>
+                    </View>
                   </View>
-                </View>
-                <View style={styles.salesColContainer}>
-                  <Text style={styles.salesLabelStyle}>Sales </Text>
-                  {/* {this.renderName(item.user_id)} */}
-                  <Text
-                    style={{
-                      fontWeight: 'bold',
-                      fontFamily: 'Proxima Nova',
-                      fontSize: 14,
-                    }}>
-                    From {item.from_date} To {item.to_date}{' '}
-                  </Text>
-                  {/* <Text style={styles.salesNameStyle}>{item.check_date}</Text> */}
-                </View>
-                <View style={styles.salesColContainer1}>
-                  {/* {this.renderName(item.user_id)} */}
-                  {/* <Text
+                  <View style={styles.salesColContainer}>
+                    <Text style={styles.salesLabelStyle}>Sales </Text>
+                    {/* {this.renderName(item.user_id)} */}
+                    <Text
+                      style={{
+                        fontWeight: 'bold',
+                        fontFamily: 'Proxima Nova',
+                        fontSize: 14,
+                      }}>
+                      From {item.from_date} To {item.to_date}{' '}
+                    </Text>
+                    {/* <Text style={styles.salesNameStyle}>{item.check_date}</Text> */}
+                  </View>
+                  <View style={styles.salesColContainer1}>
+                    {/* {this.renderName(item.user_id)} */}
+                    {/* <Text
                     style={{
                       color: 'red',
                       fontFamily: 'Proxima Nova',
@@ -283,14 +288,17 @@ export class Dcards extends Component {
                     }}>
                     case {item.quantity_one} BOtle= {item.quantity_two}
                   </Text> */}
+                  </View>
                 </View>
-              </View>
-              {/* Dash line */}
+                {/* Dash line */}
 
-              {/* {this._renderView(item)} */}
+                {/* {this._renderView(item)} */}
+              </View>
             </View>
-          </View>
-        );
+          );
+        } else {
+          return <View />;
+        }
       });
     } else {
       return <View />;
@@ -301,62 +309,63 @@ export class Dcards extends Component {
     console.log('here in flatlist');
     if (this.state.schemedata1.length > 0) {
       return this.state.schemedata1.map((item, i) => {
-        return (
-          <View style={styles.orderDetailsMainContainer}>
-            {/* Header Background */}
+        if (this.state.tokk == item.Party) {
+          return (
+            <View style={styles.orderDetailsMainContainer}>
+              {/* Header Background */}
 
-            <View style={styles.orderHeaderBGContainer}>
-              <View style={styles.ordHeaderRowContainer}>
-                <View style={styles.orderLabelContainer}>
-                  <Text style={styles.orderLabelTextStyle}>
-                    Shop Name - {item.Party}
-                  </Text>
-                </View>
-                {/* <View style={styles.amtContainer}>
+              <View style={styles.orderHeaderBGContainer}>
+                <View style={styles.ordHeaderRowContainer}>
+                  <View style={styles.orderLabelContainer}>
+                    <Text style={styles.orderLabelTextStyle}>
+                      Shop Name - {item.Party}
+                    </Text>
+                  </View>
+                  {/* <View style={styles.amtContainer}>
                   <Text style={styles.amtTextStyle}> {item.id}</Text>
                 </View> */}
+                </View>
               </View>
-            </View>
-            {/* Below Header White Background */}
-            <View style={styles.oredrDetaileWhiteBG}>
-              <View style={styles.orderDateRowContainer}>
-                <View style={styles.orderDateColContainer}>
-                  {/* <Text style={styles.ordDateLabelStyle}>Slab no</Text> */}
-                  {/* <Text style={styles.orderDateDateStyle}> */}
-                  {/* {moment(item.Current_date_time).format('DD-MMM-YYYY')} */}
-                  {/*                     
+              {/* Below Header White Background */}
+              <View style={styles.oredrDetaileWhiteBG}>
+                <View style={styles.orderDateRowContainer}>
+                  <View style={styles.orderDateColContainer}>
+                    {/* <Text style={styles.ordDateLabelStyle}>Slab no</Text> */}
+                    {/* <Text style={styles.orderDateDateStyle}> */}
+                    {/* {moment(item.Current_date_time).format('DD-MMM-YYYY')} */}
+                    {/*                     
                     {item.SlabNo} - {item.SchemeBenefits} .... */}
-                  {/* </Text> */}
-                  <View>
-                    <Text style={styles.amtTextStyle}>
-                      Collection Date : {item.check_date}
-                    </Text>
-                  </View>
-                  <View>
-                    {/* {this._renderForFlatlist(item.SchemeID)} */}
-                    <Text style={styles.amtTextStyle}>
-                      Collection Id : {item.id}
-                    </Text>
-                  </View>
-                  <View>
-                    <Text>Product : {item.item_Name}</Text>
-                    <View style={{marginTop: 5}}>
-                      <Text>
-                        Case : {item.quantity_one}
-                        {'   '} and Bottle : {item.quantity_two}
+                    {/* </Text> */}
+                    <View>
+                      <Text style={styles.amtTextStyle}>
+                        Collection Date : {item.check_date}
                       </Text>
                     </View>
+                    <View>
+                      {/* {this._renderForFlatlist(item.SchemeID)} */}
+                      <Text style={styles.amtTextStyle}>
+                        Collection Id : {item.id}
+                      </Text>
+                    </View>
+                    <View>
+                      <Text>Product : {item.item_Name}</Text>
+                      <View style={{marginTop: 5}}>
+                        <Text>
+                          Case : {item.quantity_one}
+                          {'   '} and Bottle : {item.quantity_two}
+                        </Text>
+                      </View>
+                    </View>
                   </View>
-                </View>
-                <View style={styles.salesColContainer}>
-                  <Text style={styles.salesLabelStyle}>Stock </Text>
-                  {/* {this.renderName(item.user_id)} */}
-                  <Text>Date As ON </Text>
-                  <Text style={styles.salesNameStyle}>{item.check_date}</Text>
-                </View>
-                <View style={styles.salesColContainer1}>
-                  {/* {this.renderName(item.user_id)} */}
-                  {/* <Text
+                  <View style={styles.salesColContainer}>
+                    <Text style={styles.salesLabelStyle}>Stock </Text>
+                    {/* {this.renderName(item.user_id)} */}
+                    <Text>Date As ON </Text>
+                    <Text style={styles.salesNameStyle}>{item.check_date}</Text>
+                  </View>
+                  <View style={styles.salesColContainer1}>
+                    {/* {this.renderName(item.user_id)} */}
+                    {/* <Text
                     style={{
                       color: 'red',
                       fontFamily: 'Proxima Nova',
@@ -365,178 +374,17 @@ export class Dcards extends Component {
                     }}>
                     case {item.quantity_one} BOtle= {item.quantity_two}
                   </Text> */}
+                  </View>
                 </View>
-              </View>
-              {/* Dash line */}
+                {/* Dash line */}
 
-              {/* {this._renderView(item)} */}
-            </View>
-          </View>
-        );
-      });
-    } else {
-      return <View />;
-    }
-  }
-
-  _renderViewForFlatlist2() {
-    console.log('here in flatlist');
-    if (this.state.schemedata2.length > 0) {
-      return this.state.schemedata2.map((item, i) => {
-        return (
-          <View style={styles.orderDetailsMainContainer}>
-            {/* Header Background */}
-
-            <View style={styles.orderHeaderBGContainer}>
-              <View style={styles.ordHeaderRowContainer}>
-                <View style={styles.orderLabelContainer}>
-                  <Text style={styles.orderLabelTextStyle}>
-                    Distributor - {item.Distributor}
-                  </Text>
-                </View>
-                {/* <View style={styles.amtContainer}>
-                  <Text style={styles.amtTextStyle}> {item.id}</Text>
-                </View> */}
+                {/* {this._renderView(item)} */}
               </View>
             </View>
-            {/* Below Header White Background */}
-            <View style={styles.oredrDetaileWhiteBG}>
-              <View style={styles.orderDateRowContainer}>
-                <View style={styles.orderDateColContainer}>
-                  {/* <Text style={styles.ordDateLabelStyle}>Slab no</Text> */}
-                  {/* <Text style={styles.orderDateDateStyle}> */}
-                  {/* {moment(item.Current_date_time).format('DD-MMM-YYYY')} */}
-                  {/*                     
-                    {item.SlabNo} - {item.SchemeBenefits} .... */}
-                  {/* </Text> */}
-                  <View>
-                    <Text style={styles.amtTextStyle}>
-                      Collection Date : {item.check_date}
-                    </Text>
-                  </View>
-                  <View>
-                    {/* {this._renderForFlatlist(item.SchemeID)} */}
-                    <Text style={styles.amtTextStyle}>
-                      Collection Id : {item.id}
-                    </Text>
-                  </View>
-                  <View>
-                    <Text>Product : {item.item_Name}</Text>
-                    <View style={{marginTop: 5}}>
-                      <Text>
-                        Case : {item.quantity_one}
-                        {'   '} and Bottle : {item.quantity_two}
-                      </Text>
-                    </View>
-                  </View>
-                </View>
-                <View style={styles.salesColContainer}>
-                  <Text style={styles.salesLabelStyle}>Stock </Text>
-                  {/* {this.renderName(item.user_id)} */}
-                  <Text>Date As ON </Text>
-                  <Text style={styles.salesNameStyle}>{item.check_date}</Text>
-                </View>
-                <View style={styles.salesColContainer1}>
-                  {/* {this.renderName(item.user_id)} */}
-                  {/* <Text
-                    style={{
-                      color: 'red',
-                      fontFamily: 'Proxima Nova',
-                      fontSize: 11,
-                      marginTop: hp('1'),
-                    }}>
-                    case {item.quantity_one} BOtle= {item.quantity_two}
-                  </Text> */}
-                </View>
-              </View>
-              {/* Dash line */}
-
-              {/* {this._renderView(item)} */}
-            </View>
-          </View>
-        );
-      });
-    } else {
-      return <View />;
-    }
-  }
-
-  _renderViewForFlatlist3() {
-    console.log('here in flatlist');
-    if (this.state.schemedata3.length > 0) {
-      return this.state.schemedata3.map((item, i) => {
-        return (
-          <View style={styles.orderDetailsMainContainer}>
-            {/* Header Background */}
-
-            <View style={styles.orderHeaderBGContainer}>
-              <View style={styles.ordHeaderRowContainer}>
-                <View style={styles.orderLabelContainer}>
-                  <Text style={styles.orderLabelTextStyle}>
-                    Distributor - {item.Distributor}
-                  </Text>
-                </View>
-                {/* <View style={styles.amtContainer}>
-                  <Text style={styles.amtTextStyle}> {item.id}</Text>
-                </View> */}
-              </View>
-            </View>
-            {/* Below Header White Background */}
-            <View style={styles.oredrDetaileWhiteBG}>
-              <View style={styles.orderDateRowContainer}>
-                <View style={styles.orderDateColContainer}>
-                  {/* <Text style={styles.ordDateLabelStyle}>Slab no</Text> */}
-                  {/* <Text style={styles.orderDateDateStyle}> */}
-                  {/* {moment(item.Current_date_time).format('DD-MMM-YYYY')} */}
-                  {/*                     
-                    {item.SlabNo} - {item.SchemeBenefits} .... */}
-                  {/* </Text> */}
-                  <View>
-                    <Text style={styles.amtTextStyle}>
-                      Collection Date : {item.check_date}
-                    </Text>
-                  </View>
-                  <View>
-                    {/* {this._renderForFlatlist(item.SchemeID)} */}
-                    <Text style={styles.amtTextStyle}>
-                      Collection Id : {item.id}
-                    </Text>
-                  </View>
-                  <View>
-                    <Text>Product : {item.item_Name}</Text>
-                    <View style={{marginTop: 5}}>
-                      <Text>
-                        Case : {item.quantity_one}
-                        {'   '} and Bottle : {item.quantity_two}
-                      </Text>
-                    </View>
-                  </View>
-                </View>
-                <View style={styles.salesColContainer}>
-                  <Text style={styles.salesLabelStyle}>Sales As On </Text>
-                  {/* {this.renderName(item.user_id)} */}
-                  <Text>Date to from </Text>
-                  <Text style={styles.salesNameStyle}>{item.check_date}</Text>
-                </View>
-                <View style={styles.salesColContainer1}>
-                  {/* {this.renderName(item.user_id)} */}
-                  {/* <Text
-                    style={{
-                      color: 'red',
-                      fontFamily: 'Proxima Nova',
-                      fontSize: 11,
-                      marginTop: hp('1'),
-                    }}>
-                    case {item.quantity_one} BOtle= {item.quantity_two}
-                  </Text> */}
-                </View>
-              </View>
-              {/* Dash line */}
-
-              {/* {this._renderView(item)} */}
-            </View>
-          </View>
-        );
+          );
+        } else {
+          return <View />;
+        }
       });
     } else {
       return <View />;
@@ -618,14 +466,13 @@ export class Dcards extends Component {
               </TouchableOpacity>
             </View>
           </View>
+
           {/* //////////////////////listview */}
           {this._renderViewForFlatlist()}
           {/* <Text>222</Text> */}
           {this._renderViewForFlatlist1()}
           {/* <Text>333</Text> */}
-          {this._renderViewForFlatlist2()}
-          {/* <Text>443</Text> */}
-          {this._renderViewForFlatlist3()}
+
           <View style={{marginBottom: hp('3')}} />
         </ScrollView>
 
@@ -645,7 +492,13 @@ export class Dcards extends Component {
 }
 
 const mapStateToProps = state => {
-  return {};
+  console.log(
+    '\n\n\n\n\n  PRINTING MY STATE \n\n\n\n\n ',
+    state.shops.shopname,
+  );
+  return {
+    shopID: state.shops.shopname,
+  };
 };
 
 const mapDispatchToProps = dispatch => ({});

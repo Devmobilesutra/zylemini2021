@@ -11,6 +11,7 @@ import {
   AsyncStorage,
   PermissionsAndroid,
 } from 'react-native';
+import {AndroidBackHandler} from 'react-navigation-backhandler';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -83,6 +84,8 @@ export class ShopDetail extends Component {
     super(props);
     this.state = {
       visible: '',
+      sname: '',
+      ssname: '',
       todaysDate: '',
 
       userLatitude: '',
@@ -132,30 +135,31 @@ export class ShopDetail extends Component {
     );
   }
   handleBackButtonClick() {
-    // Actions.Shops();
-    // console.log('backbutton pressed ');
-
-    alert('device back button pressed');
-    // // return true;
-    // if (navigation.isFocused()) {
-    //   Alert.alert('Hold on!', 'Are you sure you want to exit app?', [
-    //     {
-    //       text: 'Cancel',
-    //       onPress: () => null,
-    //       style: 'cancel',
-    //     },
-    //     {text: 'YES', onPress: () => BackHandler.exitApp()},
-    //   ]);
-    return false;
+    return ture;
   }
   //  BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
 
-  componentWillMount() {
-    this.requestFineLocation();
+  async componentDidMount() {
+    var date = new Date().getDate();
+    var month = new Date().getMonth() + 1;
+    var year = new Date().getFullYear();
+    var datess = year + '-' + month + '-' + date;
+    this.setState({todaysDate: datess});
+
+    this.state.sname = this.props.shops.shopname;
+    console.log('sopppppppppppnameeeeeeee', this.state.sname);
+
+    await AsyncStorage.setItem('shopname', this.state.sname);
+  }
+
+  componentwillMount() {
+    this.handleBackButtonClick = this.handleBackButtonClick.bind(this);
     BackHandler.addEventListener(
       'hardwareBackPress',
       this.handleBackButtonClick,
     );
+    this.requestFineLocation();
+
     // //console.log("componentDidMount callee")
     // this._componentFocused();
 
@@ -186,6 +190,78 @@ export class ShopDetail extends Component {
       });
     });
   }
+
+  CheckInMethod = () => {
+    this.setState({visible: false});
+    var date = new Date().getDate(); //Current Date
+    var month = new Date().getMonth() + 1; //Current Month
+    var year = new Date().getFullYear(); //Current Year
+    var hours = new Date().getHours(); //Current Hours
+    var min = new Date().getMinutes(); //Current Minutes
+    var sec = new Date().getSeconds(); //Current Seconds
+    app_order_id =
+      date + '/' + month + '/' + year + ' ' + hours + ':' + min + ':' + sec;
+    app_order_id = app_order_id.replace(/[|&:$%@"/" "()+,]/g, '');
+    curentDatetime =
+      year + '-' + month + '-' + date + ' ' + hours + ':' + min + ':' + sec;
+    //remain to insert colu==DefaultDistributorId,ExpectedDeliveryDate
+    db.insertRecordInOrderMasterForShopCheckIn(
+      app_order_id,
+      curentDatetime,
+      '1',
+      this.state.ShopId,
+      this.state.userLatitude,
+      this.state.userLongitude,
+      '0',
+      '',
+      '',
+      '4',
+      this.props.dashboard.userId,
+      '1',
+      'N',
+      '',
+      this.state.todaysDate,
+      '0',
+      this.state.todaysDate,
+      '0',
+      curentDatetime,
+      '',
+    ).then(data => {
+      pressed = true;
+      this.setState({CheckInText: 'CHECK OUT'});
+    });
+  };
+
+  CheckoutMethod = () => {
+    AsyncStorage.getItem('shopId').then(keyValue => {
+      db.CheckRecordForShopCheckIn2(JSON.parse(keyValue), '4').then(data => {
+        const lastItem = data[data.length - 1];
+        //console.log("\n \n \n \n \n DATA GAME123:::    ", lastItem.ActivityStart, "\n \n \n \n \n")
+        var date = new Date().getDate(); //Current Date
+        var month = new Date().getMonth() + 1; //Current Month
+        var year = new Date().getFullYear(); //Current Year
+        var hours = new Date().getHours(); //Current Hours
+        var min = new Date().getMinutes(); //Current Minutes
+        var sec = new Date().getSeconds(); //Current Seconds
+        var CheckoutcurentDatetime =
+          year + '-' + month + '-' + date + ' ' + hours + ':' + min + ':' + sec;
+        //change color of button
+        db.updateCheckoutOrderMaster(
+          '4',
+          this.state.ShopId,
+          lastItem.ActivityStart,
+          CheckoutcurentDatetime,
+          this.state.userLatitude,
+          this.state.userLongitude,
+        ).then(data => {
+          console.log('\n \n \n \n \n CHECK-OUTs::: ', data, '\n \n \n');
+          pressed = true;
+        });
+        this.setState({CheckInText: 'CHECK IN'});
+        alert('Checkout Successfully..');
+      });
+    });
+  };
 
   applicablePopUp = () => {
     const {navigation} = this.props;

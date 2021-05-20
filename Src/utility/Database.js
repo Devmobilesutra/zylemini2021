@@ -13,7 +13,7 @@ import moment from 'moment';
 import RNFS from 'react-native-fs';
 import Moment from 'react-moment';
 import {pascalCase} from 'change-case';
-SQLite.DEBUG(true);
+SQLite.DEBUG(false);
 SQLite.enablePromise(true);
 const database_name = 'ZyleminiPlusDatabase.db';
 const database_version = '1.0';
@@ -6294,6 +6294,43 @@ export default class Database {
     });
   }
 
+  //Aftab Change 19:05:21
+
+  CheckRecordForShopCheckIn2(entity_id, collection_type) {
+    const products = [];
+    var query =
+      'SELECT * FROM OrderMaster where entity_id = "' +
+      entity_id +
+      '" and collection_type  = "' +
+      collection_type +
+      '"';
+
+    //console.log("checkIsOrderIdInDb=", query)
+    return new Promise(resolve => {
+      // this.initDB().then((db) => {
+      db1
+        .transaction(tx => {
+          tx.executeSql(query, [], (tx, results) => {
+            var len = results.rows.length;
+            var checkorder = [];
+            for (let i = 0; i < results.rows.length; i++) {
+              checkorder.push(results.rows.item(i));
+            }
+            // checkorder=results.rows.length
+            //console.log("qcheckorder=", checkorder)
+            resolve(checkorder);
+          });
+        })
+        .then(result => {})
+        .catch(err => {
+          //console.log(err);
+        });
+      // }).catch((err) => {
+      //   //console.log(err);
+      // });
+    });
+  }
+
   CheckTodaysRecordForShopCheckInforColor(check_date, entity_id) {
     const products = [];
     var query =
@@ -6421,6 +6458,36 @@ export default class Database {
           [String(checkoutDatetime), String(latitude), String(longitude)],
           (tx, results) => {
             console.log('Results', results.rowsAffected);
+            resolve(results);
+          },
+        );
+      });
+    });
+  }
+
+  //AFtab Change 19-05-21
+
+  updateCheckoutOrderMaster2(
+    collectiontype,
+    shopId,
+    ActivityStart,
+    checkoutDatetime,
+    latitude,
+    longitude,
+  ) {
+    return new Promise(resolve => {
+      db1.transaction(tx => {
+        tx.executeSql(
+          'UPDATE OrderMaster SET ActivityEnd=?,latitude=?,longitude=? where entity_id = "' +
+            String(shopId) +
+            '" and collection_type  = "' +
+            String(collectiontype) +
+            '" and ActivityStart = "' +
+            String(ActivityStart) +
+            '"',
+          [String(checkoutDatetime), String(latitude), String(longitude)],
+          (tx, results) => {
+            console.log('Results::::::::::::::::::', results.rowsAffected);
             resolve(results);
           },
         );
@@ -6964,6 +7031,97 @@ export default class Database {
     });
   }
 
+  InsertMeetShop(
+    MJPMasterID,
+    PlannedDate,
+    EntityType,
+    EntityTypeID,
+    ActivityTitle,
+    IsActivityDone,
+  ) {
+    return new Promise(resolve => {
+      db1
+        .transaction(tx => {
+          tx.executeSql(
+            `insert into  MJPMasterDetails( MJPMasterID, PlannedDate,EntityType,EntityTypeID,ActivityTitle,IsActivityDone)
+                                                                  VALUES (?,?,?,?,?,?)`,
+            [
+              // "UserID": 52362,
+              // "ItemID": 464
+              // String(item.Id),
+              String(MJPMasterID),
+              String(PlannedDate),
+              String(EntityType),
+              String(EntityTypeID),
+              String(ActivityTitle),
+              String(IsActivityDone),
+            ],
+            (tx, results) => {
+              resolve(results);
+              //console.log("images inserted Successfully!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+              alert('New Meeting Created Successfully');
+            },
+            err => {
+              console.error('error=', err);
+            },
+          );
+        })
+        .then(result => {
+          //
+        })
+        .catch(err => {
+          //console.log(err);
+        });
+    }).catch(err => {
+      //console.log(err);
+    });
+  }
+
+  InsertMeetDist(
+    MJPMasterID,
+    PlannedDate,
+    EntityType,
+    EntityTypeID,
+    ActivityTitle,
+    IsActivityDone,
+  ) {
+    return new Promise(resolve => {
+      db1
+        .transaction(tx => {
+          tx.executeSql(
+            `insert into  MJPMasterDetails( MJPMasterID, PlannedDate,EntityType,EntityTypeID,ActivityTitle,IsActivityDone)
+                                                                  VALUES (?,?,?,?,?,?)`,
+            [
+              // "UserID": 52362,
+              // "ItemID": 464
+              // String(item.Id),
+              String(MJPMasterID),
+              String(PlannedDate),
+              String(EntityType),
+              String(EntityTypeID),
+              String(ActivityTitle),
+              String(IsActivityDone),
+            ],
+            (tx, results) => {
+              resolve(results);
+              //console.log("images inserted Successfully!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+              alert('New Meeting Created Successfully');
+            },
+            err => {
+              console.error('error=', err);
+            },
+          );
+        })
+        .then(result => {
+          //
+        })
+        .catch(err => {
+          //console.log(err);
+        });
+    }).catch(err => {
+      //console.log(err);
+    });
+  }
   /////---////
   getUserName(userId) {
     var query = 'SELECT UserName FROM user where UserId  = "' + userId + '"';

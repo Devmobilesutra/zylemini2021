@@ -11,7 +11,7 @@ import {
   FlatList,
   BackHandler,
   AsyncStorage,
-  Modal
+  Modal,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -21,7 +21,7 @@ import {RFPercentage, RFValue} from 'react-native-responsive-fontsize';
 import {Actions} from 'react-native-router-flux';
 import {Dropdown} from 'react-native-material-dropdown';
 import Dash from 'react-native-dash';
-import { Icon } from 'react-native-elements'
+import {Icon} from 'react-native-elements';
 import {
   TOTAL_SHOPS,
   SHOP_INFO,
@@ -94,13 +94,12 @@ export class Shops extends Component {
       active: false,
       ParentAreaArray: [],
       selectedArea: 'Select Area',
-      selectedAreaName : 'Select Area',
+      selectedAreaName: 'Select Area',
       isLoading: false,
       messagetext: '',
       tokens: '',
       // cardView: false ,
     };
-    this.handleBackButtonClick = this.handleBackButtonClick.bind(this);
   }
 
   static navigationOptions = ({navigation}) => {
@@ -270,16 +269,16 @@ export class Shops extends Component {
     var year = new Date().getFullYear();
     var datess = year + '-' + month + '-' + date;
 
-    db.getOnlineParentAreaData().then((data) => {
+    db.getOnlineParentAreaData().then(data => {
       this.setState({
-          ParentAreaArray: data
-      })
-  })
+        ParentAreaArray: data,
+      });
+    });
 
-  AsyncStorage.getItem('JWTToken').then(keyValue => {
-    const tok = JSON.parse(keyValue);
-    this.setState({tokens: tok});
-  });
+    AsyncStorage.getItem('JWTToken').then(keyValue => {
+      const tok = JSON.parse(keyValue);
+      this.setState({tokens: tok});
+    });
 
     AsyncStorage.getItem('routeName').then(keyValue => {
       // this.state.selectedRouteName=  JSON.parse(keyValue)
@@ -326,10 +325,11 @@ export class Shops extends Component {
     );
   }
   handleBackButtonClick() {
-    Actions.drawerMenu();
+    // Actions.drawerMenu();
     return true;
   }
   componentDidMount() {
+    this.handleBackButtonClick = this.handleBackButtonClick.bind(this);
     BackHandler.addEventListener(
       'hardwareBackPress',
       this.handleBackButtonClick,
@@ -355,48 +355,50 @@ export class Shops extends Component {
   };
 
   _renderEntity() {
-    const beat = []
-    const BeatId =[];
-  //  console.log('distributorArray : '+JSON.stringify(this.state.distributorArray))
+    const beat = [];
+    const BeatId = [];
+    //  console.log('distributorArray : '+JSON.stringify(this.state.distributorArray))
     for (var i = 0; i < this.state.ParentAreaArray.length; i++) {
-        beat.push({
-            value: this.state.ParentAreaArray[i].Area
-        })
-        BeatId.push({
-            value: this.state.ParentAreaArray[i].AreaId
-        })
+      beat.push({
+        value: this.state.ParentAreaArray[i].Area,
+      });
+      BeatId.push({
+        value: this.state.ParentAreaArray[i].AreaId,
+      });
     }
-  //  console.log('beat id : '+JSON.stringify(BeatId))
+    //  console.log('beat id : '+JSON.stringify(BeatId))
 
-  //  const array = [{"Distributor":"CSD BANGALORE","DistributorID":"789"},{"Distributor":"KARNATAKA STATE BEVERAGES","DistributorID":"1409"},{"Distributor":"KSBCL - ATTIBELE","DistributorID":"437"},{"Distributor":"KSBCL - BAGALKOT","DistributorID":"1"},{"Distributor":"KSBCL - BAGALKUNTE","DistributorID":"2"},{"Distributor":"KSBCL - BAGALKUNTE-2","DistributorID":"1165"},{"Distributor":"KSBCL - BANGARPET","DistributorID":"3"},{"Distributor":"KSBCL - BANNERGHATTA ROAD","DistributorID":"4"}]
-    
+    //  const array = [{"Distributor":"CSD BANGALORE","DistributorID":"789"},{"Distributor":"KARNATAKA STATE BEVERAGES","DistributorID":"1409"},{"Distributor":"KSBCL - ATTIBELE","DistributorID":"437"},{"Distributor":"KSBCL - BAGALKOT","DistributorID":"1"},{"Distributor":"KSBCL - BAGALKUNTE","DistributorID":"2"},{"Distributor":"KSBCL - BAGALKUNTE-2","DistributorID":"1165"},{"Distributor":"KSBCL - BANGARPET","DistributorID":"3"},{"Distributor":"KSBCL - BANNERGHATTA ROAD","DistributorID":"4"}]
+
     return (
-        <Dropdown
-            containerStyle={styles.dropDownContainer}
-            animationDuration={0}
-            rippleCentered={true}
-            itemColor='#ADA2A2'
-            rippleOpacity={0}
-            fontSize={11}
-            //  onSelect = {(index,value)=>{this.onClickDropDown(index,value)}}
-            value='Select Area'
-            pickerStyle={{ width: wp('78') }}
-            dropdownPosition={-5.5}
-            dropdownOffset={{ top: 20, left: 18, }}
-            inputContainerStyle={{ borderBottomColor: 'transparent' }}
-            data={beat}
-         //   onChangeText={(value) => { this.onChangeHandlerDistributor(value) }}
-            onChangeText={(value, index, data) => this.onChangeHandlerArea(BeatId[index].value,value)}
-        />
-    )
-}
+      <Dropdown
+        containerStyle={styles.dropDownContainer}
+        animationDuration={0}
+        rippleCentered={true}
+        itemColor="#ADA2A2"
+        rippleOpacity={0}
+        fontSize={11}
+        //  onSelect = {(index,value)=>{this.onClickDropDown(index,value)}}
+        value="Select Area"
+        pickerStyle={{width: wp('78')}}
+        dropdownPosition={-5.5}
+        dropdownOffset={{top: 20, left: 18}}
+        inputContainerStyle={{borderBottomColor: 'transparent'}}
+        data={beat}
+        //   onChangeText={(value) => { this.onChangeHandlerDistributor(value) }}
+        onChangeText={(value, index, data) =>
+          this.onChangeHandlerArea(BeatId[index].value, value)
+        }
+      />
+    );
+  }
 
-onChangeHandlerArea = (areaId,value) => {
-    this.setState({ selectedArea: areaId })
-    this.setState({ selectedAreaName : value})
-    console.log('dist id : '+areaId)
-  //  this.setState({selectedDistName : name})
-}
+  onChangeHandlerArea = (areaId, value) => {
+    this.setState({selectedArea: areaId});
+    this.setState({selectedAreaName: value});
+    console.log('dist id : ' + areaId);
+    //  this.setState({selectedDistName : name})
+  };
 
   componentWillMount() {
     this.props.navigation.setParams({
@@ -472,7 +474,7 @@ onChangeHandlerArea = (areaId,value) => {
       let result = abc.map(a => a.RouteID);
       var getRouteId = '';
       getRouteId = result;
-    //  alert(getRouteId)
+      //  alert(getRouteId)
       this.setState({getRouteId: result});
       AsyncStorage.setItem('routeId', JSON.stringify(getRouteId));
       this.state.selectedBeatId = getRouteId;
@@ -512,337 +514,331 @@ onChangeHandlerArea = (areaId,value) => {
     ///////////////////////////////end....../////////////////////////
   };
 
-  setModalVisible = (bools) => {
-
-    this.setState({ modalVisible: bools })
-}
-
-checkAreaSelected(){
-  if(this.state.selectedArea == 'Select Area'){
-    alert('Please Select Area')
-  }else{
-    this.setModalVisible(false)
-    this.syncNowFunction();
-  }
-}
-
-
-syncNowFunction() {
-  console.log('I am sync now : '+this.state.selectedArea);
-  var OrderMaster = [];
-  var OrderDetails = [];
-  var Discount = [];
-  var ImageDetails = [];
-  var NewPartyImageDetails = [];
-  var AssetDetails = [];
-  var NewPartyOutlet = [];
-  var NewPartyTargetId = [];
-  this.state.isLoading = true;
-  this.setState({isLoading: true});
-  this.setState({messagetext: 'Sending Data to server..'});
-  this.setState({JSONObj: {}});
-  db.getOrderMasterSyncData('N').then(data => {
-    if (data.length > 0) {
-      console.log('ordermaster for sync', JSON.stringify(data));
-      OrderMaster.push(data);
-      this.state.JSONObj['OrderMaster'] = data;
-    }
-    db.getOrderDetailsSyncData().then(data => {
-      if (data.length > 0) {
-        console.log('orderdetails for sync', JSON.stringify(data));
-        OrderDetails = data;
-        this.state.JSONObj['OrderDetails'] = data;
-      }
-
-      db.getNewPartyOutletSyncData().then(data => {
-        if (data.length > 0) {
-          console.log('New Party for sync', JSON.stringify(data));
-          NewPartyOutlet = data;
-          this.state.JSONObj['NewParty'] = data;
-        }
-      });
-      this.state.newPartyImagedetails1 = [];
-      db.getNewPartyImageDetailsyncData().then(data => {
-        if (data.length > 0) {
-          this.setState({newPartyImagedetails1: data});
-          this.state.newPartyImagedetails1.map((item, key) => {
-            var bytess;
-            this.state.newPartyImagedetails = [];
-            RNFS.readFile(item.ImagePath, 'base64').then(res => {
-              bytess = res;
-              this.state.newPartyImagedetails.push({
-                // ID: item.ID,
-                Id: item.id,
-                //   ImageDatetime: item.ImageDateTime,
-                ImageName: item.ImageName,
-                data: bytess,
-              });
-            });
-          });
-          NewPartyImageDetails = this.state.newPartyImagedetails;
-          this.state.JSONObj[
-            'NewPartyImage'
-          ] = this.state.newPartyImagedetails;
-        }
-      });
-
-      db.getnewPartyTargetId().then(data => {
-        if (data.length > 0) {
-          console.log(
-            'New getnewPartyTargetId for sync',
-            JSON.stringify(data),
-          );
-          NewPartyTargetId = data;
-          this.state.JSONObj['newPartyTargetId'] = data;
-        }
-      });
-
-      db.getDiscountSyncData().then(data => {
-        if (data.length > 0) {
-          console.log('discount for sync', JSON.stringify(data));
-          Discount = data;
-          this.state.JSONObj['Discount'] = data;
-        }
-        this.state.ImageDetails1 = [];
-        db.getImageDetailsyncData().then(data => {
-          if (data.length > 0) {
-            this.setState({ImageDetails1: data});
-            this.state.ImageDetails1.map((item, key) => {
-              var bytess;
-              this.state.ImageDetails = [];
-              RNFS.readFile(item.ImageBytes, 'base64').then(res => {
-                bytess = res;
-                this.state.ImageDetails.push({
-                  ID: item.ID,
-                  OrderID: item.OrderID,
-                  ImageDatetime: item.ImageDateTime,
-                  ImageName: item.ImageName,
-                  ImageBytes: bytess,
-                });
-              });
-            });
-            ImageDetails = this.state.ImageDetails;
-            this.state.JSONObj['ImageDetails'] = this.state.ImageDetails;
-          }
-          db.getAssetDetailData().then(data => {
-            if (data.length > 0) {
-              //console.log("asset=", JSON.stringify(data))
-              AssetDetails = data;
-              this.state.JSONObj['AssetDetails'] = data;
-            }
-            ////////////////////////////////////////////////////////////
-            //console.log("rjjjjjjjjjjjjjjj..........", this.state.JSONObj)
-            var count;
-            count = Object.keys(this.state.JSONObj).length;
-            // alert(count);
-
-            if (count > 0) {
-              //console.log("ssdds=========", this.state.tokens)
-              const headers = {
-                authheader: this.state.tokens,
-              };
-              var datas = {
-                OrderMaster: OrderMaster,
-                OrderDetails: OrderDetails,
-                Discount: Discount,
-                ImageDetails: ImageDetails,
-                AssetDetails: AssetDetails,
-              };
-              console.log(
-                'boduy of postApi=',
-                JSON.stringify(this.state.JSONObj),
-              );
-
-              //  //console.log("boduy of postApi2=", datas)
-              //   const url = 'http://zylemdemo.com/ZyleminiPlusCoreAPI/api/Data/PostData'
-
-              // testing
-              //  const url =  'http://sapltest.com/ZyleminiPlusAPI/api/Data/PostData';
-              //live
-              //    const url = 'https://zyleminiplus.com/ZyleminiPlusCoreAPI/api/Data/PostData'
-              // alert('User is ', User.posturl);
-              axios
-                .post(User.posturl, this.state.JSONObj, {
-                  headers: headers,
-                })
-                .then(response => {
-                  console.log(
-                    'response of post=',
-                    JSON.stringify(response.data),
-                  );
-                  console.log('status code :' + response.status);
-                  var responss = [];
-                  // /{"Data":{"Order":{"Status":"Data saved successfully.",
-                  //"Orders":[{"OrderStatus":"Order Existed","OrderId":"78",
-                  //"MobileGenPrimaryKey":"167202012142"},
-                  //{"OrderStatus":"Order Existed","OrderId":"79","MobileGenPrimaryKey":"167202012551"}]},"NewParty":null,"NewPartyTargetId":null,"PreviousData":null}}
-                  // LOG  count is.......... 3
-                  if (response.data.Data.Order) {
-                    //  alert("in if")
-                    //
-                    try {
-                      if (response.data.Data.Order.hasOwnProperty('Orders')) {
-                        // alert("in ifffff")
-                        console.log(
-                          'orders :' + response.data.Data.Order.Orders.length,
-                        );
-                        this.GetNewData();
-                        // for (
-                        //   let i = 0;
-                        //   i < response.data.Data.Order.Orders.length;
-                        //   i++
-                        // ) {
-                        //   db.updateOrderMasterSyncFlag(
-                        //     response.data.Data.Order.Orders[i]
-                        //       .MobileGenPrimaryKey,
-                        //   );
-                        //   db.updateOrderDetailSyncFlag(
-                        //     response.data.Data.Order.Orders[i]
-                        //       .MobileGenPrimaryKey,
-                        //   );
-                        //   db.updateimageDetailSyncFlag(
-                        //     response.data.Data.Order.Orders[i]
-                        //       .MobileGenPrimaryKey,
-                        //   );
-                        //   db.updateDiscountSyncFlag(
-                        //     response.data.Data.Order.Orders[i]
-                        //       .MobileGenPrimaryKey,
-                        //   );
-                        //   db.updateNewPartyOutletSyncFlag(
-                        //     response.data.Data.Order.Orders[i]
-                        //       .MobileGenPrimaryKey,
-                        //   );
-
-                        //   db.updateNewPartyImageDetailSyncFlag(
-                        //     response.data.Data.Order.Orders[i]
-                        //       .MobileGenPrimaryKey,
-                        //   );
-                        // }
-                        db.deleteOrderMaster();
-                        db.deleteOrderDetails();
-                        db.deletenewpartyoutlet();
-                        db.deletenewpartyImageoutlet();
-                        db.deleteImagesDetails();
-                        db.deleteTABLE_DISCOUNT();
-                        //  alert('Data Sync Successfull');
-                        // Alert.alert(
-                        //   'ZyleminiPlus',
-                        //   response.data.Data.Order.Status,
-                        //   [
-                        //     // {
-                        //     //   text: "Cancel",
-                        //     //   onPress: () => console.log("Cancel Pressed"),
-                        //     //   style: "cancel"onPress={() => this.props.navigation.navigate('MJP_one')}
-                        //     // },
-                        //     {text: 'OK', onPress: () => this.GetNewData()},
-                        //   ],
-                        //   {cancelable: false},
-                        // );
-                      }
-                    } catch (error) {}
-
-                    //  alert(response.data.Data.Order.Status);
-                  } else {
-                    this.GetNewData();
-                    //console.log("count is..........", count)
-                    //  alert("in else")
-                    // if(count>0){
-                    //
-                    // }else{
-                    //     alert("There is No data for Sync")
-                    // }
-                    //  alert("Sync Failed Please Try Again!")
-                  }
-                  this.setState({isLoading: false});
-                })
-                .catch(error => {
-                  //console.log("error post=", error)
-                  this.setState({isLoading: false});
-                  alert(error);
-                });
-            } else {
-              this.setState({isLoading: false});
-              this.GetNewData();
-             
-            }
-
-            ///////////////////////////////////////////////////
-          });
-        });
-      });
-    });
-  });
-}
-
-async GetNewData() {
-  this.setState({isLoading: true});
-  this.setState({messagetext: 'Getting Data from server..'});
-  // testing
-  //   const url1 = 'http://sapltest.com/ZyleminiPlusAPI/api/Data/GetData';
-
-  // live
-  //   const url1 = "https://zyleminiplus.com/ZyleminiPlusCoreAPI/api/Data/GetData";
-
-  //console.log("url is===", url1)
-  //console.log("aaaaaaa========",response.data.Token)
-
-  let keyValue = await AsyncStorage.getItem('JWTToken');
-  const tok = JSON.parse(keyValue);
-  this.setState({tokens: tok});
-
-  // alert(tok);
-  const headers1 = {
-    authheader: tok,
-    AreaId : this.state.selectedArea
+  setModalVisible = bools => {
+    this.setState({modalVisible: bools});
   };
-  // alert(User.GetUrl);
-  console.log(User.GetUrl);
-  console.log('header : '+JSON.stringify(headers1))
-  axios
-    .get(User.GetUrl, {
-      headers: headers1,
-    })
-    .then(res => {
-      // alert(res.data);
-      //  //console.log("rajani data1=",JSON.stringify(res))
-      if (res.data) {
-        const data = JSON.stringify(res.data);
-        console.log('rajani data=', JSON.stringify(data));
-       
-        // db.insertAllData(data)
-        //   dispatch(dispatchAll(data))
-        //  dispatch(insertAllData(data))
-        db.insertAllData(data).then(results => {
-          // alert(results)
-          if (results) {
-            // dispatch(loginIsLoading(false));
-            // Actions.App()
-            this.setState({isLoading: false});
-            Actions.drawerMenu();
+
+  checkAreaSelected() {
+    if (this.state.selectedArea == 'Select Area') {
+      alert('Please Select Area');
+    } else {
+      this.setModalVisible(false);
+      this.syncNowFunction();
+    }
+  }
+
+  syncNowFunction() {
+    console.log('I am sync now : ' + this.state.selectedArea);
+    var OrderMaster = [];
+    var OrderDetails = [];
+    var Discount = [];
+    var ImageDetails = [];
+    var NewPartyImageDetails = [];
+    var AssetDetails = [];
+    var NewPartyOutlet = [];
+    var NewPartyTargetId = [];
+    this.state.isLoading = true;
+    this.setState({isLoading: true});
+    this.setState({messagetext: 'Sending Data to server..'});
+    this.setState({JSONObj: {}});
+    db.getOrderMasterSyncData('N').then(data => {
+      if (data.length > 0) {
+        console.log('ordermaster for sync', JSON.stringify(data));
+        OrderMaster.push(data);
+        this.state.JSONObj['OrderMaster'] = data;
+      }
+      db.getOrderDetailsSyncData().then(data => {
+        if (data.length > 0) {
+          console.log('orderdetails for sync', JSON.stringify(data));
+          OrderDetails = data;
+          this.state.JSONObj['OrderDetails'] = data;
+        }
+
+        db.getNewPartyOutletSyncData().then(data => {
+          if (data.length > 0) {
+            console.log('New Party for sync', JSON.stringify(data));
+            NewPartyOutlet = data;
+            this.state.JSONObj['NewParty'] = data;
           }
         });
-      } else {
-        alert('Invalid Credentials');
-        this.setState({isLoading: false});
-      }
-    })
-    .catch(error => {
-      //console.log("errr")
+        this.state.newPartyImagedetails1 = [];
+        db.getNewPartyImageDetailsyncData().then(data => {
+          if (data.length > 0) {
+            this.setState({newPartyImagedetails1: data});
+            this.state.newPartyImagedetails1.map((item, key) => {
+              var bytess;
+              this.state.newPartyImagedetails = [];
+              RNFS.readFile(item.ImagePath, 'base64').then(res => {
+                bytess = res;
+                this.state.newPartyImagedetails.push({
+                  // ID: item.ID,
+                  Id: item.id,
+                  //   ImageDatetime: item.ImageDateTime,
+                  ImageName: item.ImageName,
+                  data: bytess,
+                });
+              });
+            });
+            NewPartyImageDetails = this.state.newPartyImagedetails;
+            this.state.JSONObj[
+              'NewPartyImage'
+            ] = this.state.newPartyImagedetails;
+          }
+        });
 
-      //console.log('error ' + error);
-      alert(error);
-      this.setState({isLoading: false});
+        db.getnewPartyTargetId().then(data => {
+          if (data.length > 0) {
+            console.log(
+              'New getnewPartyTargetId for sync',
+              JSON.stringify(data),
+            );
+            NewPartyTargetId = data;
+            this.state.JSONObj['newPartyTargetId'] = data;
+          }
+        });
+
+        db.getDiscountSyncData().then(data => {
+          if (data.length > 0) {
+            console.log('discount for sync', JSON.stringify(data));
+            Discount = data;
+            this.state.JSONObj['Discount'] = data;
+          }
+          this.state.ImageDetails1 = [];
+          db.getImageDetailsyncData().then(data => {
+            if (data.length > 0) {
+              this.setState({ImageDetails1: data});
+              this.state.ImageDetails1.map((item, key) => {
+                var bytess;
+                this.state.ImageDetails = [];
+                RNFS.readFile(item.ImageBytes, 'base64').then(res => {
+                  bytess = res;
+                  this.state.ImageDetails.push({
+                    ID: item.ID,
+                    OrderID: item.OrderID,
+                    ImageDatetime: item.ImageDateTime,
+                    ImageName: item.ImageName,
+                    ImageBytes: bytess,
+                  });
+                });
+              });
+              ImageDetails = this.state.ImageDetails;
+              this.state.JSONObj['ImageDetails'] = this.state.ImageDetails;
+            }
+            db.getAssetDetailData().then(data => {
+              if (data.length > 0) {
+                //console.log("asset=", JSON.stringify(data))
+                AssetDetails = data;
+                this.state.JSONObj['AssetDetails'] = data;
+              }
+              ////////////////////////////////////////////////////////////
+              //console.log("rjjjjjjjjjjjjjjj..........", this.state.JSONObj)
+              var count;
+              count = Object.keys(this.state.JSONObj).length;
+              // alert(count);
+
+              if (count > 0) {
+                //console.log("ssdds=========", this.state.tokens)
+                const headers = {
+                  authheader: this.state.tokens,
+                };
+                var datas = {
+                  OrderMaster: OrderMaster,
+                  OrderDetails: OrderDetails,
+                  Discount: Discount,
+                  ImageDetails: ImageDetails,
+                  AssetDetails: AssetDetails,
+                };
+                console.log(
+                  'boduy of postApi=',
+                  JSON.stringify(this.state.JSONObj),
+                );
+
+                //  //console.log("boduy of postApi2=", datas)
+                //   const url = 'http://zylemdemo.com/ZyleminiPlusCoreAPI/api/Data/PostData'
+
+                // testing
+                //  const url =  'http://sapltest.com/ZyleminiPlusAPI/api/Data/PostData';
+                //live
+                //    const url = 'https://zyleminiplus.com/ZyleminiPlusCoreAPI/api/Data/PostData'
+                // alert('User is ', User.posturl);
+                axios
+                  .post(User.posturl, this.state.JSONObj, {
+                    headers: headers,
+                  })
+                  .then(response => {
+                    console.log(
+                      'response of post=',
+                      JSON.stringify(response.data),
+                    );
+                    console.log('status code :' + response.status);
+                    var responss = [];
+                    // /{"Data":{"Order":{"Status":"Data saved successfully.",
+                    //"Orders":[{"OrderStatus":"Order Existed","OrderId":"78",
+                    //"MobileGenPrimaryKey":"167202012142"},
+                    //{"OrderStatus":"Order Existed","OrderId":"79","MobileGenPrimaryKey":"167202012551"}]},"NewParty":null,"NewPartyTargetId":null,"PreviousData":null}}
+                    // LOG  count is.......... 3
+                    if (response.data.Data.Order) {
+                      //  alert("in if")
+                      //
+                      try {
+                        if (response.data.Data.Order.hasOwnProperty('Orders')) {
+                          // alert("in ifffff")
+                          console.log(
+                            'orders :' + response.data.Data.Order.Orders.length,
+                          );
+                          this.GetNewData();
+                          // for (
+                          //   let i = 0;
+                          //   i < response.data.Data.Order.Orders.length;
+                          //   i++
+                          // ) {
+                          //   db.updateOrderMasterSyncFlag(
+                          //     response.data.Data.Order.Orders[i]
+                          //       .MobileGenPrimaryKey,
+                          //   );
+                          //   db.updateOrderDetailSyncFlag(
+                          //     response.data.Data.Order.Orders[i]
+                          //       .MobileGenPrimaryKey,
+                          //   );
+                          //   db.updateimageDetailSyncFlag(
+                          //     response.data.Data.Order.Orders[i]
+                          //       .MobileGenPrimaryKey,
+                          //   );
+                          //   db.updateDiscountSyncFlag(
+                          //     response.data.Data.Order.Orders[i]
+                          //       .MobileGenPrimaryKey,
+                          //   );
+                          //   db.updateNewPartyOutletSyncFlag(
+                          //     response.data.Data.Order.Orders[i]
+                          //       .MobileGenPrimaryKey,
+                          //   );
+
+                          //   db.updateNewPartyImageDetailSyncFlag(
+                          //     response.data.Data.Order.Orders[i]
+                          //       .MobileGenPrimaryKey,
+                          //   );
+                          // }
+                          db.deleteOrderMaster();
+                          db.deleteOrderDetails();
+                          db.deletenewpartyoutlet();
+                          db.deletenewpartyImageoutlet();
+                          db.deleteImagesDetails();
+                          db.deleteTABLE_DISCOUNT();
+                          //  alert('Data Sync Successfull');
+                          // Alert.alert(
+                          //   'ZyleminiPlus',
+                          //   response.data.Data.Order.Status,
+                          //   [
+                          //     // {
+                          //     //   text: "Cancel",
+                          //     //   onPress: () => console.log("Cancel Pressed"),
+                          //     //   style: "cancel"onPress={() => this.props.navigation.navigate('MJP_one')}
+                          //     // },
+                          //     {text: 'OK', onPress: () => this.GetNewData()},
+                          //   ],
+                          //   {cancelable: false},
+                          // );
+                        }
+                      } catch (error) {}
+
+                      //  alert(response.data.Data.Order.Status);
+                    } else {
+                      this.GetNewData();
+                      //console.log("count is..........", count)
+                      //  alert("in else")
+                      // if(count>0){
+                      //
+                      // }else{
+                      //     alert("There is No data for Sync")
+                      // }
+                      //  alert("Sync Failed Please Try Again!")
+                    }
+                    this.setState({isLoading: false});
+                  })
+                  .catch(error => {
+                    //console.log("error post=", error)
+                    this.setState({isLoading: false});
+                    alert(error);
+                  });
+              } else {
+                this.setState({isLoading: false});
+                this.GetNewData();
+              }
+
+              ///////////////////////////////////////////////////
+            });
+          });
+        });
+      });
     });
-}
+  }
 
+  async GetNewData() {
+    this.setState({isLoading: true});
+    this.setState({messagetext: 'Getting Data from server..'});
+    // testing
+    //   const url1 = 'http://sapltest.com/ZyleminiPlusAPI/api/Data/GetData';
 
+    // live
+    //   const url1 = "https://zyleminiplus.com/ZyleminiPlusCoreAPI/api/Data/GetData";
 
-ButtonClickCheckFunction = () => {
+    //console.log("url is===", url1)
+    //console.log("aaaaaaa========",response.data.Token)
 
-    this.setModalVisible(true)
-}
+    let keyValue = await AsyncStorage.getItem('JWTToken');
+    const tok = JSON.parse(keyValue);
+    this.setState({tokens: tok});
 
-  navigate = (shopid,party) => {
+    // alert(tok);
+    const headers1 = {
+      authheader: tok,
+      AreaId: this.state.selectedArea,
+    };
+    // alert(User.GetUrl);
+    console.log(User.GetUrl);
+    console.log('header : ' + JSON.stringify(headers1));
+    axios
+      .get(User.GetUrl, {
+        headers: headers1,
+      })
+      .then(res => {
+        // alert(res.data);
+        //  //console.log("rajani data1=",JSON.stringify(res))
+        if (res.data) {
+          const data = JSON.stringify(res.data);
+          console.log('rajani data=', JSON.stringify(data));
+
+          // db.insertAllData(data)
+          //   dispatch(dispatchAll(data))
+          //  dispatch(insertAllData(data))
+          db.insertAllData(data).then(results => {
+            // alert(results)
+            if (results) {
+              // dispatch(loginIsLoading(false));
+              // Actions.App()
+              this.setState({isLoading: false});
+              Actions.drawerMenu();
+            }
+          });
+        } else {
+          alert('Invalid Credentials');
+          this.setState({isLoading: false});
+        }
+      })
+      .catch(error => {
+        //console.log("errr")
+
+        //console.log('error ' + error);
+        alert(error);
+        this.setState({isLoading: false});
+      });
+  }
+
+  ButtonClickCheckFunction = () => {
+    this.setModalVisible(true);
+  };
+
+  navigate = (shopid, party) => {
     AsyncStorage.setItem('shopId', JSON.stringify(shopid));
     AsyncStorage.setItem('outletName', JSON.stringify(party));
     AsyncStorage.setItem('outletId', JSON.stringify(shopid));
@@ -859,8 +855,9 @@ ButtonClickCheckFunction = () => {
           data={this.state.ShopsArray}
           renderItem={({item}) => (
             <View style={styles.shopListMainContainer}>
-              <TouchableOpacity  onPress={()=>this.navigate( item.id,item.party)}>
-              {/* <TouchableOpacity onPress={() => Actions.Info({shopId: item.id})}> */}
+              <TouchableOpacity
+                onPress={() => this.navigate(item.id, item.party)}>
+                {/* <TouchableOpacity onPress={() => Actions.Info({shopId: item.id})}> */}
                 <View style={styles.shopDetailBackStyle}>
                   <View style={styles.imageContainer}>
                     <Image
@@ -914,7 +911,7 @@ ButtonClickCheckFunction = () => {
                   </View>
                   <View style={styles.shopNameAddContainerCard}>
                     <Text style={styles.shopDistanceTextStyleCard}>
-                      {item.Outlet_Info.split('||')[0]} 
+                      {item.Outlet_Info.split('||')[0]}
                       {/* 1Km Away ETA 5 mins */}
                     </Text>
                   </View>
@@ -961,7 +958,7 @@ ButtonClickCheckFunction = () => {
   render() {
     return (
       <View style={{flex: 10}}>
-         <Loader
+        <Loader
           loading={this.state.isLoading}
           message={this.state.messagetext}
         />
@@ -973,101 +970,101 @@ ButtonClickCheckFunction = () => {
             resizeMode: 'cover',
             justifyContent: 'center',
           }}>
-
-
-                    <Modal
-                        style={{
-                            flex: 1,
-                            padding: 5,
-                        }}
-                        animationType="slide"
-                        transparent={true}
-                        visible={this.state.modalVisible}
-                        onRequestClose={() => {
-                            this.setModalVisible(false)
-                        }}>
-                        <ImageBackground
-                            source={require('../../assets/Icons/android_BG.png')}
-                            style={{ height: hp('95'), width: wp('100'), resizeMode: 'cover', justifyContent: 'center', }}
-                        >
-                            <View style={styles.centeredView}>
-                                <View style={styles.modalView}>
-                                    <View style={{ flexDirection: 'column', justifyContent : 'center'}}>
-                                    <Text style={styles.modalText}>Confirm Your Location</Text>
-                                        <View style={{
-                                            marginBottom: 20,
-                                            textAlign: "center",
-                                            fontWeight: 'bold',
-                                            color: '#CC1167',
-                                            fontSize: 16,
-                                            
-                                        }}>
-                                            {/* <Icon
+          <Modal
+            style={{
+              flex: 1,
+              padding: 5,
+            }}
+            animationType="slide"
+            transparent={true}
+            visible={this.state.modalVisible}
+            onRequestClose={() => {
+              this.setModalVisible(false);
+            }}>
+            <ImageBackground
+              source={require('../../assets/Icons/android_BG.png')}
+              style={{
+                height: hp('95'),
+                width: wp('100'),
+                resizeMode: 'cover',
+                justifyContent: 'center',
+              }}>
+              <View style={styles.centeredView}>
+                <View style={styles.modalView}>
+                  <View
+                    style={{flexDirection: 'column', justifyContent: 'center'}}>
+                    <Text style={styles.modalText}>Confirm Your Location</Text>
+                    <View
+                      style={{
+                        marginBottom: 20,
+                        textAlign: 'center',
+                        fontWeight: 'bold',
+                        color: '#CC1167',
+                        fontSize: 16,
+                      }}>
+                      {/* <Icon
                                                 size={24}
                                                 name='create'
                                                 color='#CC1167' /> */}
 
-                              
-                                 <Image style={styles.mapIconStyle}
-                                    source = {require('../../assets/Icons/location_checkin.png')}/>
-                               
-                          </View>
-                          <View style={{
-                                            width: wp('14'),
-                                            height: hp('4'),
-                                            borderRadius: 150,
-                                            textAlign: "center",
-                                            alignSelf :'center',
-                                            backgroundColor: "#796A6A",
-                                            opacity : 0.05,
-                                            marginTop : hp('-5'),
-                                            transform: [{ scaleX: 2 }],
-                                            
-                                        }}></View>
-                                       
-                                    </View>
+                      <Image
+                        style={styles.mapIconStyle}
+                        source={require('../../assets/Icons/location_checkin.png')}
+                      />
+                    </View>
+                    <View
+                      style={{
+                        width: wp('14'),
+                        height: hp('4'),
+                        borderRadius: 150,
+                        textAlign: 'center',
+                        alignSelf: 'center',
+                        backgroundColor: '#796A6A',
+                        opacity: 0.05,
+                        marginTop: hp('-5'),
+                        transform: [{scaleX: 2}],
+                      }}
+                    />
+                  </View>
 
-
-                                    {/* <View style={styles.textDropdownContainer}>
+                  {/* <View style={styles.textDropdownContainer}>
                                         <Text style={styles.headingTitleText}>CHOOSE CITY</Text>
                                         {this._renderEntity()}
                                     </View> */}
 
-                                    <View style={styles.textDropdownContainer}>
-                                        <Text style={styles.headingTitleText}>CHOOSE AREA</Text>
-                                        {this._renderEntity()}
-                                    </View>
+                  <View style={styles.textDropdownContainer}>
+                    <Text style={styles.headingTitleText}>CHOOSE AREA</Text>
+                    {this._renderEntity()}
+                  </View>
 
-                                    <View style={{
-                                        width: '100%', height: 50, justifyContent: 'center', alignItems: 'center', position: 'absolute',
-                                        bottom: 50
-                                    }}>
-                                        <TouchableHighlight
-                                            style={styles.openButton}
-                                            onPress={() => {
-                                             this.checkAreaSelected()
-                                          
-                                            }}
-                                        >
-                                            <Text style={styles.textStyleModal}>CONFIRM</Text>
-                                        </TouchableHighlight>
+                  <View
+                    style={{
+                      width: '100%',
+                      height: 50,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      position: 'absolute',
+                      bottom: 50,
+                    }}>
+                    <TouchableHighlight
+                      style={styles.openButton}
+                      onPress={() => {
+                        this.checkAreaSelected();
+                      }}>
+                      <Text style={styles.textStyleModal}>CONFIRM</Text>
+                    </TouchableHighlight>
 
-                                        <TouchableOpacity
-                                            onPress={() => {
-                                              this.setModalVisible(false)
-                                            }}
-                                        >
-                                            <Text style={styles.textStyleModal1}>CANCEL</Text>
-                                        </TouchableOpacity>
-
-
-                                    </View>
-
-                                </View>
-                            </View>
-                        </ImageBackground>
-                    </Modal>
-
+                    <TouchableOpacity
+                      onPress={() => {
+                        this.setModalVisible(false);
+                      }}>
+                      <Text style={styles.textStyleModal1}>CANCEL</Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              </View>
+            </ImageBackground>
+          </Modal>
 
           <ScrollView showsVerticalScrollIndicator={false}>
             {/* Header */}
@@ -1203,7 +1200,6 @@ ButtonClickCheckFunction = () => {
               }
             }}
           />
-          
         </ImageBackground>
       </View>
     );
@@ -1218,6 +1214,9 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => ({
   shopVisited: visiteds => {
     dispatch(SHOP_VISITED_TODAY(visiteds));
+  },
+  StoreID() {
+    dispatch({type: 'SET_SHOP_ID'});
   },
 });
 export default connect(
@@ -1531,132 +1530,143 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     bottom: 25,
     backgroundColor: '#ffffff',
-    shadowColor: "#00000029",
+    shadowColor: '#00000029',
     shadowOffset: {
-        width: 0,
-        height: 2,
+      width: 0,
+      height: 2,
     },
     shadowOpacity: 1,
     shadowRadius: 3.84,
 
     elevation: 5,
-},
-TextStyle: {
-  color: '#CC1167',
-  textAlign: 'center', fontSize: 14, fontFamily: 'Proxima Nova', alignSelf: "center", textAlign: 'center', lineHeight: 56
-
-
-},
-centeredView: {
-  flex: 1,
-  justifyContent: "center",
-  alignItems: "center",
-},
-modalView: {
-  width: hp('50'),
-  height: hp('90'),
-  backgroundColor: "white",
-  borderRadius: 10,
-  marginTop: hp('2'),
-  marginBottom: hp('2'),
-  marginLeft: hp('2'),
-  marginRight: hp('2'),
-  alignItems: "center",
-  shadowColor: "#000",
-  shadowOffset: {
-      width: 0,
-      height: 2
   },
-  shadowOpacity: 0.25,
-  shadowRadius: 3.84,
-  elevation: 5
-},
-openButton: {
-  backgroundColor: "#2FC36E",
-  borderRadius: 24,
-  elevation: 2, width: 132,
-  height: 40,
-  marginBottom: hp('2'), textAlign: "center", alignSelf: 'center', justifyContent: 'center', textAlign: 'center'
-},
-openButton1: {
-  backgroundColor: "green",
-  borderRadius: 25,
-  padding: 10,
-  elevation: 2,
-  marginBottom: hp('2'),
-},
-textStyleModal: {
-  color: "white",
-  padding: 5,
-  fontWeight: "bold",
-  textAlign: "center", alignSelf: 'center', fontWeight: 'bold', fontSize: 12,
+  TextStyle: {
+    color: '#CC1167',
+    textAlign: 'center',
+    fontSize: 14,
+    fontFamily: 'Proxima Nova',
+    alignSelf: 'center',
+    textAlign: 'center',
+    lineHeight: 56,
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalView: {
+    width: hp('50'),
+    height: hp('90'),
+    backgroundColor: 'white',
+    borderRadius: 10,
+    marginTop: hp('2'),
+    marginBottom: hp('2'),
+    marginLeft: hp('2'),
+    marginRight: hp('2'),
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  openButton: {
+    backgroundColor: '#2FC36E',
+    borderRadius: 24,
+    elevation: 2,
+    width: 132,
+    height: 40,
+    marginBottom: hp('2'),
+    textAlign: 'center',
+    alignSelf: 'center',
+    justifyContent: 'center',
+    textAlign: 'center',
+  },
+  openButton1: {
+    backgroundColor: 'green',
+    borderRadius: 25,
+    padding: 10,
+    elevation: 2,
+    marginBottom: hp('2'),
+  },
+  textStyleModal: {
+    color: 'white',
+    padding: 5,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    alignSelf: 'center',
+    fontWeight: 'bold',
+    fontSize: 12,
+  },
+  textStyleModal1: {
+    color: '#362828',
+    padding: 5,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    alignSelf: 'center',
+    fontWeight: 'bold',
+    fontSize: 12,
+    marginTop: hp('1'),
+  },
 
-},
-textStyleModal1: {
-  color: "#362828",
-  padding: 5,
-  fontWeight: "bold",
-  textAlign: "center", alignSelf: 'center', fontWeight: 'bold', fontSize: 12, marginTop: hp('1')
+  modalText: {
+    marginBottom: 20,
+    textAlign: 'center',
+    fontWeight: 'bold',
+    color: '#CC1167',
+    fontSize: 16,
+    marginTop: hp('4'),
+  },
+  textDropdownContainer: {
+    alignItems: 'flex-start',
+    marginRight: hp('2'),
+    marginLeft: hp('2'),
+  },
+  headingTitleText: {
+    color: '#796A6A',
+    fontWeight: 'bold',
+    fontFamily: 'Proxima Nova',
+    marginHorizontal: wp('1'),
+    fontSize: 10,
+  },
 
-},
+  dropDownContainer: {
+    borderWidth: wp('0.5'),
+    borderColor: '#E6DFDF',
+    borderRadius: wp('2%'),
+    width: wp('78'),
+    height: hp('8'),
+    marginTop: hp('1'),
+    marginVertical: hp('3'),
+    marginHorizontal: wp('1'),
+    backgroundColor: '#FFFFFF',
+    paddingHorizontal: hp('2'),
+    alignSelf: 'center',
+    padding: -1,
+  },
 
-modalText: {
-  marginBottom: 20,
-  textAlign: "center",
-  fontWeight: 'bold',
-  color: '#CC1167',
-  fontSize: 16,
-  marginTop: hp('4'),
- 
-},
-textDropdownContainer: {
-
-  alignItems: 'flex-start',
-  marginRight: hp('2'),
-  marginLeft: hp('2'),
-
-},
-headingTitleText: {
-  color: '#796A6A',
-  fontWeight: 'bold',
-  fontFamily: 'Proxima Nova',
-  marginHorizontal: wp('1'), fontSize: 10
-},
-
-dropDownContainer: {
-  borderWidth: wp('0.5'),
-  borderColor: '#E6DFDF',
-  borderRadius: wp('2%'),
-  width: wp('78'),
-  height: hp('8'),
-  marginTop: hp('1'),
-  marginVertical: hp('3'),
-  marginHorizontal: wp('1'),
-  backgroundColor: '#FFFFFF',
-  paddingHorizontal: hp('2'),
-  alignSelf: 'center',
-  padding: -1,
-},
-
-TriangleShapeCSS: {
-  width: 0,
-  height: 0,
-  borderLeftWidth: 10,
-  borderRightWidth: 10,
-  borderBottomWidth: 15,
-  borderStyle: 'solid',
-  marginTop: hp('1'),
-  marginLeft: hp('1'),
-  backgroundColor: 'transparent',
-  borderLeftColor: 'transparent',
-  borderRightColor: 'transparent',
-  borderBottomColor: '#2FC36E'
-},
-mapIconStyle:{
-  alignSelf:'center',
-  height: hp('5'),
-  width: wp('8'),
-  // width:  wp('25'),
-  // height: hp('12'),
-},
+  TriangleShapeCSS: {
+    width: 0,
+    height: 0,
+    borderLeftWidth: 10,
+    borderRightWidth: 10,
+    borderBottomWidth: 15,
+    borderStyle: 'solid',
+    marginTop: hp('1'),
+    marginLeft: hp('1'),
+    backgroundColor: 'transparent',
+    borderLeftColor: 'transparent',
+    borderRightColor: 'transparent',
+    borderBottomColor: '#2FC36E',
+  },
+  mapIconStyle: {
+    alignSelf: 'center',
+    height: hp('5'),
+    width: wp('8'),
+    // width:  wp('25'),
+    // height: hp('12'),
+  },
 });

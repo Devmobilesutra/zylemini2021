@@ -126,6 +126,7 @@ export class Info extends Component {
       newPartyImagedetails: [],
       fileList: [],
     };
+
     //  alert(this.props.shopId)
     this.props.navigation.setParams({
       shopId: this.props.shopId,
@@ -249,12 +250,13 @@ export class Info extends Component {
     });
   }
 
-  componentWillMount() {
+  componentDidMount() {
     BackHandler.addEventListener(
       'hardwareBackPress',
       this.handleBackButtonClick,
     );
     //console.log("componentDidMount callee")
+    this.handleBackButtonClick = this.handleBackButtonClick.bind(this);
 
     this._componentFocused();
 
@@ -272,7 +274,7 @@ export class Info extends Component {
   }
   handleBackButtonClick() {
     // Actions.Info();
-    console.log('info back button pressed');
+    // console.log('info back button pressed');
     return true;
   }
   //  BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);

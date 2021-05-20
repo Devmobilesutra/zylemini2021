@@ -102,6 +102,20 @@ const actions = [
     },
     buttonSize: 0,
   },
+  {
+    text: 'Create New Meeting',
+    color: 'transperent',
+    name: 'bt_meet',
+    position: 0,
+    textColor: 'black',
+    textStyle: {
+      fontSize: 12,
+      fontWeight: 'bold',
+      marginHorizontal: 18,
+      marginTop: 5,
+    },
+    buttonSize: 0,
+  },
 ];
 var open;
 
@@ -1036,6 +1050,12 @@ export class Dashboard extends Component {
                 } else if (name == 'add_shop') {
                   //  Actions.AddNewShop();
                   Actions.Shops();
+                } else if (name == 'bt_meet') {
+                  //  Actions.AddNewShop();
+                  Actions.Create_meet();
+                  this.setState({
+                    active: !this.state.active,
+                  });
                 }
               }}
               onPressMain={() => {

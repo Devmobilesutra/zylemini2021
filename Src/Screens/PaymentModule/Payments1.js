@@ -1,20 +1,26 @@
 import React from 'react';
 import {
-    FlatList,
-    StyleSheet,
-    View,
-    AsyncStorage,
-    BackHandler,
-    Text,
-    Image
+  FlatList,
+  StyleSheet,
+  View,
+  AsyncStorage,
+  BackHandler,
+  Text,
+  Image,
 } from 'react-native';
 import {
-    widthPercentageToDP as wp,
-    heightPercentageToDP as hp,
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
-import Dialog, { DialogContent, DialogFooter, DialogButton, DialogTitle, SlideAnimation } from 'react-native-popup-dialog';
-import { Actions } from 'react-native-router-flux';
+import {RFPercentage, RFValue} from 'react-native-responsive-fontsize';
+import Dialog, {
+  DialogContent,
+  DialogFooter,
+  DialogButton,
+  DialogTitle,
+  SlideAnimation,
+} from 'react-native-popup-dialog';
+import {Actions} from 'react-native-router-flux';
 import Dash from 'react-native-dash';
 import Header from './PaymentModuleCommonComponent/Header';
 import Colors from './utils/Colors';
@@ -22,7 +28,7 @@ import OrdersAndFilter from './PaymentScreenComponents/OrdersAndFilter';
 import HistryorderFilter from './PaymentScreenComponents/HistryorderFilter';
 import PaymentScreenOutStandingListModel from './ListModels/PaymentScreenOutStandingListModel';
 import PaymentScreenPrviousOrderListModel from './ListModels/PaymentScreenPrviousOrderListModel';
-import { FloatingAction } from 'react-native-floating-action';
+import {FloatingAction} from 'react-native-floating-action';
 
 import Database from '../../utility/Database';
 import DilogFilter from './PaymentScreenComponents/DilogFilter';
@@ -30,300 +36,328 @@ const db = new Database();
 
 var open;
 const actions = [
-    {
-        text: 'Accept Payment',
-        color: 'transperent',
-        name: 'bt_payment',
-        position: 3,
-        textColor: 'black',
-        textStyle: { fontSize: 14, fontWeight: 'bold', marginHorizontal: 15 },
-        buttonSize: 0,
-    },
+  {
+    text: 'Accept Payment',
+    color: 'transperent',
+    name: 'bt_payment',
+    position: 3,
+    textColor: 'black',
+    textStyle: {fontSize: 14, fontWeight: 'bold', marginHorizontal: 15},
+    buttonSize: 0,
+  },
 ];
 
-
 const DATA = [
-    {
-        ActivityEnd: '2021-3-8 14:27:43',
-        ActivityStart: '2021-3-8 14:26:36',
-        ActivityStatus: '0',
-        ExpectedDeliveryDate: '08-Mar-2021',
-        sync_flag: 'N',
-        selected_flag: '1',
-        user_id: '54923',
-        to_date: '2021-03-08 14:27:28',
-        from_date: '2021-03-08 14:27:28',
-        total_amount: '111.11',
-        longitude: '73.896864',
-        id: '08032021142728',
-        Party: 'Sri Mahalingeshwara Enterprises Hongasandra (18244)',
-        AREA: 'BANGALORE - AREA',
-        DefaultDistributorId: '',
-        check_date: '2021-3-8',
-        remark: '',
-        collection_type: '0',
-        latitude: '18.4223144',
-        entity_id: '105604',
-        entity_type: '1',
-        Current_date_time: '2021-03-08 14:27:28',
-    },
-    {
-        ActivityEnd: '2021-3-8 14:27:43',
-        ActivityStart: '2021-3-8 14:26:36',
-        ActivityStatus: '0',
-        ExpectedDeliveryDate: '08-Mar-2021',
-        sync_flag: 'N',
-        selected_flag: '1',
-        user_id: '54923',
-        to_date: '2021-03-08 14:27:28',
-        from_date: '2021-03-08 14:27:28',
-        total_amount: '111.11',
-        longitude: '73.896864',
-        id: '08032021142728',
-        Party: 'Sri Mahalingeshwara Enterprises Hongasandra (18244)',
-        AREA: 'BANGALORE - AREA',
-        DefaultDistributorId: '',
-        check_date: '2021-3-8',
-        remark: '',
-        collection_type: '0',
-        latitude: '18.4223144',
-        entity_id: '105604',
-        entity_type: '1',
-        Current_date_time: '2021-03-08 14:27:28',
-    },
+  {
+    ActivityEnd: '2021-3-8 14:27:43',
+    ActivityStart: '2021-3-8 14:26:36',
+    ActivityStatus: '0',
+    ExpectedDeliveryDate: '08-Mar-2021',
+    sync_flag: 'N',
+    selected_flag: '1',
+    user_id: '54923',
+    to_date: '2021-03-08 14:27:28',
+    from_date: '2021-03-08 14:27:28',
+    total_amount: '111.11',
+    longitude: '73.896864',
+    id: '08032021142728',
+    Party: 'Sri Mahalingeshwara Enterprises Hongasandra (18244)',
+    AREA: 'BANGALORE - AREA',
+    DefaultDistributorId: '',
+    check_date: '2021-3-8',
+    remark: '',
+    collection_type: '0',
+    latitude: '18.4223144',
+    entity_id: '105604',
+    entity_type: '1',
+    Current_date_time: '2021-03-08 14:27:28',
+  },
+  {
+    ActivityEnd: '2021-3-8 14:27:43',
+    ActivityStart: '2021-3-8 14:26:36',
+    ActivityStatus: '0',
+    ExpectedDeliveryDate: '08-Mar-2021',
+    sync_flag: 'N',
+    selected_flag: '1',
+    user_id: '54923',
+    to_date: '2021-03-08 14:27:28',
+    from_date: '2021-03-08 14:27:28',
+    total_amount: '111.11',
+    longitude: '73.896864',
+    id: '08032021142728',
+    Party: 'Sri Mahalingeshwara Enterprises Hongasandra (18244)',
+    AREA: 'BANGALORE - AREA',
+    DefaultDistributorId: '',
+    check_date: '2021-3-8',
+    remark: '',
+    collection_type: '0',
+    latitude: '18.4223144',
+    entity_id: '105604',
+    entity_type: '1',
+    Current_date_time: '2021-03-08 14:27:28',
+  },
 ];
 
 export default class Payments1 extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            _isOutStanding: true,
-            _isHistory: false,
-            _name: '',
-            _outstandingOrder: [],
-            _historyOrder: [],
-            _O_orders: 0,
-            initalAmount: 0,
-            _h_totle: 0,
-            name: '',
-            active: false,
-            _showDilog: false
-        };
-    }
+  constructor(props) {
+    super(props);
+    this.state = {
+      _isOutStanding: true,
+      _isHistory: false,
+      _name: '',
+      _outstandingOrder: [],
+      _historyOrder: [],
+      _O_orders: 0,
+      initalAmount: 0,
+      _h_totle: 0,
+      name: '',
+      active: false,
+      _showDilog: false,
+    };
+  }
 
-    componentDidMount() {
-        this.getOutstandingOrderFormDB();
-    }
+  componentDidMount() {
+    BackHandler.addEventListener(
+      'hardwareBackPress',
+      this.handleBackButtonClick,
+    );
+    this.getOutstandingOrderFormDB();
+  }
+  componentWillUnmount() {
+    BackHandler.removeEventListener(
+      'hardwareBackPress',
+      this.handleBackButtonClick,
+    );
+  }
+  handleBackButtonClick() {
+    return true;
+  }
+  getOutstandingOrderFormDB() {
+    this.setState({_outstandingOrder: []});
+    AsyncStorage.getItem('username').then(keyValue => {
+      this.setState({
+        name: JSON.parse(keyValue),
+      });
+    });
+    db.getAllOrders().then(data => {
+      let addition = 0;
+      data.find(obj => {
+        addition = addition + parseInt(obj.total_amount);
+      });
+      this.setState({
+        _outstandingOrder: data,
+        initalAmount: addition,
+      });
+      //this.setState({_O_orders: this.state._outstandingOrder.length});
+    });
+  }
 
-    getOutstandingOrderFormDB() {
-        this.setState({ _outstandingOrder: [] });
-        AsyncStorage.getItem('username').then(keyValue => {
+  getHistoryOrderFromDB() {
+    db.getAllOrders('Y').then(data => {
+      console.log(data);
+      this.setState({_historyOrder: data});
+    });
+  }
+
+  /////////////////Array Listing Logic/////////////////////
+
+  HightoLowListItem(list) {
+    return list.sort(function(a, b) {
+      return b.total_amount - a.total_amount;
+    });
+  }
+
+  LowtoHighListItem(list) {
+    return list.sort(function(a, b) {
+      return a.total_amount - b.total_amount;
+    });
+  }
+
+  ////////////////////////////////////////
+
+  render() {
+    const _orderCondition = this.state._isOutStanding === true;
+
+    return (
+      <View style={styles.MainContainer}>
+        <Header
+          Goback={() => {
+            Actions.App();
+          }}
+          Outstanding={() => {
             this.setState({
-                name: JSON.parse(keyValue),
+              _isHistory: false,
+              _isOutStanding: true,
             });
-        });
-        db.getAllOrders().then(data => {
-            let addition = 0;
-            data.find(obj => {
-                addition = addition + parseInt(obj.total_amount);
-            });
+            this.getOutstandingOrderFormDB();
+          }}
+          Histry={() => {
             this.setState({
-                _outstandingOrder: data,
-                initalAmount: addition,
+              _isHistory: true,
+              _isOutStanding: false,
             });
-            //this.setState({_O_orders: this.state._outstandingOrder.length});
-        });
-    }
+            this.getHistoryOrderFromDB();
+          }}
+          OnSearchPress={() => {
+            console.log('Search Clicked');
+          }}
+        />
+        <View style={{flex: 1}}>
+          {_orderCondition ? (
+            <OrdersAndFilter
+              outStandingOredr={JSON.stringify(
+                this.state._outstandingOrder.length,
+              )}
+              TotalOutStandingAmount={this.state.initalAmount}
+              VisibleDilog={() => {
+                this.setState({_showDilog: true});
+              }}
+            />
+          ) : (
+            <HistryorderFilter
+              Amount={this.state._historyOrder.length}
+              VisibleDilog={() => {
+                this.setState({_showDilog: true});
+              }}
+            />
+          )}
 
-    getHistoryOrderFromDB() {
-        db.getAllOrders('Y').then(data => {
-            console.log(data)
-            this.setState({ _historyOrder: data });
-        });
-    }
+          <Dash dashLength={2} dashColor="#ADA2A2" />
 
-    /////////////////Array Listing Logic/////////////////////
+          <DilogFilter
+            ShowDilog={this.state._showDilog}
+            HideDilog={() => {
+              this.setState({_showDilog: false});
+            }}
+            HighToLow={() => {
+              if (_orderCondition) {
+                this.setState({
+                  _outstandingOrder: this.HightoLowListItem(
+                    this.state._outstandingOrder,
+                  ),
+                });
+              } else {
+                this.setState({
+                  _historyOrder: this.HightoLowListItem(
+                    this.state._historyOrder,
+                  ),
+                });
+              }
+            }}
+            LowToHigh={() => {
+              if (_orderCondition) {
+                this.setState({
+                  _outstandingOrder: this.LowtoHighListItem(
+                    this.state._outstandingOrder,
+                  ),
+                });
+              } else {
+                this.setState({
+                  _historyOrder: this.LowtoHighListItem(
+                    this.state._historyOrder,
+                  ),
+                });
+              }
+            }}
+          />
 
-    HightoLowListItem(list) {
-        return list.sort(function (a, b) { return b.total_amount - a.total_amount });
-    }
-
-    LowtoHighListItem(list) {
-        return list.sort(function (a, b) { return a.total_amount - b.total_amount });
-    }
-
-
-
-
-
-    ////////////////////////////////////////
-
-    render() {
-        const _orderCondition = this.state._isOutStanding === true;
-
-        return (
-            <View style={styles.MainContainer}>
-                <Header
-                    Goback={() => {
-                        Actions.App();
+          <View style={{flex: 1}}>
+            <FlatList
+              style={styles.FlatListStyle}
+              data={
+                _orderCondition
+                  ? this.state._outstandingOrder
+                  : this.state._historyOrder
+              }
+              //data={_orderCondition ? DATA : this.state._historyOrder}
+              keyExtractor={(item, index) => index.toString()}
+              renderItem={item =>
+                _orderCondition ? (
+                  <PaymentScreenOutStandingListModel
+                    item={item}
+                    OnPressViewDetail={() => {
+                      console.log('PRINTING ID:: ', item.id);
+                      this.props.navigation.navigate('AcceptPayment2', {
+                        id: item.id,
+                      });
                     }}
-                    Outstanding={() => {
-                        this.setState({
-                            _isHistory: false,
-                            _isOutStanding: true,
-                        });
-                        this.getOutstandingOrderFormDB();
+                  />
+                ) : (
+                  <PaymentScreenPrviousOrderListModel
+                    item={item}
+                    InitialAmount={this.state.initalAmount}
+                    GetAddition={x => {}}
+                    OnPressViewDetail={item => {
+                      //Actions.AcceptPayment();
+
+                      this.props.navigation.navigate('AcceptPayment2', {
+                        id: item.id,
+                      });
                     }}
-                    Histry={() => {
-                        this.setState({
-                            _isHistory: true,
-                            _isOutStanding: false,
-                        });
-                        this.getHistoryOrderFromDB();
-                    }}
-                    OnSearchPress={() => {
-                        console.log('Search Clicked');
-                    }}
-                />
-                <View style={{ flex: 1 }}>
-                    {_orderCondition ? (
-                        <OrdersAndFilter
-                            outStandingOredr={JSON.stringify(
-                                this.state._outstandingOrder.length,
-                            )}
-                            TotalOutStandingAmount={this.state.initalAmount}
-                            VisibleDilog={() => {
-                                this.setState({ _showDilog: true })
-                            }}
-                        />
-                    ) : (
-                        <HistryorderFilter Amount={this.state._historyOrder.length}
-                            VisibleDilog={() => {
-                                this.setState({ _showDilog: true })
-                            }} />
-                    )}
-
-
-                    <Dash dashLength={2} dashColor="#ADA2A2" />
-
-                    <DilogFilter
-                        ShowDilog={this.state._showDilog}
-                        HideDilog={() => {
-                            this.setState({ _showDilog: false })
-                        }}
-                        HighToLow={() => {
-                            if (_orderCondition) {
-                                this.setState({ _outstandingOrder: this.HightoLowListItem(this.state._outstandingOrder) })
-                            } else {
-                                this.setState({ _historyOrder: this.HightoLowListItem(this.state._historyOrder) })
-                            }
-
-                        }}
-                        LowToHigh={() => {
-                            if (_orderCondition) {
-                                this.setState({ _outstandingOrder: this.LowtoHighListItem(this.state._outstandingOrder) })
-                            } else {
-                                this.setState({ _historyOrder: this.LowtoHighListItem(this.state._historyOrder) })
-                            }
-                        }} />
-
-                    <View style={{ flex: 1 }}>
-                        <FlatList
-                            style={styles.FlatListStyle}
-                            data={
-                                _orderCondition
-                                    ? this.state._outstandingOrder
-                                    : this.state._historyOrder
-                            }
-                            //data={_orderCondition ? DATA : this.state._historyOrder}
-                            keyExtractor={(item, index) => index.toString()}
-                            renderItem={item =>
-                                _orderCondition ? (
-                                    <PaymentScreenOutStandingListModel
-                                        item={item}
-                                        OnPressViewDetail={() => {
-                                            console.log("PRINTING ID:: ", item.id)
-                                            this.props.navigation.navigate('AcceptPayment2', {
-                                                id: item.id
-                                            });
-                                        }}
-                                    />
-                                ) : (
-                                    <PaymentScreenPrviousOrderListModel
-                                        item={item}
-                                        InitialAmount={this.state.initalAmount}
-                                        GetAddition={x => { }}
-                                        OnPressViewDetail={(item) => {
-                                            //Actions.AcceptPayment();
-
-                                            this.props.navigation.navigate('AcceptPayment2', {
-                                                id: item.id
-                                            })
-                                        }}
-                                    />
-                                )
-                            }
-                        />
-                        <FloatingAction
-                            open={open}
-                            color="#a10d59"
-                            actions={actions}
-                            buttonSize={hp('9.5')}
-                            floatingIcon={
-                                this.state.active == false
-                                    ? require('../../assets/Icons/Floating.png')
-                                    : require('../../assets/Icons/FAB_Close_Menu.png')
-                            }
-                            iconWidth={wp(20)}
-                            iconHeight={hp(16)}
-                            shadow="null"
-                            overlayColor="#221818"
-                            showBackground={true}
-                            onPressItem={name => {
-                                if (name == 'bt_payment') {
-                                    Actions.AcceptPayment();
-                                    this.setState({
-                                        active: !this.state.active,
-                                    });
-                                }
-                            }}
-                            onPressMain={() => {
-                                if (this.state.active == false) {
-                                    this.setState({
-                                        active: !this.state.active,
-                                    });
-                                } else {
-                                    this.setState({
-                                        active: !this.state.active,
-                                    });
-                                }
-                            }}
-                            onPressBackdrop={() => {
-                                if (this.state.active == false) {
-                                    this.setState({
-                                        active: !this.state.active,
-                                    });
-                                } else {
-                                    this.setState({
-                                        active: !this.state.active,
-                                    });
-                                }
-                            }}
-                        />
-                    </View>
-                </View>
-            </View>
-        );
-    }
+                  />
+                )
+              }
+            />
+            <FloatingAction
+              open={open}
+              color="#a10d59"
+              actions={actions}
+              buttonSize={hp('9.5')}
+              floatingIcon={
+                this.state.active == false
+                  ? require('../../assets/Icons/Floating.png')
+                  : require('../../assets/Icons/FAB_Close_Menu.png')
+              }
+              iconWidth={wp(20)}
+              iconHeight={hp(16)}
+              shadow="null"
+              overlayColor="#221818"
+              showBackground={true}
+              onPressItem={name => {
+                if (name == 'bt_payment') {
+                  Actions.AcceptPayment();
+                  this.setState({
+                    active: !this.state.active,
+                  });
+                }
+              }}
+              onPressMain={() => {
+                if (this.state.active == false) {
+                  this.setState({
+                    active: !this.state.active,
+                  });
+                } else {
+                  this.setState({
+                    active: !this.state.active,
+                  });
+                }
+              }}
+              onPressBackdrop={() => {
+                if (this.state.active == false) {
+                  this.setState({
+                    active: !this.state.active,
+                  });
+                } else {
+                  this.setState({
+                    active: !this.state.active,
+                  });
+                }
+              }}
+            />
+          </View>
+        </View>
+      </View>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
-    MainContainer: { flex: 1 },
-    FlatListStyle: {
-        marginTop: 20,
-        marginLeft: 10,
-        marginRight: 10,
-    },
+  MainContainer: {flex: 1},
+  FlatListStyle: {
+    marginTop: 20,
+    marginLeft: 10,
+    marginRight: 10,
+  },
 });
 
 // BackHandler.addEventListener(

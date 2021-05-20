@@ -1,12 +1,12 @@
 //packages
 import React, {useEffect, Component} from 'react';
-import {Platform, CameraRoll} from 'react-native';
 import {createAppContainer} from '@react-navigation/native';
 import {createStackNavigator} from 'react-navigation-stack';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
+import {AndroidBackHandler} from 'react-navigation-backhandler';
 
 import {
   Router,
@@ -17,11 +17,14 @@ import {
   Drawer,
 } from 'react-native-router-flux';
 import {
+  Platform,
+  CameraRoll,
   SafeAreaView,
   StyleSheet,
   ScrollView,
   View,
   Text,
+  BackHandler,
   StatusBar,
 } from 'react-native';
 import {Root} from 'native-base';
@@ -120,6 +123,7 @@ import Activities from './Src/Screens/Reports/Activities';
 import MJP_one from './Src/Screens/MJP/MJP_one';
 import MJP_two from './Src/Screens/MJP/MJP_two';
 import MJP_Cancel from './Src/Screens/MJP/MJP_Cancel';
+import Create_meet from './Src/Screens/MJP/Create_meet';
 import ViewDrafts from './Src/Screens/MJP/ViewDrafts';
 import ResourceLanding from './Src/Screens/Resources/ResourceLanding';
 import ResourceWebView from './Src/Screens/Resources/ResourceWebView';
@@ -140,9 +144,37 @@ var prev2 = moment()
   .format('MMM');
 
 export default class RouterComponent extends Component {
+  onBackButtonPressAndroid = () => {
+    if (youWantToHandleTheBackButtonPress) {
+      // do something
+      return true;
+    }
+
+    return false;
+  };
+
+  // componentDidMount() {
+  //   BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
+  // }
+
+  // componentWillUnmount() {
+  //   BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
+  // }
+
+  // handleBackButton() {
+  //   console.log('back hor abhi bhi......................................');
+  //   return true;
+  // }
   render() {
     return (
-      <Router>
+      <Router
+        backAndroidHandler={() => {
+          if (Actions.currentScene === 'Info') {
+            // do something you want and return true to intercept back event.
+            return true;
+          }
+          return false;
+        }}>
         <Stack key="root" hideNavBar={true}>
           {/* <Scene key="AuthLoading" component={AuthLoading} title="AuthLoading"  hideNavBar={true}/> */}
           <Scene
@@ -164,6 +196,12 @@ export default class RouterComponent extends Component {
             key="MJP_one"
             component={MJP_one}
             title="MJP_one"
+            hideNavBar={true}
+          />
+          <Scene
+            key="Create_meet"
+            component={Create_meet}
+            title="Create_meet"
             hideNavBar={true}
           />
           <Scene

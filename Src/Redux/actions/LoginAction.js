@@ -100,24 +100,24 @@ export const login = (username, password, keyword, deviceid, navigation) => {
     // }
 
     // //for dilipk
-    const headers = {
-      LoginId: username,
-      Password: password,
-      // ClientCode: 'XXCPA2020',
-      ClientCode: keyword,
-      DeviceId: '111',
-    };
-
-    // for dinkars
-
     // const headers = {
     //   LoginId: username,
     //   Password: password,
-    //   // ClientCode: 'GDWC2020',
+    //   // ClientCode: 'XXCPA2020',
     //   ClientCode: keyword,
-
-    //   DeviceId: deviceid,
+    //   DeviceId: '111',
     // };
+
+    // for dinkars
+
+    const headers = {
+      LoginId: username,
+      Password: password,
+      // ClientCode: 'GDWC2020',
+      ClientCode: keyword,
+
+      DeviceId: deviceid,
+    };
 
     //  const url2 = "http://zylemdemo.com/ZyleminiPlusCoreAPI/api/Login/Login";
     //testing

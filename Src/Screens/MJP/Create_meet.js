@@ -62,11 +62,11 @@ var selectedStartDate2 = maxDate1;
 var selectedStartDate3 = maxDate1;
 var Collection_types;
 
-export class DataCollectionStep1 extends Component {
+export class Create_meet extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      radioValue: 0,
+      radioValue: 1,
       selectedOutletId: '',
       shopDetailFlag: 'false',
       outletarray: [],
@@ -89,6 +89,10 @@ export class DataCollectionStep1 extends Component {
       DistributorData: [],
       selectedDist: '',
       selectedDistId: '',
+      MJPMasterID: 788,
+      Entity1: 1,
+      Entity2: 2,
+      IsActivityDone: false,
     };
 
     this.handleBackButtonClick = this.handleBackButtonClick.bind(this);
@@ -99,7 +103,7 @@ export class DataCollectionStep1 extends Component {
   }
 
   static navigationOptions = {
-    title: 'Data Collection : Step 1/3',
+    title: 'CREATE NEW MEETING',
     color: 'white',
     headerStyle: {
       backgroundColor: '#221818',
@@ -158,7 +162,24 @@ export class DataCollectionStep1 extends Component {
           this.props.fromTotos('', selectedStartDate3);
         }
 
-        Actions.DataCollectionStep2();
+        // Actions.DataCollectionStep2();
+        db.InsertMeetShop(
+          this.state.MJPMasterID,
+          selectedStartDate3,
+          this.state.Entity1,
+          this.state.selectedOutletId,
+          this.state.query,
+          this.state.IsActivityDone,
+        );
+        console.log(
+          'yeyeyeyeey',
+          this.state.MJPMasterID,
+          selectedStartDate3,
+          this.state.Entity1,
+          this.state.selectedOutletId,
+          this.state.query,
+          this.state.IsActivityDone,
+        );
       } else {
         alert('Please Select Outlet');
       }
@@ -171,8 +192,22 @@ export class DataCollectionStep1 extends Component {
           //console.log("in else.......")
           this.props.fromTotos('', selectedStartDate3);
         }
+        db.InsertMeetDist(
+          this.state.MJPMasterID,
+          selectedStartDate3,
+          this.state.Entity2,
+          this.state.selectedDistId,
+          this.state.selectedDist,
+          this.state.IsActivityDone,
+        );
 
-        Actions.DataCollectionStep2();
+        console.log(
+          'yeyeyeyeey',
+          selectedStartDate3,
+          this.state.selectedDistId,
+          this.state.selectedDist,
+        );
+        // Actions.DataCollectionStep2();
       } else {
         alert('Please Select Distributor');
       }
@@ -675,138 +710,7 @@ export class DataCollectionStep1 extends Component {
     const minDate3 = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000); // Min date
     const maxDate3 = new Date(Date.now()); // Max date
 
-    if (this.state.radioValue == 0) {
-      return (
-        <View style={styles.fromToMainContainer}>
-          {/* {/ From /} */}
-          <View style={styles.FTContainer}>
-            <View style={styles.FromCardBG}>
-              <View style={styles.FTCalRowContainer}>
-                <View style={styles.FTTextColContainer}>
-                  <Text style={styles.FTTextStyle}>{startDate1}</Text>
-                </View>
-                <View styles={styles.CalenderImgContainer}>
-                  <TouchableOpacity onPress={this.calenderpopup1.bind(this)}>
-                    <View>
-                      <Dialog
-                        visible={this.state.visiblecal1}
-                        onTouchOutside={() => {
-                          this.setState({visiblecal1: false});
-                        }}
-                        previousTitle="<"
-                        previousTitleStyle={{color: '#fff'}}
-                        nextTitle=">"
-                        nextTitleStyle={{color: '#f00'}}
-                        width={wp('93')}
-                        overlayBackgroundColor={'false'}
-                        footer={
-                          <DialogFooter>
-                            <DialogButton
-                              text="OK"
-                              textStyle={{color: 'white'}}
-                              style={{backgroundColor: '#46BE50'}}
-                              onPress={() => {
-                                this.setState({visiblecal1: false});
-                              }}
-                            />
-                          </DialogFooter>
-                        }>
-                        <DialogContent>
-                          <CalendarPicker
-                            previousTitle="Previous"
-                            nextTitle="Next"
-                            todayBackgroundColor="#e6ffe6"
-                            selectedDayColor="#66ff33"
-                            selectedDayTextColor="#000000"
-                            scaleFactor={375}
-                            textStyle={{
-                              fontFamily: 'Cochin',
-                              color: '#000000',
-                              fontSize: 12,
-                            }}
-                            startFromMonday={true}
-                            minDate={minDate1}
-                            maxDate={maxDate1}
-                            onDateChange={this.onDateChange1}
-                          />
-                        </DialogContent>
-                      </Dialog>
-                    </View>
-
-                    <Image
-                      style={styles.CalenderImgStyle}
-                      source={require('../../assets/Icons/Calendar_normal.png')}
-                    />
-                  </TouchableOpacity>
-                </View>
-              </View>
-            </View>
-          </View>
-          {/* {/ To /} */}
-          <View style={styles.FTContainer}>
-            <View style={styles.ToCardBG}>
-              <View style={styles.FTCalRowContainer}>
-                <View style={styles.FTTextColContainer}>
-                  <Text style={styles.FTTextStyle}>{startDate2}</Text>
-                </View>
-                <View styles={styles.CalenderImgContainer}>
-                  <TouchableOpacity onPress={this.calenderpopup2.bind(this)}>
-                    <View>
-                      <Dialog
-                        visible={this.state.visiblecal2}
-                        onTouchOutside={() => {
-                          this.setState({visiblecal2: false});
-                        }}
-                        previousTitle="<"
-                        previousTitleStyle={{color: '#fff'}}
-                        nextTitle=">"
-                        nextTitleStyle={{color: '#f00'}}
-                        width={wp('93')}
-                        overlayBackgroundColor={'false'}
-                        footer={
-                          <DialogFooter>
-                            <DialogButton
-                              text="OK"
-                              textStyle={{color: 'white'}}
-                              style={{backgroundColor: '#46BE50'}}
-                              onPress={() => {
-                                this.setState({visiblecal2: false});
-                              }}
-                            />
-                          </DialogFooter>
-                        }>
-                        <DialogContent>
-                          <CalendarPicker
-                            previousTitle="Previous"
-                            nextTitle="Next"
-                            todayBackgroundColor="#e6ffe6"
-                            selectedDayColor="#66ff33"
-                            selectedDayTextColor="#000000"
-                            scaleFactor={375}
-                            textStyle={{
-                              fontFamily: 'Cochin',
-                              color: '#000000',
-                            }}
-                            startFromMonday={true}
-                            minDate={minDate2}
-                            maxDate={maxDate2}
-                            onDateChange={this.onDateChange2}
-                          />
-                        </DialogContent>
-                      </Dialog>
-                    </View>
-                    <Image
-                      style={styles.CalenderImgStyle}
-                      source={require('../../assets/Icons/Calendar_normal.png')}
-                    />
-                  </TouchableOpacity>
-                </View>
-              </View>
-            </View>
-          </View>
-        </View>
-      );
-    } else if (this.state.radioValue == 1) {
+    if (this.state.radioValue == 1) {
       return (
         <View style={styles.fromToMainContainer}>
           <View style={styles.FTContainer}>
@@ -849,13 +753,14 @@ export class DataCollectionStep1 extends Component {
                             selectedDayColor="#66ff33"
                             selectedDayTextColor="#000000"
                             scaleFactor={375}
+                            style={{borderWidth: 3, borderColor: 'black'}}
                             textStyle={{
                               fontFamily: 'Cochin',
                               color: '#000000',
                             }}
                             startFromMonday={true}
-                            minDate={minDate3}
-                            maxDate={maxDate3}
+                            // minDate={minDate3}
+                            // maxDate={maxDate3}
                             onDateChange={this.onDateChange3}
                           />
                         </DialogContent>
@@ -928,72 +833,11 @@ export class DataCollectionStep1 extends Component {
             )}
 
             {/* {/ Data Type /} */}
-            <View>
-              <View style={styles.OODMainContainer}>
-                <Text style={styles.OODTextStyle}>DATA TYPE</Text>
-              </View>
-              {/* {/ Radio Options /} */}
-              <View style={{marginTop: hp('2'), marginLeft: wp('4')}}>
-                <RadioForm formHorizontal={true} animation={true}>
-                  {radio_props.map((obj, i) => (
-                    <RadioButton labelHorizontal={true} key={i}>
-                      <RadioButtonInput
-                        obj={obj}
-                        index={i}
-                        buttonWrapStyle={{marginLeft: 10}}
-                        initial={0}
-                        isSelected={this.state.radioValue === i}
-                        formHorizontal={true}
-                        labelHorizontal={true}
-                        // buttonColor={'#E6DFDF'}
-                        // buttonInnerColor={'#E6DFDF'}
-                        // buttonOuterColor={'#E6DFDF'}
-                        buttonInnerColor={'black'}
-                        //buttonOuterColor={'#E6DFDF'}
-                        buttonOuterColor={
-                          this.state.radioValue === i ? '#362828' : '#E6DFDF'
-                        }
-                        // selectedButtonColor={'black'}
-                        // selectedButtonColor={'#E6DFDF'}
-                        buttonSize={11}
-                        borderWidth={3}
-                        buttonOuterSize={25}
-                        radioStyle={{marginTop: hp('1'), marginLeft: wp('1.5')}}
-                        onPress={value => {
-                          this.radioFunc(value);
-                        }}
-                        //  onPress={(value) => {this.setState({radioValue:value})}}
-                        // onPress={(value) =>this.radioValues(value)}
-                      />
-                      <RadioButtonLabel
-                        obj={obj}
-                        index={i}
-                        labelHorizontal={true}
-                        isSelected={this.state.radioValue === i}
-                        labelColor={
-                          this.state.radioValue === i ? '#362828' : '#8C7878'
-                        }
-                        selectedLabelColor={
-                          this.state.radioValue === i ? '#362828' : '#E6DFDF'
-                        }
-                        labelStyle={{
-                          fontSize: 14,
-                          marginLeft: wp('1'),
-                          paddingRight: wp('15'),
-                        }}
-                        onPress={value => {
-                          this.radioFunc(value);
-                        }}
-                      />
-                    </RadioButton>
-                  ))}
-                </RadioForm>
-              </View>
-            </View>
+
             {/* {/ Select Duration /} */}
             <View>
               <View style={styles.OODMainContainer}>
-                <Text style={styles.OODTextStyle}>SELECT DURATION</Text>
+                <Text style={styles.OODTextStyle}>MEETING DATE</Text>
               </View>
 
               {this.fromToto()}
@@ -1002,7 +846,11 @@ export class DataCollectionStep1 extends Component {
 
           <View>
             <TouchableOpacity onPress={this.NextButton.bind(this)}>
-              <NextButton />
+              <View style={styles.buttonContainer}>
+                <View style={styles.button}>
+                  <Text style={styles.buttonText}> DONE </Text>
+                </View>
+              </View>
             </TouchableOpacity>
           </View>
         </ImageBackground>
@@ -1035,7 +883,7 @@ const mapDispatchToProps = dispatch => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(DataCollectionStep1);
+)(Create_meet);
 
 const styles = StyleSheet.create({
   OODMainContainer: {
@@ -1049,6 +897,24 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginLeft: wp('5'),
     marginTop: hp('3'),
+  },
+  button: {
+    width: wp('100'),
+    height: hp('8'),
+    backgroundColor: '#46BE50',
+    marginVertical: 1,
+    paddingVertical: 15,
+    justifyContent: 'center',
+  },
+
+  buttonText: {
+    fontSize: 16,
+    color: '#ffffff',
+    textAlign: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontWeight: 'bold',
+    fontFamily: 'Proxima Nova',
   },
 
   dropDownContainer: {

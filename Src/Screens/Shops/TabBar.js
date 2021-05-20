@@ -78,8 +78,8 @@ export default class TabBar extends Component {
   }
   handleBackButtonClick() {
     // Actions.Info();
-    console.log('info back button pressed');
-    // return true;
+    // console.log('info back button pressed');
+    return true;
   }
 
   render() {
