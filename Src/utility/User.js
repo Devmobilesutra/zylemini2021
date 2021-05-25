@@ -38,14 +38,14 @@ const User = {
   Meeting_Id: null,
   FlagForNavigation: '',
   // for testing
-  // loginUrl: 'http://sapluat.com/ZyleminiPlusAPI/api/Login/Login',
-  // GetUrl: 'http://sapluat.com/ZyleminiPlusAPI/api/Data/GetData',
-  // posturl: 'http://sapluat.com/ZyleminiPlusAPI/api/Data/PostData',
+  loginUrl: 'http://sapluat.com/ZyleminiPlusAPI/api/Login/Login',
+  GetUrl: 'http://sapluat.com/ZyleminiPlusAPI/api/Data/GetData',
+  posturl: 'http://sapluat.com/ZyleminiPlusAPI/api/Data/PostData',
 
   // for live
-  loginUrl: 'https://zyleminiplus.com/ZyleminiPlusCoreAPI/api/Login/Login',
-  GetUrl: 'https://zyleminiplus.com/ZyleminiPlusCoreAPI/api/Data/GetData',
-  posturl: 'https://zyleminiplus.com/ZyleminiPlusCoreAPI/api/Data/PostData',
+  // loginUrl: 'https://zyleminiplus.com/ZyleminiPlusCoreAPI/api/Login/Login',
+  // GetUrl: 'https://zyleminiplus.com/ZyleminiPlusCoreAPI/api/Data/GetData',
+  // posturl: 'https://zyleminiplus.com/ZyleminiPlusCoreAPI/api/Data/PostData',
 };
 
 export default User;

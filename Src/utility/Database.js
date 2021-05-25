@@ -7059,7 +7059,14 @@ export default class Database {
             (tx, results) => {
               resolve(results);
               //console.log("images inserted Successfully!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-              alert('New Meeting Created Successfully');
+              Alert.alert('\n\n', 'Meeting Created Successfully', [
+                {
+                  text: 'OK',
+                  onPress: () => {
+                    Actions.Dashboard();
+                  },
+                },
+              ]);
             },
             err => {
               console.error('error=', err);

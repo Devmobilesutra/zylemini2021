@@ -469,6 +469,7 @@ export class Shops extends Component {
     var datess = year + '-' + month + '-' + date;
     AsyncStorage.setItem('routeName', JSON.stringify(value));
     AsyncStorage.setItem('beatName', JSON.stringify(value));
+    AsyncStorage.setItem('beatNameDC', JSON.stringify(value));
     db.getRouteId(this.state.selectedRouteName).then(data => {
       const abc = JSON.parse(data);
       let result = abc.map(a => a.RouteID);
@@ -841,6 +842,7 @@ export class Shops extends Component {
   navigate = (shopid, party) => {
     AsyncStorage.setItem('shopId', JSON.stringify(shopid));
     AsyncStorage.setItem('outletName', JSON.stringify(party));
+    AsyncStorage.setItem('outletNameDC', JSON.stringify(party));
     AsyncStorage.setItem('outletId', JSON.stringify(shopid));
     Actions.Info({shopId: shopid});
   };

@@ -763,7 +763,7 @@ const styles = StyleSheet.create({
   },
 
   nameOfBrandTextStyle: {
-    marginLeft: wp('5'),
+    marginLeft: wp('8'),
     fontFamily: 'Proxima Nova',
     fontSize: 12,
     color: '#362828',

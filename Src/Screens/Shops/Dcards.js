@@ -15,6 +15,10 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
+import {ActionSheet, Root} from 'native-base';
+import {Actions} from 'react-native-router-flux';
+import {FAB, Portal, Provider} from 'react-native-paper';
+import {FloatingAction} from 'react-native-floating-action';
 import Dash from 'react-native-dash';
 import {Button} from 'react-native';
 import {connect} from 'react-redux';
@@ -24,9 +28,49 @@ const db = new Database();
 import moment from 'moment';
 import {forEach} from 'lodash';
 import {SafeAreaView} from 'react-native';
+const actions = [
+  {
+    text: 'Create New Order',
+    color: 'transperent',
+    name: 'bt_create',
+    position: 2,
+    textColor: 'black',
+    textStyle: {fontSize: 14, fontWeight: 'bold', marginHorizontal: 10},
+    buttonSize: 0,
+  },
+  {
+    text: 'Accept Payment',
+    color: 'transperent',
+    name: 'bt_payment',
+    position: 3,
+    textColor: 'black',
+    textStyle: {fontSize: 14, fontWeight: 'bold', marginHorizontal: 15},
+    buttonSize: 0,
+  },
+  {
+    text: 'Take A Survey',
+    color: 'transperent',
+    name: 'bt_survey',
+    position: 4,
+    textColor: 'black',
+    textStyle: {fontSize: 14, fontWeight: 'bold', marginHorizontal: 22},
+    buttonSize: 0,
+  },
 
+  {
+    text: 'Data Collection',
+    color: 'transperent',
+    name: 'bt_dc',
+    position: 1,
+    textColor: 'black',
+    textStyle: {fontSize: 14, fontWeight: 'bold', marginHorizontal: 25},
+    buttonSize: 0,
+  },
+];
+import User from '../../utility/User';
 var itemid1;
 var itemn;
+var open;
 export class Dcards extends Component {
   constructor(props) {
     super(props);
@@ -486,6 +530,84 @@ export class Dcards extends Component {
             </View>
           </TouchableOpacity>
         </View> */}
+        <FloatingAction
+          open={open}
+          color="#a10d59"
+          actions={actions}
+          buttonSize={hp('9.5')}
+          floatingIcon={
+            this.state.active == false
+              ? require('../../assets/Icons/Floating.png')
+              : require('../../assets/Icons/FAB_Close_Menu.png')
+          }
+          iconWidth={wp(20)}
+          iconHeight={hp(16)}
+          // iconWidth={wp(5)}
+          // iconHeight={hp(3)}
+          shadow="null"
+          overlayColor="#221818"
+          showBackground={true}
+          onPressItem={name => {
+            if (name == 'bt_assets') {
+              Actions.AssetUpdate();
+              this.setState({
+                active: !this.state.active,
+              });
+            } else if (name == 'bt_dc') {
+              AsyncStorage.setItem('beatId', '');
+              AsyncStorage.setItem('distributorName', '');
+              AsyncStorage.setItem('SearchString', '');
+
+              User.FlagForNavigation = 'Info';
+              Actions.DataCollectionStep1();
+              this.setState({
+                active: !this.state.active,
+              });
+            } else if (name == 'bt_create') {
+              // AsyncStorage.setItem('outletName', "");
+              //  AsyncStorage.setItem('outletId', "");
+              // AsyncStorage.setItem('beatName', "");
+              AsyncStorage.setItem('beatId', '');
+              AsyncStorage.setItem('distributorName', '');
+              AsyncStorage.setItem('SearchString', '');
+
+              User.FlagForNavigation = 'Info';
+              Actions.CreateNewOrderFirst();
+              this.setState({
+                active: !this.state.active,
+              });
+            } else if (name == 'bt_survey') {
+              Actions.AssetUpdate();
+              this.setState({
+                active: !this.state.active,
+              });
+            }
+          }}
+          onPressMain={() => {
+            if (this.state.active == false) {
+              this.setState({
+                active: !this.state.active,
+              });
+              //  BackHandler.addEventListener('hardwareBackPress', () => Actions.TabBar());
+            } else {
+              this.setState({
+                active: !this.state.active,
+              });
+            }
+          }}
+          onPressBackdrop={() => {
+            if (this.state.active == false) {
+              this.setState({
+                active: !this.state.active,
+              });
+              //BackHandler.addEventListener('hardwareBackPress', () => Actions.drawerMenu());
+            } else {
+              this.setState({
+                active: !this.state.active,
+              });
+            }
+          }}
+        />
       </View>
     );
   }

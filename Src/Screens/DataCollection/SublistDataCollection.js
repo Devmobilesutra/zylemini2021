@@ -250,7 +250,7 @@ export class SublistDataCollection extends Component {
                   ptr={item.PTR}
                   bpc={item.BPC}
                   outletId={outletId}
-                  brandId = {this.props.id}
+                  brandId={this.props.id}
                   SublistExtendedParent={this.ComputeBottls.bind(this)}
                   refresh={this.refreshDelete.bind(this)}
                 />
@@ -309,7 +309,7 @@ const styles = StyleSheet.create({
     // fontFamily: 'Proxima Nova',
     // fontSize: wp('3'),
     // color:'#362828',
-    marginLeft: wp('5'),
+    marginLeft: wp('8'),
     marginRight: wp('1'),
     fontFamily: 'Proxima Nova',
     fontSize: 12,

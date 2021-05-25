@@ -125,11 +125,7 @@ export class Create_meet extends Component {
         }}>
         <TouchableOpacity
           onPress={() => {
-            if (User.FlagForNavigation === 'Info') {
-              Actions.Info();
-            } else {
-              Actions.Dashboard();
-            }
+            Actions.Dashboard();
           }}>
           <Image
             style={{marginLeft: wp('4')}}
@@ -212,6 +208,7 @@ export class Create_meet extends Component {
         alert('Please Select Distributor');
       }
     }
+    // Actions.Dashboard();
   };
 
   componentWillMount() {
@@ -285,15 +282,16 @@ export class Create_meet extends Component {
         this.setState({selectedBeat: ''});
       }
     });
-    AsyncStorage.getItem('outletNameDC').then(keyValue => {
-      if (keyValue) {
-        this.state.query = JSON.parse(keyValue);
-        this.setState({query: JSON.parse(keyValue)});
-      } else {
-        this.state.query = '';
-        this.setState({query: ''});
-      }
-    });
+    // AsyncStorage.getItem('outletNameDC').then(keyValue => {
+    //   if (keyValue) {
+    //     this.state.query = JSON.parse(keyValue);
+    //     this.setState({query: JSON.parse(keyValue)});
+    //   } else {
+    //     this.state.query = '';
+    //     this.setState({query: ''});
+    //   }
+    // }
+    // );
   }
 
   componentWillUnmount() {
@@ -338,7 +336,7 @@ export class Create_meet extends Component {
         placeholder="Select"
         dropdownPosition={-5.4}
         dropdownOffset={{top: 14, left: 18}}
-        value={this.state.selectedBeat}
+        // value={this.state.selectedBeat}
         itemCount={4}
         fontSize={11}
         data={beat}
@@ -358,7 +356,8 @@ export class Create_meet extends Component {
     this.setState({query: ''});
     this.state.query = '';
     //console.log("11beatNameDC",value)
-    AsyncStorage.setItem('beatNameDC', JSON.stringify(value));
+
+    // 111AsyncStorage.setItem('beatNameDC', JSON.stringify(value));
 
     db.getRouteId(this.state.selectedBeat).then(data => {
       const abc = JSON.parse(data);
@@ -367,7 +366,7 @@ export class Create_meet extends Component {
       getRouteId = result;
       this.setState({getRouteId: result});
       //console.log("11beatIdDC",getRouteId)
-      AsyncStorage.setItem('beatIdDC', JSON.stringify(getRouteId));
+      // 111AsyncStorage.setItem('beatIdDC', JSON.stringify(getRouteId));
       this.state.selectedBeatId = getRouteId;
       db.getOutletArray(this.state.getRouteId).then(data => {
         //    getOutletArray = data
@@ -388,8 +387,8 @@ export class Create_meet extends Component {
   onSelectedParty = (id, party) => {
     //console.log("11outletNameDC",party)
     //console.log("11outletIdDC",id)
-    AsyncStorage.setItem('outletNameDC', JSON.stringify(party));
-    AsyncStorage.setItem('outletIdDC', JSON.stringify(id));
+    //  111   AsyncStorage.setItem('outletNameDC', JSON.stringify(party));
+    //   111  AsyncStorage.setItem('outletIdDC', JSON.stringify(id));
     if (this.state.query.length) {
       this.setState({selectedOutletId: id});
       this.state.selectedOutletId = id;
@@ -400,8 +399,8 @@ export class Create_meet extends Component {
       this.setState({shopDetailFlag: 'false'});
     }
 
-    AsyncStorage.setItem('outletNameDC', JSON.stringify(party));
-    AsyncStorage.setItem('outletIdDC', JSON.stringify(id));
+    //  111 AsyncStorage.setItem('outletNameDC', JSON.stringify(party));
+    //  111 AsyncStorage.setItem('outletIdDC', JSON.stringify(id));
     // this.shopDetailss()
   };
 
@@ -487,13 +486,8 @@ export class Create_meet extends Component {
                 // <TouchableOpacity onPress={() => this.setState({ query: item.title, shopDetailFlag:'true',})}>
                 <TouchableHighlight
                   key={i}
-                  onPress={() => this.onSelectedParty(item.id, item.party)}>
-                  {item.party === '+Add New Outlet' ? (
-                    <Text>{item.party}</Text>
-                  ) : (
-                    <Text>{item.party}</Text>
-                  )}
-                </TouchableHighlight>
+                  onPress={() => this.onSelectedParty(item.id, item.party)}
+                />
               )}
             />
           </View>
@@ -606,9 +600,9 @@ export class Create_meet extends Component {
   onChangeHandlerDistributor = (distId, value) => {
     this.setState({selectedDist: value});
     this.setState({selectedDistId: distId});
-    AsyncStorage.setItem('distributorName', JSON.stringify(value));
-    AsyncStorage.setItem('outletNameDC', JSON.stringify(value));
-    AsyncStorage.setItem('outletIdDC', JSON.stringify(distId));
+    //  111 AsyncStorage.setItem('distributorName', JSON.stringify(value));
+    // 111  AsyncStorage.setItem('outletNameDC', JSON.stringify(value));
+    // 111  AsyncStorage.setItem('outletIdDC', JSON.stringify(distId));
     console.log('dist id : ' + distId + ' value : ' + value);
     //  this.setState({selectedDistName : name})
   };
@@ -671,7 +665,7 @@ export class Create_meet extends Component {
     this.setState({visiblecal3: true});
   };
   radioFunc = val => {
-    AsyncStorage.setItem('SearchStringDC', '');
+    // 111  AsyncStorage.setItem('SearchStringDC', '');
     //console.log("11radioValueDC",val)
     AsyncStorage.setItem('radioValueDC', JSON.stringify(val));
     this.state.radioValue = val;
