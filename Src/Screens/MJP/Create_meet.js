@@ -357,7 +357,7 @@ export class Create_meet extends Component {
     this.state.query = '';
     //console.log("11beatNameDC",value)
 
-    // 111AsyncStorage.setItem('beatNameDC', JSON.stringify(value));
+    AsyncStorage.setItem('beatNameDC', JSON.stringify(value));
 
     db.getRouteId(this.state.selectedBeat).then(data => {
       const abc = JSON.parse(data);
@@ -366,7 +366,7 @@ export class Create_meet extends Component {
       getRouteId = result;
       this.setState({getRouteId: result});
       //console.log("11beatIdDC",getRouteId)
-      // 111AsyncStorage.setItem('beatIdDC', JSON.stringify(getRouteId));
+      AsyncStorage.setItem('beatIdDC', JSON.stringify(getRouteId));
       this.state.selectedBeatId = getRouteId;
       db.getOutletArray(this.state.getRouteId).then(data => {
         //    getOutletArray = data
@@ -387,8 +387,8 @@ export class Create_meet extends Component {
   onSelectedParty = (id, party) => {
     //console.log("11outletNameDC",party)
     //console.log("11outletIdDC",id)
-    //  111   AsyncStorage.setItem('outletNameDC', JSON.stringify(party));
-    //   111  AsyncStorage.setItem('outletIdDC', JSON.stringify(id));
+    AsyncStorage.setItem('outletNameDC', JSON.stringify(party));
+    AsyncStorage.setItem('outletIdDC', JSON.stringify(id));
     if (this.state.query.length) {
       this.setState({selectedOutletId: id});
       this.state.selectedOutletId = id;
@@ -399,8 +399,8 @@ export class Create_meet extends Component {
       this.setState({shopDetailFlag: 'false'});
     }
 
-    //  111 AsyncStorage.setItem('outletNameDC', JSON.stringify(party));
-    //  111 AsyncStorage.setItem('outletIdDC', JSON.stringify(id));
+    AsyncStorage.setItem('outletNameDC', JSON.stringify(party));
+    AsyncStorage.setItem('outletIdDC', JSON.stringify(id));
     // this.shopDetailss()
   };
 
@@ -486,8 +486,13 @@ export class Create_meet extends Component {
                 // <TouchableOpacity onPress={() => this.setState({ query: item.title, shopDetailFlag:'true',})}>
                 <TouchableHighlight
                   key={i}
-                  onPress={() => this.onSelectedParty(item.id, item.party)}
-                />
+                  onPress={() => this.onSelectedParty(item.id, item.party)}>
+                  {item.party === '+Add New Outlet' ? (
+                    <Text>{item.party}</Text>
+                  ) : (
+                    <Text>{item.party}</Text>
+                  )}
+                </TouchableHighlight>
               )}
             />
           </View>
@@ -600,9 +605,9 @@ export class Create_meet extends Component {
   onChangeHandlerDistributor = (distId, value) => {
     this.setState({selectedDist: value});
     this.setState({selectedDistId: distId});
-    //  111 AsyncStorage.setItem('distributorName', JSON.stringify(value));
-    // 111  AsyncStorage.setItem('outletNameDC', JSON.stringify(value));
-    // 111  AsyncStorage.setItem('outletIdDC', JSON.stringify(distId));
+    AsyncStorage.setItem('distributorName', JSON.stringify(value));
+    AsyncStorage.setItem('outletNameDC', JSON.stringify(value));
+    AsyncStorage.setItem('outletIdDC', JSON.stringify(distId));
     console.log('dist id : ' + distId + ' value : ' + value);
     //  this.setState({selectedDistName : name})
   };
@@ -665,7 +670,7 @@ export class Create_meet extends Component {
     this.setState({visiblecal3: true});
   };
   radioFunc = val => {
-    // 111  AsyncStorage.setItem('SearchStringDC', '');
+    AsyncStorage.setItem('SearchStringDC', '');
     //console.log("11radioValueDC",val)
     AsyncStorage.setItem('radioValueDC', JSON.stringify(val));
     this.state.radioValue = val;

@@ -25,7 +25,7 @@ import {
   CollapseHeader,
   CollapseBody,
 } from 'accordion-collapse-react-native';
-import {Thumbnail, List, ListItem, Separator} from 'native-base';
+import {Thumbnail, List, ListItem, Separator, Row} from 'native-base';
 import {Dropdown} from 'react-native-material-dropdown';
 import NextButton from '../../components/NextButton';
 import moment from 'moment';
@@ -498,18 +498,41 @@ export class DataCollectionStep2 extends Component {
               <Text style={styles.dropdownheadingTitleText}>
                 CHOOSE PRODUCT
               </Text>
-              <Searchbar
-                inputStyle={styles.inputstyles}
-                style={styles.searchbarContainerStyle}
-                theme={false}
-                icon={false}
-                placeholder="Search"
-                value={this.state.search}
-                onChangeText={input => {
-                  this.setState({search: input});
-                  this.SearchFilterFunction(input);
-                }}
-              />
+              <View style={{flexDirection: 'row'}}>
+                <Searchbar
+                  inputStyle={styles.inputstyles}
+                  style={styles.searchbarContainerStyle}
+                  theme={false}
+                  icon={false}
+                  placeholder="Search"
+                  value={this.state.search}
+                  onChangeText={input => {
+                    this.setState({search: input});
+                    this.SearchFilterFunction(input);
+                  }}
+                />
+                <TouchableOpacity
+                  style={{
+                    borderColor: '#8C7878',
+                    marginLeft: 10,
+                    marginTop: 10,
+                    borderWidth: 1,
+                    borderRadius: 8,
+                  }}
+                  // onPress={() => Actions.Qr()}
+                >
+                  <Image
+                    source={require('../../assets/Icons/qr.png')}
+                    style={{
+                      marginTop: 10,
+                      width: 40,
+                      height: 40,
+
+                      // borderRadius: 4,
+                    }}
+                  />
+                </TouchableOpacity>
+              </View>
             </View>
             {/* search results */}
             <View style={styles.searchResultTextRowContainer}>
@@ -634,6 +657,7 @@ const styles = StyleSheet.create({
     marginTop: hp('2'),
     //   marginVertical: hp('3'),
     marginHorizontal: wp('4'),
+    // width: wp('60'),
   },
 
   dropdownheadingTitleText: {
@@ -647,7 +671,7 @@ const styles = StyleSheet.create({
 
   searchbarContainerStyle: {
     height: hp('9'),
-    width: wp('88'),
+    width: wp('78'),
     borderColor: '#E6DFDF',
     borderWidth: wp('0.4'),
     borderRadius: wp('2'),

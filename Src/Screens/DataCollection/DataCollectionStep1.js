@@ -250,15 +250,15 @@ export class DataCollectionStep1 extends Component {
         this.setState({selectedBeat: ''});
       }
     });
-    AsyncStorage.getItem('outletNameDC').then(keyValue => {
-      if (keyValue) {
-        this.state.query = JSON.parse(keyValue);
-        this.setState({query: JSON.parse(keyValue)});
-      } else {
-        this.state.query = '';
-        this.setState({query: ''});
-      }
-    });
+    // AsyncStorage.getItem('outletNameDC').then(keyValue => {
+    //   if (keyValue) {
+    //     this.state.query = JSON.parse(keyValue);
+    //     this.setState({query: JSON.parse(keyValue)});
+    //   } else {
+    //     this.state.query = '';
+    //     this.setState({query: ''});
+    //   }
+    // });
   }
 
   componentWillUnmount() {
@@ -303,7 +303,7 @@ export class DataCollectionStep1 extends Component {
         placeholder="Select"
         dropdownPosition={-5.4}
         dropdownOffset={{top: 14, left: 18}}
-        value={this.state.selectedBeat}
+        // value={this.state.selectedBeat}
         itemCount={4}
         fontSize={11}
         data={beat}

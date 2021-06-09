@@ -93,6 +93,7 @@ import sideordernav from './Src/Screens/SideOrder/sideordernav';
 import DataCollectionStep1 from './Src/Screens/DataCollection/DataCollectionStep1';
 import DataCollectionStep2 from './Src/Screens/DataCollection/DataCollectionStep2';
 import DataCollectionStep3 from './Src/Screens/DataCollection/DataCollectionStep3';
+import Qr from './Src/Screens/DataCollection/Qr';
 import Datacards from './Src/Screens/DataCollection/Datacards';
 import ReportsNav from './Src/Screens/Reports/ReportsNav';
 import MyReport from './Src/Screens/Reports/MyReport';
@@ -290,6 +291,7 @@ export default class RouterComponent extends Component {
               title="AddOutlet"
               back={true}
             />
+            <Scene key="Qr" component={Qr} title="QRcode" back={true} />
             <Scene key="FilterPage" component={FilterPage} title="FilterPage" />
             <Scene
               key="ApplicableSchemess"

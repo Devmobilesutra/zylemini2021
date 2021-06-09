@@ -13,7 +13,7 @@ import moment from 'moment';
 import RNFS from 'react-native-fs';
 import Moment from 'react-moment';
 import {pascalCase} from 'change-case';
-SQLite.DEBUG(false);
+SQLite.DEBUG(true);
 SQLite.enablePromise(true);
 const database_name = 'ZyleminiPlusDatabase.db';
 const database_version = '1.0';

@@ -776,10 +776,6 @@ export class Info extends Component {
                   active: !this.state.active,
                 });
               } else if (name == 'bt_dc') {
-                AsyncStorage.setItem('beatId', '');
-                AsyncStorage.setItem('distributorName', '');
-                AsyncStorage.setItem('SearchString', '');
-
                 User.FlagForNavigation = 'Info';
                 Actions.DataCollectionStep1();
                 this.setState({
