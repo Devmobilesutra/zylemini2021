@@ -222,7 +222,7 @@ export class SublistDataCollection extends Component {
             <CollapseHeader style={styles.listInnerContainer}>
               <View style={styles.nameOfBrandContainer}>
                 <Text style={styles.nameTextStyle}>
-                  {item.ITEMSEQUENCE.substr(6)}
+                  {item.ITEMSEQUENCE.substr(5)}
                 </Text>
               </View>
               <View style={styles.amountContainer}>

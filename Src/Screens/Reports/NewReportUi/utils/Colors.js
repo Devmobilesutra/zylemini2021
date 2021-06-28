@@ -1,0 +1,15 @@
+export default Colors = {
+  TexthintColor: '#8C7878',
+  TexthintColor2: '#796A6A',
+  PinkCoor: '#CC1167',
+  White: 'white',
+  Black: 'black',
+  ButtonColor: '#0FB4AD',
+  BluButtonColor: '#3955CB',
+  TextColor2: '#362828',
+  Orange: '#E23333',
+  BorderColor: '#707070',
+  LightGreen: '#2FC36E',
+  DarkGreen: '#46BE50',
+  BorderColor2: '#E6DFDF',
+};

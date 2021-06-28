@@ -31,7 +31,7 @@ import {USER_ID} from '../../Redux/actions/DashboardAction';
 import Database from './../../utility/Database';
 import {connect} from 'react-redux';
 import User from '../../utility/User';
-import { Use } from 'react-native-svg';
+import {Use} from 'react-native-svg';
 const db = new Database();
 
 const entity = [
@@ -100,7 +100,8 @@ export class CreateNewOrderFirst extends Component {
           justifyContent: 'center',
           alignSelf: 'center',
         }}>
-        <TouchableOpacity onPress={() => CreateNewOrderFirst.handleBackPressArraow() }>
+        <TouchableOpacity
+          onPress={() => CreateNewOrderFirst.handleBackPressArraow()}>
           <Image
             style={{marginLeft: wp('4')}}
             source={require('../../assets/Icons/Back_White.png')}
@@ -159,26 +160,22 @@ export class CreateNewOrderFirst extends Component {
     return true;
   }
   static handleBackPressArraow() {
-  //  console.log('back press : '+User.FlagForNavigation)
-    if(User.FlagForNavigation === "Info"){
+    //  console.log('back press : '+User.FlagForNavigation)
+    if (User.FlagForNavigation === 'Info') {
       Actions.Info();
-    }else if(User.FlagForNavigation === "Orders"){
+    } else if (User.FlagForNavigation === 'Orders') {
       Actions.Orders();
-    }else if(User.FlagForNavigation === "Dashboard"){
+    } else if (User.FlagForNavigation === 'Dashboard') {
       Actions.Dashboard();
-    }
-    else if(User.FlagForNavigation === "Surveys"){
+    } else if (User.FlagForNavigation === 'Surveys') {
       Actions.Surveys();
-    }
-    else if(User.FlagForNavigation === "Assets"){
+    } else if (User.FlagForNavigation === 'Assets') {
       Actions.Assets();
-    }
-    else if(User.FlagForNavigation === "Schemes"){
+    } else if (User.FlagForNavigation === 'Schemes') {
       Actions.Schemes();
-    }
-    else if(User.FlagForNavigation === "Payments"){
+    } else if (User.FlagForNavigation === 'Payments') {
       Actions.Payments();
-    }else {
+    } else {
       Actions.Dashboard();
     }
   }
@@ -325,9 +322,10 @@ export class CreateNewOrderFirst extends Component {
         value={this.state.selectedDist}
         itemCount={4}
         data={beat}
-        onChangeText={value => {
-          this.onChangeHandlerDistributor(value);
-        }}
+        onChangeText={text => this.onchanges(text)}
+        // onChangeText={value => {
+        //   this.onChangeHandlerDistributor(value);
+        // }}
         // onChangeText={(value) => { this.setState({ selectedDist: value }) }}
       />
     );
@@ -559,15 +557,14 @@ export class CreateNewOrderFirst extends Component {
           {this._renderBeat()}
         </View>
       );
+    } else {
+      return (
+        <View style={styles.textDropdownContainer2}>
+          <Text style={styles.headingTitleText}>CHOOSE BEAT</Text>
+          {this._renderBeat()}
+        </View>
+      );
     }
-    // else {
-    //   return (
-    //     <View style={styles.textDropdownContainer2}>
-    //       <Text style={styles.headingTitleText}>CHOOSE BEAT</Text>
-    //       {this._renderBeat()}
-    //     </View>
-    //   )
-    // }
   }
   DistributorView() {
     return (

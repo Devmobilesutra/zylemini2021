@@ -159,7 +159,46 @@ export default class MyReport extends React.Component {
               </View>
             </View> */}
             {/* ///////////////////////////////////////////////Second Card////////////////////////////////////// */}
+            <TouchableOpacity style={styles.pastSurveysCardContainer}>
+              <View style={styles.pastSurveysCardBG}>
+                <View style={styles.pastSurveyimageContainer1}>
+                  <View style={styles.pastSurveyimageContainer1}>
+                    <ImageBackground
+                      style={{
+                        marginLeft: wp('3'),
+                        height: hp('5'),
+                        marginTop: hp('2'),
+                        width: wp('10'),
+                        tintColor: '#796A6A',
+                      }}
+                      source={require('../../assets/Icons/Shop_sidebar.png')}
+                    />
+                  </View>
+                </View>
+                <View style={{marginRight: wp('28'), alignSelf: 'flex-start'}}>
+                  <TouchableOpacity onPress={() => Actions.PendingOrder()}>
+                    <Text style={styles.pastSurveyNameTextStyle1}>
+                      Pending Orders
+                    </Text>
+                  </TouchableOpacity>
+                </View>
 
+                <View style={styles.cardDashLineMainContainer1}>
+                  <TouchableOpacity>
+                    {/* // onPress={() => Actions.OutletVisitReports()}> */}
+                    <View style={styles.viewDetailesLabelContainer} />
+                    <View style={styles.viewDetailesArrowContainer}>
+                      <Image
+                        style={styles.viewDetailsArrowStyle}
+                        source={require('../../assets/Icons/right_arrow_front.png')}
+                      />
+                    </View>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </TouchableOpacity>
+
+            {/* /////////////////////////////////////////////////////////////////////////////////////////// */}
             <TouchableOpacity
               style={styles.SalesDetaileWhiteBG}
               onPress={() => {
@@ -560,8 +599,9 @@ const styles = StyleSheet.create({
 
   viewDetailesArrowContainer: {
     alignItems: 'flex-end',
-    marginRight: wp('3'),
-    marginBottom: hp('3.5'),
+    marginRight: wp('4'),
+
+    marginBottom: hp('1'),
   },
 
   viewDetailsArrowStyle: {
@@ -776,7 +816,7 @@ const styles = StyleSheet.create({
     flex: 6,
     marginTop: hp('-2.8'),
     alignItems: 'center',
-    marginLeft: hp('-1'),
+    // marginLeft: hp('-1'),
     justifyContent: 'flex-start',
   },
 
@@ -799,16 +839,16 @@ const styles = StyleSheet.create({
     color: '#796A6A',
     fontWeight: 'bold',
     fontFamily: 'Proxima Nova',
-    //   marginLeft:hp('-1'),
+    // marginLeft: wp('2%'),
     marginTop: hp('2'),
     fontSize: 16,
   },
 
   cardDashLineMainContainer1: {
-    flex: 4,
-    marginTop: hp('3.5'),
-    alignItems: 'center',
-    justifyContent: 'flex-start',
+    // flex: 4,
+    // marginTop: hp('3.5'),
+    // alignItems: 'center',
+    // justifyContent: 'flex-start',
   },
   viewDetailsMainContainer1: {
     flex: 1,

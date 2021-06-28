@@ -572,7 +572,7 @@ export class DataCollectionStep3 extends Component {
             <CollapseHeader style={styles.collapseHeaderStyle}>
               <View style={styles.brandNameContainer}>
                 <Text style={styles.brandNameTextContainer}>
-                  {item.item_Name.substr(6)}
+                  {item.item_Name.substr(5)}
                 </Text>
               </View>
               <View style={styles.sublistExtendIconAmountContainer}>

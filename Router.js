@@ -134,6 +134,9 @@ import AcceptPayment from './Src/Screens/PaymentModule/AcceptPayment';
 import AcceptPayment2 from './Src/Screens/PaymentModule/AcceptPayment2';
 import AcceptPayment3 from './Src/Screens/PaymentModule/AcceptPayment3';
 
+import CustomerBarndSummry from './Src/Screens/Reports/NewReportUi/UI/CustomerBarndSummry';
+import AdvanceFilter from './Src/Screens/Reports/NewReportUi/UI/AdvanceFilter';
+import PendingOrder from './Src/Screens/Reports/PendingOrder';
 var curr = moment()
   .month(new Date().getMonth())
   .format('MMM');
@@ -336,6 +339,21 @@ export default class RouterComponent extends Component {
             {/* <Scene key="camera" component={cam}  /> */}
 
             <Scene key="AssetUpdate" component={AssetUpdate} title="Assets" />
+            <Scene
+              key="CustomerBarndSummry"
+              component={CustomerBarndSummry}
+              hideNavBar={true}
+            />
+            <Scene
+              key="AdvanceFilter"
+              component={AdvanceFilter}
+              hideNavBar={true}
+            />
+            <Scene
+              key="PendingOrder"
+              component={PendingOrder}
+              hideNavBar={true}
+            />
             <Scene
               key="AuditAssetStep2"
               component={AuditAssetStep2}

@@ -519,8 +519,7 @@ export class DataCollectionStep2 extends Component {
                     borderWidth: 1,
                     borderRadius: 8,
                   }}
-                  // onPress={() => Actions.Qr()}
-                >
+                  onPress={() => Actions.Qr()}>
                   <Image
                     source={require('../../assets/Icons/qr.png')}
                     style={{
