@@ -126,6 +126,14 @@ export class SublistDataCollection extends Component {
 
       JoinString = list1.join('|');
     });
+    console.log(
+      '\n\n\n list data alalalalalalalala\n\n\n\n',
+      list1,
+      search,
+      id,
+      outletId,
+      JoinString,
+    );
     db.getSubBrandSearchData(id, search, list1, JoinString, outletId).then(
       data => {
         //console.log("aaaa",JSON.stringify(data))
@@ -133,7 +141,7 @@ export class SublistDataCollection extends Component {
         this.setState({list: data});
       },
     );
-
+    console.log('getSubBrandSearchData: ', this.state.list);
     db.getOrderDataForAddEdit1(
       outletId,
       this.props.datacollection.collectiontype,
@@ -157,7 +165,9 @@ export class SublistDataCollection extends Component {
         }
       }
       ////console.log("finalArayyy=",this.state.list)
-      this.setState({list: this.state.list});
+      this.setState({list: this.state.list}, () =>
+        console.log('getOrderDataForAddEdit1: ', this.state.list),
+      );
     });
   }
   ComputeBottls(item_id) {
@@ -240,6 +250,7 @@ export class SublistDataCollection extends Component {
                 </Text>
               </View>
             </CollapseHeader>
+
             <CollapseBody>
               <ListItem>
                 <EditInlineDataCollection

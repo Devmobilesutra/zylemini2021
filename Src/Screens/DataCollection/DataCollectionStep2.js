@@ -378,6 +378,11 @@ export class DataCollectionStep2 extends Component {
     //     this._componentFocused();
     //     //Put your Data loading function here instead of my this.LoadData()
     //   });
+    console.log(
+      '\n \n \n datacolleion  Value by QRcode: ',
+      this.props.datacollection,
+    );
+
     BackHandler.addEventListener(
       'hardwareBackPress',
       this.handleBackButtonClick,
@@ -454,116 +459,288 @@ export class DataCollectionStep2 extends Component {
   };
 
   render() {
-    // if(  this.props.navigation.state.params.valueRadio == 0)  for radio value
-    return (
-      <View style={{flex: 10}}>
-        <ImageBackground
-          source={require('../../assets/Icons/android_BG.png')}
-          style={{
-            height: hp('89'),
-            width: wp('100'),
-            resizeMode: 'cover',
-            justifyContent: 'center',
-          }}>
-          <ScrollView
-            keyboardShouldPersistTaps={'handled'}
-            showsVerticalScrollIndicator={false}>
-            {/* Store Name Id and History */}
-            <View style={{flex: 0.1}}>
-              <View style={styles.storeInfoMainContainer}>
-                <View style={styles.storeTextContainer}>
-                  <Text style={styles.storeNameText}>
-                    {this.state.outletName}
-                  </Text>
+    if (this.props.qrStrings !== undefined) {
+      // We are fetching related data for Editing purposes here only if we get scanned data
+
+      // var outletId = this.props.outletId;
+      // var id = this.props.id;
+      // var search = this.props.search; a v
+      // var list1 = this.props.list1;
+      // var JoinString = this.props.JoinString;
+      // db.getSubBrandSearchData(id, search, list1, JoinString).then(data => {
+      //   this.state.list = [];
+      //   this.setState(
+      //     {
+      //       qrlist: data,
+      //     },
+      //     () => console.log('\n -------------QRList: ', this.state.qrlist),
+      //   );
+      //  //console.log("datasss=",this.state.list)
+      // db.getOrderDataForAddEdit1(
+      //   outletId,
+      //   this.props.datacollection.collectiontype,
+      // ).then(data => {
+      //   //console.log("bbb",JSON.stringify(data))
+      //   this.state.list2 = [];
+      //   this.setState({list2: data});
+
+      //   for (var i = 0; i < this.state.qrlist.length; i++) {
+      //     // //console.log("outer")
+      //     for (var j = 0; j < this.state.list2.length; j++) {
+      //       // //console.log("ineer")
+
+      //       if (this.state.qrlist[i].ItemId == this.state.list2[j].item_id) {
+      //         // //console.log("return true........",this.state.list[i])
+      //         this.state.qrlist[i].quantity_one = this.state.list2[
+      //           j
+      //         ].quantity_one;
+      //         this.state.qrlist[i].quantity_two = this.state.list2[
+      //           j
+      //         ].quantity_two;
+      //         this.state.qrlist[i].bottleQty = this.state.list2[j].bottleQty;
+      //       }
+      //     }
+      //   }
+      //   // //console.log("finalArayyy=",this.state.list)
+      //   this.setState({qrlist: this.state.qrlist});
+      // });
+      // this.props.SublistExtendedParent();
+      // });
+
+      return (
+        // <Text>This is after qrcode string scanned: {this.props.qrStrings}</Text>
+        <View style={{flex: 10}}>
+          <ImageBackground
+            source={require('../../assets/Icons/android_BG.png')}
+            style={{
+              height: hp('89'),
+              width: wp('100'),
+              resizeMode: 'cover',
+              justifyContent: 'center',
+            }}>
+            <ScrollView
+              keyboardShouldPersistTaps={'handled'}
+              showsVerticalScrollIndicator={false}>
+              {/* Store Name Id and History */}
+              <View style={{flex: 0.1}}>
+                <View style={styles.storeInfoMainContainer}>
+                  <View style={styles.storeTextContainer}>
+                    <Text style={styles.storeNameText}>
+                      {this.state.outletName}
+                    </Text>
+                  </View>
+                </View>
+
+                <View style={{flexDirection: 'row'}}>
+                  <Text style={styles.storeIdText}>Store ID :</Text>
+
+                  <Text style={styles.storeIdStyle}>{this.state.outletId}</Text>
                 </View>
               </View>
 
-              <View style={{flexDirection: 'row'}}>
-                <Text style={styles.storeIdText}>Store ID :</Text>
-
-                <Text style={styles.storeIdStyle}>{this.state.outletId}</Text>
-              </View>
-            </View>
-
-            {/* Dash Line */}
-            <View style={styles.dashLineContainer}>
-              <Dash
-                style={styles.dashLineStyle}
-                dashLength={2}
-                dashColor="#ADA2A2"
-              />
-            </View>
-
-            <View style={styles.textDropdownContainer}>
-              <Text style={styles.dropdownheadingTitleText}>
-                CHOOSE PRODUCT
-              </Text>
-              <View style={{flexDirection: 'row'}}>
-                <Searchbar
-                  inputStyle={styles.inputstyles}
-                  style={styles.searchbarContainerStyle}
-                  theme={false}
-                  icon={false}
-                  placeholder="Search"
-                  value={this.state.search}
-                  onChangeText={input => {
-                    this.setState({search: input});
-                    this.SearchFilterFunction(input);
-                  }}
+              {/* Dash Line */}
+              <View style={styles.dashLineContainer}>
+                <Dash
+                  style={styles.dashLineStyle}
+                  dashLength={2}
+                  dashColor="#ADA2A2"
                 />
-                <TouchableOpacity
-                  style={{
-                    borderColor: '#8C7878',
-                    marginLeft: 10,
-                    marginTop: 10,
-                    borderWidth: 1,
-                    borderRadius: 8,
-                  }}
-                  onPress={() => Actions.Qr()}>
-                  <Image
-                    source={require('../../assets/Icons/qr.png')}
-                    style={{
-                      marginTop: 10,
-                      width: 40,
-                      height: 40,
+              </View>
 
-                      // borderRadius: 4,
+              {/* <View style={styles.textDropdownContainer}>
+                <Text style={styles.dropdownheadingTitleText}>
+                  CHOOSE PRODUCT
+                </Text>
+                <View style={{flexDirection: 'row'}}>
+                  <Searchbar
+                    inputStyle={styles.inputstyles}
+                    style={styles.searchbarContainerStyle}
+                    theme={false}
+                    icon={false}
+                    placeholder="Search"
+                    value={this.state.search}
+                    onChangeText={input => {
+                      this.setState({search: input});
+                      this.SearchFilterFunction(input);
                     }}
                   />
-                </TouchableOpacity>
-              </View>
+                  <TouchableOpacity
+                    style={{
+                      borderColor: '#8C7878',
+                      marginLeft: 10,
+                      marginTop: 10,
+                      borderWidth: 1,
+                      borderRadius: 8,
+                    }}
+                    onPress={() => Actions.Qr()}>
+                    <Image
+                      source={require('../../assets/Icons/qr.png')}
+                      style={{
+                        marginTop: 10,
+                        width: 40,
+                        height: 40,
+
+                        // borderRadius: 4,
+                      }}
+                    />
+                  </TouchableOpacity>
+                </View>
+              </View> */}
+              {/* search results */}
+              {/* <View style={styles.searchResultTextRowContainer}>
+                <View style={styles.searchResultTextColContainer}>
+                  <Text style={styles.searchResultText}>Search Results</Text>
+                </View>
+
+                <View style={styles.CPDMaintContainer}>
+                  <View>
+                    <Text style={styles.CPDTextStyle}>
+                      Collected Product Data
+                    </Text>
+                  </View>
+                  <View style={styles.roundedtextBlue}>
+                    <Text style={styles.roundInnerValue}>
+                      {this.props.datacollection.dataCollected}
+                    </Text>
+                  </View>
+                </View>
+              </View> */}
+
+              {/* {this.searchResult()} */}
+              <EditInlineDataCollection
+                navigation={navigation}
+                radioVal2={this.props.navigation.state.params.valueRadio}
+                ItemName={item.ITEMSEQUENCE}
+                ItemId={item.ItemId}
+                ptr={item.PTR}
+                bpc={item.BPC}
+                outletId={outletId}
+                brandId={this.props.id}
+                SublistExtendedParent={this.ComputeBottls.bind(this)}
+                refresh={this.refreshDelete.bind(this)}
+              />
+            </ScrollView>
+            {/* Next Button */}
+            <View>
+              <TouchableOpacity onPress={this.NextButton.bind(this)}>
+                <NextButton />
+              </TouchableOpacity>
             </View>
-            {/* search results */}
-            <View style={styles.searchResultTextRowContainer}>
-              <View style={styles.searchResultTextColContainer}>
-                <Text style={styles.searchResultText}>Search Results</Text>
+          </ImageBackground>
+        </View>
+      );
+    } else {
+      // if(  this.props.navigation.state.params.valueRadio == 0)  for radio value
+      return (
+        <View style={{flex: 10}}>
+          <ImageBackground
+            source={require('../../assets/Icons/android_BG.png')}
+            style={{
+              height: hp('89'),
+              width: wp('100'),
+              resizeMode: 'cover',
+              justifyContent: 'center',
+            }}>
+            <ScrollView
+              keyboardShouldPersistTaps={'handled'}
+              showsVerticalScrollIndicator={false}>
+              {/* Store Name Id and History */}
+              <View style={{flex: 0.1}}>
+                <View style={styles.storeInfoMainContainer}>
+                  <View style={styles.storeTextContainer}>
+                    <Text style={styles.storeNameText}>
+                      {this.state.outletName}
+                    </Text>
+                  </View>
+                </View>
+
+                <View style={{flexDirection: 'row'}}>
+                  <Text style={styles.storeIdText}>Store ID :</Text>
+
+                  <Text style={styles.storeIdStyle}>{this.state.outletId}</Text>
+                </View>
               </View>
 
-              <View style={styles.CPDMaintContainer}>
-                <View>
-                  <Text style={styles.CPDTextStyle}>
-                    Collected Product Data
-                  </Text>
-                </View>
-                <View style={styles.roundedtextBlue}>
-                  <Text style={styles.roundInnerValue}>
-                    {this.props.datacollection.dataCollected}
-                  </Text>
+              {/* Dash Line */}
+              <View style={styles.dashLineContainer}>
+                <Dash
+                  style={styles.dashLineStyle}
+                  dashLength={2}
+                  dashColor="#ADA2A2"
+                />
+              </View>
+
+              <View style={styles.textDropdownContainer}>
+                <Text style={styles.dropdownheadingTitleText}>
+                  CHOOSE PRODUCT
+                </Text>
+                <View style={{flexDirection: 'row'}}>
+                  <Searchbar
+                    inputStyle={styles.inputstyles}
+                    style={styles.searchbarContainerStyle}
+                    theme={false}
+                    icon={false}
+                    placeholder="Search"
+                    value={this.state.search}
+                    onChangeText={input => {
+                      this.setState({search: input});
+                      this.SearchFilterFunction(input);
+                    }}
+                  />
+                  <TouchableOpacity
+                    style={{
+                      borderColor: '#8C7878',
+                      marginLeft: 10,
+                      marginTop: 10,
+                      borderWidth: 1,
+                      borderRadius: 8,
+                    }}
+                    onPress={() => Actions.Qr()}>
+                    <Image
+                      source={require('../../assets/Icons/qr.png')}
+                      style={{
+                        marginTop: 10,
+                        width: 40,
+                        height: 40,
+
+                        // borderRadius: 4,
+                      }}
+                    />
+                  </TouchableOpacity>
                 </View>
               </View>
-            </View>
+              {/* search results */}
+              <View style={styles.searchResultTextRowContainer}>
+                <View style={styles.searchResultTextColContainer}>
+                  <Text style={styles.searchResultText}>Search Results</Text>
+                </View>
 
-            {this.searchResult()}
-          </ScrollView>
-          {/* Next Button */}
-          <View>
-            <TouchableOpacity onPress={this.NextButton.bind(this)}>
-              <NextButton />
-            </TouchableOpacity>
-          </View>
-        </ImageBackground>
-      </View>
-    );
+                <View style={styles.CPDMaintContainer}>
+                  <View>
+                    <Text style={styles.CPDTextStyle}>
+                      Collected Product Data
+                    </Text>
+                  </View>
+                  <View style={styles.roundedtextBlue}>
+                    <Text style={styles.roundInnerValue}>
+                      {this.props.datacollection.dataCollected}
+                    </Text>
+                  </View>
+                </View>
+              </View>
+
+              {this.searchResult()}
+            </ScrollView>
+            {/* Next Button */}
+            <View>
+              <TouchableOpacity onPress={this.NextButton.bind(this)}>
+                <NextButton />
+              </TouchableOpacity>
+            </View>
+          </ImageBackground>
+        </View>
+      );
+    }
   }
 }
 

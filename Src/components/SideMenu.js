@@ -24,7 +24,8 @@ import User from './../utility/User';
 import Loader from '../components/LoaderSync';
 import {Icon} from 'react-native-elements';
 import RNFS from 'react-native-fs';
-import { BlurView } from "@react-native-community/blur";
+import moment from 'moment';
+import {BlurView} from '@react-native-community/blur';
 const db = new Database();
 var tokenss = '';
 //var JSONObj={};
@@ -40,7 +41,7 @@ const DrawerList = [
   },
 ];
 
-export  class SideMenu extends Component {
+export class SideMenu extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -60,18 +61,18 @@ export  class SideMenu extends Component {
       AssetDetails: [],
       JSONObj: {},
       messagetext: '',
-      selectarea : '',
-      ParentCheckflag :''
+      selectarea: '',
+      ParentCheckflag: '',
     };
   }
 
-  
   //////////////////////////////////////////
   syncNowFunction() {
     console.log('I am sync now');
-    console.log('selectarea in side menu : '+this.props.dashboard.selectarea)
+    console.log('selectarea in side menu : ' + this.props.dashboard.selectarea);
     var OrderMaster = [];
     var OrderDetails = [];
+    var UsesLog = [];
     var Discount = [];
     var ImageDetails = [];
     var NewPartyImageDetails = [];
@@ -135,6 +136,16 @@ export  class SideMenu extends Component {
             );
             NewPartyTargetId = data;
             this.state.JSONObj['newPartyTargetId'] = data;
+          }
+        });
+        db.getUsesLogSyncData().then(data => {
+          if (data.length > 0) {
+            console.log(
+              '\n\n\n\n\nNew getuseslog for sync\n\n\n',
+              JSON.stringify(data),
+            );
+            UsesLog = data;
+            this.state.JSONObj['UsesLog'] = data;
           }
         });
 
@@ -339,7 +350,7 @@ export  class SideMenu extends Component {
     // alert(tok);
     const headers1 = {
       authheader: tok,
-      AreaId  : this.props.dashboard.selectarea
+      AreaId: this.props.dashboard.selectarea,
     };
     // alert(User.GetUrl);
     console.log(User.GetUrl);
@@ -538,8 +549,10 @@ export  class SideMenu extends Component {
     //  await AsyncStorage.clear();
     AsyncStorage.setItem('isLogged', '');
     AsyncStorage.setItem('AreaSelected', '');
-    this.props.dashboard.selectarea = 0
+    this.props.dashboard.selectarea = 0;
+    var datee = moment().format('DD-MMM-YYYY hh:mm:ss ');
     Actions.login();
+    await db.insertuses_log('Logout', datee, 'True');
   };
 
   SyncNow = () => {
@@ -589,7 +602,6 @@ export  class SideMenu extends Component {
     Actions.MJP_one();
   };
   componentWillMount() {
-    
     AsyncStorage.getItem('username').then(keyValue => {
       //console.log("name1=", JSON.parse((keyValue)))
       const username = JSON.parse(keyValue);
@@ -599,25 +611,25 @@ export  class SideMenu extends Component {
       const tok = JSON.parse(keyValue);
       this.setState({tokens: tok});
     });
-   
   }
-  componentDidMount(){
+  componentDidMount() {
     console.log('in component did mount');
-    console.log('parent login in side menu : '+this.props.dashboard.parentlogin)
+    console.log(
+      'parent login in side menu : ' + this.props.dashboard.parentlogin,
+    );
     AsyncStorage.getItem('userIds').then(keyValue => {
       var userid = JSON.parse(keyValue);
-     // this.props.userid(JSON.parse(keyValue));
+      // this.props.userid(JSON.parse(keyValue));
       db.getParentLoginData(userid).then(data => {
-        if(data.length > 0){
-        this.setState({ParentCheckflag : 'true'})
-        }else{
-          this.setState({ParentCheckflag : 'false'})
+        if (data.length > 0) {
+          this.setState({ParentCheckflag: 'true'});
+        } else {
+          this.setState({ParentCheckflag: 'false'});
         }
-      
-      })
+      });
     });
   }
-  shouldComponentUpdate(){
+  shouldComponentUpdate() {
     return true;
   }
 
@@ -681,25 +693,19 @@ export  class SideMenu extends Component {
           }}
         />
         {/* List */}
-        {
-          (this.props.dashboard.parentlogin == true) ? (
-            <View style={styles.drawerListContainer}>
+        {this.props.dashboard.parentlogin == true ? (
+          <View style={styles.drawerListContainer}>
             <ScrollView showsVerticalScrollIndicator={false}>
-  
-           
-                  <TouchableOpacity  style={{opacity : 0.5}}
-                  >
-                     <View style={styles.drawerNameImgContainer}>
-                       <Image
-                         style={styles.drawerLabelImgStyle}
-                         source={require('../assets/Icons/refresh_button.png')}
-                       />
-                       <Text style={styles.drawerLabelStyle}>{item.syncNow}</Text>
-                     </View>
-                   </TouchableOpacity>
-               
-              
-            
+              <TouchableOpacity style={{opacity: 0.5}}>
+                <View style={styles.drawerNameImgContainer}>
+                  <Image
+                    style={styles.drawerLabelImgStyle}
+                    source={require('../assets/Icons/refresh_button.png')}
+                  />
+                  <Text style={styles.drawerLabelStyle}>{item.syncNow}</Text>
+                </View>
+              </TouchableOpacity>
+
               {/* <TouchableOpacity>
                 <View style={styles.drawerNmaeImgContainer2}>
                   <Image
@@ -709,7 +715,7 @@ export  class SideMenu extends Component {
                   <Text style={styles.drawerLabelStyle2}>{item.home}</Text>
                 </View>
               </TouchableOpacity> */}
-              <TouchableOpacity style={{opacity : 0.5}}>
+              <TouchableOpacity style={{opacity: 0.5}}>
                 <View style={styles.drawerNmaeImgContainer2}>
                   <Image
                     style={styles.drawerLabelImgStyle2}
@@ -718,7 +724,7 @@ export  class SideMenu extends Component {
                   <Text style={styles.drawerLabelStyle2}>{item.shops}</Text>
                 </View>
               </TouchableOpacity>
-  
+
               {/* <TouchableOpacity>
                 <View style={styles.drawerNmaeImgContainer2}>
                   <Image
@@ -728,8 +734,8 @@ export  class SideMenu extends Component {
                   <Text style={styles.drawerLabelStyle2}>Distributors</Text>
                 </View>
               </TouchableOpacity> */}
-  
-              <TouchableOpacity style={{opacity : 0.5}}>
+
+              <TouchableOpacity style={{opacity: 0.5}}>
                 <View style={styles.drawerNmaeImgContainer2}>
                   <Image
                     style={styles.drawerLabelImgStyle2}
@@ -739,8 +745,7 @@ export  class SideMenu extends Component {
                 </View>
               </TouchableOpacity>
               {/* //////////////////data collection///////// */}
-              <TouchableOpacity style={{opacity : 0.5}}
-                >
+              <TouchableOpacity style={{opacity: 0.5}}>
                 <View style={styles.drawerNmaeImgContainer2}>
                   <Image
                     style={styles.drawerLabelImgStyle2}
@@ -749,8 +754,8 @@ export  class SideMenu extends Component {
                   <Text style={styles.drawerLabelStyle2}>Data Cards</Text>
                 </View>
               </TouchableOpacity>
-  
-              <TouchableOpacity style={{opacity : 0.5}}>
+
+              <TouchableOpacity style={{opacity: 0.5}}>
                 <View style={styles.drawerNmaeImgContainer2}>
                   <Image
                     style={styles.drawerLabelImgStyle2}
@@ -759,8 +764,8 @@ export  class SideMenu extends Component {
                   <Text style={styles.drawerLabelStyle2}>Orders</Text>
                 </View>
               </TouchableOpacity>
-  
-              <TouchableOpacity style={{opacity : 0.5}}>
+
+              <TouchableOpacity style={{opacity: 0.5}}>
                 <View style={styles.drawerNmaeImgContainer2}>
                   <Image
                     style={styles.drawerLabelImgStyle2}
@@ -769,9 +774,8 @@ export  class SideMenu extends Component {
                   <Text style={styles.drawerLabelStyle2}>Meetings</Text>
                 </View>
               </TouchableOpacity>
-  
-              <TouchableOpacity
-               style={{opacity : 0.5}}>
+
+              <TouchableOpacity style={{opacity: 0.5}}>
                 <View style={styles.drawerNmaeImgContainer2}>
                   <Image
                     style={styles.drawerLabelImgStyle2}
@@ -780,8 +784,8 @@ export  class SideMenu extends Component {
                   <Text style={styles.drawerLabelStyle2}>Payments</Text>
                 </View>
               </TouchableOpacity>
-  
-              <TouchableOpacity style={{opacity : 0.5}}>
+
+              <TouchableOpacity style={{opacity: 0.5}}>
                 <View style={styles.drawerNmaeImgContainer2}>
                   <Image
                     style={styles.drawerLabelImgStyle2}
@@ -790,7 +794,7 @@ export  class SideMenu extends Component {
                   <Text style={styles.drawerLabelStyle2}>{item.Surveys}</Text>
                 </View>
               </TouchableOpacity>
-  
+
               {/* <TouchableOpacity>
                 <View style={styles.drawerNmaeImgContainer2}>
                   <Image
@@ -800,8 +804,8 @@ export  class SideMenu extends Component {
                   <Text style={styles.drawerLabelStyle2}>Schemes</Text>
                 </View>
               </TouchableOpacity> */}
-  
-              <TouchableOpacity style={{opacity : 0.5}}>
+
+              <TouchableOpacity style={{opacity: 0.5}}>
                 <View style={styles.drawerNmaeImgContainer2}>
                   <Image
                     style={styles.drawerLabelImgStyle2}
@@ -810,8 +814,8 @@ export  class SideMenu extends Component {
                   <Text style={styles.drawerLabelStyle2}>Resources</Text>
                 </View>
               </TouchableOpacity>
-  
-              <TouchableOpacity style={{opacity : 0.5}}>
+
+              <TouchableOpacity style={{opacity: 0.5}}>
                 <View style={styles.drawerNmaeImgContainer2}>
                   <Image
                     style={styles.drawerLabelImgStyle2}
@@ -839,21 +843,21 @@ export  class SideMenu extends Component {
                   <Text style={styles.drawerLabelStyle2}>Settings</Text>
                 </View>
               </TouchableOpacity> */}
-  
+
               <TouchableOpacity style={{marginBottom: 5}} onPress={this.Logout}>
                 <View style={styles.drawerNmaeImgContainer2}>
                   <Image
                     style={styles.drawerLabelImgStyle2}
                     source={require('../assets/Icons/logout.png')}
                   />
-  
+
                   {/* <Icon name="log-out" color="black" /> */}
-  
+
                   <Text style={styles.drawerLabelStyle2}>LogOut</Text>
                   <Text style={{marginBottom: 15}} />
                 </View>
               </TouchableOpacity>
-            {/* <BlurView
+              {/* <BlurView
               style={{ position: "absolute",
               top: 0,
               left: 0,
@@ -864,27 +868,20 @@ export  class SideMenu extends Component {
               reducedTransparencyFallbackColor="white"
             /> */}
             </ScrollView>
-           
           </View>
-          ) : (
-            <View style={styles.drawerListContainer}>
+        ) : (
+          <View style={styles.drawerListContainer}>
             <ScrollView showsVerticalScrollIndicator={false}>
-  
-            
-                  <TouchableOpacity   onPress={this.SyncNow}
-                  >
-                     <View style={styles.drawerNameImgContainer}>
-                       <Image
-                         style={styles.drawerLabelImgStyle}
-                         source={require('../assets/Icons/refresh_button.png')}
-                       />
-                       <Text style={styles.drawerLabelStyle}>{item.syncNow}</Text>
-                     </View>
-                   </TouchableOpacity>
-                
-              
-              
-            
+              <TouchableOpacity onPress={this.SyncNow}>
+                <View style={styles.drawerNameImgContainer}>
+                  <Image
+                    style={styles.drawerLabelImgStyle}
+                    source={require('../assets/Icons/refresh_button.png')}
+                  />
+                  <Text style={styles.drawerLabelStyle}>{item.syncNow}</Text>
+                </View>
+              </TouchableOpacity>
+
               {/* <TouchableOpacity>
                 <View style={styles.drawerNmaeImgContainer2}>
                   <Image
@@ -903,7 +900,7 @@ export  class SideMenu extends Component {
                   <Text style={styles.drawerLabelStyle2}>{item.shops}</Text>
                 </View>
               </TouchableOpacity>
-  
+
               {/* <TouchableOpacity>
                 <View style={styles.drawerNmaeImgContainer2}>
                   <Image
@@ -913,7 +910,7 @@ export  class SideMenu extends Component {
                   <Text style={styles.drawerLabelStyle2}>Distributors</Text>
                 </View>
               </TouchableOpacity> */}
-  
+
               <TouchableOpacity onPress={this.NavigateDC}>
                 <View style={styles.drawerNmaeImgContainer2}>
                   <Image
@@ -934,7 +931,7 @@ export  class SideMenu extends Component {
                   <Text style={styles.drawerLabelStyle2}>Data Cards</Text>
                 </View>
               </TouchableOpacity>
-  
+
               <TouchableOpacity onPress={this.MoveToOrders}>
                 <View style={styles.drawerNmaeImgContainer2}>
                   <Image
@@ -944,7 +941,7 @@ export  class SideMenu extends Component {
                   <Text style={styles.drawerLabelStyle2}>Orders</Text>
                 </View>
               </TouchableOpacity>
-  
+
               <TouchableOpacity onPress={() => Actions.MJP_one()}>
                 <View style={styles.drawerNmaeImgContainer2}>
                   <Image
@@ -954,7 +951,7 @@ export  class SideMenu extends Component {
                   <Text style={styles.drawerLabelStyle2}>Meetings</Text>
                 </View>
               </TouchableOpacity>
-  
+
               <TouchableOpacity
                 onPress={() => {
                   Actions.Payments1();
@@ -967,7 +964,7 @@ export  class SideMenu extends Component {
                   <Text style={styles.drawerLabelStyle2}>Payments</Text>
                 </View>
               </TouchableOpacity>
-  
+
               <TouchableOpacity onPress={() => Actions.TabBarSurveys()}>
                 <View style={styles.drawerNmaeImgContainer2}>
                   <Image
@@ -977,7 +974,7 @@ export  class SideMenu extends Component {
                   <Text style={styles.drawerLabelStyle2}>{item.Surveys}</Text>
                 </View>
               </TouchableOpacity>
-  
+
               {/* <TouchableOpacity>
                 <View style={styles.drawerNmaeImgContainer2}>
                   <Image
@@ -987,7 +984,7 @@ export  class SideMenu extends Component {
                   <Text style={styles.drawerLabelStyle2}>Schemes</Text>
                 </View>
               </TouchableOpacity> */}
-  
+
               <TouchableOpacity onPress={() => Actions.ResourceLanding()}>
                 <View style={styles.drawerNmaeImgContainer2}>
                   <Image
@@ -997,7 +994,7 @@ export  class SideMenu extends Component {
                   <Text style={styles.drawerLabelStyle2}>Resources</Text>
                 </View>
               </TouchableOpacity>
-  
+
               <TouchableOpacity onPress={() => Actions.TabBarReports()}>
                 <View style={styles.drawerNmaeImgContainer2}>
                   <Image
@@ -1026,25 +1023,23 @@ export  class SideMenu extends Component {
                   <Text style={styles.drawerLabelStyle2}>Settings</Text>
                 </View>
               </TouchableOpacity> */}
-  
+
               <TouchableOpacity style={{marginBottom: 5}} onPress={this.Logout}>
                 <View style={styles.drawerNmaeImgContainer2}>
                   <Image
                     style={styles.drawerLabelImgStyle2}
                     source={require('../assets/Icons/logout.png')}
                   />
-  
+
                   {/* <Icon name="log-out" color="black" /> */}
-  
+
                   <Text style={styles.drawerLabelStyle2}>LogOut</Text>
                   <Text style={{marginBottom: 15}} />
                 </View>
               </TouchableOpacity>
             </ScrollView>
           </View>
-          )
-        }
-      
+        )}
 
         {/* Footer Styles */}
         <View style={{flex: 0.2, flexDirection: 'column'}}>
@@ -1155,7 +1150,7 @@ export  class SideMenu extends Component {
 const mapStateToProps = state => {
   return {
     dashboard: state.dashboard,
-   // datacollection: state.datacollection,
+    // datacollection: state.datacollection,
   };
 };
 

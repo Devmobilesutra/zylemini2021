@@ -5,6 +5,7 @@ import {alertActions} from './alertActions';
 import Dashboard from './../../Screens/Dashboard/Dashboard';
 import axios from 'axios';
 import User from './../../utility/User';
+import moment from 'moment';
 
 import {NavigationActions} from 'react-navigation';
 import {ActionSheet} from 'native-base';
@@ -100,24 +101,24 @@ export const login = (username, password, keyword, deviceid, navigation) => {
     // }
 
     // //for dilipk
-    // const headers = {
-    //   LoginId: username,
-    //   Password: password,
-    //   // ClientCode: 'XXCPA2020',
-    //   ClientCode: keyword,
-    //   DeviceId: '111',
-    // };
-
-    // for dinkars
-
     const headers = {
       LoginId: username,
       Password: password,
-      // ClientCode: 'GDWC2020',hicks2020
+      // ClientCode: 'XXCPA2020',
       ClientCode: keyword,
-
-      DeviceId: '1111',
+      DeviceId: '111',
     };
+
+    // for dinkars
+
+    // const headers = {
+    //   LoginId: username,
+    //   Password: password,
+    //   // ClientCode: 'GDWC2020',hicks2020
+    //   ClientCode: keyword,
+
+    //   DeviceId: '1111',
+    // };
 
     //  const url2 = "http://zylemdemo.com/ZyleminiPlusCoreAPI/api/Login/Login";
     //testing
@@ -162,7 +163,7 @@ export const login = (username, password, keyword, deviceid, navigation) => {
           .get(User.GetUrl, {
             headers: headers1,
           })
-          .then(res => {
+          .then(async res => {
             //  //console.log("rajani data1=",JSON.stringify(res))
             if (res.data) {
               dispatch(loginHasError(false));
@@ -173,6 +174,8 @@ export const login = (username, password, keyword, deviceid, navigation) => {
               // db.insertAllData(data)
               //   dispatch(dispatchAll(data))
               //  dispatch(insertAllData(data))
+              var datee = moment().format('DD-MMM-YYYY hh:mm:ss');
+
               db.insertAllData(data).then(results => {
                 // alert(results)
                 if (results) {
@@ -180,6 +183,8 @@ export const login = (username, password, keyword, deviceid, navigation) => {
                   Actions.App();
                 }
               });
+              await db.insertuses_log('Login', datee, 'False');
+
               dispatch(changedata(username, password, data));
               dispatch(alertActions.success('Login successful...........'));
               AsyncStorage.setItem('isLogged', 'true');

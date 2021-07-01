@@ -133,8 +133,8 @@ dexOptions {
         applicationId "com.zyleminiplus"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 18
-        versionName "2.8"  // 26JUNE2021
+        versionCode 19
+        versionName "2.9"  // 01JULY2021
         multiDexEnabled true 
     }
     splits {

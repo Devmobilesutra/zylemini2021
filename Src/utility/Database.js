@@ -13,7 +13,7 @@ import moment from 'moment';
 import RNFS from 'react-native-fs';
 import Moment from 'react-moment';
 import {pascalCase} from 'change-case';
-SQLite.DEBUG(true);
+SQLite.DEBUG(false);
 SQLite.enablePromise(true);
 const database_name = 'ZyleminiPlusDatabase.db';
 const database_version = '1.0';
@@ -1934,25 +1934,7 @@ export default class Database {
               String(order_id),
               String(item_id),
             ],
-          ).then(([tx, results]) => {
-            // var query = 'select sum(Amount) as TotalAmount from OrderDetails where OrderDetails.order_id = "' + order_id + '"'
-            // db1.transaction((tx) => {
-            //   tx.executeSql(query, [], (tx, results1) => {
-            //     var geteditRateFlag = [];
-            //     for (let i = 0; i < results1.rows.length; i++) {
-            //       geteditRateFlag.push(results1.rows.item(i));
-            //     }
-            //     resolve(geteditRateFlag);
-            //   });
-            // })
-            //   .then((result) => {
-            //     //
-            //   })
-            //   .catch((err) => {
-            //     //console.log(err);
-            //   });
-            // resolve(results.length);
-          });
+          ).then(([tx, results]) => {});
         })
         .then(result => {
           //
@@ -2024,36 +2006,28 @@ export default class Database {
     });
   }
 
-  insertuses_log(uses_logData) {
-    //   this.initDB().then((db) => {
-    db1
-      .transaction(tx => {
-        var len = uses_logData.length;
-        var count = 0;
-
-        for (var item of uses_logData) {
+  insertuses_log(menu_keys, uses_datetime, is_sync) {
+    return new Promise(resolve => {
+      // this.initDB().then((db) => {
+      db1
+        .transaction(tx => {
           tx.executeSql(
-            `insert into  uses_log(menu_keys,uses_datetime ,is_sync  )
+            `insert into uses_log(menu_keys,uses_datetime ,is_sync)
                                                                   VALUES (?,?,?)`,
-            [
-              String(item.menu_keys),
-              String(item.uses_datetime),
-              String(item.is_sync),
-            ],
-            (tx, results) => {},
-            err => {
-              console.error('error=', err);
-            },
-          );
-        }
-      })
-      .then(result => {
-        //
-      })
-      .catch(err => {
-        //console.log(err);
-      });
+            [String(menu_keys), String(uses_datetime), String(is_sync)],
+          ).then(([tx, results]) => {
+            console.log('\n\n\n\nmera naam sid siddhesh\n\n\n\n\n\n');
+          });
+        })
+        .then(result => {
+          //
+        })
+        .catch(err => {
+          console.log(err, '\n\n\n\n\nSiddhesh ka error\n\n\n\n');
+        });
+    });
   }
+
   insertImagesDetails(order_id, image_date_time, image_name, Path, is_sync) {
     //this.initDB().then((db) => {
     db1
@@ -7710,6 +7684,28 @@ export default class Database {
             }
 
             resolve(NewParty);
+          });
+        })
+        .then(result => {})
+        .catch(err => {
+          //console.log(err);
+        });
+    });
+  }
+
+  getUsesLogSyncData() {
+    var query =
+      'SELECT id,menu_keys as MenuKeys,uses_datetime as UsageDateTime from uses_log';
+    return new Promise(resolve => {
+      db1
+        .transaction(tx => {
+          tx.executeSql(query, [], (tx, results) => {
+            var UsesLog = [];
+            for (let i = 0; i < results.rows.length; i++) {
+              UsesLog.push(results.rows.item(i));
+            }
+
+            resolve(UsesLog);
           });
         })
         .then(result => {})

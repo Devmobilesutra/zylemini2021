@@ -615,37 +615,44 @@ export class Dashboard extends Component {
     });
     console.log('parent login : ' + this.props.dashboard.parentlogin);
     // this._componentFocused();
+
     // this._sub = this.props.navigation.addListener(
     //   'didFocus',
     //   this._componentFocused,
     // );
+
+    if (this.state.username !== '') {
+      db.insertuses_log(this.state.username, 'Login', '30-06-2021', '0');
+    }
   }
 
-  _componentFocused() {
-    //  AsyncStorage.getItem('userIds').then((keyValue) => {
-    //  //console.log("UserIddd=",JSON.parse((keyValue)))
-    //  this.props.userid(keyValue)
-    //   })
-    // AsyncStorage.getItem('username').then((keyValue) => {
-    // //console.log("Name",JSON.parse((keyValue)))
-    //     var user=keyValue
-    //     this.setState({username:user})
-    //   }, (error) => {
-    //     //console.log(error) //Display error
-    //   });
-    //   AsyncStorage.getItem('password').then((keyValue) => {
-    //     var pass=keyValue
-    //     this.setState({password:pass})
-    //   }, (error) => {
-    //     //console.log(error) //Display error
-    //   });
-    //   AsyncStorage.getItem('deviceId').then((keyValue) => {
-    //     var user=keyValue
-    //     this.setState({deviceId:user})
-    //   }, (error) => {
-    //     //console.log(error) //Display error
-    //   });
-  }
+  componentDidUpdate() {}
+
+  // _componentFocused() {
+  //  AsyncStorage.getItem('userIds').then((keyValue) => {
+  //  //console.log("UserIddd=",JSON.parse((keyValue)))
+  //  this.props.userid(keyValue)
+  //   })
+  // AsyncStorage.getItem('username').then((keyValue) => {
+  // //console.log("Name",JSON.parse((keyValue)))
+  //     var user=keyValue
+  //     this.setState({username:user})
+  //   }, (error) => {
+  //     //console.log(error) //Display error
+  //   });
+  //   AsyncStorage.getItem('password').then((keyValue) => {
+  //     var pass=keyValue
+  //     this.setState({password:pass})
+  //   }, (error) => {
+  //     //console.log(error) //Display error
+  //   });
+  //   AsyncStorage.getItem('deviceId').then((keyValue) => {
+  //     var user=keyValue
+  //     this.setState({deviceId:user})
+  //   }, (error) => {
+  //     //console.log(error) //Display error
+  //   });
+  // }
   componentWillUnmount() {
     BackHandler.removeEventListener(
       'hardwareBackPress',

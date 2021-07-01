@@ -67,7 +67,7 @@ export class Qr extends Component {
     );
   }
   handleBackButtonClick() {
-    Actions.AssetUpdate();
+    Actions.DataCollectionStep2();
     return true;
   }
   componentDidMount() {
@@ -77,11 +77,12 @@ export class Qr extends Component {
     );
   }
   _componentFocused = () => {};
+
   nextNavigation = () => {
     this.setState({a: 'bbbb'});
 
     if (qrStringi) {
-      // Actions.AuditAssetStep2({qrStrings: qrStringi});
+      Actions.AuditAssetStep2({qrStrings: qrStringi});
       console.log('quququququququrrr', qrStringi);
     } else {
       alert('Please Scan qr code First');
@@ -94,7 +95,7 @@ export class Qr extends Component {
 
   onQR_Code_Scan_Done = QR_Code => {
     console.log('done in done');
-    qrStringi = QR_Code;
+    var qrStringi = QR_Code;
     this.state.QR_Code_Value = QR_Code;
     // alert(QR_Code)
     this.setState({QR_Code_Value: QR_Code});
@@ -104,6 +105,7 @@ export class Qr extends Component {
     if (QR_Code) {
       this.props.qrcode(QR_Code);
       // Actions.AuditAssetStep2({qrStrings: qrStringi});
+      Actions.DataCollectionStep2({qrStrings: qrStringi});
       console.log('qrcode doneeeeee', qrStringi);
     } else {
       alert('Please Scan qr code First');
